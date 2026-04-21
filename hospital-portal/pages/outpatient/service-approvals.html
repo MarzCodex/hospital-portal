@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Service Approvals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    
+    <div class="main-content" id="mainContent">
+        <div id="header-container"></div>
+        
+        <div class="verification-section" style="text-align: center; padding: 60px;">
+            <i class="fas fa-cogs" style="font-size: 64px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2>Service Approvals</h2>
+            <p style="margin-top: 20px; color: var(--gray);">This feature will be online soon!</p>
+            <button class="search-btn" onclick="window.location.href='../../index.html'" style="margin-top: 30px;">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+        </div>
+        
+        <div id="footer-container"></div>
+    </div>
+    
+    <div id="modals-container"></div>
+    
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            
+            setTimeout(() => {
+                const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+                const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+                const userAvatar = document.getElementById('userAvatar');
+                const userNameSpan = document.getElementById('userName');
+                const jobTitleSpan = document.getElementById('jobTitle');
+                
+                if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+                if (userNameSpan) userNameSpan.textContent = userName;
+                if (userAvatar) {
+                    const initials = userName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

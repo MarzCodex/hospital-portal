@@ -1,0 +1,64 @@
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <button class="sidebar-close" id="closeSidebarBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <i class="fas fa-hospital-user" style="font-size: 40px;"></i>
+        <h3>Hospital Portal</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="#" onclick="window.location.href='/hospital-portal/index.html'; closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="window.location.href='../pages/outpatient/member-authorization.html'; closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Authorization</a></li>
+                <li><a href="#" onclick="comingSoon('Service Approvals'); closeSidebarOnMobile()"><i class="fa-solid fa-check-circle"></i>Service Approvals</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-procedures"></i> Inpatient Services</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="comingSoon('Patient Admission'); closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
+                <li><a href="#" onclick="comingSoon('Discharge/Transfer'); closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
+                <li><a href="#" onclick="comingSoon('Admitted Patients List'); closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-exchange-alt"></i> Patient Referrals</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="comingSoon('NHIF Referral'); closeSidebarOnMobile()">NHIF Referral</a></li>
+                <li><a href="#" onclick="comingSoon('ZHSF Referral'); closeSidebarOnMobile()">ZHSF Referral</a></li>
+                <li><a href="#" onclick="comingSoon('UHI Referral'); closeSidebarOnMobile()">UHI Referral</a></li>
+                <li><a href="#" onclick="comingSoon('Referred Patients List'); closeSidebarOnMobile()">Referred Patients List</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-file-invoice-dollar"></i> Claims Management</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="comingSoon('Bill Summary'); closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
+                <li><a href="#" onclick="comingSoon('Total Claims Submitted'); closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
+                <li><a href="#" onclick="comingSoon('Previous Claims'); closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
+                <li><a href="#" onclick="comingSoon('Claim Reconciliation'); closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="comingSoon('Services Price List'); closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
+                <li><a href="#" onclick="comingSoon('Visit Types Guide'); closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
+            </ul>
+        </li>
+        <li><a href="#" onclick="comingSoon('User Management'); closeSidebarOnMobile()"><i class="fas fa-users"></i> User Management</a></li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)">
+                <i class="fas fa-gear"></i> Setup & Configurations
+            </a>
+            <ul class="submenu">
+                <li><a href="#" onclick="comingSoon('System Settings'); closeSidebarOnMobile()"><i class="fas fa-cogs"></i> System Settings</a></li>
+                <li><a href="#" onclick="comingSoon('Buttons Configurations'); closeSidebarOnMobile()"><i class="fas fa-mouse-pointer"></i> Buttons Configurations</a></li>
+                <li><a href="#" onclick="comingSoon('Other Configurations'); closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
+                <li><a href="#" onclick="comingSoon('System Guide'); closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

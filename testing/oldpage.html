@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Member Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    :root {
+        --border: #ddd;
+        --primary: #3498db;
+        --primary-dark: #2980b9;
+        --secondary: #2c3e50;
+        --success: #27ae60;
+        --danger: #e74c3c;
+        --warning: #f39c12;
+        --light: #f5f7fa;
+        --gray: #7f8c8d;
+        --white: #ffffff;
+        --sidebar-width: 260px;
+        --header-height: 60px;
+        --footer-bg: #2c3e50;
+        --footer-text: #ecf0f1;
+        --card-color: #ffffff;
+        --badge-color: #2c3e50;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--light) 0%, #e8f0fe 100%);
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Sidebar Styles - Default Visible */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--sidebar-width);
+        height: 100%;
+        background: linear-gradient(180deg, var(--secondary) 0%, #1a252f 100%);
+        color: white;
+        z-index: 1000;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        transform: translateX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.hidden {
+        transform: translateX(-100%);
+    }
+.sidebar-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sidebar-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+    .sidebar-header {
+        padding: 5px 1px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 2px;
+        position: relative;
+    }
+
+    .sidebar-header h3 {
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 5px;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        transition: all 0.3s;
+        gap: 12px;
+        cursor: pointer;
+    }
+
+    .sidebar-menu a:hover {
+        background-color: rgba(52, 152, 219, 0.3);
+        padding-left: 25px;
+    }
+
+    .sidebar-menu a i {
+        width: 20px;
+        font-size: 16px;
+    }
+
+    .sidebar-menu .has-submenu > a {
+        position: relative;
+    }
+
+    .sidebar-menu .has-submenu > a::after {
+        content: '▼';
+        position: absolute;
+        right: 20px;
+        font-size: 10px;
+        transition: transform 0.3s;
+    }
+
+    .submenu {
+        list-style: none;
+        padding-left: 45px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .submenu.active {
+        max-height: 300px;
+    }
+
+    .submenu li a {
+        padding: 8px 20px;
+        font-size: 13px;
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: var(--sidebar-width);
+        transition: margin-left 0.3s ease;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    /* When sidebar is hidden, expand main content */
+    .sidebar.hidden ~ .main-content {
+        margin-left: 0;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        background: var(--white);
+        padding: 0 25px;
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .menu-toggle {
+        cursor: pointer;
+        font-size: 24px;
+        color: var(--secondary);
+        transition: color 0.3s;
+    }
+
+    .menu-toggle:hover {
+        color: var(--primary);
+    }
+
+    .top-bar h1 {
+        font-size: 20px;
+        color: var(--secondary);
+        margin: 0;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .user-name {
+        font-weight: 500;
+        color: var(--secondary);
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    /* Dropdown Menu */
+    .user-dropdown {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        display: none;
+        z-index: 200;
+    }
+
+    .user-dropdown.active {
+        display: block;
+        animation: fadeIn 0.2s ease;
+    }
+
+    .user-dropdown a {
+        display: block;
+        padding: 12px 20px;
+        color: var(--secondary);
+        text-decoration: none;
+        transition: background 0.2s;
+        cursor: pointer;
+    }
+
+    .user-dropdown a:hover {
+        background-color: var(--light);
+    }
+
+    .user-dropdown .signout {
+        border-top: 1px solid var(--border);
+        color: var(--danger);
+    }
+
+    /* Secondary Navigation Bar */
+    .secondary-nav {
+        background: white;
+        padding: 12px 25px;
+        display: flex;
+        gap: 20px;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        flex-wrap: wrap;
+    }
+
+    .secondary-nav a {
+        color: var(--secondary);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .secondary-nav a:hover {
+        background-color: var(--light);
+        color: var(--primary);
+    }
+
+    .secondary-nav a.active {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    /* Member Verification */
+    .verification-section {
+        padding: 10px;
+        background: var(--white);
+        margin: 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .verification-title {
+        font-size: 20px;
+        color: var(--secondary);
+        margin-bottom: 2px;
+        padding-bottom: 1px;
+        border-bottom: 2px solid var(--primary);
+        display: inline-block;
+    }
+
+    .form-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--secondary);
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .form-group label .required {
+        color: var(--danger);
+        margin-left: 4px;
+    }
+
+    .form-group input, .form-group select {
+        width: 20em;
+        padding: 6px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .search-btn {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 5px;
+    }
+
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    /* Member Info Card */
+    .member-info-card {
+        background: linear-gradient(0deg, #ffffff 0%, #f1f1f1 100%);
+        border-radius: 12px;
+        padding: 10px;
+        margin-top: 10px;
+        color: #000000;
+        display: none;
+    }
+
+    .member-info-card h4 {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .member-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .member-detail-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        border-radius: 8px;
+        border: 1px solid black;
+    }
+
+    .member-detail-item strong {
+        display: block;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-bottom: 5px;
+    }
+
+    .member-detail-item span {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .authorization-status {
+        margin-top: 5px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        text-align: center;
+        width: fit-content;
+        display: none;
+    }
+
+    .authorized {
+        background: rgba(39, 174, 96, 0.3);
+        border: 1px solid var(--success);
+        cursor: default;
+        font-size: 15px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        width: fit-content;
+        margin-left: 2em;
+    }
+
+    .not-authorized {
+        background: rgba(231, 76, 60, 0.3);
+        border: 1px solid var(--danger);
+        cursor: default;
+        font-size: 15px;
+        padding: 4px 8px;
+        width: fit-content;
+        border-radius: 20px;
+        margin-left: 2em;
+    }
+
+    /* Patient Lists */
+    .patient-list {
+        padding: 25px;
+        background: var(--white);
+        margin: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        display: none;
+    }
+
+    .patient-list h3 {
+        margin-bottom: 20px;
+        color: var(--secondary);
+    }
+
+    .patient-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto;
+        display: block;
+    }
+
+    .patient-table th, .patient-table td {
+        padding: 5px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .patient-table th {
+        background: var(--light);
+        font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+        background: var(--footer-bg);
+        border-top: 1px solid #333;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 10;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        margin-top: auto;
+        cursor: default;
+        width: 100%;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--footer-text);
+        font-size: 14px;
+    }
+
+    .footer-divider {
+        height: 16px;
+        width: 1px;
+        background: #555;
+        margin: 0 6px;
+    }
+
+    .footer-badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: default;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #555;
+        color: #01d100;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
+    .footer-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #9bd19b;
+        font-size: 13px;
+    }
+
+    .footer-right i {
+        color: #7ccf7c;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        animation: slideUp 0.3s ease;
+    }
+
+    .modal-content h3 {
+        margin-bottom: 20px;
+        color: var(--secondary);
+    }
+
+    .modal-content input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .modal-buttons button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .modal-buttons .save {
+        background: var(--primary);
+        color: white;
+    }
+
+    .modal-buttons .cancel {
+        background: var(--gray);
+        color: white;
+    }
+
+    /* Notification */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        display: none;
+        animation: slideIn 0.3s ease-out;
+        max-width: 350px;
+    }
+
+    .notification.success {
+        background-color: var(--success);
+    }
+
+    .notification.error {
+        background-color: var(--danger);
+    }
+
+    .notification.info {
+        background-color: var(--primary);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+        }
+        
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        
+        .sidebar:not(.hidden) {
+            transform: translateX(0);
+        }
+        
+        .main-content {
+            margin-left: 0;
+        }
+        
+        .cards-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .top-bar h1 {
+            font-size: 16px;
+        }
+        
+        .user-name {
+            display: none;
+        }
+        
+        footer {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-right {
+            margin-left: 0;
+        }
+        
+        .secondary-nav {
+            justify-content: center;
+        }
+        
+        .verification-section {
+            margin: 10px;
+            padding: 15px;
+        }
+        
+        .patient-table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
+    </style>
+</head>
+<body>
+<!-- Sidebar Navigation -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <button class="sidebar-close" id="closeSidebarBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <i class="fas fa-hospital-user" style="font-size: 40px;"></i>
+        <h3>Hospital Portal</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="#" onclick="showDashboard(); closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="showMemberVerification(); closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Authorization</a></li>
+                <li><a href="#" onclick="showNotification('Service Approvals feature coming soon', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-check-circle"></i>Service Approvals</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-procedures"></i> Inpatient Services</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="showNotification('Patient Admission', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
+                <li><a href="#" onclick="showNotification('Discharge/Transfer', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
+                <li><a href="#" onclick="showNotification('List of Admitted Patients', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-exchange-alt"></i> Patient Referrals</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="showNotification('NHIF Referral', 'info'); closeSidebarOnMobile()">NHIF Referral</a></li>
+                <li><a href="#" onclick="showNotification('ZHSF Referral', 'info'); closeSidebarOnMobile()">ZHSF Referral</a></li>
+                <li><a href="#" onclick="showNotification('UHI Referral', 'info'); closeSidebarOnMobile()">UHI Referral</a></li>
+                <li><a href="#" onclick="showReferredPatientsList(); closeSidebarOnMobile()">Referred Patients List</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-file-invoice-dollar"></i> Claims Management</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="showNotification('Bill Summary', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
+                <li><a href="#" onclick="showNotification('Total Claims Submitted', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
+                <li><a href="#" onclick="showNotification('Previous Claims', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
+                <li><a href="#" onclick="showNotification('Claim Reconciliation', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
+            </ul>
+        </li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="showNotification('Services Price List', 'info'); closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
+                <li><a href="#" onclick="showNotification('Visit Types Guide', 'info'); closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
+            </ul>
+        </li>
+        <li><a href="#" onclick="showNotification('User Management', 'info'); closeSidebarOnMobile()"><i class="fas fa-users"></i> User Management</a></li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)">
+                <i class="fas fa-gear"></i> Setup & Configurations
+            </a>
+            <ul class="submenu">
+                <li><a href="#" onclick="showNotification('System Configurations'); closeSidebarOnMobile()">
+                    <i class="fas fa-cogs"></i> System Settings</a>
+                </li>
+                <li><a href="#" onclick="showNotification('Buttons Configurations', 'info'); closeSidebarOnMobile()"><i class="fas fa-mouse-pointer"></i> Buttons Configurations</a></li>
+                <li><a href="#" onclick="showNotification('Other Configurations', 'info'); closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
+                <li><a href="#" onclick="showNotification('System Guide', 'info'); closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <h1 onclick="showDashboard()"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
+        </div>
+        <div class="user-info" id="userInfo">
+            <span class="job-title" id="jobTitle">System Administrator |</span>
+            <span class="user-name" id="userName">Phillip Z.P</span>
+            <div class="user-avatar" id="userAvatar">PZ</div>
+            <div class="user-dropdown" id="userDropdown">
+                <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
+                <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Navigation -->
+    <div class="secondary-nav">
+        <a href="#" onclick="showMemberVerification()" class="active" id="navVerification">Member Verification</a>
+        <a href="#" onclick="showPatientLastVisits()" id="navLastVisits">Patient Last Visits</a>
+        <a href="#" onclick="showAuthorizedPatients()" id="navAuthorized">Authorized Patients</a>
+        <a href="#" onclick="showReferredPatientsList()" id="navReferred">Referred Patients</a>
+    </div>
+
+    <!-- Member Verification Section -->
+    <div id="verificationSection">
+        <div class="verification-section">
+            <h3 class="verification-title"><i class="fas fa-id-card"></i> Member Verification</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="sponsorVerifier">Sponsor Verifier <span class="required">*</span></label>
+                    <select id="sponsorVerifier">
+                        <option value="">Select Verifier</option>
+                        <option value="NHIF">NHIF - National Health Insurance Fund</option>
+                        <option value="ZHSF">ZHSF - Zanzibar Health Insurance Fund</option>
+                        <option value="UHI">UHI - Universal Health Insurance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="visitType">Visit Type <span class="required">*</span></label>
+                    <select id="visitType">
+                        <option value="Normal Visit">Normal Visit</option>
+                        <option value="Emergency Visit">Emergency Visit</option>
+                        <option value="Referral Visit">Referral Visit</option>
+                        <option value="Follow-Up Visit">Follow-Up Visit</option>
+                        <option value="New case Visit">New case Visit</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cardType">Card Type <span class="required">*</span></label>
+                    <select id="cardType">
+                        <option value="Member Card">Member Card No.</option>
+                        <option value="National ID">National ID</option>
+                        <option value="Passport Number">Passport Number</option>
+                    </select>
+                </div>
+                <div class="form-group" id="cardNumberGroup">
+                    <label for="cardNumber">Card Number <span class="required">*</span></label>
+                    <input type="text" id="cardNumber" placeholder="Enter card number">
+                </div>
+                <div class="form-group" id="referralNumberGroup" style="display: none;">
+                    <label for="referralNumber">Referral Number <span class="required">*</span></label>
+                    <input type="text" id="referralNumber" placeholder="Enter referral number">
+                </div>
+            </div>
+            <button class="search-btn" onclick="searchMember()"><i class="fas fa-search"></i> Search</button>
+            <button class="search-btn" id="authorizeBtn" style="display: none;" onclick="authorizeMember()"><i class="fas fa-check-circle"></i> Authorize</button>
+            <div id="authorizationStatus" class="authorization-status not-authorized" style="display: none;"><i class="fa-solid fa-lock"></i> Pending Authorization</div>
+            <div id="memberInfoCard" class="member-info-card" style="display: none;">
+                <h4><i class="fas fa-user-circle"></i> Member Information</h4>
+                <div class="member-details">
+                    <div class="member-detail-item"><strong>Full Name</strong><span id="memberName"></span></div>
+                    <div class="member-detail-item"><strong>Gender</strong><span id="memberGender"></span></div>
+                    <div class="member-detail-item"><strong>Date of Birth</strong><span id="memberDob"></span></div>
+                    <div class="member-detail-item"><strong>Member No.</strong><span id="memberId"></span></div>
+                    <div class="member-detail-item"><strong>Card No.</strong><span id="cardNumberDisplay"></span></div>
+                    <div class="member-detail-item"><strong>Benefit Scheme</strong><span id="schemeType"></span></div>
+                    <div class="member-detail-item"><strong>Latest Authorization</strong><span id="latestAuth"></span></div>
+                    <div class="member-detail-item"><strong>Status</strong><span id="memberStatus"></span></div>
+                    <div class="member-detail-item"><strong>Authorization Number</strong><span id="authorizationNumber"></span></div>
+                </div>
+                <button class="search-btn" onclick="searchBeneficiaryServices()"><i class="fas fa-eye"></i> View Included services</button>
+                <!-- Small table showing searched member's previous visits: limit 3 -->
+                <table class="patient-table" id="previousVisitsTable" style="margin-top: 5px;">
+                    <thead>
+                        <tr style="border-bottom:1px solid var(--border);"><th colspan="2"><i class="fas fa-user-circle"></i> Patient's Last Three (3) Visits</th></tr>
+                    </thead>
+                    <tbody id="previousVisitsBody">
+                        <tr><td colspan="2" style="text-align: center;">No previous visits found</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Last Visits Section -->
+    <div id="lastVisitsSection" class="patient-list">
+        <h3><i class="fas fa-history"></i> Patient Last Visits</h3>
+        <table class="patient-table">
+            <thead><tr><th>Date</th><th>Visit Type</th><th>Sponsor</th><th>Diagnosis</th><th>Doctor</th></tr></thead>
+            <tbody id="lastVisitsBody"><tr><td colspan="5" style="text-align: center;">Select a patient after verification to see visits</td></tr></tbody>
+        </table>
+    </div>
+
+    <!-- Authorized Patients Section -->
+    <div id="authorizedSection" class="patient-list">
+        <h3><i class="fa-solid fa-lock-open"></i> Authorized Patients Today</h3>
+        <table class="patient-table">
+            <thead><tr><th>Time</th><th>Member Name</th><th>Member ID</th><th>Sponsor</th><th>Visit Type</th><th>Status</th></tr></thead>
+            <tbody id="authorizedBody"><tr><td colspan="6" style="text-align: center;">No authorized patients today</td></tr></tbody>
+        </table>
+    </div>
+
+    <!-- Referred Patients Section -->
+    <div id="referredSection" class="patient-list">
+        <h3><i class="fas fa-exchange-alt"></i> Referred Patients</h3>
+        <table class="patient-table">
+            <thead><tr><th>Date</th><th>Patient Name</th><th>From Facility</th><th>To Facility</th><th>Referral Number</th><th>Status</th></tr></thead>
+            <tbody id="referredBody"><tr><td colspan="6" style="text-align: center;">No referred patients</td></tr></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <div class="footer-left"><i class="fa-solid fa-desktop"></i><span title="System Host">ICT-UNIT</span></div>
+        <div class="footer-divider"></div>
+        <div class="footer-badges"><span class="badge" title="Server Status"><i class="fa-solid fa-server"></i> : Online</span><div class="footer-divider"></div><span class="badge"><i>Note: Website runs on Local Server.</i></span></div>
+        <div class="footer-right"><i class="fa-solid fa-bolt"></i><span>Hospital Service Portal v4.0 | &copy; Powered by Phill.</span></div>
+    </footer>
+</div>
+
+<!-- Password Change Modal -->
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-key"></i> Change Password</h3>
+        <input type="password" id="currentPassword" placeholder="Current Password">
+        <input type="password" id="newPassword" placeholder="New Password">
+        <input type="password" id="confirmPassword" placeholder="Confirm New Password">
+        <div class="modal-buttons">
+            <button class="save" onclick="changePassword()">Save</button>
+            <button class="cancel" onclick="closePasswordModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global state
+let authorizedMembers = JSON.parse(sessionStorage.getItem('authorizedMembers') || '[]');
+let currentVerifiedMember = null;
+let currentCardNumber = '';
+// Reusable loading state handler
+async function withLoadingState(btn, callback) {
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    btn.disabled = true;
+    
+    try {
+        return await callback();
+    } catch (error) {
+        console.error(error);
+        showNotification('An error occurred. Please try again.', 'error');
+        throw error;
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+// Change Password Functions
+function openChangePassword() {
+    const modal = document.getElementById('passwordModal');
+    if (modal) modal.classList.add('active');
+    const dropdown = document.getElementById('userDropdown');
+    if (dropdown) dropdown.classList.remove('active');
+}
+
+function closePasswordModal() {
+    const modal = document.getElementById('passwordModal');
+    if (modal) modal.classList.remove('active');
+    const inputs = ['currentPassword', 'newPassword', 'confirmPassword'];
+    inputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) input.value = '';
+    });
+}
+
+function changePassword() {
+    const currentPwd = document.getElementById('currentPassword')?.value || '';
+    const newPwd = document.getElementById('newPassword')?.value || '';
+    const confirmPwd = document.getElementById('confirmPassword')?.value || '';
+    
+    if (!currentPwd || !newPwd || !confirmPwd) {
+        showNotification('Please fill all fields', 'error');
+        return;
+    }
+    
+    if (newPwd !== confirmPwd) {
+        showNotification('New passwords do not match', 'error');
+        return;
+    }
+    
+    if (newPwd.length < 4) {
+        showNotification('Password must be at least 4 characters', 'error');
+        return;
+    }
+    
+    showNotification('Password changed successfully!', 'success');
+    closePasswordModal();
+}
+
+// Sign Out with confirmation
+function signOut() {
+    if (confirm('Are you sure you want to sign out?')) {
+        sessionStorage.clear();
+        showNotification('Signed out successfully', 'success');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1500);
+    }
+}
+
+function showNotification(msg, type = 'success') { 
+    const n = document.createElement('div'); 
+    n.className = `notification ${type}`; 
+    n.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`; 
+    document.body.appendChild(n); 
+    n.style.display = 'block'; 
+    setTimeout(() => n.remove(), 3000); 
+}
+
+// Single hamburger menu toggle
+document.getElementById('menuToggle').addEventListener('click', function() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('hidden');
+});
+
+// toggleSubmenu function
+function toggleSubmenu(el) { 
+    const parent = el.closest('.has-submenu'); 
+    const sub = parent.querySelector('.submenu'); 
+    sub.classList.toggle('active'); 
+}
+// Close sidebar button functionality
+document.getElementById('closeSidebarBtn').addEventListener('click', function() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.add('hidden');
+    // The CSS .sidebar.hidden ~ .main-content handles this automatically
+});
+// Close sidebar button functionality on mobile devices
+function closeSidebarOnMobile() {
+    if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.add('hidden');
+    }
+}
+function showDashboard() { showNotification('Dashboard view - Quick stats coming soon', 'info'); }
+
+function showMemberVerification() {
+    document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
+    document.getElementById('verificationSection').style.display = 'block';
+    ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.getElementById('navVerification')?.classList.add('active');
+}
+async function searchMember(event) {
+    const btn = event?.target || document.querySelector('.search-btn');
+    
+    // Get form values
+    const sponsor = document.getElementById('sponsorVerifier').value;
+    const visitType = document.getElementById('visitType').value;
+    const cardType = document.getElementById('cardType').value;
+    const cardNumber = document.getElementById('cardNumber').value;
+    const referralNumber = document.getElementById('referralNumber').value;
+    
+    // VALIDATION FIRST (no loading state yet)
+    if (!sponsor || !visitType || !cardType) {
+        showNotification('Please fill all required fields', 'error');
+        return;
+    }
+    
+    if (visitType === 'Referral Visit' && !referralNumber) {
+        showNotification('Please enter referral number', 'error');
+        return;
+    }
+    
+    if (visitType !== 'Referral Visit' && !cardNumber) {
+        showNotification('Please enter card number', 'error');
+        return;
+    }
+    
+    currentCardNumber = cardNumber || referralNumber;
+    
+    // Now show loading and search
+    await withLoadingState(btn, async () => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const memberData = { 
+                        name: 'John M. Doe', 
+                        gender: 'Male',
+                        dob: '1985-06-15',
+                        memberId: sponsor + '-' + (cardNumber || 'REF123'), 
+                        cardNumberDisplay: cardNumber || referralNumber,
+                        sponsor: sponsor, 
+                        schemeType: sponsor === 'NHIF' ? 'Comprehensive Plan' : (sponsor === 'ZHSF' ? 'Family Plan' : 'Standard Plan'), 
+                        status: 'Active' 
+                    };
+                    
+                    // Populate member details
+                    const memberNameEl = document.getElementById('memberName');
+                    const memberGenderEl = document.getElementById('memberGender');
+                    const memberDobEl = document.getElementById('memberDob');
+                    const memberIdEl = document.getElementById('memberId');
+                    const cardNumberDisplayEl = document.getElementById('cardNumberDisplay');
+                    const schemeTypeEl = document.getElementById('schemeType');
+                    const memberStatusEl = document.getElementById('memberStatus');
+                    const authorizationNumberEl = document.getElementById('authorizationNumber');
+                    const latestAuthEl = document.getElementById('latestAuth');
+                    
+                    if (memberNameEl) memberNameEl.innerText = memberData.name;
+                    if (memberGenderEl) memberGenderEl.innerText = memberData.gender;
+                    if (memberDobEl) memberDobEl.innerText = memberData.dob;
+                    if (memberIdEl) memberIdEl.innerText = memberData.memberId;
+                    if (cardNumberDisplayEl) cardNumberDisplayEl.innerText = memberData.cardNumberDisplay;
+                    if (schemeTypeEl) schemeTypeEl.innerText = memberData.schemeType;
+                    if (memberStatusEl) memberStatusEl.innerHTML = '<span style="color:#27ae60;"><i class="fas fa-check-circle"></i> Active</span>';
+                    if (authorizationNumberEl) authorizationNumberEl.innerText = 'AUTH-' + Math.floor(Math.random() * 10000);
+                    if (latestAuthEl) latestAuthEl.innerText = new Date().toLocaleDateString();
+                    
+                    const previousVisitsBody = document.getElementById('previousVisitsBody');
+                    if (previousVisitsBody) {
+                        previousVisitsBody.innerHTML = `
+                            <tr><td><strong>City Medical Center</strong></td><td>February 10, 2025</td></tr>
+                            <tr><td><strong>Regional Hospital</strong></td><td>January 28, 2025</td></tr>
+                            <tr><td><strong>Wellness Clinic</strong></td><td>December 15, 2024</td></tr>
+                        `;
+                    }
+                    
+                    const authorizeBtn = document.getElementById('authorizeBtn');
+                    const authStatus = document.getElementById('authorizationStatus');
+                    const memberInfoCard = document.getElementById('memberInfoCard');
+                    
+                    if (authorizeBtn) authorizeBtn.style.display = 'inline-block';
+                    if (authStatus) {
+                        authStatus.style.display = 'inline-block';
+                        authStatus.innerHTML = '<i class="fa-solid fa-lock"></i> Pending Authorization';
+                        authStatus.className = 'authorization-status not-authorized';
+                    }
+                    if (memberInfoCard) memberInfoCard.style.display = 'block';
+                    
+                    currentVerifiedMember = memberData;
+                    showNotification('Member found! Verify details', 'success');
+                    resolve();
+                } catch (error) {
+                    console.error('Search error:', error);
+                    showNotification('An error occurred while searching', 'error');
+                    resolve(); // Still resolve to exit loading state
+                }
+            }, 500);
+        });
+    });
+}
+
+function showPatientLastVisits() {
+    document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
+    document.getElementById('lastVisitsSection').style.display = 'block';
+    ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.getElementById('navLastVisits')?.classList.add('active');
+    if(!currentVerifiedMember) document.getElementById('lastVisitsBody').innerHTML = '<tr><td colspan="5">Please verify a member first</td></tr>';
+    else document.getElementById('lastVisitsBody').innerHTML = `
+        <tr><td>2025-02-10</td><td>Normal Visit</td><td>${currentVerifiedMember.sponsor}</td><td>Routine Checkup</td><td>Dr. James</td></tr>
+        <tr><td>2025-01-28</td><td>Follow-Up</td><td>${currentVerifiedMember.sponsor}</td><td>Follow-up</td><td>Dr. Linda</td></tr>`;
+}
+
+function showAuthorizedPatients() {
+    document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
+    document.getElementById('authorizedSection').style.display = 'block';
+    ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.getElementById('navAuthorized')?.classList.add('active');
+    const tbody = document.getElementById('authorizedBody');
+    if(authorizedMembers.length === 0) tbody.innerHTML = '<tr><td colspan="6">No authorized patients today</td></tr>';
+    else tbody.innerHTML = authorizedMembers.map(m => `
+        <tr><td>${m.time}</td><td>${m.name}</td><td>${m.id}</td><td>${m.sponsor}</td><td>${m.visitType}</td><td><span style="color:#27ae60;"><i class="fa-solid fa-check-circle"></i> Authorized</span></td></tr>`).join('');
+}
+
+function showReferredPatientsList() {
+    document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
+    document.getElementById('referredSection').style.display = 'block';
+    ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.getElementById('navReferred')?.classList.add('active');
+    document.getElementById('referredBody').innerHTML = `
+        <tr><td>2025-02-14</td><td>Sarah Johnson</td><td>City Hospital</td><td>Central Medical</td><td>REF-101</td><td>Approved</td></tr>`;
+}
+
+function searchBeneficiaryServices() {
+    if(!currentVerifiedMember) {
+        showNotification('No member loaded. Please search for a member first.', 'error');
+        return;
+    }
+    showNotification(`Showing included services for ${currentVerifiedMember.name}`, 'info');
+    const servicesList = [
+        'General Consultation',
+        'Laboratory Services',
+        'Pharmaceutical Benefits',
+        'Emergency Room Coverage',
+        'Maternity Care'
+    ];
+    let servicesHtml = '<div style="margin-top:10px; padding:10px; background:#f8f9fa; border-radius:8px;"><strong>Included Services:</strong><ul style="margin-top:5px; margin-left:20px;">';
+    servicesList.forEach(s => { servicesHtml += `<li>${s}</li>`; });
+    servicesHtml += '</ul></div>';
+    
+    if(!document.getElementById('servicesPopup')) {
+        const tempDiv = document.createElement('div');
+        tempDiv.id = 'servicesPopup';
+        tempDiv.innerHTML = servicesHtml;
+        document.getElementById('memberInfoCard').appendChild(tempDiv);
+        setTimeout(() => {
+            const popup = document.getElementById('servicesPopup');
+            if(popup) popup.remove();
+        }, 5000);
+    }
+}
+
+function authorizeMember() {
+    if(!currentVerifiedMember) return showNotification('No member loaded', 'error');
+    const member = currentVerifiedMember;
+    const visitType = document.getElementById('visitType').value;
+    document.getElementById('authorizationStatus').innerHTML = '<i class="fa-solid fa-lock-open"></i> <strong>AUTHORIZED</strong>';
+    document.getElementById('authorizationStatus').className = 'authorization-status authorized';
+    authorizedMembers.unshift({ time: new Date().toLocaleTimeString(), name: member.name, id: member.memberId, sponsor: member.sponsor, visitType: visitType, status: 'Authorized' });
+    sessionStorage.setItem('authorizedMembers', JSON.stringify(authorizedMembers));
+    showNotification('Member authorized successfully', 'success');
+    if(document.getElementById('authorizedSection').style.display === 'block') showAuthorizedPatients();
+}
+
+// User dropdown
+document.getElementById('userInfo').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('userDropdown').classList.toggle('active'); });
+document.addEventListener('click', () => { document.getElementById('userDropdown')?.classList.remove('active'); });
+
+// Visit type change handler
+document.getElementById('visitType').addEventListener('change', function() { 
+    const isReferral = this.value === 'Referral Visit'; 
+    document.getElementById('cardNumberGroup').style.display = isReferral ? 'none' : 'block'; 
+    document.getElementById('referralNumberGroup').style.display = isReferral ? 'block' : 'none'; 
+});
+
+// Initialize
+showMemberVerification();
+window.closePasswordModal = closePasswordModal;
+window.changePassword = changePassword;
+window.openChangePassword = openChangePassword;
+window.signOut = signOut;
+</script>
+</body>
+</html>

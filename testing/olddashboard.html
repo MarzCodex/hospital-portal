@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Member Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    :root {
+        --border: #ddd;
+        --primary: #3498db;
+        --primary-dark: #2980b9;
+        --secondary: #2c3e50;
+        --success: #27ae60;
+        --danger: #e74c3c;
+        --warning: #f39c12;
+        --light: #f5f7fa;
+        --gray: #7f8c8d;
+        --white: #ffffff;
+        --sidebar-width: 260px;
+        --header-height: 60px;
+        --footer-bg: #2c3e50;
+        --footer-text: #ecf0f1;
+        --card-color: #ffffff;
+        --badge-color: #2c3e50;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--light) 0%, #e8f0fe 100%);
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: 0;
+        transition: margin-left 0.3s ease;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        background: var(--white);
+        padding: 0 25px;
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .top-bar h1 {
+        font-size: 20px;
+        color: var(--secondary);
+        margin: 0;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .user-name {
+        font-weight: 500;
+        color: var(--secondary);
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    /* Dropdown Menu */
+    .user-dropdown {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        display: none;
+        z-index: 200;
+    }
+
+    .user-dropdown.active {
+        display: block;
+        animation: fadeIn 0.2s ease;
+    }
+
+    .user-dropdown a {
+        display: block;
+        padding: 12px 20px;
+        color: var(--secondary);
+        text-decoration: none;
+        transition: background 0.2s;
+        cursor: pointer;
+    }
+
+    .user-dropdown a:hover {
+        background-color: var(--light);
+    }
+
+    .user-dropdown .signout {
+        border-top: 1px solid var(--border);
+        color: var(--danger);
+    }
+
+    /* Dashboard */
+    .dashboard {
+        padding: 25px;
+        flex: 1;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+    }
+
+    .card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        color: white;
+        font-size: 24px;
+    }
+
+    .card h3 {
+        color: var(--secondary);
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: var(--gray);
+        font-size: 13px;
+    }
+    /* Footer */
+    footer {
+        background: var(--footer-bg);
+        border-top: 1px solid #333;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 10;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        margin-top: auto;
+        cursor: default;
+        width: 100%;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--footer-text);
+        font-size: 14px;
+    }
+
+    .footer-divider {
+        height: 16px;
+        width: 1px;
+        background: #555;
+        margin: 0 6px;
+    }
+
+    .footer-badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: default;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #555;
+        color: #01d100;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
+    .footer-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #9bd19b;
+        font-size: 13px;
+    }
+
+    .footer-right i {
+        color: #7ccf7c;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        animation: slideUp 0.3s ease;
+    }
+
+    .modal-content h3 {
+        margin-bottom: 20px;
+        color: var(--secondary);
+    }
+
+    .modal-content input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .modal-buttons button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .modal-buttons .save {
+        background: var(--primary);
+        color: white;
+    }
+
+    .modal-buttons .cancel {
+        background: var(--gray);
+        color: white;
+    }
+
+    /* Notification */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        display: none;
+        animation: slideIn 0.3s ease-out;
+        max-width: 350px;
+    }
+
+    .notification.success {
+        background-color: var(--success);
+    }
+
+    .notification.error {
+        background-color: var(--danger);
+    }
+
+    .notification.info {
+        background-color: var(--primary);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+       
+        .main-content {
+            margin-left: 0;
+        }
+        .cards-grid {
+            grid-template-columns: 1fr;
+        }
+        .top-bar h1 {
+            font-size: 16px;
+        }
+        .user-name {
+            display: none;
+        }
+        footer {
+            flex-direction: column;
+            text-align: center;
+        }
+        .footer-right {
+            margin-left: 0;
+        }
+    }
+    </style>
+</head>
+<body>
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <h1 onclick="showDashboard()"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
+        </div>
+        <div class="user-info" id="userInfo">
+            <span class="job-title" id="jobTitle">System Administrator |</span>
+            <span class="user-name" id="userName">Phillip Z.P</span>
+            <div class="user-avatar" id="userAvatar">PZ</div>
+            <div class="user-dropdown" id="userDropdown">
+                <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
+                <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard">
+    <div class="cards-grid">
+        <div class="card" onclick="loadPage('member-authorization')">
+            <div class="card-icon"><i class="fas fa-user-md"></i></div>
+            <h3>Member Verification</h3>
+            <p>Check Patient's Elegibility for treatment</p>
+        </div>
+        <div class="card" onclick="loadPage('patient-admission')">
+            <div class="card-icon"><i class="fas fa-procedures"></i></div>
+            <h3>Inpatient Services</h3>
+            <p>Manage patient admissions and discharges</p>
+        </div>
+        <div class="card" onclick="loadPage('nhif-referral')">
+            <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+            <h3>Referrals Management</h3>
+            <p>Handle patient referrals to other facilities</p>
+        </div>
+        <div class="card" onclick="loadPage('service-approvals')">
+            <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+            <h3>Service Approvals</h3>
+            <p>Approve medical services and procedures</p>
+        </div>
+        <div class="card" onclick="loadPage('claims-management')">
+            <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            <h3>Claims Management</h3>
+            <p>Process and track insurance claims</p>
+        </div>
+        <div class="card" onclick="loadPage('service-guide')">
+            <div class="card-icon"><i class="fas fa-tags"></i></div>
+            <h3>Service Guide</h3>
+            <p>A guide to Services Covered by BIMA</p>
+        </div>
+        <div class="card" onclick="loadPage('user-management')">
+            <div class="card-icon"><i class="fas fa-users"></i></div>
+            <h3>User Management</h3>
+            <p>Manage User Accounts</p>
+        </div>
+        <div class="card" onclick="loadPage('setupg')">
+            <div class="card-icon"><i class="fas fa-cogs"></i></div>
+            <h3>Setup & Configurations</h3>
+            <p>System settings and configurations</p>
+        </div>
+    </div>
+</div>
+    <footer>
+        <div class="footer-left" ><i class="fa-solid fa-desktop"></i><span title="System Host">ICT-UNIT</span></div>
+        <div class="footer-divider"></div>
+        <div class="footer-badges"><span class="badge" title="Server Status"><i class="fa-solid fa-server"></i> : Online</span><div class="footer-divider"></div><span class="badge"><i>Note: Website runs on Local Server.</i></span></div>
+        <div class="footer-right"><i class="fa-solid fa-bolt"></i><span>Hospital Service Portal v4.0 | &copy; Powered by Phill.</span></div>
+    </footer>
+</div>
+<script>
+    // Global variables
+    let currentPage = 'dashboard';
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set logged in user
+        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+        const userAvatar = document.getElementById('userAvatar');
+        const userNameSpan = document.getElementById('userName');
+        const jobTitleSpan = document.getElementById('jobTitle');
+        
+        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+        if (userNameSpan) userNameSpan.textContent = userName;
+        if (userAvatar) {
+            const initials = userName.split(' ').map(n => n[0]).join('');
+            userAvatar.textContent = initials;
+        }
+        
+        // Initialize user dropdown
+        initUserDropdown();
+    });
+
+    // Initialize user dropdown functionality
+    function initUserDropdown() {
+        const userInfo = document.getElementById('userInfo');
+        const userDropdown = document.getElementById('userDropdown');
+        
+        if (userInfo) {
+            userInfo.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (userDropdown) userDropdown.classList.toggle('active');
+            });
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            if (userDropdown) userDropdown.classList.remove('active');
+        });
+    }
+
+    // Load page function (for card clicks)
+    function loadPage(pageName) {
+        currentPage = pageName;
+        showNotification(`Loading ${pageName}...`, 'info');
+        
+        // You can redirect or load content here
+        // For now, just show which module was clicked
+        console.log('Loading page:', pageName);
+        
+        // Example: Redirect to actual page if you have separate HTML files
+        // window.location.href = `${pageName}.html`;
+    }
+
+    // Show dashboard function
+    function showDashboard() {
+        currentPage = 'dashboard';
+        showNotification('Dashboard loaded', 'info');
+        // Optionally refresh dashboard content
+    }
+
+    // Show notification function
+    function showNotification(message, type = 'success') {
+        // Check if notification container exists, create if not
+        let notification = document.getElementById('notification');
+        if (!notification) {
+            notification = document.createElement('div');
+            notification.id = 'notification';
+            notification.className = 'notification';
+            document.body.appendChild(notification);
+        }
+        
+        notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
+        
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    // Change Password Functions
+    function openChangePassword() {
+        // Check if modal exists, create if not
+        let modal = document.getElementById('passwordModal');
+        if (!modal) {
+            modal = createPasswordModal();
+        }
+        modal.classList.add('active');
+        const dropdown = document.getElementById('userDropdown');
+        if (dropdown) dropdown.classList.remove('active');
+    }
+
+    function createPasswordModal() {
+        const modalDiv = document.createElement('div');
+        modalDiv.id = 'passwordModal';
+        modalDiv.className = 'modal';
+        modalDiv.innerHTML = `
+            <div class="modal-content">
+                <h3>Change Password</h3>
+                <input type="password" id="currentPassword" placeholder="Current Password">
+                <input type="password" id="newPassword" placeholder="New Password">
+                <input type="password" id="confirmPassword" placeholder="Confirm New Password">
+                <div class="modal-buttons">
+                    <button class="cancel" onclick="closePasswordModal()">Cancel</button>
+                    <button class="save" onclick="changePassword()">Save</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+        return modalDiv;
+    }
+
+    function closePasswordModal() {
+        const modal = document.getElementById('passwordModal');
+        if (modal) modal.classList.remove('active');
+        const inputs = ['currentPassword', 'newPassword', 'confirmPassword'];
+        inputs.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) input.value = '';
+        });
+    }
+
+    function changePassword() {
+        const currentPwd = document.getElementById('currentPassword')?.value || '';
+        const newPwd = document.getElementById('newPassword')?.value || '';
+        const confirmPwd = document.getElementById('confirmPassword')?.value || '';
+        
+        if (!currentPwd || !newPwd || !confirmPwd) {
+            showNotification('Please fill all fields', 'error');
+            return;
+        }
+        
+        if (newPwd !== confirmPwd) {
+            showNotification('New passwords do not match', 'error');
+            return;
+        }
+        
+        if (newPwd.length < 4) {
+            showNotification('Password must be at least 4 characters', 'error');
+            return;
+        }
+        
+        showNotification('Password changed successfully!', 'success');
+        closePasswordModal();
+    }
+
+    // Sign Out
+    function signOut() {
+        if (confirm('Are you sure you want to sign out?')) {
+            sessionStorage.clear();
+            showNotification('Signed out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        }
+    }
+
+    // Expose functions to global scope
+    window.loadPage = loadPage;
+    window.showDashboard = showDashboard;
+    window.showNotification = showNotification;
+    window.openChangePassword = openChangePassword;
+    window.closePasswordModal = closePasswordModal;
+    window.changePassword = changePassword;
+    window.signOut = signOut;
+</script>
+
+</body>
+</html>
