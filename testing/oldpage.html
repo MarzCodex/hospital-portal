@@ -1000,7 +1000,7 @@
         <h3>Hospital Portal</h3>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="#" onclick="showDashboard(); closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="olddashboard.html" onclick="showDashboard(); closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
             <ul class="submenu">
@@ -1403,7 +1403,7 @@ function closeSidebarOnMobile() {
         document.getElementById('sidebar').classList.add('hidden');
     }
 }
-function showDashboard() { showNotification('Dashboard view - Quick stats coming soon', 'info'); }
+function showDashboard() { showNotification('Dashboard view', 'info'); }
 
 function showMemberVerification() {
     document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
