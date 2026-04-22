@@ -690,9 +690,7 @@
     font-style: italic;
 }
 
-/* ======================================== */
-/* Referred Patients Section */
-/* ======================================== */
+
 #referredSection .filters-bar {
     display: flex;
     flex-wrap: wrap;
@@ -1165,7 +1163,7 @@
     
     <!-- Filter Bar -->
     <div class="filters-bar">
-        <input type="text" id="patientSearch" placeholder="Card Number / Member ID">
+        <input type="text" id="patientSearch" placeholder="Card Number">
         <label>From:</label>
         <input type="date" id="startDate">
         <label>To:</label>
@@ -1200,7 +1198,7 @@
     
     <!-- Filter Bar -->
     <div class="filters-bar">
-        <input type="text" id="authPatientSearch" placeholder="Card Number / Member ID">
+        <input type="text" id="authPatientSearch" placeholder="Card Number">
         <label>From:</label>
         <input type="date" id="authStartDate">
         <label>To:</label>
@@ -1237,7 +1235,7 @@
     
     <!-- Filter Bar -->
     <div class="filters-bar">
-        <input type="text" id="refPatientSearch" placeholder="Card Number / Member ID">
+        <input type="text" id="refPatientSearch" placeholder="Card Number">
         <label>From:</label>
         <input type="date" id="refStartDate">
         <label>To:</label>
@@ -1255,10 +1253,12 @@
             <tr>
                 <th>Date</th>
                 <th>Patient Name</th>
+                <th>Card Number</th>
+                <th>Authorization Number</th>
+                <th>Referral Number</th>
                 <th>From Facility</th>
                 <th>To Facility</th>
-                <th>Referral Number</th>
-                <th>Status</th>
+                <th>Physician Name</th>
             </tr>
         </thead>
         <tbody id="referredBody">
@@ -1618,20 +1618,6 @@ function displayAuthorizedMembers(members) {
         `).join('');
     }
 }
-function showReferredPatientsList() {
-    document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
-    document.getElementById('referredSection').style.display = 'block';
-    ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
-    document.getElementById('navReferred')?.classList.add('active');
-    
-    // Load ALL referred patients when tab is opened
-    displayReferredPatients(referredPatients);
-    
-    // Also clear the filter boxes so they don't show old values
-    document.getElementById('refPatientSearch').value = '';
-    document.getElementById('refStartDate').value = '';
-    document.getElementById('refEndDate').value = '';
-}
 
 function searchBeneficiaryServices() {
     if(!currentVerifiedMember) {
@@ -1682,9 +1668,14 @@ function authorizeMember() {
     document.getElementById('authorizationStatus').innerHTML = '<i class="fa-solid fa-lock-open"></i> <strong>AUTHORIZED</strong>';
     document.getElementById('authorizationStatus').className = 'authorization-status authorized';
     
+    const now = new Date();
+    const fullDateTime = now.toLocaleString();  
+    const dateOnly = now.toISOString().split('T')[0]; 
     // Store all required data
     authorizedMembers.unshift({ 
-        time: new Date().toLocaleTimeString(), 
+        time: now.toLocaleTimeString(),     // For display: "9:35:13 AM"
+        fullDateTime: fullDateTime,         // For sorting: "4/22/2025, 9:35:13 AM"
+        date: dateOnly,                     // For filtering: "2025-04-22"
         name: member.name,
         gender: member.gender || 'Male',
         id: member.memberId,
@@ -1743,15 +1734,16 @@ function searchAuthorizedPatients() {
             );
         }
         
-        // Filter by date range (using the time stored)
+        // Filter by date range
         if (startDate || endDate) {
-            filteredMembers = filteredMembers.filter(m => {
-                // Convert stored time to comparable date
-                const authDate = new Date();
-                // This is simplified - in production, store full date with each authorization
-                return true; // Replace with actual date comparison logic
-            });
-        }
+        filteredMembers = filteredMembers.filter(m => {
+        if (!m.date) return false;  // Skip if no date stored
+        
+        if (startDate && m.date < startDate) return false;
+        if (endDate && m.date > endDate) return false;
+        return true;
+        });
+}
         
         if (filteredMembers.length === 0) {
             tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No authorized patients found matching your criteria</td></tr>';
@@ -1763,25 +1755,6 @@ function searchAuthorizedPatients() {
     }, 300);
 }
 
-// Display authorized members in table
-function displayAuthorizedMembers(members) {
-    const tbody = document.getElementById('authorizedBody');
-    if (members.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No authorized patients found</td></tr>';
-    } else {
-        tbody.innerHTML = members.map(m => `
-            <tr>
-                <td>${m.time || 'N/A'}</td>
-                <td>${m.name || 'N/A'}</td>
-                <td>${m.gender || 'Male'}</td>
-                <td>${m.id || 'N/A'}</td>
-                <td>${m.authNumber || 'N/A'}</td>
-                <td>${m.visitType || 'N/A'}</td>
-                <td>${m.authorizedBy || getCurrentUser()}</td>
-            </tr>
-        `).join('');
-    }
-}
 
 // Reset Authorized Filters
 function resetAuthorizedFilters() {
@@ -1797,15 +1770,73 @@ function resetAuthorizedFilters() {
     }
     showNotification('Filters reset', 'info');
 }
-
 // Sample referred patients data (replace with actual API data)
 let referredPatients = [
-    { date: '2025-04-20', patientName: 'John M. Doe', fromFacility: 'City Hospital', toFacility: 'Central Medical', referralNumber: 'REF-001', status: 'Pending' },
-    { date: '2025-04-18', patientName: 'Jane Smith', fromFacility: 'Regional Clinic', toFacility: 'General Hospital', referralNumber: 'REF-002', status: 'Approved' },
-    { date: '2025-04-15', patientName: 'Robert Johnson', fromFacility: 'Wellness Center', toFacility: 'Specialist Hospital', referralNumber: 'REF-003', status: 'Completed' },
-    { date: '2025-04-10', patientName: 'Mary Williams', fromFacility: 'Community Health', toFacility: 'University Hospital', referralNumber: 'REF-004', status: 'Pending' },
+    { 
+        date: '2025-04-20', 
+        patientName: 'John M. Doe', 
+        cardNumber: 'NHIF-123456',
+        authorizationNumber: 'AUTH-20250420-1234',
+        referralNumber: 'REF-001', 
+        fromFacility: 'City Hospital', 
+        toFacility: 'Central Medical', 
+        physicianName: 'Dr. Sarah Johnson',
+        status: 'Pending' 
+    },
+    { 
+        date: '2025-04-18', 
+        patientName: 'Jane Smith', 
+        cardNumber: 'ZHSF-789012',
+        authorizationNumber: 'AUTH-20250418-5678',
+        referralNumber: 'REF-002', 
+        fromFacility: 'Regional Clinic', 
+        toFacility: 'General Hospital', 
+        physicianName: 'Dr. Michael Brown',
+        status: 'Approved' 
+    },
+    { 
+        date: '2025-04-15', 
+        patientName: 'Robert Johnson', 
+        cardNumber: 'UHI-345678',
+        authorizationNumber: 'AUTH-20250415-9012',
+        referralNumber: 'REF-003', 
+        fromFacility: 'Wellness Center', 
+        toFacility: 'Specialist Hospital', 
+        physicianName: 'Dr. Emily Davis',
+        status: 'Completed' 
+    },
+    { 
+        date: '2025-04-10', 
+        patientName: 'Mary Williams', 
+        cardNumber: 'NHIF-901234',
+        authorizationNumber: 'AUTH-20250410-3456',
+        referralNumber: 'REF-004', 
+        fromFacility: 'Community Health', 
+        toFacility: 'University Hospital', 
+        physicianName: 'Dr. James Wilson',
+        status: 'Pending' 
+    },
 ];
-
+// Display referred patients in table
+function displayReferredPatients(patients) {
+    const tbody = document.getElementById('referredBody');
+    if (patients.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No referred patients found</td></tr>';
+    } else {
+        tbody.innerHTML = patients.map(p => `
+            <tr>
+                <td>${p.date}</td>
+                <td>${p.patientName}</td>
+                <td>${p.cardNumber || 'N/A'}</td>
+                <td>${p.authorizationNumber || 'N/A'}</td>
+                <td>${p.referralNumber}</td>
+                <td>${p.fromFacility}</td>
+                <td>${p.toFacility}</td>
+                <td>${p.physicianName || 'N/A'}</td>
+            </tr>
+        `).join('');
+    }
+}
 // Search Referred Patients
 function searchReferredPatients() {
     const cardNumber = document.getElementById('refPatientSearch').value.trim();
@@ -1814,17 +1845,18 @@ function searchReferredPatients() {
     
     const tbody = document.getElementById('referredBody');
     
-    // Show loading state
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Searching...</td></td>';
+    // Show loading state (colspan="8" for 8 columns)
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
     
     // Simulate API call (replace with actual API)
     setTimeout(() => {
         let filteredPatients = [...referredPatients];
         
-        // Filter by patient name / card number
+        // Filter by patient name OR card number
         if (cardNumber) {
             filteredPatients = filteredPatients.filter(p => 
-                p.patientName?.toLowerCase().includes(cardNumber.toLowerCase())
+                p.patientName?.toLowerCase().includes(cardNumber.toLowerCase()) ||
+                p.cardNumber?.toLowerCase().includes(cardNumber.toLowerCase())
             );
         }
         
@@ -1837,7 +1869,7 @@ function searchReferredPatients() {
         }
         
         if (filteredPatients.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No referred patients found matching your criteria</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No referred patients found matching your criteria</td></tr>';
         } else {
             displayReferredPatients(filteredPatients);
         }
@@ -1845,26 +1877,20 @@ function searchReferredPatients() {
         showNotification(`Found ${filteredPatients.length} referred patient(s)`, 'success');
     }, 300);
 }
-
-// Display referred patients in table
-function displayReferredPatients(patients) {
-    const tbody = document.getElementById('referredBody');
-    if (patients.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No referred patients found</td></tr>';
-    } else {
-        tbody.innerHTML = patients.map(p => `
-            <tr>
-                <td>${p.date}</td>
-                <td>${p.patientName}</td>
-                <td>${p.fromFacility}</td>
-                <td>${p.toFacility}</td>
-                <td>${p.referralNumber}</td>
-                <td><span class="status-badge status-${p.status.toLowerCase()}">${p.status}</span></td>
-            </tr>
-        `).join('');
-    }
+function showReferredPatientsList() {
+    document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
+    document.getElementById('referredSection').style.display = 'block';
+    ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.getElementById('navReferred')?.classList.add('active');
+    
+    // Load ALL referred patients when tab is opened
+    displayReferredPatients(referredPatients);
+    
+    // Also clear the filter boxes so they don't show old values
+    document.getElementById('refPatientSearch').value = '';
+    document.getElementById('refStartDate').value = '';
+    document.getElementById('refEndDate').value = '';
 }
-
 // Reset Referred Filters
 function resetReferredFilters() {
     document.getElementById('refPatientSearch').value = '';
@@ -1876,16 +1902,6 @@ function resetReferredFilters() {
     showNotification('Filters reset', 'info');
 }
 
-// Add status badge styles (add to CSS)
-// .status-badge {
-//     padding: 4px 8px;
-//     border-radius: 12px;
-//     font-size: 12px;
-//     font-weight: 500;
-// }
-// .status-pending { background: #ffc107; color: #000; }
-// .status-approved { background: #28a745; color: #fff; }
-// .status-completed { background: #17a2b8; color: #fff; }
 // Initialize
 showMemberVerification();
 window.closePasswordModal = closePasswordModal;
