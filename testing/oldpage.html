@@ -1196,7 +1196,7 @@
 
   <!-- Authorized Patients Section -->
 <div id="authorizedSection" class="patient-list">
-    <h3><i class="fa-solid fa-lock-open"></i> Authorized Patients' List</h3>
+    <h3><i class="fa-solid fa-lock-open"></i> Authorized Patients</h3>
     
     <!-- Filter Bar -->
     <div class="filters-bar">
@@ -1623,8 +1623,14 @@ function showReferredPatientsList() {
     document.getElementById('referredSection').style.display = 'block';
     ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
     document.getElementById('navReferred')?.classList.add('active');
-    document.getElementById('referredBody').innerHTML = `
-        <tr><td>2025-02-14</td><td>Sarah Johnson</td><td>City Hospital</td><td>Central Medical</td><td>REF-101</td><td>Approved</td></tr>`;
+    
+    // Load ALL referred patients when tab is opened
+    displayReferredPatients(referredPatients);
+    
+    // Also clear the filter boxes so they don't show old values
+    document.getElementById('refPatientSearch').value = '';
+    document.getElementById('refStartDate').value = '';
+    document.getElementById('refEndDate').value = '';
 }
 
 function searchBeneficiaryServices() {
