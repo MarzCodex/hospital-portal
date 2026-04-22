@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Service Portal | Service Approvals</title>
+    <title>Hospital Service Portal | <span id="pageTitle">New Page</span></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
     <style>
+        /* Page-specific styles can go here */
+        /* These will override common.css if needed */
         .page-container {
             padding: 20px;
             margin: 20px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
         }
         
         .coming-soon {
@@ -46,13 +55,14 @@
         <!-- Header Container -->
         <div id="header-container"></div>
         
-        <!-- Page Content -->
+        <!-- Page Content - THIS IS WHERE UNIQUE CONTENT GOES -->
         <div id="page-content">
+            <!-- DEFAULT COMING SOON CONTENT (will be replaced for each page) -->
             <div class="page-container coming-soon">
-                <i class="fas fa-check-circle"></i>
-                <h2>Service Approvals</h2>
+                <i class="fas fa-cogs"></i>
+                <h2 id="featureName">Feature Name</h2>
                 <p>This feature is currently under development and will be available soon.</p>
-                <button class="search-btn" onclick="window.location.href='../../index.html'">
+                <button class="search-btn" onclick="window.location.href='../index.html'">
                     <i class="fas fa-arrow-left"></i> Back to Dashboard
                 </button>
             </div>
@@ -65,35 +75,44 @@
     <!-- Modals Container -->
     <div id="modals-container"></div>
     
-    <script src="../../assets/js/common.js"></script>
+    <script src="../assets/js/common.js"></script>
     <script>
+        // Function to load all components
         async function loadComponents() {
             try {
                 // Load sidebar
-                const sidebarResponse = await fetch('../../components/sidebar.html');
+                const sidebarResponse = await fetch('../components/sidebar.html');
                 if (sidebarResponse.ok) {
                     document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+                } else {
+                    console.error('Failed to load sidebar');
                 }
                 
                 // Load header
-                const headerResponse = await fetch('../../components/header.html');
+                const headerResponse = await fetch('../components/header.html');
                 if (headerResponse.ok) {
                     document.getElementById('header-container').innerHTML = await headerResponse.text();
+                } else {
+                    console.error('Failed to load header');
                 }
                 
                 // Load footer
-                const footerResponse = await fetch('../../components/footer.html');
+                const footerResponse = await fetch('../components/footer.html');
                 if (footerResponse.ok) {
                     document.getElementById('footer-container').innerHTML = await footerResponse.text();
+                } else {
+                    console.error('Failed to load footer');
                 }
                 
                 // Load modals
-                const modalsResponse = await fetch('../../components/modals.html');
+                const modalsResponse = await fetch('../components/modals.html');
                 if (modalsResponse.ok) {
                     document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+                } else {
+                    console.error('Failed to load modals');
                 }
                 
-                // Initialize after components loaded
+                // Initialize everything after components are loaded
                 initPageComponents();
                 
             } catch (error) {
@@ -102,6 +121,7 @@
             }
         }
         
+        // Initialize page after components are loaded
         function initPageComponents() {
             // Initialize user dropdown
             initUserDropdown();
@@ -137,10 +157,39 @@
                     if (sidebar) sidebar.classList.add('hidden');
                 });
             }
+            
+            // Set page title from URL parameter or data attribute
+            const urlParams = new URLSearchParams(window.location.search);
+            const feature = urlParams.get('feature');
+            if (feature) {
+                document.getElementById('featureName').textContent = feature;
+                document.title = `Hospital Service Portal | ${feature}`;
+            }
+            
+            // Call page-specific initialization if it exists
+            if (typeof initPageSpecific === 'function') {
+                initPageSpecific();
+            }
+        }
+        
+        // Function to update page content dynamically (for SPA-like behavior)
+        function setPageContent(htmlContent, pageTitle) {
+            const pageContent = document.getElementById('page-content');
+            if (pageContent) {
+                pageContent.innerHTML = htmlContent;
+            }
+            if (pageTitle) {
+                document.title = `Hospital Service Portal | ${pageTitle}`;
+                const titleSpan = document.getElementById('pageTitle');
+                if (titleSpan) titleSpan.textContent = pageTitle;
+            }
         }
         
         // Load components when page loads
         document.addEventListener('DOMContentLoaded', loadComponents);
+        
+        // Expose functions globally
+        window.setPageContent = setPageContent;
     </script>
 </body>
 </html>

@@ -1,4 +1,347 @@
-<div class="verification-section">
-    <h3 class="verification-title"><i class="fas fa-list"></i> Referred Patients List</h3>
-    <p style="text-align: center; padding: 50px;">Referred patients list coming soon...</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Referred Patients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        .page-container {
+            padding: 20px;
+            margin: 20px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+        
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f0f2f5;
+            border: 1px solid #adadad;
+            border-radius: 8px;
+        }
+        
+        .filters-bar input,
+        .filters-bar select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .filters-bar input[type="text"] {
+            width: 200px;
+        }
+        
+        .filters-bar input[type="date"] {
+            width: 150px;
+        }
+        
+        .filters-bar .search-btn {
+            margin-top: 0;
+            padding: 8px 16px;
+        }
+        
+        .patient-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            color: black;
+            border: 1px solid #b0aeae;
+            overflow-x: auto;
+            display: block;
+        }
+        
+        .patient-table th,
+        .patient-table td {
+            padding: 5px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .patient-table th {
+            background: var(--light);
+            color: #000000;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .patient-table tr:nth-child(odd) {
+            background-color: #eaeaea;
+        }
+        
+        .patient-table tbody tr:hover {
+            background-color: #d1e0f7;
+            transition: background-color 0.2s ease;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .patient-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+    
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+        
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="page-container">
+                <h3 class="page-header"><i class="fas fa-exchange-alt"></i> Referred Patients</h3>
+                
+                <!-- Filter Bar -->
+                <div class="filters-bar">
+                    <input type="text" id="refPatientSearch" placeholder="Card Number">
+                    <label>From:</label>
+                    <input type="date" id="refStartDate">
+                    <label>To:</label>
+                    <input type="date" id="refEndDate">
+                    <button class="search-btn" onclick="searchReferredPatients()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="search-btn" onclick="resetReferredFilters()" style="background: #6c757d;">
+                        <i class="fas fa-undo-alt"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- Referred Patients Table -->
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Card Number</th>
+                            <th>Authorization Number</th>
+                            <th>Referral Number</th>
+                            <th>From Facility</th>
+                            <th>To Facility</th>
+                            <th>Physician Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referredBody">
+                        <tr><td colspan="8" class="empty-state">Enter card number and/or date range to search referrals</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+    
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+    
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        // Sample referred patients data
+        let referredPatients = [
+            { 
+                date: '2025-04-20', 
+                patientName: 'John M. Doe', 
+                cardNumber: 'NHIF-123456',
+                authorizationNumber: 'AUTH-20250420-1234',
+                referralNumber: 'REF-001', 
+                fromFacility: 'City Hospital', 
+                toFacility: 'Central Medical', 
+                physicianName: 'Dr. Sarah Johnson'
+            },
+            { 
+                date: '2025-04-18', 
+                patientName: 'Jane Smith', 
+                cardNumber: 'ZHSF-789012',
+                authorizationNumber: 'AUTH-20250418-5678',
+                referralNumber: 'REF-002', 
+                fromFacility: 'Regional Clinic', 
+                toFacility: 'General Hospital', 
+                physicianName: 'Dr. Michael Brown'
+            },
+            { 
+                date: '2025-04-15', 
+                patientName: 'Robert Johnson', 
+                cardNumber: 'UHI-345678',
+                authorizationNumber: 'AUTH-20250415-9012',
+                referralNumber: 'REF-003', 
+                fromFacility: 'Wellness Center', 
+                toFacility: 'Specialist Hospital', 
+                physicianName: 'Dr. Emily Davis'
+            },
+            { 
+                date: '2025-04-10', 
+                patientName: 'Mary Williams', 
+                cardNumber: 'NHIF-901234',
+                authorizationNumber: 'AUTH-20250410-3456',
+                referralNumber: 'REF-004', 
+                fromFacility: 'Community Health', 
+                toFacility: 'University Hospital', 
+                physicianName: 'Dr. James Wilson'
+            }
+        ];
+        
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) {
+                    document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+                }
+                
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) {
+                    document.getElementById('header-container').innerHTML = await headerResponse.text();
+                }
+                
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) {
+                    document.getElementById('footer-container').innerHTML = await footerResponse.text();
+                }
+                
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) {
+                    document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+                }
+                
+                initPageComponents();
+                
+                // Load referred patients on page load
+                displayReferredPatients(referredPatients);
+                
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+        
+        function initPageComponents() {
+            initUserDropdown();
+            
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+            
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+            
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('hidden');
+                });
+            }
+        }
+        
+        function displayReferredPatients(patients) {
+            const tbody = document.getElementById('referredBody');
+            if (patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No referred patients found</td></tr>';
+            } else {
+                tbody.innerHTML = patients.map(p => `
+                    <tr>
+                        <td>${p.date}</td>
+                        <td>${p.patientName}</td>
+                        <td>${p.cardNumber || 'N/A'}</td>
+                        <td>${p.authorizationNumber || 'N/A'}</td>
+                        <td>${p.referralNumber}</td>
+                        <td>${p.fromFacility}</td>
+                        <td>${p.toFacility}</td>
+                        <td>${p.physicianName || 'N/A'}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        function searchReferredPatients() {
+            const cardNumber = document.getElementById('refPatientSearch').value.trim();
+            const startDate = document.getElementById('refStartDate').value;
+            const endDate = document.getElementById('refEndDate').value;
+            
+            const tbody = document.getElementById('referredBody');
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+            
+            setTimeout(() => {
+                let filteredPatients = [...referredPatients];
+                
+                if (cardNumber) {
+                    filteredPatients = filteredPatients.filter(p => 
+                        p.patientName?.toLowerCase().includes(cardNumber.toLowerCase()) ||
+                        p.cardNumber?.toLowerCase().includes(cardNumber.toLowerCase())
+                    );
+                }
+                
+                if (startDate) {
+                    filteredPatients = filteredPatients.filter(p => p.date >= startDate);
+                }
+                if (endDate) {
+                    filteredPatients = filteredPatients.filter(p => p.date <= endDate);
+                }
+                
+                if (filteredPatients.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No referred patients found matching your criteria</td></tr>';
+                } else {
+                    displayReferredPatients(filteredPatients);
+                }
+                
+                showNotification(`Found ${filteredPatients.length} referred patient(s)`, 'success');
+            }, 300);
+        }
+        
+        function resetReferredFilters() {
+            document.getElementById('refPatientSearch').value = '';
+            document.getElementById('refStartDate').value = '';
+            document.getElementById('refEndDate').value = '';
+            displayReferredPatients(referredPatients);
+            showNotification('Filters reset', 'info');
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadComponents);
+        
+        window.searchReferredPatients = searchReferredPatients;
+        window.resetReferredFilters = resetReferredFilters;
+    </script>
+</body>
+</html>

@@ -8,7 +8,7 @@ hospital-portal/
 ├── pages/
 │   ├── dashboard.html
 │   ├── outpatient/
-│   │   ├── member-authorization.html
+│   │   ├── member-verification.html
 │   │   └── service-approvals.html
 │   ├── inpatient/
 │   │   ├── admission.html

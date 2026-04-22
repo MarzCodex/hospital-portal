@@ -1114,7 +1114,7 @@
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
             <ul class="submenu">
-                <li><a href="#" onclick="showMemberVerification(); closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Authorization</a></li>
+                <li><a href="#" onclick="showMemberVerification(); closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
                 <li><a href="#" onclick="showNotification('Service Approvals feature coming soon', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-check-circle"></i>Service Approvals</a></li>
             </ul>
         </li>
@@ -1801,7 +1801,7 @@ function closeServicesModal() {
 function displayServicesTable(services) {
     const tbody = document.getElementById('servicesTableBody');
     if (services.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="no-services">No eligible services found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="no-services">Service Not Found</td></tr>';
     } else {
         tbody.innerHTML = services.map(s => `
             <tr>
@@ -1881,7 +1881,7 @@ function authorizeMember() {
     });
     
     sessionStorage.setItem('authorizedMembers', JSON.stringify(authorizedMembers));
-    showNotification(`Member authorized successfully! Authorization Number: ${authNumber}`, 'success');
+    showNotification(`Member authorized successfully!`, 'success');
     
     if(document.getElementById('authorizedSection').style.display === 'block') showAuthorizedPatients();
 }

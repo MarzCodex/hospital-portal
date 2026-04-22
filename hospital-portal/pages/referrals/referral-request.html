@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Referral Request</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        .page-container {
+            padding: 20px;
+            margin: 20px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .coming-soon {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .coming-soon i {
+            font-size: 64px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .coming-soon h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .coming-soon p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .referral-form {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+    
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+        
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="page-container">
+                <div class="referral-form">
+                    <h3 class="page-header"><i class="fas fa-exchange-alt"></i> Referral Request</h3>
+                    <p style="color: var(--gray); margin-bottom: 20px;">Fill in the details below to request a patient referral.</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Patient Name <span class="required">*</span></label>
+                            <input type="text" placeholder="Enter patient full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Member ID / Card Number <span class="required">*</span></label>
+                            <input type="text" placeholder="Enter member ID or card number">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Sponsor <span class="required">*</span></label>
+                            <select>
+                                <option value="">Select Sponsor</option>
+                                <option value="NHIF">NHIF</option>
+                                <option value="ZHSF">ZHSF</option>
+                                <option value="UHI">UHI</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Referring Facility <span class="required">*</span></label>
+                            <input type="text" placeholder="Enter referring facility name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Referred To <span class="required">*</span></label>
+                            <input type="text" placeholder="Enter receiving facility name">
+                        </div>
+                        <div class="form-group">
+                            <label>Referral Date <span class="required">*</span></label>
+                            <input type="date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Reason for Referral <span class="required">*</span></label>
+                        <textarea placeholder="Provide detailed reason for referral..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Diagnosis / Condition</label>
+                        <textarea placeholder="Enter diagnosis or medical condition..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Attending Physician <span class="required">*</span></label>
+                        <input type="text" placeholder="Enter physician name">
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button class="search-btn" onclick="submitReferralRequest()">
+                            <i class="fas fa-paper-plane"></i> Submit Referral
+                        </button>
+                        <button class="search-btn" onclick="window.location.href='../../index.html'" style="background: #6c757d;">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+    
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+    
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) {
+                    document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+                }
+                
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) {
+                    document.getElementById('header-container').innerHTML = await headerResponse.text();
+                }
+                
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) {
+                    document.getElementById('footer-container').innerHTML = await footerResponse.text();
+                }
+                
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) {
+                    document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+                }
+                
+                initPageComponents();
+                
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+        
+        function initPageComponents() {
+            initUserDropdown();
+            
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+            
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+            
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('hidden');
+                });
+            }
+        }
+        
+        function submitReferralRequest() {
+            showNotification('Referral request submitted successfully!', 'success');
+            setTimeout(() => {
+                window.location.href = '../../index.html';
+            }, 2000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadComponents);
+        
+        window.submitReferralRequest = submitReferralRequest;
+    </script>
+</body>
+</html>

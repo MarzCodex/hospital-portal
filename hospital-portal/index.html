@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Service Portal | Member Management</title>
+    <title>Hospital Service Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     :root {
@@ -405,7 +405,7 @@
     </div>
     <div class="dashboard">
     <div class="cards-grid">
-        <div class="card" onclick="loadPage('member-authorization')">
+        <div class="card" onclick="window.location.href='hospital-portal/pages/outpatient/member-verification.html'">
             <div class="card-icon"><i class="fas fa-user-md"></i></div>
             <h3>Member Verification</h3>
             <p>Check Patient's Elegibility for treatment</p>
@@ -497,28 +497,17 @@
     }
 
     // Load page function (for card clicks)
-function loadPage(pageName) {
-    currentPage = pageName;
-    
-    // Map card clicks to actual HTML files
-    const pageMap = {
-        'member-authorization': 'pages/outpatient/member-authorization.html',
-        'patient-admission': 'pages/inpatient/admission.html',
-        'nhif-referral': 'pages/Patient referrals/nhif.html',
-        'service-approvals': 'pages/outpatient/service-approvals.html',
-        'claims-management': 'pages/claims management/bill Summary.html',
-        'service-guide': 'pages/Service Guide/Services Price List.html',
-        'user-management': 'pages/User Management/user-management.html',
-        'setupg': 'pages/setup & Config/System-settings.html'
-    };
-    
-    const url = pageMap[pageName];
-    if (url) {
-        window.location.href = url;
-    } else {
-        showNotification(`Page ${pageName} not found`, 'error');
+    function loadPage(pageName) {
+        currentPage = pageName;
+        showNotification(`Loading ${pageName}...`, 'info');
+        
+        // You can redirect or load content here
+        // For now, just show which module was clicked
+        console.log('Loading page:', pageName);
+        
+        // Example: Redirect to actual page if you have separate HTML files
+        // window.location.href = `${pageName}.html`;
     }
-}
 
     // Show dashboard function
     function showDashboard() {
