@@ -307,11 +307,11 @@
     /* Member Verification */
     .verification-section {
         padding: 10px;
-        background: #e5e5e5;
-        margin: 10px;color:#000000;
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         border: 1px solid #adadad;
+        background: #e5e5e5;
+        margin: 10px;color:#000000;
 
     }
 
@@ -329,7 +329,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 15px;
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .form-group {
@@ -350,6 +350,7 @@
     }
 
     .form-group input, .form-group select {
+        background-color: #ffff;
         width: 20em;
         padding: 6px;
         border: 1px solid var(--border);
@@ -458,10 +459,12 @@
     /* Patient Lists */
     .patient-list {
         padding: 25px;
-        background: var(--white);
         margin: 20px;
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid #adadad;
+        background: #e5e5e5;
+        margin: 10px;color:#000000;
         display: none;
     }
 
@@ -470,23 +473,143 @@
         color: var(--secondary);
     }
 
-    .patient-table {
+    .patient-table1 {
         width: 100%;
         border-collapse: collapse;
+        border-left: 1px solid #b7b7b7;
         overflow-x: auto;
         display: block;
     }
 
-    .patient-table th, .patient-table td {
+    .patient-table1 th, .patient-table1 td {
         padding: 5px;
         text-align: left;
         border-bottom: 1px solid var(--border);
     }
 
-    .patient-table th {
+    .patient-table1 th {
         background: var(--light);
         font-weight: 600;
     }
+    .patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    color: black;
+    border-radius: 0px;
+    border:1px solid #b0aeae;
+    overflow: hidden; /* Clips contents to the border-radius */
+}
+
+.patient-table th, 
+.patient-table td {
+    padding: 5px 10px; /* Increased from 5px for a breathable, modern look */
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.patient-table th {
+    background: var(--light);
+    color: #000000; /* Subtle color for header text */
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.patient-table tr:nth-child(odd) {
+    background-color: #eaeaea;
+}
+
+/* Subtle hover effect for better data tracking */
+.patient-table tbody tr:hover {
+    background-color: #d1e0f7;
+    transition: background-color 0.2s ease;
+}
+/* Patient Last Visits Section */
+#lastVisitsSection .filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f0f2f5;
+    border: 1px solid #adadad;
+    border-radius: 8px;
+}
+
+#lastVisitsSection .filters-bar input,
+#lastVisitsSection .filters-bar select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+}
+
+#lastVisitsSection .filters-bar input[type="text"] {
+    width: 200px;
+}
+
+#lastVisitsSection .filters-bar input[type="date"] {
+    width: 150px;
+}
+
+#lastVisitsSection .filters-bar .search-btn {
+    margin-top: 0;
+    padding: 8px 16px;
+}
+
+/* Patient Last Visits Table - Serial Number Column */
+#lastVisitsSection .patient-table th:first-child,
+#lastVisitsSection .patient-table td:first-child {
+    width: 60px;
+    text-align: center;
+}
+
+/* Empty state styling for lastVisitsSection */
+#lastVisitsSection .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray);
+    font-style: italic;
+}
+
+/* Ensure table within lastVisitsSection is visible */
+#lastVisitsSection .patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    color: black;
+    border: 1px solid #b0aeae;
+    overflow: hidden;
+}
+
+#lastVisitsSection .patient-table th,
+#lastVisitsSection .patient-table td {
+    padding: 5px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+#lastVisitsSection .patient-table th {
+    background: var(--light);
+    color: #000000;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#lastVisitsSection .patient-table tr:nth-child(odd) {
+    background-color: #eaeaea;
+}
+
+#lastVisitsSection .patient-table tbody tr:hover {
+    background-color: #d1e0f7;
+    transition: background-color 0.2s ease;
+}
 
     /* Footer */
     footer {
@@ -867,7 +990,7 @@
                 </div>
                 <button class="search-btn" onclick="searchBeneficiaryServices()"><i class="fas fa-eye"></i> View Included services</button>
                 <!-- Small table showing searched member's previous visits: limit 3 -->
-                <table class="patient-table" id="previousVisitsTable" style="margin-top: 5px;">
+                <table class="patient-table1" id="previousVisitsTable" style="margin-top: 5px;">
                     <thead>
                         <tr style="border-bottom:1px solid var(--border);"><th colspan="2"><i class="fas fa-user-circle"></i> Patient's Last Three (3) Visits</th></tr>
                     </thead>
@@ -878,28 +1001,84 @@
             </div>
         </div>
     </div>
-
-    <!-- Patient Last Visits Section -->
-    <div id="lastVisitsSection" class="patient-list">
-        <h3><i class="fas fa-history"></i> Patient Last Visits</h3>
-        <table class="patient-table">
-            <thead><tr><th>Date</th><th>Visit Type</th><th>Sponsor</th><th>Diagnosis</th><th>Doctor</th></tr></thead>
-            <tbody id="lastVisitsBody"><tr><td colspan="5" style="text-align: center;">Select a patient after verification to see visits</td></tr></tbody>
-        </table>
+<!-- Patient Last Visits Section -->
+<div id="lastVisitsSection" class="patient-list">
+    <h3><i class="fas fa-history"></i> Patient Last Visits</h3>
+    
+    <!-- Filter Bar -->
+    <div class="filters-bar">
+        <input type="text" id="patientSearch" placeholder="Card Number / Member ID">
+        <label>From:</label>
+        <input type="date" id="startDate">
+        <label>To:</label>
+        <input type="date" id="endDate">
+        <button class="search-btn" onclick="searchPatientLastVisits()">
+            <i class="fas fa-search"></i> Search
+        </button>
+        <button class="search-btn" onclick="resetPatientFilters()" style="background: #6c757d;">
+            <i class="fas fa-undo-alt"></i> Reset
+        </button>
     </div>
+    
+    <table class="patient-table">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Facility Visited</th>
+                <th>Visit Type</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="lastVisitsBody">
+            <tr><td colspan="4" class="empty-state">Enter card number and date range to search visits</td></tr>
+        </tbody>
+    </table>
+</div>
+
 
     <!-- Authorized Patients Section -->
     <div id="authorizedSection" class="patient-list">
-        <h3><i class="fa-solid fa-lock-open"></i> Authorized Patients Today</h3>
+        <h3><i class="fa-solid fa-lock-open"></i> Authorized Patients' List</h3>
+        <!-- Filter Bar -->
+    <div class="filters-bar">
+        <input type="text" id="patientSearch" placeholder="Card Number / Member ID">
+        <label>From:</label>
+        <input type="date" id="startDate">
+        <label>To:</label>
+        <input type="date" id="endDate">
+        <button class="search-btn" onclick="searchAuthorizedPatients()">
+            <i class="fas fa-search"></i> Search
+        </button>
+        <button class="search-btn" onclick="resetPatientFilters()" style="background: #6c757d;">
+            <i class="fas fa-undo-alt"></i> Reset
+        </button>
+    </div>
+
         <table class="patient-table">
-            <thead><tr><th>Time</th><th>Member Name</th><th>Member ID</th><th>Sponsor</th><th>Visit Type</th><th>Status</th></tr></thead>
-            <tbody id="authorizedBody"><tr><td colspan="6" style="text-align: center;">No authorized patients today</td></tr></tbody>
+            <thead><tr>
+                <th>Time</th><th>Member Name</th><th>Gender</th><th>Member ID</th><th>Authorization No.</th><th>Visit Type</th><th>Authorized By</th>
+            </tr></thead>
+            <tbody id="authorizedBody"><tr><td colspan="6" style="text-align: center;">Enter card number and/or date range to search visits</td></tr></tbody>
         </table>
     </div>
 
     <!-- Referred Patients Section -->
     <div id="referredSection" class="patient-list">
         <h3><i class="fas fa-exchange-alt"></i> Referred Patients</h3>
+        <!-- Filter Bar -->
+    <div class="filters-bar">
+        <input type="text" id="patientSearch" placeholder="Card Number / Member ID">
+        <label>From:</label>
+        <input type="date" id="startDate">
+        <label>To:</label>
+        <input type="date" id="endDate">
+        <button class="search-btn" onclick="searchReferredPatients()">
+            <i class="fas fa-search"></i> Search
+        </button>
+        <button class="search-btn" onclick="resetPatientFilters()" style="background: #6c757d;">
+            <i class="fas fa-undo-alt"></i> Reset
+        </button>
+    </div>
         <table class="patient-table">
             <thead><tr><th>Date</th><th>Patient Name</th><th>From Facility</th><th>To Facility</th><th>Referral Number</th><th>Status</th></tr></thead>
             <tbody id="referredBody"><tr><td colspan="6" style="text-align: center;">No referred patients</td></tr></tbody>
@@ -950,6 +1129,12 @@ async function withLoadingState(btn, callback) {
         btn.disabled = false;
     }
 }
+// Get currently logged-in user from the top bar
+function getCurrentUser() {
+    const userNameSpan = document.getElementById('userName');
+    return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
+}
+
 // Change Password Functions
 function openChangePassword() {
     const modal = document.getElementById('passwordModal');
@@ -1106,7 +1291,6 @@ async function searchMember(event) {
                     if (cardNumberDisplayEl) cardNumberDisplayEl.innerText = memberData.cardNumberDisplay;
                     if (schemeTypeEl) schemeTypeEl.innerText = memberData.schemeType;
                     if (memberStatusEl) memberStatusEl.innerHTML = '<span style="color:#27ae60;"><i class="fas fa-check-circle"></i> Active</span>';
-                    if (authorizationNumberEl) authorizationNumberEl.innerText = 'AUTH-' + Math.floor(Math.random() * 10000);
                     if (latestAuthEl) latestAuthEl.innerText = new Date().toLocaleDateString();
                     
                     const previousVisitsBody = document.getElementById('previousVisitsBody');
@@ -1142,16 +1326,82 @@ async function searchMember(event) {
         });
     });
 }
-
 function showPatientLastVisits() {
+    // Hide other sections, show this one
     document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
     document.getElementById('lastVisitsSection').style.display = 'block';
+    
+    // Update active nav state
     ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
     document.getElementById('navLastVisits')?.classList.add('active');
-    if(!currentVerifiedMember) document.getElementById('lastVisitsBody').innerHTML = '<tr><td colspan="5">Please verify a member first</td></tr>';
-    else document.getElementById('lastVisitsBody').innerHTML = `
-        <tr><td>2025-02-10</td><td>Normal Visit</td><td>${currentVerifiedMember.sponsor}</td><td>Routine Checkup</td><td>Dr. James</td></tr>
-        <tr><td>2025-01-28</td><td>Follow-Up</td><td>${currentVerifiedMember.sponsor}</td><td>Follow-up</td><td>Dr. Linda</td></tr>`;
+    
+    // If a member is verified, pre-fill the search box with their card number
+    if(currentVerifiedMember) {
+        const cardNumber = currentVerifiedMember.cardNumberDisplay || currentVerifiedMember.memberId;
+        document.getElementById('patientSearch').value = cardNumber;
+        // Optionally auto-search or just show a message
+        showNotification(`Member verified: ${currentVerifiedMember.name}. Click Search to view visits.`, 'info');
+    } else {
+        // Clear search box and show empty state
+        document.getElementById('patientSearch').value = '';
+        const tbody = document.getElementById('lastVisitsBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Enter card number and date range to search visits</td></tr>';
+    }
+}
+function searchPatientLastVisits() {
+    const cardNumber = document.getElementById('patientSearch').value.trim();
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    
+    if (!cardNumber) {
+        showNotification('Please enter a Card Number or Member ID', 'error');
+        return;
+    }
+    
+    const tbody = document.getElementById('lastVisitsBody');
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+    
+    setTimeout(() => {
+        const sampleVisits = [
+            { sn: 1, facility: 'City Medical Center', visitType: 'Normal Visit', date: '2025-04-15' },
+            { sn: 2, facility: 'Regional Hospital', visitType: 'Emergency Visit', date: '2025-03-28' },
+            { sn: 3, facility: 'Wellness Clinic', visitType: 'Follow-Up', date: '2025-02-10' },
+            { sn: 4, facility: 'Specialist Center', visitType: 'Referral Visit', date: '2025-01-05' },
+        ];
+        
+        let filteredVisits = sampleVisits;
+        if (startDate) {
+            filteredVisits = filteredVisits.filter(v => v.date >= startDate);
+        }
+        if (endDate) {
+            filteredVisits = filteredVisits.filter(v => v.date <= endDate);
+        }
+        
+        if (filteredVisits.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No visits found for the given criteria</td></tr>';
+        } else {
+            tbody.innerHTML = filteredVisits.map(visit => `
+                <tr>
+                    <td>${visit.sn}</td>
+                    <td>${visit.facility}</td>
+                    <td>${visit.visitType}</td>
+                    <td>${visit.date}</td>
+                </tr>
+            `).join('');
+        }
+        
+        showNotification(`Found ${filteredVisits.length} visit(s) for card: ${cardNumber}`, 'success');
+    }, 500);
+}
+// Reset Patient Filters
+function resetPatientFilters() {
+    document.getElementById('patientSearch').value = '';
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+    
+    const tbody = document.getElementById('lastVisitsBody');
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Enter card number and date range to search visits</td></tr>';
+    showNotification('Filters reset', 'info');
 }
 
 function showAuthorizedPatients() {
@@ -1159,10 +1409,23 @@ function showAuthorizedPatients() {
     document.getElementById('authorizedSection').style.display = 'block';
     ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
     document.getElementById('navAuthorized')?.classList.add('active');
+    
     const tbody = document.getElementById('authorizedBody');
-    if(authorizedMembers.length === 0) tbody.innerHTML = '<tr><td colspan="6">No authorized patients today</td></tr>';
-    else tbody.innerHTML = authorizedMembers.map(m => `
-        <tr><td>${m.time}</td><td>${m.name}</td><td>${m.id}</td><td>${m.sponsor}</td><td>${m.visitType}</td><td><span style="color:#27ae60;"><i class="fa-solid fa-check-circle"></i> Authorized</span></td></tr>`).join('');
+    if(authorizedMembers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No authorized patients today</td></tr>';
+    } else {
+        tbody.innerHTML = authorizedMembers.map(m => `
+            <tr>
+                <td>${m.time}</td>
+                <td>${m.name}</td>
+                <td>${m.gender || 'Male'}</td>
+                <td>${m.id}</td>
+                <td>${m.authNumber || 'N/A'}</td>
+                <td>${m.visitType}</td>
+                <td>${m.authorizedBy || getCurrentUser()}</td>
+            </tr>
+        `).join('');
+    }
 }
 
 function showReferredPatientsList() {
@@ -1202,19 +1465,45 @@ function searchBeneficiaryServices() {
         }, 5000);
     }
 }
-
 function authorizeMember() {
     if(!currentVerifiedMember) return showNotification('No member loaded', 'error');
+    
     const member = currentVerifiedMember;
     const visitType = document.getElementById('visitType').value;
+    const authorizedBy = getCurrentUser();
+    
+    // Generate authorization number ONLY when Authorize button is clicked
+    const authNumber = 'AUTH-' + new Date().getFullYear() + 
+                       ('0' + (new Date().getMonth() + 1)).slice(-2) + 
+                       ('0' + new Date().getDate()).slice(-2) + '-' +
+                       Math.floor(Math.random() * 10000);
+    
+    // Update the displayed authorization number in the member info card
+    const authorizationNumberEl = document.getElementById('authorizationNumber');
+    if (authorizationNumberEl) authorizationNumberEl.innerText = authNumber;
+    
+    // Update the status display
     document.getElementById('authorizationStatus').innerHTML = '<i class="fa-solid fa-lock-open"></i> <strong>AUTHORIZED</strong>';
     document.getElementById('authorizationStatus').className = 'authorization-status authorized';
-    authorizedMembers.unshift({ time: new Date().toLocaleTimeString(), name: member.name, id: member.memberId, sponsor: member.sponsor, visitType: visitType, status: 'Authorized' });
+    
+    // Store all required data
+    authorizedMembers.unshift({ 
+        time: new Date().toLocaleTimeString(), 
+        name: member.name,
+        gender: member.gender || 'Male',
+        id: member.memberId,
+        authNumber: authNumber,
+        sponsor: member.sponsor,
+        visitType: visitType,
+        authorizedBy: authorizedBy,
+        status: 'Authorized' 
+    });
+    
     sessionStorage.setItem('authorizedMembers', JSON.stringify(authorizedMembers));
-    showNotification('Member authorized successfully', 'success');
+    showNotification(`Member authorized successfully! Authorization Number: ${authNumber}`, 'success');
+    
     if(document.getElementById('authorizedSection').style.display === 'block') showAuthorizedPatients();
 }
-
 // User dropdown
 document.getElementById('userInfo').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('userDropdown').classList.toggle('active'); });
 document.addEventListener('click', () => { document.getElementById('userDropdown')?.classList.remove('active'); });
