@@ -770,7 +770,11 @@ footer {
     cursor: default;
     width: 100%;
 }
-
+#footer-container {
+  position: relative;
+  margin-top: 39%;
+  width: 100%;
+}
 .footer-left {
     display: flex;
     align-items: center;
