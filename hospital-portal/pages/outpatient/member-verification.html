@@ -1110,59 +1110,58 @@
         <h3>Hospital Portal</h3>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="olddashboard.html" onclick="showDashboard(); closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a  href="../../index.html" onclick="closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
             <ul class="submenu">
-                <li><a href="#" onclick="showMemberVerification(); closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
-                <li><a href="#" onclick="showNotification('Service Approvals feature coming soon', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-check-circle"></i>Service Approvals</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
+                <li><a href="service-approvals.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-check-circle"></i>Service Approvals</a></li>
             </ul>
         </li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-procedures"></i> Inpatient Services</a>
             <ul class="submenu">
-                <li><a href="#" onclick="showNotification('Patient Admission', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
-                <li><a href="#" onclick="showNotification('Discharge/Transfer', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
-                <li><a href="#" onclick="showNotification('List of Admitted Patients', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
+                <li><a href="admission.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
+                <li><a href="discharge.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
+                <li><a href="admitted-list.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
             </ul>
         </li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-exchange-alt"></i> Patient Referrals</a>
             <ul class="submenu">
-                <li><a href="#" onclick="showNotification('NHIF Referral', 'info'); closeSidebarOnMobile()">NHIF Referral</a></li>
-                <li><a href="#" onclick="showNotification('ZHSF Referral', 'info'); closeSidebarOnMobile()">ZHSF Referral</a></li>
-                <li><a href="#" onclick="showNotification('UHI Referral', 'info'); closeSidebarOnMobile()">UHI Referral</a></li>
-                <li><a href="#" onclick="showReferredPatientsList(); closeSidebarOnMobile()">Referred Patients List</a></li>
+                <li><a href="referral-request.html" onclick="closeSidebarOnMobile()">Referral Request</a></li>
+                <li><a href="zhsf.html" onclick="closeSidebarOnMobile()">ZHSF Referral</a></li>
+                <li><a href="referred-list.html" onclick="closeSidebarOnMobile()">Referred Patients</a></li>
             </ul>
         </li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-file-invoice-dollar"></i> Claims Management</a>
             <ul class="submenu">
-                <li><a href="#" onclick="showNotification('Bill Summary', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
-                <li><a href="#" onclick="showNotification('Total Claims Submitted', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
-                <li><a href="#" onclick="showNotification('Previous Claims', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
-                <li><a href="#" onclick="showNotification('Claim Reconciliation', 'info'); closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
             </ul>
         </li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
             <ul class="submenu">
-                <li><a href="#" onclick="showNotification('Services Price List', 'info'); closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
-                <li><a href="#" onclick="showNotification('Visit Types Guide', 'info'); closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
             </ul>
         </li>
-        <li><a href="#" onclick="showNotification('User Management', 'info'); closeSidebarOnMobile()"><i class="fas fa-users"></i> User Management</a></li>
+        <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fas fa-users"></i> User Management</a></li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)">
                 <i class="fas fa-gear"></i> Setup & Configurations
             </a>
             <ul class="submenu">
-                <li><a href="#" onclick="showNotification('System Configurations'); closeSidebarOnMobile()">
+                <li><a href="#" onclick="closeSidebarOnMobile()">
                     <i class="fas fa-cogs"></i> System Settings</a>
                 </li>
-                <li><a href="#" onclick="showNotification('Buttons Configurations', 'info'); closeSidebarOnMobile()"><i class="fas fa-mouse-pointer"></i> Buttons Configurations</a></li>
-                <li><a href="#" onclick="showNotification('Other Configurations', 'info'); closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
-                <li><a href="#" onclick="showNotification('System Guide', 'info'); closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fas fa-mouse-pointer"></i> Buttons Configurations</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
+                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
             </ul>
         </li>
     </ul>
