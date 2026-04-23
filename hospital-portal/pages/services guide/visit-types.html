@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Visit Types Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        .page-container {
+            padding: 20px;
+            margin: 20px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .coming-soon {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .coming-soon i {
+            font-size: 64px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .coming-soon h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .coming-soon p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    
+    <div class="main-content" id="mainContent">
+        <div id="header-container"></div>
+        
+        <div id="page-content">
+            <div class="page-container coming-soon">
+                <i class="fas fa-calendar-alt"></i>
+                <h2>Visit Types Guide</h2>
+                <p>This feature is currently under development and will be available soon.</p>
+                <button class="search-btn" onclick="window.location.href='../../index.html'">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+        </div>
+        
+        <div id="footer-container"></div>
+    </div>
+    
+    <div id="modals-container"></div>
+    
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+                
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+                
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+                
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+                
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+            }
+        }
+        
+        function initPageComponents() {
+            initUserDropdown();
+            
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+            
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+            
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('hidden');
+                });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+</body>
+</html>
