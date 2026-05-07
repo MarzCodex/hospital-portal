@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitita - NHIF Price Package Translator</title>
+    <title>Hospital Services</title>
     <style>
         :root {
             --border: #ddd;
@@ -763,17 +763,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>NHIF Price Package Translator.</h1>
-        <div class="subtitle"><i>Services Shown Are As Per NHIF Pricing Scheme</i></div>
+        <h1>Price List Translator.</h1>
+        <div class="subtitle"><i>Services Covered By ALL Insurances</i></div>
         
         <div class="upload-section">
-            <div class="upload-area" id="upload-area">
-                <div class="upload-icon">📁</div>
-                <div class="upload-text">Click or Drag to upload File</div>
-                <div class="upload-subtext">Supported formats: .txt files with JSON data, .json files</div>
-                <button id="upload-button">Choose File</button>
-                <input type="file" id="file-input" accept=".txt,.json" style="display: none;">
-            </div>
             <div class="file-info" id="file-info">
                 <div class="file-info-item"><strong>📄 File:</strong> <span id="file-name"></span><b> |</b></div>
                 <div class="file-info-item"><strong>📊 Size:</strong> <span id="file-size"></span><b> |</b></div>
@@ -833,6 +826,8 @@
                 <thead id="table-header"></thead>
                 <tbody id="table-body">
                     <!--main table display-->
+                    <!--"Read/fetch data from file path: ../../data/NHIF_ZHSF price list.txt"-->
+
                 </tbody>
             </table>
            <div id="more-details">
@@ -852,7 +847,7 @@
         <div class="pagination" id="pagination"></div>
         <div class="notification" id="notification"></div>
         <div class="footer">
-            <p>Translator v4.0 | &copy; Powered by Phill.</p>
+            <p>Hospital Service Portal v4.0 | &copy; Powered by Phill.</p>
             <p><i>Note: All details are displayed as-is from the uploaded data.</i></p>
         </div>
 <script>
@@ -887,7 +882,7 @@
             1011: "Tarangire Benefit Scheme",
             1012: "Mikumi Benefit Scheme",
             1013: "Tanzanite Benefit Scheme",
-			1014: "Universal Health Insurance Scheme (UHI)",
+			1014: "Essential Benefit Scheme (UHI)",
             1099: "Tourist Benefit Scheme (CHAN)",
             2001: "Bunge Health Insurance Scheme",
             3001: "BoT Health Insurance Scheme",
@@ -1026,6 +1021,8 @@
         }
 
         // File processing
+        //<!--"Read/fetch data from file path: ../../data/NHIF_ZHSF price list.txt"-->
+
         async function parseUploadedFile(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();

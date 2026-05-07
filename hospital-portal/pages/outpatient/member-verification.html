@@ -275,7 +275,7 @@
     /* Secondary Navigation Bar */
     .secondary-nav {
         background: white;
-        padding: 12px 25px;
+        padding: 4px 10px;
         display: flex;
         gap: 20px;
         border-bottom: 1px solid var(--border);
@@ -533,7 +533,7 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 10px;
     background: #f0f2f5;
     border: 1px solid #adadad;
     border-radius: 8px;
@@ -541,7 +541,7 @@
 
 #lastVisitsSection .filters-bar input,
 #lastVisitsSection .filters-bar select {
-    padding: 8px 12px;
+    padding: 5px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
     font-size: 14px;
@@ -558,7 +558,7 @@
 
 #lastVisitsSection .filters-bar .search-btn {
     margin-top: 0;
-    padding: 8px 16px;
+    padding: 5px 10px;
 }
 
 /* Patient Last Visits Table - Serial Number Column */
@@ -619,7 +619,7 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 10px;
     background: #f0f2f5;
     border: 1px solid #adadad;
     border-radius: 8px;
@@ -627,7 +627,7 @@
 
 #authorizedSection .filters-bar input,
 #authorizedSection .filters-bar select {
-    padding: 8px 12px;
+    padding: 5px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
     font-size: 14px;
@@ -644,7 +644,7 @@
 
 #authorizedSection .filters-bar .search-btn {
     margin-top: 0;
-    padding: 8px 16px;
+    padding: 5px 10px;
 }
 
 /* Authorized Patients Table */
@@ -697,7 +697,7 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 10px;
     background: #f0f2f5;
     border: 1px solid #adadad;
     border-radius: 8px;
@@ -705,7 +705,7 @@
 
 #referredSection .filters-bar input,
 #referredSection .filters-bar select {
-    padding: 8px 12px;
+    padding: 5px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
     font-size: 14px;
@@ -722,7 +722,7 @@
 
 #referredSection .filters-bar .search-btn {
     margin-top: 0;
-    padding: 8px 16px;
+    padding: 5px 10px;
 }
 
 /* Referred Patients Table */
@@ -1254,6 +1254,8 @@
                     <div class="member-detail-item"><strong>Authorization Number</strong><span id="authorizationNumber"></span></div>
                 </div>
                 <button class="search-btn" onclick="searchBeneficiaryServices()"><i class="fas fa-eye"></i> View Included services</button>
+                <!--"Read/fetch data from file path: ../../data/NHIF_ZHSF price list.txt" based on data from '<div class="member-detail-item"><strong>Benefit Scheme</strong><span id="schemeType"></span></div>' as default filter-->
+
                 <!-- Small table showing searched member's previous visits: limit 3 -->
                 <table class="patient-table1" id="previousVisitsTable" style="margin-top: 5px;">
                     <thead>

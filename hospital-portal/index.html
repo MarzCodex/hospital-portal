@@ -152,14 +152,14 @@
     .cards-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        margin-top: 20px;
+        gap: 15px;
+        margin-top: 0px;
     }
 
     .card {
         background: var(--white);
         border-radius: 12px;
-        padding: 25px;
+        padding: 15px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         transition: all 0.3s;
         cursor: pointer;
@@ -169,6 +169,8 @@
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        opacity: 90%;
+        background: #f1f9ff;
     }
 
     .card-icon {
@@ -410,22 +412,22 @@
             <h3>Member Verification</h3>
             <p>Check Patient's Elegibility for treatment</p>
         </div>
-        <div class="card" onclick="loadPage('patient-admission')">
+        <div class="card" onclick="window.location.href='pages/inpatient/admission.html'">
             <div class="card-icon"><i class="fas fa-procedures"></i></div>
             <h3>Inpatient Services</h3>
             <p>Manage patient admissions and discharges</p>
         </div>
-        <div class="card" onclick="loadPage('nhif-referral')">
+        <div class="card" onclick="loadPage('referral-request')">
             <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
             <h3>Referrals Management</h3>
             <p>Handle patient referrals to other facilities</p>
         </div>
-        <div class="card" onclick="loadPage('service-approvals')">
+        <div class="card" onclick="loadPage('service-approvals.html')">
             <div class="card-icon"><i class="fas fa-check-circle"></i></div>
             <h3>Service Approvals</h3>
             <p>Approve medical services and procedures</p>
         </div>
-        <div class="card" onclick="loadPage('claims-management')">
+        <div class="card" onclick="loadPage('bill Summary.html')">
             <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
             <h3>Claims Management</h3>
             <p>Process and track insurance claims</p>
@@ -444,6 +446,11 @@
             <div class="card-icon"><i class="fas fa-cogs"></i></div>
             <h3>Setup & Configurations</h3>
             <p>System settings and configurations</p>
+        </div>
+        <div class="card" onclick="loadPage('Pay-Day')" style="display:none;">
+            <div class="card-icon"><i class="fas fa-money-check-alt"></i></div>
+            <h3>PayDay</h3>
+            <p>High Risk High Reward!</p>
         </div>
     </div>
 </div>
@@ -506,10 +513,8 @@
         console.log('Loading page:', pageName);
         
         // Example: Redirect to actual page if you have separate HTML files
-        // window.location.href = `${pageName}.html`;
+        //window.location.href = `${pageName}.html`;
     }
-
-    // Show dashboard function
     function showDashboard() {
         currentPage = 'dashboard';
         showNotification('Dashboard loaded', 'info');

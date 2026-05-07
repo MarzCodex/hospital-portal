@@ -35,7 +35,18 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
 }
-
+.top-bar {
+        background: #e7e9ec;
+        padding: 0 25px;
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+}
 /* ========================================
    SIDEBAR STYLES
    ======================================== */
@@ -288,7 +299,7 @@ body {
    ======================================== */
 .secondary-nav {
     background: white;
-    padding: 12px 25px;
+    padding: 4px 10px;
     display: flex;
     gap: 20px;
     border-bottom: 1px solid var(--border);
@@ -593,7 +604,7 @@ body {
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 10px;
     background: #f0f2f5;
     border: 1px solid #adadad;
     border-radius: 8px;
@@ -628,7 +639,7 @@ body {
 #authorizedSection .filters-bar .search-btn,
 #referredSection .filters-bar .search-btn {
     margin-top: 0;
-    padding: 8px 16px;
+    padding: 5px 10px;
 }
 
 /* Empty State */
