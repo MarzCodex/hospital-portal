@@ -295,149 +295,146 @@
     </div>
     
     <div class="notification" id="notification"></div>
-
-    <script>
-        // Hardcoded credentials for demo (in production, this should be server-side)
-        const validCredentials = {
-            username: "admin",
-            password: "admin123",
-            HsNumber: "HS001"
-        };
+<script>
+    // Demo credentials
+    const validCredentials = [
+        { username: "admin", password: "admin123", displayName: "Phillip Z.P", jobTitle: "System Administrator" },
+        { username: "HS001", password: "admin123", displayName: "Administrator", jobTitle: "System Administrator" },
+        { username: "doctor1", password: "doctor123", displayName: "Dr. Sarah Johnson", jobTitle: "Senior Physician" },
+        { username: "nurse1", password: "nurse123", displayName: "Jane Smith", jobTitle: "Head Nurse" }
+    ];
+    
+    function showNotification(message, type = 'info', duration = 3000) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
         
-        function showNotification(message, type = 'info', duration = 3000) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, duration);
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, duration);
+    }
+    
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.querySelector('.toggle-password');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleBtn.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            toggleBtn.textContent = '👁️';
+        }
+    }
+    
+    function validateForm(username, password) {
+        let isValid = true;
+        
+        document.getElementById('usernameError').style.display = 'none';
+        document.getElementById('passwordError').style.display = 'none';
+        document.getElementById('username').classList.remove('error');
+        document.getElementById('password').classList.remove('error');
+        
+        if (!username.trim()) {
+            document.getElementById('usernameError').style.display = 'block';
+            document.getElementById('username').classList.add('error');
+            isValid = false;
         }
         
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.toggle-password');
+        if (!password.trim()) {
+            document.getElementById('passwordError').style.display = 'block';
+            document.getElementById('password').classList.add('error');
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+    
+    function authenticate(username, password) {
+        return validCredentials.find(cred => 
+            (cred.username === username && cred.password === password)
+        );
+    }
+    
+    function redirectToMainApp() {
+        // ✅ FIXED: Redirect to dashboard
+        window.location.href = 'index.html';
+    }
+    
+    // Handle form submission
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        if (!validateForm(username, password)) {
+            showNotification('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        // Show loading state
+        const originalBtnText = loginBtn.innerHTML;
+        loginBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
+        loginBtn.disabled = true;
+        
+        // Simulate network delay
+        setTimeout(() => {
+            const user = authenticate(username, password);
             
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
+            if (user) {
+                showNotification(`Welcome back, ${user.displayName}! Redirecting...`, 'success');
+                
+                // ✅ FIXED: Store complete user info
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('userName', user.displayName);
+                sessionStorage.setItem('jobTitle', user.jobTitle);
+                sessionStorage.setItem('loginUsername', username);
+                
+                setTimeout(() => {
+                    redirectToMainApp();
+                }, 1500);
             } else {
-                passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
+                showNotification('Invalid username or password. Please try again.', 'error');
+                loginBtn.innerHTML = originalBtnText;
+                loginBtn.disabled = false;
+                
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
             }
-        }
-        
-        function validateForm(username, password) {
-            let isValid = true;
-            
-            // Reset error states
-            document.getElementById('usernameError').style.display = 'none';
-            document.getElementById('passwordError').style.display = 'none';
-            document.getElementById('username').classList.remove('error');
-            document.getElementById('password').classList.remove('error');
-            
-            if (!username.trim()) {
-                document.getElementById('usernameError').style.display = 'block';
-                document.getElementById('username').classList.add('error');
-                isValid = false;
-            }
-            
-            if (!password.trim()) {
-                document.getElementById('passwordError').style.display = 'block';
-                document.getElementById('password').classList.add('error');
-                isValid = false;
-            }
-            
-            return isValid;
-        }
-        
-        function authenticate(username, password) {
-            // Check against hardcoded credentials
-            if ((username === validCredentials.username && password === validCredentials.password) ||
-                (username === validCredentials.HsNumber && password === validCredentials.password)) {
-                return true;
-            }
-            return false;
-        }
-        
-        function redirectToMainApp() {
-            // Redirect to the main NHIF Price Package Translator
-            window.location.href = 'nhif-translator.html';
-        }
-        
-        // Handle form submission
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        
-        loginForm.addEventListener('submit', async function(e) {
+        }, 800);
+    });
+    
+    // Add enter key support
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
             e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Validate form
-            if (!validateForm(username, password)) {
-                showNotification('Please fill in all required fields', 'error');
-                return;
-            }
-            
-            // Show loading state
-            const originalBtnText = loginBtn.innerHTML;
-            loginBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
-            loginBtn.disabled = true;
-            
-            // Simulate network delay
-            setTimeout(() => {
-                if (authenticate(username, password)) {
-                    showNotification('Login successful! Redirecting...', 'success');
-                    
-                    // Store login state in session storage
-                    sessionStorage.setItem('isLoggedIn', 'true');
-                    sessionStorage.setItem('username', username);
-                    
-                    // Redirect after short delay
-                    setTimeout(() => {
-                        redirectToMainApp();
-                    }, 1500);
-                } else {
-                    showNotification('Invalid username or password. Please try again.', 'error');
-                    loginBtn.innerHTML = originalBtnText;
-                    loginBtn.disabled = false;
-                    
-                    // Clear password field
-                    document.getElementById('password').value = '';
-                    document.getElementById('password').focus();
-                }
-            }, 800);
-        });
-        
-        // Add enter key support
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                loginForm.dispatchEvent(new Event('submit'));
-            }
-        });
-        
-        // Check if already logged in
-        if (sessionStorage.getItem('isLoggedIn') === 'true') {
-            showNotification('Already logged in. Redirecting...', 'info');
-            setTimeout(() => {
-                redirectToMainApp();
-            }, 1000);
+            loginForm.dispatchEvent(new Event('submit'));
         }
-        
-        // Add input event listeners to clear errors on typing
-        document.getElementById('username').addEventListener('input', function() {
-            this.classList.remove('error');
-            document.getElementById('usernameError').style.display = 'none';
-        });
-        
-        document.getElementById('password').addEventListener('input', function() {
-            this.classList.remove('error');
-            document.getElementById('passwordError').style.display = 'none';
-        });
-    </script>
+    });
+    
+    // Check if already logged in
+    if (sessionStorage.getItem('isLoggedIn') === 'true') {
+        showNotification('Already logged in. Redirecting...', 'info');
+        setTimeout(() => {
+            redirectToMainApp();
+        }, 1000);
+    }
+    
+    // Add input event listeners to clear errors on typing
+    document.getElementById('username').addEventListener('input', function() {
+        this.classList.remove('error');
+        document.getElementById('usernameError').style.display = 'none';
+    });
+    
+    document.getElementById('password').addEventListener('input', function() {
+        this.classList.remove('error');
+        document.getElementById('passwordError').style.display = 'none';
+    });
+</script>
 </body>
 </html>
