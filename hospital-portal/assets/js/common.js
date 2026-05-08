@@ -119,7 +119,10 @@ function closeSidebarOnMobile() {
 }
 
 function showDashboard() { 
-    showNotification('Dashboard view', 'info'); 
+    showNotification('Redirecting to Dashboard...', 'info');
+    setTimeout(() => {
+        window.location.href = '/index.html';
+    }, 500);
 }
 
 // ========================================

@@ -964,7 +964,7 @@
 }
 
 .services-table-container {
-    padding: 20px;
+    padding: 0px 10px;
     overflow-y: auto;
     flex: 1;
 }
@@ -976,7 +976,7 @@
 
 .services-table th,
 .services-table td {
-    padding: 10px 12px;
+    padding: 5px 4px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
@@ -1146,7 +1146,7 @@
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
             <ul class="submenu">
-                <li><a href="../service guide/Kitita Translator.html" onclick="closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
+                <li><a href="../service guide/price-list.html" onclick="closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
                 <li><a href="../service guide/visit-types.html" onclick="closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
             </ul>
         </li>
@@ -1254,7 +1254,7 @@
                     <div class="member-detail-item"><strong>Authorization Number</strong><span id="authorizationNumber"></span></div>
                 </div>
                 <button class="search-btn" onclick="searchBeneficiaryServices()"><i class="fas fa-eye"></i> View Included services</button>
-                <!--"Read/fetch data from file path: ../../data/NHIF_ZHSF price list.txt" based on data from '<div class="member-detail-item"><strong>Benefit Scheme</strong><span id="schemeType"></span></div>' as default filter-->
+                <!--"The function "searchBeneficiaryServices()" should Read/fetch data from file path: ../../data/NHIF_ZHSF_price_list.json" based on data from 'Benefit Scheme' as default filter-->
 
                 <!-- Small table showing searched member's previous visits: limit 3 -->
                 <table class="patient-table1" id="previousVisitsTable" style="margin-top: 5px;">
@@ -1759,76 +1759,106 @@ function displayAuthorizedMembers(members) {
 }
 
 // Sample eligible services data (replace with actual API data)
-let eligibleServices = [
-    { code: 'MED001', name: 'Paracetamol', strength: '500mg', dosage: '1 tablet every 6 hours' },
-    { code: 'MED002', name: 'Ibuprofen', strength: '400mg', dosage: '1 tablet every 8 hours' },
-    { code: 'MED003', name: 'Amoxicillin', strength: '250mg', dosage: '1 capsule every 8 hours' },
-    { code: 'MED004', name: 'Cetirizine', strength: '10mg', dosage: '1 tablet daily' },
-    { code: 'MED005', name: 'Omeprazole', strength: '20mg', dosage: '1 capsule daily before meal' },
-    { code: 'MED006', name: 'Metformin', strength: '500mg', dosage: '1 tablet twice daily' },
-    { code: 'LAB001', name: 'Complete Blood Count', strength: 'N/A', dosage: 'As prescribed' },
-    { code: 'LAB002', name: 'Blood Glucose', strength: 'Fasting', dosage: 'As prescribed' },
-    { code: 'LAB003', name: 'Lipid Profile', strength: '12hrs fasting', dosage: 'As prescribed' },
-    { code: 'CON001', name: 'General Consultation', strength: 'N/A', dosage: 'As scheduled' },
-    { code: 'CON002', name: 'Specialist Consultation', strength: 'N/A', dosage: 'By referral only' },
-];
+// At the top of your script section, after the global state
+let eligibleServices = [];
+
+// Load services from JSON file
+async function loadServicesData() {
+    try {
+        const response = await fetch('../../data/NHIF_ZHSF_price_list.json');
+        const data = await response.json();
+        eligibleServices = data;
+        console.log(`Loaded ${eligibleServices.length} services`);
+        return true;
+    } catch (error) {
+        console.error('Failed to load services:', error);
+        // Fallback to empty array or basic defaults
+        eligibleServices = [];
+        return false;
+    }
+}
+
+// Call this when page loads
+loadServicesData();
 
 function searchBeneficiaryServices() {
-    if(!currentVerifiedMember) {
+    if (!currentVerifiedMember) {
         showNotification('No member loaded. Please search for a member first.', 'error');
         return;
     }
     
-    // Open the modal and display services
-    openServicesModal();
+    // Map scheme name to SchemeID
+    const schemeName = currentVerifiedMember.schemeType;
+    let schemeId = null;
+    
+    if (schemeName === 'Comprehensive Plan') schemeId = 1001;
+    else if (schemeName === 'Family Plan') schemeId = 1003;
+    else if (schemeName === 'Standard Plan') schemeId = 1001; // Adjust as needed
+    
+    // Filter services by SchemeID
+    const filteredServices = schemeId 
+        ? eligibleServices.filter(service => service.SchemeID === schemeId)
+        : eligibleServices;
+    
+    // Open modal with filtered services
+    openServicesModalWithData(filteredServices);
 }
 
-function openServicesModal() {
+function openServicesModalWithData(services) {
     const modal = document.getElementById('servicesModal');
     modal.classList.add('active');
     
-    // Clear previous search
     document.getElementById('servicesSearchInput').value = '';
+    displayServicesTable(services);
     
-    // Display all services initially
-    displayServicesTable(eligibleServices);
+    // Store for search/filter
+    window.currentDisplayedServices = services;
 }
 
 function closeServicesModal() {
     const modal = document.getElementById('servicesModal');
     modal.classList.remove('active');
+    window.currentDisplayedServices = null;
 }
 
 function displayServicesTable(services) {
     const tbody = document.getElementById('servicesTableBody');
-    if (services.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="no-services">Service Not Found</td></tr>';
-    } else {
-        tbody.innerHTML = services.map(s => `
-            <tr>
-                <td>${s.code}</td>
-                <td>${s.name}</td>
-                <td>${s.strength}</td>
-                <td>${s.dosage}</td>
-            </tr>
-        `).join('');
-    }
-}
-
-function filterServicesTable() {
-    const searchTerm = document.getElementById('servicesSearchInput').value.toLowerCase().trim();
-    
-    if (!searchTerm) {
-        displayServicesTable(eligibleServices);
+    if (!services || services.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="no-services">No services available for this scheme</td></tr>';
         return;
     }
     
-    const filtered = eligibleServices.filter(service => 
-        service.code.toLowerCase().includes(searchTerm) ||
-        service.name.toLowerCase().includes(searchTerm) ||
-        service.strength.toLowerCase().includes(searchTerm) ||
-        service.dosage.toLowerCase().includes(searchTerm)
-    );
+    tbody.innerHTML = services.map(s => `
+        <tr>
+            <td>${s.ItemCode || ''}</td>
+            <td>${s.ItemName || ''}</td>
+            <td>${s.Strength || 'N/A'}</td>
+            <td>${s.Dosage || 'N/A'}</td>
+        </tr>
+    `).join('');
+}
+function filterServicesTable() {
+    const searchTerm = document.getElementById('servicesSearchInput').value.toLowerCase().trim();
+    
+    // Use the currently filtered services (by scheme) or fallback to all services
+    const servicesToFilter = window.currentDisplayedServices || eligibleServices;
+    
+    if (!searchTerm) {
+        displayServicesTable(servicesToFilter);
+        return;
+    }
+    
+    const filtered = servicesToFilter.filter(service => {
+        const itemCode = (service.ItemCode ?? '').toLowerCase();
+        const itemName = (service.ItemName ?? '').toLowerCase();
+        const strength = (service.Strength ?? '').toLowerCase();
+        const dosage = (service.Dosage ?? '').toLowerCase();
+
+        return itemCode.includes(searchTerm) ||
+               itemName.includes(searchTerm) ||
+               strength.includes(searchTerm) ||
+               dosage.includes(searchTerm);
+    });
     
     displayServicesTable(filtered);
 }
