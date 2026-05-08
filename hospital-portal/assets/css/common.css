@@ -29,8 +29,8 @@
 }
 
 body {
-    background: linear-gradient(135deg, var(--light) 0%, #e8f0fe 100%);
-    color: #333;
+    background: linear-gradient(1deg, #d1d1d1 0%, #e1e2e5 100%);
+    color: #000000;
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
