@@ -1,0 +1,12 @@
+drrh@general:~$ cd /var/www/html/ehms-backend
+drrh@general:/var/www/html/ehms-backend$ cat /var/www/html/ehms-backend/.env | grep DB
+DB_CONNECTION=mysql
+#DB_SOCKET=/var/run/mysqld/mysqld.sock
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=ehms_database
+DB_USERNAME=root
+DB_PASSWORD='dbrooti@MOH#'
+DB_STRICT_MODE=false
+DB_PERSISTENT=true
+drrh@general:/var/www/html/ehms-backend$
