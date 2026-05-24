@@ -314,6 +314,40 @@ function switchTab(tabId) {
         autoLoadData('visit_types', FILE_NAMES.visit_types);
     }
 }
+// ========== TAB DETECTION FROM URL HASH ==========
+function checkUrlForTab() {
+    const hash = window.location.hash;
+    console.log('URL Hash detected:', hash);
+    
+    if (hash.includes('tab=price')) {
+        const priceTab = document.querySelector('[data-tab="price"]');
+        const visitsTab = document.querySelector('[data-tab="visits"]');
+        
+        if (priceTab) {
+            // Update active states
+            priceTab.classList.add('active');
+            if (visitsTab) visitsTab.classList.remove('active');
+            
+            // Load price data
+            autoLoadData('price_package', FILE_NAMES.price_package);
+            console.log('Price tab activated and data loading...');
+        }
+    } 
+    else if (hash.includes('tab=visits')) {
+        const visitsTab = document.querySelector('[data-tab="visits"]');
+        const priceTab = document.querySelector('[data-tab="price"]');
+        
+        if (visitsTab) {
+            // Update active states
+            visitsTab.classList.add('active');
+            if (priceTab) priceTab.classList.remove('active');
+            
+            // Load visits data
+            autoLoadData('visit_types', FILE_NAMES.visit_types);
+            console.log('Visits tab activated and data loading...');
+        }
+    }
+}
 
 // ========== INITIALIZE COLUMNS ==========
 function initializeColumns(data, fileType) {
@@ -1006,9 +1040,14 @@ document.addEventListener('DOMContentLoaded', () => {
             filterItems();
         }
     });
-    
-    // Auto-load Price Package on startup
-    setTimeout(() => {
-        autoLoadData('price_package', FILE_NAMES.price_package);
-    }, 500);
+
+    // Check URL hash for tab selection
+    checkUrlForTab();
+
+    // Auto-load Price Package on startup (only if no tab specified)
+    if (!window.location.hash.includes('tab=')) {
+        setTimeout(() => {
+            autoLoadData('price_package', FILE_NAMES.price_package);
+        }, 500);
+  }
 });

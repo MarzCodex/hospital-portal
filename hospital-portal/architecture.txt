@@ -69,25 +69,19 @@ hospital-portal/
 │       ├── common.js
 │       ├── router.js
 │       └── translator.js
-├── data/
-│   ├── approvals.json
-│   ├── authorizations.json
-│   ├── claims.json
-│   ├── issuing-services.json
-│   ├── members.json
-│   ├── NHIF_ZHSF_price_list.json
-│   ├── referrals.json
-│   ├── samples/
-│   │   ├── approved-services.json
-│   │   ├── historical-approvals.json
-│   │   └── pending-approvals.json
-│   ├── services.json
-│   ├── users.json
-│   ├── visit-types.json
-│   └── visits.json
-└── translator/
-    ├── db.txt
-    ├── Translator.html
-    ├── translator-styles.css
-    ├── translator.js
-    └── visit_types.txt
+└── data/
+    ├── approvals.json
+    ├── authorizations.json
+    ├── claims.json
+    ├── issuing-services.json
+    ├── members.json
+    ├── NHIF_ZHSF_price_list.json
+    ├── referrals.json
+    ├── samples/
+    │   ├── approved-services.json
+    │   ├── historical-approvals.json
+    │   └── pending-approvals.json
+    ├── services.json
+    ├── users.json
+    ├── visit-types.json
+    └── visits.json
