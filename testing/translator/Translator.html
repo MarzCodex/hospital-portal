@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="translator-styles.css">
+    <title>Kitita - NHIF Price Package Translator</title>
+</head>
+<body>
+    <div class="container">
+        <h1>NHIF Price Package Translator.</h1>
+        <div class="subtitle"><i>Services Shown Are As Per NHIF Pricing Scheme</i></div>
+        
+        <!-- ========== NEW: TABS SECTION (Replaces Upload Section) ========== -->
+        <div class="tabs-section">
+            <button class="tab-btn active" data-tab="price">
+                <i class="fas fa-tablets"></i> Price List & Drugs
+            </button>
+            <button class="tab-btn" data-tab="visits">
+                <i class="fas fa-hospital-user"></i> Visit Types
+            </button>
+            <button class="refresh-btn" id="refresh-data" title="Refresh current data">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <div class="file-status" id="file-status">
+                <i class="fas fa-circle-info"></i>
+                <span id="status-text">Ready</span>
+            </div>
+        </div>
+        <!-- ========== FILE INFO DISPLAY (Shows loaded file details) ========== -->
+        <div class="file-info" id="file-info" style="display: none;">
+            <div class="file-info-item"><strong>📄 File:</strong> <span id="file-name"></span><b> |</b></div>
+            <div class="file-info-item"><strong>📊 Size:</strong> <span id="file-size"></span><b> |</b></div>
+            <div class="file-info-item"><strong>🔢 Items:</strong> <span id="item-count"></span><b> |</b></div>
+            <div class="file-info-item"><strong>⏰ Loaded:</strong> <span id="load-time"></span></div>
+        </div>
+        
+        <!-- ========== CONTROLS SECTION ========== -->
+        <div class="controls" id="controls">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search across all fields...">
+            </div>
+            <div class="filter-box">
+                <span class="page-size-label">Show:</span>
+                <select id="pageSize">
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="300">300</option>
+                    <option value="ALL">All Items</option>
+                </select>
+                <select id="column-filter">
+                    <option value="">Filter by Column</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <input type="text" id="filter-value" placeholder="Filter value..." style="display: none;">
+                <select id="scheme-value" style="display: none; min-width: 200px;">
+                    <option value="">Select Benefit Scheme...</option>
+                </select>
+            </div>
+            <div class="action-buttons">
+                <button id="reset-filters" class="secondary">
+                    <i class="fas fa-undo-alt"></i> Reset Filters
+                </button>
+                <button id="export-pdf" class="success">
+                    <i class="fa-solid fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+        
+        <!-- ========== STATS SECTION ========== -->
+        <div class="stats-info" id="stats-info">
+            <span id="filter-stats"></span> | 
+            <span id="restricted-count"></span> | 
+            <span id="price-range"></span>
+        </div>
+        
+        <!-- ========== TABLE CONTAINER ========== -->
+        <div id="table-container">
+            <div class="loading-overlay" id="loading-overlay">
+                <div class="spinner"></div>
+                <p>Processing data...</p>
+            </div>
+            
+            <div class="empty-state" id="empty-state">
+                <div class="empty-state-icon">📊</div>
+                <h3>No Data Loaded</h3>
+                <p>Click a tab above to load data</p>
+            </div>
+            
+            <table id="items-table" style="display: none;">
+                <thead id="table-header"></thead>
+                <tbody id="table-body">
+                    <!-- main table display -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- ========== POPUP DETAILS MODAL ========== -->
+        <div id="more-details">
+            <div>
+                <div class="popup-header">
+                    <h3>More Details</h3>
+                    <button class="popup-close" title="Close">✕</button>
+                </div>
+                <div class="popup-content">
+                    <table id="popup_table">
+                        <thead id="pop-header"></thead>
+                        <tbody id="pop-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== EXPORT MODAL ========== -->
+        <div id="export-modal" class="export-modal">
+            <div class="export-modal-content">
+                <div class="export-modal-header">
+                    <h3>Export Data</h3>
+                    <button class="export-close" id="export-close-btn">✕</button>
+                </div>
+                <div class="export-modal-body">
+                    <div class="export-option" id="export-pdf-option">
+                        <div class="export-option-icon">📄</div>
+                        <div class="export-option-text">
+                            <div class="export-option-title">Export as PDF</div>
+                            <div class="export-option-desc">Save table as PDF document (opens print dialog)</div>
+                        </div>
+                        <div class="export-option-arrow">→</div>
+                    </div>
+                    <div class="export-option" id="export-txt-option">
+                        <div class="export-option-icon">📝</div>
+                        <div class="export-option-text">
+                            <div class="export-option-title">Export as TXT</div>
+                            <div class="export-option-desc">Save table as plain text file</div>
+                        </div>
+                        <div class="export-option-arrow">→</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== PAGINATION ========== -->
+        <div class="pagination" id="pagination"></div>
+        
+        <!-- ========== NOTIFICATION ========== -->
+        <div class="notification" id="notification"></div>
+        
+        <!-- ========== FOOTER ========== -->
+        <div class="footer">
+            <p>Kitita Translator v5.0 | Auto-Load from Local Files | &copy; Powered by Phill.</p>
+            <p><i>Data loaded from: test.txt (Price Package) and Visit_types.txt (Visit Types)</i></p>
+        </div>
+    </div>
+    
+    <script src="translator.js"></script>
+</body>
+</html>
