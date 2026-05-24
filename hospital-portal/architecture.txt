@@ -2,43 +2,44 @@ hospital-portal/
 ├── index.html
 ├── login.html
 ├── components/
-│   ├── header.html
-│   ├── sidebar.html
 │   ├── footer.html
-│   └── modals.html
+│   ├── header.html
+│   ├── modals.html
+│   └── sidebar.html
 ├── pages/
 │   ├── dashboard.html
+│   ├── template.html
+│   ├── claims/
+│   │   ├── bill Summary.html
+│   │   ├── Claim Reconciliation.html
+│   │   ├── Previous Claims.html
+│   │   └── Total-Claims-Submitted.html
+│   ├── inpatient/
+│   │   ├── admission.html
+│   │   ├── admitted-list.html
+│   │   └── discharge.html
 │   ├── outpatient/
 │   │   ├── member-verification.html
 │   │   └── service-approvals.html
-│   ├── inpatient/
-│   │   ├── admission.html
-│   │   ├── discharge.html
-│   │   └── admitted-list.html
-│   └── referrals/
+│   ├── referrals/
 │   │   ├── referral-request.html
 │   │   ├── referred-list.html
 │   │   └── zhsf.html
-│   └── claims management/
-│   │   ├── bill Summary.html
-│   │   ├── Total-Claims-Submitted.html
-│   │   ├── Previous Claims.html
-│   │   └── Claim Reconciliation.html
-│   └── Service Guide/
-│   │   ├── price-list.html
-│   │   └── visit-types.html
-│   └── User Management/
-│   │   └── user-management.html
-│   └── setup & Config/
-│   │   ├── System-settings.html
+│   ├── service guide/
+│   │   └── Translator.html
+│   ├── setup & configurations/
 │   │   ├── Buttons-configuration.html
 │   │   ├── Other-configuration.html
-│   │   └── System Guide.html
+│   │   ├── System Guide.html
+│   │   └── System-settings.html
+│   └── user management/
+│       └── user-management.html
 ├── assets/
 │   ├── css/
-│   │   └── common.css
-│   ├── icons
-│   │   ├── css
+│   │   ├── common.css
+│   │   └── translator-styles.css
+│   ├── icons/
+│   │   ├── css/
 │   │   │   ├── all.css
 │   │   │   ├── all.min.css
 │   │   │   ├── brands.css
@@ -59,14 +60,34 @@ hospital-portal/
 │   │   │   ├── v4-shims.min.css
 │   │   │   ├── v5-font-face.css
 │   │   │   └── v5-font-face.min.css
-│   │   └── webfonts
-│   │   │   ├── fa-brands-400.woff2
-│   │   │   ├── fa-regular-400.woff2
-│   │   │   ├── fa-solid-900.woff2
-│   │   │   └── fa-v4compatibility.woff2
+│   │   └── webfonts/
+│   │       ├── fa-brands-400.woff2
+│   │       ├── fa-regular-400.woff2
+│   │       ├── fa-solid-900.woff2
+│   │       └── fa-v4compatibility.woff2
 │   └── js/
 │       ├── common.js
-│       └── router.js
-└── data/
-        ├── css
-        └── common.css
+│       ├── router.js
+│       └── translator.js
+├── data/
+│   ├── approvals.json
+│   ├── authorizations.json
+│   ├── claims.json
+│   ├── issuing-services.json
+│   ├── members.json
+│   ├── NHIF_ZHSF_price_list.json
+│   ├── referrals.json
+│   ├── samples/
+│   │   ├── approved-services.json
+│   │   ├── historical-approvals.json
+│   │   └── pending-approvals.json
+│   ├── services.json
+│   ├── users.json
+│   ├── visit-types.json
+│   └── visits.json
+└── translator/
+    ├── db.txt
+    ├── Translator.html
+    ├── translator-styles.css
+    ├── translator.js
+    └── visit_types.txt
