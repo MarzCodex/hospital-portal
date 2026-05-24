@@ -1,0 +1,26 @@
+[
+    {
+        "authNumber": "AUTH-2025-001",
+        "memberName": "John M. Doe",
+        "fullName": "John M. Doe",
+        "cardNo": "NHIF-123456",
+        "serviceType": "Consultation",
+        "status": "Pending"
+    },
+    {
+        "authNumber": "AUTH-2025-002",
+        "memberName": "Jane Smith",
+        "fullName": "Jane Smith",
+        "cardNo": "ZHSF-789012",
+        "serviceType": "Pharmacy",
+        "status": "Approved"
+    },
+    {
+        "authNumber": "AUTH-2025-003",
+        "memberName": "Robert Johnson",
+        "fullName": "Robert Johnson",
+        "cardNo": "UHI-345678",
+        "serviceType": "Laboratory",
+        "status": "Pending"
+    }
+]

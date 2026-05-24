@@ -1,5 +1,6 @@
 hospital-portal/
 ├── index.html
+├── login.html
 ├── components/
 │   ├── header.html
 │   ├── sidebar.html
@@ -14,19 +15,18 @@ hospital-portal/
 │   │   ├── admission.html
 │   │   ├── discharge.html
 │   │   └── admitted-list.html
-│   └── Patient referrals/
-│   │   ├── nhif.html
-│   │   ├── zhsf.html
-│   │   ├── uhi.html
-│   │   └── referred-list.html
+│   └── referrals/
+│   │   ├── referral-request.html
+│   │   ├── referred-list.html
+│   │   └── zhsf.html
 │   └── claims management/
 │   │   ├── bill Summary.html
 │   │   ├── Total-Claims-Submitted.html
 │   │   ├── Previous Claims.html
 │   │   └── Claim Reconciliation.html
 │   └── Service Guide/
-│   │   ├── Services Price List.html
-│   │   └── Visit types Guide.html
+│   │   ├── price-list.html
+│   │   └── visit-types.html
 │   └── User Management/
 │   │   └── user-management.html
 │   └── setup & Config/
@@ -37,8 +37,36 @@ hospital-portal/
 ├── assets/
 │   ├── css/
 │   │   └── common.css
+│   ├── icons
+│   │   ├── css
+│   │   │   ├── all.css
+│   │   │   ├── all.min.css
+│   │   │   ├── brands.css
+│   │   │   ├── brands.min.css
+│   │   │   ├── fontawesome.css
+│   │   │   ├── fontawesome.min.css
+│   │   │   ├── regular.css
+│   │   │   ├── regular.min.css
+│   │   │   ├── solid.css
+│   │   │   ├── solid.min.css
+│   │   │   ├── svg-with-js.css
+│   │   │   ├── svg-with-js.min.css
+│   │   │   ├── svg.css
+│   │   │   ├── svg.min.css
+│   │   │   ├── v4-font-face.css
+│   │   │   ├── v4-font-face.min.css
+│   │   │   ├── v4-shims.css
+│   │   │   ├── v4-shims.min.css
+│   │   │   ├── v5-font-face.css
+│   │   │   └── v5-font-face.min.css
+│   │   └── webfonts
+│   │   │   ├── fa-brands-400.woff2
+│   │   │   ├── fa-regular-400.woff2
+│   │   │   ├── fa-solid-900.woff2
+│   │   │   └── fa-v4compatibility.woff2
 │   └── js/
 │       ├── common.js
 │       └── router.js
 └── data/
-    └── sample-data.js
+        ├── css
+        └── common.css

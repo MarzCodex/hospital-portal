@@ -1115,7 +1115,14 @@
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
             <ul class="submenu">
                 <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
-                <li><a href="../outpatient/service-approvals.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-check-circle"></i>Service Approvals</a></li>
+                <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-check-circle"></i> Service Approvals</a>
+                <ul class="submenu">
+                    <li><a href="../outpatient/service-approvals.html" onclick="closeSidebarOnMobile()">Request Approval</a></li>
+                    <li><a href="../outpatient/issued-approvals.html" onclick="closeSidebarOnMobile()">Issued Approval Services</a></li>
+                    <li><a href="../outpatient/approvals-before-2021.html" onclick="closeSidebarOnMobile()">Approvals before August 2021</a></li>
+                </ul>
+                </li>
             </ul>
         </li>
         <li class="has-submenu">

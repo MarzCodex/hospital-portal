@@ -265,6 +265,74 @@ function initPage() {
     // Initialize user dropdown
     initUserDropdown();
 }
+/*==========================================
+DATA SERVICE LAYER (Mock -> Real API Ready)
+============================================*/
+const DataService = {
+    //base path for all data requests
+    basePath: '../../data/',
+
+    //Generic fetch with error handling
+    async fetchData(endpoint){
+        try{
+            const response = await fetch(`${this.basePath}${endpoint}`);
+            if(!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        }
+            catch (error){
+                console.error(`Failed to fetch ${endpoint}:`, error);
+                showNotification(`Failed to load data: ${endpoint}`, 'error');
+                return null;
+            }
+        },
+
+        //Specific data endpoints
+        async getMembers(){
+        return this.fetchData('members.json');
+    },
+    
+    async getAuthorizations() {
+        return this.fetchData('authorizations.json');
+    },
+    
+    async getApprovals() {
+        return this.fetchData('approvals.json');
+    },
+    
+    async getServices() {
+        return this.fetchData('services.json');
+    },
+    
+    async getIssuingServices() {
+    // For now, derive from approvals (approved services)
+    const approvals = await this.getApprovals();
+    return approvals?.filter(a => a.status === 'Approved') || [];
+    },
+
+    async getReferrals() {
+        return this.fetchData('referrals.json');
+    },
+    
+    async getPriceList() {
+        return this.fetchData('NHIF_ZHSF_price_list.json');
+    },
+    
+    async getVisitTypes() {
+        return this.fetchData('Visit types.json');
+    },
+    
+    // Filtered queries (simulates API query params)
+    async getApprovalsByStatus(status) {
+        const all = await this.getApprovals();
+        return all?.filter(a => a.status === status) || [];
+    },
+    
+    async getAuthorizationsByMember(memberId) {
+        const all = await this.getAuthorizations();
+        return all?.filter(a => a.memberId === memberId) || [];
+    }
+};
+
 
 // ========================================
 // EXPOSE FUNCTIONS TO GLOBAL SCOPE
@@ -285,3 +353,4 @@ window.closeServicesModal = closeServicesModal;
 window.filterServicesTable = filterServicesTable;
 window.initPage = initPage;
 window.initUserDropdown = initUserDropdown;
+window.DataService = DataService;

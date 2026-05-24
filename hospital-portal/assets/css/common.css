@@ -137,7 +137,7 @@ body {
 
 .submenu {
     list-style: none;
-    padding-left: 45px;
+    padding-left: 31px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
