@@ -679,21 +679,31 @@
             userAvatar.textContent = initials;
         }
         
+         // Sidebar toggle (hamburger menu)
         const menuToggle = document.getElementById('menuToggle');
         if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) sidebar.classList.toggle('hidden');
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
             });
         }
-        
+
+        // Close sidebar button (X button)
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
         if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', function() {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) sidebar.classList.add('hidden');
+            closeSidebarBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeSidebar();
             });
         }
+
+        // Initialize sidebar state
+        initSidebarState();
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            handleResponsiveSidebar();
+        });
         
         // Load all data from DataService
         setDefaultDates();

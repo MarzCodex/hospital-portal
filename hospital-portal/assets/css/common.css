@@ -38,6 +38,27 @@ body {
 /* ========================================
    SIDEBAR STYLES
    ======================================== */
+
+/* When sidebar is collapsed */
+body.sidebar-collapsed {
+    --sidebar-width: 0px;
+}
+
+/* When sidebar is collapsed, hide it visually */
+body.sidebar-collapsed .sidebar {
+    transform: translateX(-100%);
+}
+
+/* Override for when sidebar is visible but body has collapsed class */
+body.sidebar-collapsed .sidebar:not(.force-show) {
+    transform: translateX(-100%);
+}
+
+/* Smooth transition for main content */
+.main-content {
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease;
+}
 .sidebar {
     position: fixed;
     left: 0;

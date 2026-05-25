@@ -4,11 +4,8 @@ const FILE_NAMES = {
     visit_types: '../../data/visit-types.json'
 };
 
-// Detect if running via file:// protocol (for debugging)
-const isFileProtocol = window.location.protocol === 'file:';
-
 // ========== GLOBAL VARIABLES ==========
-let currentFileType = null; // Values: 'price_package', 'visit_types'
+let currentFileType = null;
 let allItems = [];
 let filteredItems = [];
 let currentPage = 1;
@@ -109,7 +106,6 @@ function getItemType(typeId) {
 
 function getColumnDisplayName(columnName, fileType = currentFileType) {
     const nameMap = {
-        // Price Package columns
         'ItemCode': 'Item Code',
         'PriceCode': 'Price Code',
         'ItemTypeID': 'Item Type',
@@ -126,8 +122,6 @@ function getColumnDisplayName(columnName, fileType = currentFileType) {
         'MaximumQuantityInPatient': 'Max Qty (IP)',
         'HasCoPayment': 'Co-payment',
         'Action': 'Action',
-        
-        // Visit Types columns
         'VisitTypeID': 'Visit Type ID',
         'VisitTypeName': 'Visit Type Name',
         'RequiredInput': 'Required Input',
@@ -138,29 +132,6 @@ function getColumnDisplayName(columnName, fileType = currentFileType) {
         'Description': 'Description'
     };
     return nameMap[columnName] || columnName.replace(/([A-Z])/g, ' $1').trim();
-}
-
-function updateStatus(message, type = 'info') {
-    const statusSpan = document.getElementById('status-text');
-    const statusIcon = document.querySelector('#file-status i');
-    if (statusSpan) statusSpan.innerHTML = message;
-    
-    // Update icon based on type
-    if (statusIcon) {
-        if (type === 'error') {
-            statusIcon.className = 'fas fa-exclamation-triangle';
-            statusIcon.style.color = '#e74c3c';
-        } else if (type === 'success') {
-            statusIcon.className = 'fas fa-check-circle';
-            statusIcon.style.color = '#27ae60';
-        } else if (type === 'loading') {
-            statusIcon.className = 'fas fa-circle-notch fa-spin';
-            statusIcon.style.color = '#3498db';
-        } else {
-            statusIcon.className = 'fas fa-circle-info';
-            statusIcon.style.color = '#7f8c8d';
-        }
-    }
 }
 
 // ========== COLUMN CONFIGURATIONS ==========
@@ -189,7 +160,7 @@ function getColumnConfigs(fileType) {
     return { mainTableColumns: [], popupTableColumns: [] };
 }
 
-// ========== AUTO-LOAD DATA USING FETCH ==========
+// ========== AUTO-LOAD DATA ==========
 async function autoLoadData(fileType, fileName) {
     const loadingOverlay = document.getElementById('loading-overlay');
     const emptyState = document.getElementById('empty-state');
@@ -199,22 +170,14 @@ async function autoLoadData(fileType, fileName) {
     const fileInfoDiv = document.getElementById('file-info');
     
     if (loadingOverlay) loadingOverlay.style.display = 'flex';
-    updateStatus(`Loading ${fileName}...`, 'loading');
     
     const startTime = Date.now();
     
     try {
-        // Use fetch to read the file from the same folder
         const response = await fetch(fileName);
-        
-        if (!response.ok) {
-            // File not found or other HTTP error
-            throw new Error(`HTTP ${response.status}: File not found`);
-        }
+        if (!response.ok) throw new Error(`HTTP ${response.status}: File not found`);
         
         const content = await response.text();
-        
-        // Parse the content (handles both .txt and .json)
         let data;
         if (content.trim().startsWith('[')) {
             data = JSON.parse(content);
@@ -227,47 +190,36 @@ async function autoLoadData(fileType, fileName) {
         
         const endTime = Date.now();
         
-        // Store data globally
         allItems = data;
         filteredItems = [...data];
         currentFileType = fileType;
         
-        // Update file info display
         document.getElementById('file-name').textContent = fileName;
         document.getElementById('file-size').textContent = `${(content.length / 1024).toFixed(2)} KB`;
         document.getElementById('item-count').textContent = data.length;
         document.getElementById('load-time').textContent = `${endTime - startTime}ms`;
         fileInfoDiv.style.display = 'flex';
         
-        // Update UI
         emptyState.style.display = 'none';
         controls.style.display = 'flex';
         itemsTable.style.display = 'table';
         statsInfo.style.display = 'block';
         
-        // Initialize and render
         initializeColumns(data, fileType);
         renderTableHeader();
         calculateStats();
         renderTable();
         
-        updateStatus(`✅ Loaded ${data.length} items from ${fileName}`, 'success');
         showNotification(`Loaded ${data.length} items (${endTime - startTime}ms)`, 'success');
         
     } catch (error) {
         console.error('Load error:', error);
-        updateStatus(`❌ Data not found: ${fileName}`, 'error');
-        
-        // Show 404-style error message
         emptyState.style.display = 'flex';
         emptyState.innerHTML = `
             <div class="empty-state-icon">📁❌</div>
             <h3>Data Not Found</h3>
             <p>Could not load: ${fileName}</p>
             <p style="font-size: 12px; color: #666; margin-top: 10px;">
-                Make sure the file exists in the same folder as this HTML file.
-            </p>
-            <p style="font-size: 12px; color: #666;">
                 Expected location: ./${fileName}
             </p>
             <button id="retry-load-btn" style="margin-top: 20px;">
@@ -276,9 +228,7 @@ async function autoLoadData(fileType, fileName) {
         `;
         
         const retryBtn = document.getElementById('retry-load-btn');
-        if (retryBtn) {
-            retryBtn.onclick = () => autoLoadData(fileType, fileName);
-        }
+        if (retryBtn) retryBtn.onclick = () => autoLoadData(fileType, fileName);
         
         controls.style.display = 'none';
         itemsTable.style.display = 'none';
@@ -286,7 +236,6 @@ async function autoLoadData(fileType, fileName) {
         fileInfoDiv.style.display = 'none';
         
         showNotification(`Failed to load ${fileName}: File not found`, 'error');
-        
     } finally {
         if (loadingOverlay) loadingOverlay.style.display = 'none';
     }
@@ -299,53 +248,35 @@ function switchTab(tabId) {
     const currentActive = document.querySelector('.tab-btn.active');
     const currentTab = currentActive ? currentActive.getAttribute('data-tab') : null;
     
-    // If clicking the same tab, do nothing (as requested)
-    if (currentTab === tabId) {
-        return;
-    }
+    if (currentTab === tabId) return;
     
     if (tabId === 'price') {
-        priceBtn.classList.add('active');
-        if (visitsBtn) visitsBtn.classList.remove('active');
+        priceBtn?.classList.add('active');
+        visitsBtn?.classList.remove('active');
         autoLoadData('price_package', FILE_NAMES.price_package);
     } else {
-        visitsBtn.classList.add('active');
-        if (priceBtn) priceBtn.classList.remove('active');
+        visitsBtn?.classList.add('active');
+        priceBtn?.classList.remove('active');
         autoLoadData('visit_types', FILE_NAMES.visit_types);
     }
 }
+
 // ========== TAB DETECTION FROM URL HASH ==========
 function checkUrlForTab() {
     const hash = window.location.hash;
-    console.log('URL Hash detected:', hash);
     
     if (hash.includes('tab=price')) {
         const priceTab = document.querySelector('[data-tab="price"]');
         const visitsTab = document.querySelector('[data-tab="visits"]');
-        
-        if (priceTab) {
-            // Update active states
-            priceTab.classList.add('active');
-            if (visitsTab) visitsTab.classList.remove('active');
-            
-            // Load price data
-            autoLoadData('price_package', FILE_NAMES.price_package);
-            console.log('Price tab activated and data loading...');
-        }
-    } 
-    else if (hash.includes('tab=visits')) {
+        priceTab?.classList.add('active');
+        visitsTab?.classList.remove('active');
+        autoLoadData('price_package', FILE_NAMES.price_package);
+    } else if (hash.includes('tab=visits')) {
         const visitsTab = document.querySelector('[data-tab="visits"]');
         const priceTab = document.querySelector('[data-tab="price"]');
-        
-        if (visitsTab) {
-            // Update active states
-            visitsTab.classList.add('active');
-            if (priceTab) priceTab.classList.remove('active');
-            
-            // Load visits data
-            autoLoadData('visit_types', FILE_NAMES.visit_types);
-            console.log('Visits tab activated and data loading...');
-        }
+        visitsTab?.classList.add('active');
+        priceTab?.classList.remove('active');
+        autoLoadData('visit_types', FILE_NAMES.visit_types);
     }
 }
 
@@ -357,14 +288,11 @@ function initializeColumns(data, fileType) {
     const columnsToUse = configs.mainTableColumns;
     currentPopupTableColumns = configs.popupTableColumns || [];
     
-    columnDefinitions = columnsToUse.map(key => {
-        const sample = data[0];
-        return {
-            key: key,
-            displayName: getColumnDisplayName(key, fileType),
-            type: typeof sample[key]
-        };
-    });
+    columnDefinitions = columnsToUse.map(key => ({
+        key: key,
+        displayName: getColumnDisplayName(key, fileType),
+        type: typeof data[0][key]
+    }));
     
     const filterSelect = document.getElementById('column-filter');
     filterSelect.innerHTML = '<option value="">Filter by Column</option>';
@@ -385,14 +313,13 @@ function initializeColumns(data, fileType) {
         }
     });
     
-    if (fileType === 'price_package') {
-        populateSchemeDropdown();
-    }
+    if (fileType === 'price_package') populateSchemeDropdown();
 }
 
 function populateSchemeDropdown() {
     const schemeValue = document.getElementById('scheme-value');
     schemeValue.innerHTML = '<option value="">Select Benefit Scheme...</option>';
+    
     const uniqueSchemes = [...new Set(allItems.map(item => item.SchemeID))]
         .filter(schemeId => schemeId != null)
         .sort((a, b) => a - b);
@@ -463,15 +390,11 @@ function renderTable() {
         const pageItems = filteredItems.slice(start, end);
         
         if (pageItems.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="${columnDefinitions.length}" style="text-align: center; padding: 60px; color: #7f8c8d;">
-                        <div style="font-size: 48px; margin-bottom: 20px;">🔍</div>
-                        <h3 style="margin-bottom: 10px;">No Matching Items Found</h3>
-                        <p>Try adjusting your search or filter criteria</p>
-                    </td>
-                </tr>
-            `;
+            tbody.innerHTML = `<tr><td colspan="${columnDefinitions.length}" style="text-align: center; padding: 60px;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🔍</div>
+                <h3>No Matching Items Found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </td></tr>`;
             updatePagination();
             loadingOverlay.style.display = 'none';
             return;
@@ -496,10 +419,10 @@ function renderTable() {
                     td.className = 'item-name';
                 } else if (col.key === 'SchemeID') {
                     const schemeName = getSchemeName(value);
-                    value = schemeName ? `${value}<br><small style="color: #666;">${schemeName}</small>` : value;
+                    value = schemeName ? `${value}<br><small>${schemeName}</small>` : value;
                 } else if (col.key === 'ItemTypeID') {
                     const typeName = getItemType(value);
-                    value = typeName ? `${value}<br><small style="color: #666;">${typeName}</small>` : value;
+                    value = typeName ? `${value}<br><small>${typeName}</small>` : value;
                 } else if (col.key === 'Action') {
                     value = `<button class="view-more-btn" data-index="${start + index}">View More</button>`;
                 } else if (col.key === 'IsRestricted') {
@@ -510,7 +433,7 @@ function renderTable() {
                     td.classList.add(value === 'Yes' ? 'boolean-true' : 'boolean-false');
                 }
                 
-                td.innerHTML = value == null || value === '' ? '<span style="color: #999;">N/A</span>' : value;
+                td.innerHTML = value == null || value === '' ? 'N/A' : value;
                 row.appendChild(td);
             });
             tbody.appendChild(row);
@@ -571,50 +494,34 @@ function updatePagination() {
     pagination.style.display = 'flex';
     
     let html = `
-        <button id="first-page" ${currentPage === 1 ? 'disabled' : ''} title="First Page">
-            ««
-        </button>
-        <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''} title="Previous Page">
-            «
-        </button>
+        <button id="first-page" ${currentPage === 1 ? 'disabled' : ''}>««</button>
+        <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>«</button>
     `;
     
     const maxVisible = 7;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     let end = Math.min(totalPages, start + maxVisible - 1);
     
-    if (end - start + 1 < maxVisible) {
-        start = Math.max(1, end - maxVisible + 1);
-    }
+    if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1);
     
     if (start > 1) {
         html += `<button class="page-btn" data-page="1">1</button>`;
-        if (start > 2) html += `<span style="padding: 8px;">...</span>`;
+        if (start > 2) html += `<span>...</span>`;
     }
     
     for (let i = start; i <= end; i++) {
-        html += `
-            <button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
-                ${i}
-            </button>
-        `;
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
     }
     
     if (end < totalPages) {
-        if (end < totalPages - 1) html += `<span style="padding: 8px;">...</span>`;
+        if (end < totalPages - 1) html += `<span>...</span>`;
         html += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
     }
     
     html += `
-        <button id="next-page" ${currentPage === totalPages ? 'disabled' : ''} title="Next Page">
-            »
-        </button>
-        <button id="last-page" ${currentPage === totalPages ? 'disabled' : ''} title="Last Page">
-            »»
-        </button>
-        <div class="page-info">
-            Page ${currentPage} of ${totalPages} | ${totalItems} items
-        </div>
+        <button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>»</button>
+        <button id="last-page" ${currentPage === totalPages ? 'disabled' : ''}>»»</button>
+        <div class="page-info">Page ${currentPage} of ${totalPages} | ${totalItems} items</div>
     `;
     
     pagination.innerHTML = html;
@@ -732,7 +639,7 @@ function showPopupDetails(item) {
         messageCell.colSpan = 1;
         messageCell.style.textAlign = 'center';
         messageCell.style.padding = '40px';
-        messageCell.innerHTML = '<div style="font-size: 20px; margin-bottom: 10px;">ℹ️</div><div>No additional details available for this item type.</div>';
+        messageCell.innerHTML = '<div style="font-size: 20px; margin-bottom: 10px;">ℹ️</div><div>No additional details available</div>';
         messageRow.appendChild(messageCell);
         popBody.appendChild(messageRow);
         moreDetails.classList.add('active');
@@ -771,7 +678,7 @@ function showPopupDetails(item) {
             td.className = 'code-cell';
         }
         if (typeof value === 'boolean') value = formatBoolean(value);
-        td.innerHTML = value == null || value === '' ? '<span style="color: #999;">N/A</span>' : value;
+        td.innerHTML = value == null || value === '' ? 'N/A' : value;
         dataRow.appendChild(td);
     });
     popBody.appendChild(dataRow);
@@ -883,15 +790,13 @@ function exportAsTXT() {
     txtContent.push(`Total Items: ${filteredItems.length} of ${allItems.length}`);
     
     if (currentFileType === 'price_package') {
-        const restrictedCount = filteredItems.filter(item => item.IsRestricted).length;
-        txtContent.push(`Restricted Items: ${restrictedCount}`);
+        txtContent.push(`Restricted Items: ${filteredItems.filter(item => item.IsRestricted).length}`);
     }
     
     txtContent.push('');
     txtContent.push('-'.repeat(80));
     txtContent.push('');
     
-    // Build column widths
     const colWidths = {};
     columnDefinitions.forEach(col => {
         if (col.key !== 'Action') {
@@ -909,17 +814,13 @@ function exportAsTXT() {
         }
     });
     
-    // Header row
     let headerRow = '';
     columnDefinitions.forEach(col => {
-        if (col.key !== 'Action') {
-            headerRow += col.displayName.padEnd(colWidths[col.key]);
-        }
+        if (col.key !== 'Action') headerRow += col.displayName.padEnd(colWidths[col.key]);
     });
     txtContent.push(headerRow);
     txtContent.push('-'.repeat(headerRow.length));
     
-    // Data rows
     filteredItems.forEach(item => {
         let dataRow = '';
         columnDefinitions.forEach(col => {
@@ -983,16 +884,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const activeTab = document.querySelector('.tab-btn.active');
             if (activeTab) {
                 const tabId = activeTab.getAttribute('data-tab');
-                if (tabId === 'price') {
-                    autoLoadData('price_package', FILE_NAMES.price_package);
-                } else {
-                    autoLoadData('visit_types', FILE_NAMES.visit_types);
-                }
+                if (tabId === 'price') autoLoadData('price_package', FILE_NAMES.price_package);
+                else autoLoadData('visit_types', FILE_NAMES.visit_types);
             }
         });
     }
     
-    // Event listeners for controls
+    // Control event listeners
     const searchInput = document.getElementById('search-input');
     const resetFiltersBtn = document.getElementById('reset-filters');
     const columnFilter = document.getElementById('column-filter');
@@ -1040,14 +938,14 @@ document.addEventListener('DOMContentLoaded', () => {
             filterItems();
         }
     });
-
-    // Check URL hash for tab selection
+    
+    // Check URL hash and load initial data
     checkUrlForTab();
-
-    // Auto-load Price Package on startup (only if no tab specified)
+    
+    // Auto-load Price Package if no tab specified
     if (!window.location.hash.includes('tab=')) {
         setTimeout(() => {
             autoLoadData('price_package', FILE_NAMES.price_package);
         }, 500);
-  }
+    }
 });

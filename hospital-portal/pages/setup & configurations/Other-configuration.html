@@ -61,60 +61,92 @@
     
     <script src="../../assets/js/common.js"></script>
     <script>
-        async function loadComponents() {
-            try {
-                const sidebarResponse = await fetch('../../components/sidebar.html');
-                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
-                
-                const headerResponse = await fetch('../../components/header.html');
-                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
-                
-                const footerResponse = await fetch('../../components/footer.html');
-                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
-                
-                const modalsResponse = await fetch('../../components/modals.html');
-                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
-                
-                initPageComponents();
-            } catch (error) {
-                console.error('Error loading components:', error);
+    // ========================================
+    // COMPONENT LOADING
+    // ========================================
+    
+    async function loadComponents() {
+        try {
+            // Load sidebar
+            const sidebarRes = await fetch('../../components/sidebar.html');
+            if (sidebarRes.ok) {
+                document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
             }
+            
+            // Load header
+            const headerRes = await fetch('../../components/header.html');
+            if (headerRes.ok) {
+                document.getElementById('header-container').innerHTML = await headerRes.text();
+            }
+            
+            // Load footer
+            const footerRes = await fetch('../../components/footer.html');
+            if (footerRes.ok) {
+                document.getElementById('footer-container').innerHTML = await footerRes.text();
+            }
+            
+            // Load modals
+            const modalsRes = await fetch('../../components/modals.html');
+            if (modalsRes.ok) {
+                document.getElementById('modals-container').innerHTML = await modalsRes.text();
+            }
+            
+            // Initialize after components loaded
+            initPageComponents();
+            
+        } catch (error) {
+            console.error('Error loading components:', error);
         }
-        
-        function initPageComponents() {
+    }
+    
+    function initPageComponents() {
+        // Initialize user dropdown
+        if (typeof initUserDropdown === 'function') {
             initUserDropdown();
-            
-            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-            const userAvatar = document.getElementById('userAvatar');
-            const userNameSpan = document.getElementById('userName');
-            const jobTitleSpan = document.getElementById('jobTitle');
-            
-            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-            if (userNameSpan) userNameSpan.textContent = userName;
-            if (userAvatar) {
-                const initials = userName.split(' ').map(n => n[0]).join('');
-                userAvatar.textContent = initials;
-            }
-            
-            const menuToggle = document.getElementById('menuToggle');
-            if (menuToggle) {
-                menuToggle.addEventListener('click', function() {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) sidebar.classList.toggle('hidden');
-                });
-            }
-            
-            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-            if (closeSidebarBtn) {
-                closeSidebarBtn.addEventListener('click', function() {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) sidebar.classList.add('hidden');
-                });
-            }
         }
         
-        document.addEventListener('DOMContentLoaded', loadComponents);
-    </script>
+        // Set user info from sessionStorage
+        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+        
+        const userNameSpan = document.getElementById('userName');
+        const jobTitleSpan = document.getElementById('jobTitle');
+        const userAvatar = document.getElementById('userAvatar');
+        
+        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+        if (userNameSpan) userNameSpan.textContent = userName;
+        if (userAvatar) {
+            const initials = userName.split(' ').map(n => n[0]).join('');
+            userAvatar.textContent = initials;
+        }
+        
+        // Sidebar toggle (hamburger menu)
+        const menuToggle = document.getElementById('menuToggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+        }
+
+        // Close sidebar button (X button)
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeSidebar();
+            });
+        }
+
+        // Initialize sidebar state
+        initSidebarState();
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            handleResponsiveSidebar();
+        });
+    }
+    document.addEventListener('DOMContentLoaded', loadComponents);
+</script>
 </body>
 </html>
