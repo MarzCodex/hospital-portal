@@ -737,7 +737,7 @@ function exportAsPDF() {
         .restricted-badge { background-color: #e74c3c; color: white; padding: 2px 6px; border-radius: 10px; }
         .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #7f8c8d; }
     </style></head><body>
-    <h1>NHIF Price Package Translator</h1>
+    <h1>Hospital Service Portal</h1>
     <p><strong>Report:</strong> ${fileTypeName} | <strong>Generated:</strong> ${now.toLocaleString()} | <strong>Total:</strong> ${filteredItems.length} items</p>
     <table><thead><tr>`;
     
@@ -759,7 +759,7 @@ function exportAsPDF() {
         printHTML += `</tr>`;
     });
     
-    printHTML += `</tbody></table><div class="footer"><p>Kitita Translator | Generated on ${now.toLocaleString()}</p></div></body></html>`;
+    printHTML += `</tbody></table><div class="footer"><p>Hospital Service Portal | Generated on ${now.toLocaleString()}</p></div></body></html>`;
     
     printWindow.document.write(printHTML);
     printWindow.document.close();
@@ -769,7 +769,8 @@ function exportAsPDF() {
     showNotification('PDF export initiated - use browser print dialog to save', 'success');
 }
 
-function exportAsTXT() {
+
+function exportAsJSON() {
     if (filteredItems.length === 0) {
         showNotification('No data to export', 'error');
         hideExportModal();
@@ -780,95 +781,61 @@ function exportAsTXT() {
     const now = new Date();
     const timestamp = now.toISOString().slice(0, 19).replace(/:/g, '-');
     
-    let txtContent = [];
-    txtContent.push('='.repeat(80));
-    txtContent.push('KITITA - NHIF PRICE PACKAGE TRANSLATOR');
-    txtContent.push('='.repeat(80));
-    txtContent.push('');
-    txtContent.push(`Report Type: ${fileTypeName.replace(/_/g, ' ')}`);
-    txtContent.push(`Generated: ${now.toLocaleString()}`);
-    txtContent.push(`Total Items: ${filteredItems.length} of ${allItems.length}`);
+    // Prepare data for export
+    let exportData = [];
     
     if (currentFileType === 'price_package') {
-        txtContent.push(`Restricted Items: ${filteredItems.filter(item => item.IsRestricted).length}`);
+        // For price package, export ALL fields exactly as they are
+        exportData = filteredItems.map(item => ({
+            ItemCode: item.ItemCode || null,
+            PriceCode: item.PriceCode || null,
+            ItemTypeID: item.ItemTypeID || null,
+            ItemName: item.ItemName || null,
+            Strength: item.Strength || null,
+            Dosage: item.Dosage || null,
+            PackageID: item.PackageID || null,
+            SchemeID: item.SchemeID || null,
+            UnitPrice: item.UnitPrice || null,
+            IsRestricted: item.IsRestricted || false,
+            IsOverTheCounter: item.IsOverTheCounter || 0,
+            MaximumQuantity: item.MaximumQuantity || null,
+            MaximumQuantityOutPatient: item.MaximumQuantityOutPatient || null,
+            MaximumQuantityInPatient: item.MaximumQuantityInPatient || null,
+            HasCoPayment: item.HasCoPayment || false
+        }));
+    } else if (currentFileType === 'visit_types') {
+        // For visit types, export all fields
+        exportData = filteredItems.map(item => ({
+            VisitTypeID: item.VisitTypeID || null,
+            VisitTypeName: item.VisitTypeName || null,
+            RequiredInput: item.RequiredInput || null,
+            Alias: item.Alias || null,
+            RequiresRemarks: item.RequiresRemarks || false,
+            RequiresReferralNo: item.RequiresReferralNo || false,
+            HasConsultationCharges: item.HasConsultationCharges || false,
+            Description: item.Description || null,
+            EffectiveDate: item.EffectiveDate || null
+        }));
     }
     
-    txtContent.push('');
-    txtContent.push('-'.repeat(80));
-    txtContent.push('');
+    // Create JSON string with pretty formatting (2 spaces indentation)
+    const jsonContent = JSON.stringify(exportData, null, 2);
     
-    const colWidths = {};
-    columnDefinitions.forEach(col => {
-        if (col.key !== 'Action') {
-            let maxWidth = col.displayName.length;
-            filteredItems.slice(0, 100).forEach(item => {
-                let value = item[col.key];
-                if (col.key === 'UnitPrice') value = formatCurrency(value);
-                else if (col.key === 'IsRestricted') value = value ? 'Restricted' : 'No';
-                else if (typeof value === 'boolean') value = formatBoolean(value);
-                else if (value == null || value === '') value = 'N/A';
-                else value = String(value);
-                maxWidth = Math.min(50, Math.max(maxWidth, value.length));
-            });
-            colWidths[col.key] = maxWidth + 2;
-        }
-    });
-    
-    let headerRow = '';
-    columnDefinitions.forEach(col => {
-        if (col.key !== 'Action') headerRow += col.displayName.padEnd(colWidths[col.key]);
-    });
-    txtContent.push(headerRow);
-    txtContent.push('-'.repeat(headerRow.length));
-    
-    filteredItems.forEach(item => {
-        let dataRow = '';
-        columnDefinitions.forEach(col => {
-            if (col.key !== 'Action') {
-                let value = item[col.key];
-                if (col.key === 'UnitPrice') value = formatCurrency(value);
-                else if (col.key === 'IsRestricted') value = value ? 'Restricted' : 'No';
-                else if (col.key === 'SchemeID' && currentFileType === 'price_package') {
-                    const schemeName = getSchemeName(value);
-                    value = schemeName ? `${value} (${schemeName})` : (value || 'N/A');
-                } else if (col.key === 'ItemTypeID' && currentFileType === 'price_package') {
-                    const typeName = getItemType(value);
-                    value = typeName ? `${value} (${typeName})` : (value || 'N/A');
-                } else if (typeof value === 'boolean') {
-                    value = formatBoolean(value);
-                } else if (value == null || value === '') {
-                    value = 'N/A';
-                }
-                
-                let strValue = String(value);
-                if (strValue.length > colWidths[col.key]) {
-                    strValue = strValue.substring(0, colWidths[col.key] - 3) + '...';
-                }
-                dataRow += strValue.padEnd(colWidths[col.key]);
-            }
-        });
-        txtContent.push(dataRow);
-    });
-    
-    txtContent.push('');
-    txtContent.push('='.repeat(80));
-    txtContent.push('End of Report');
-    txtContent.push(`Total Records: ${filteredItems.length}`);
-    txtContent.push('='.repeat(80));
-    
-    const blob = new Blob([txtContent.join('\n')], { type: 'text/plain;charset=utf-8;' });
+    // Create and download file
+    const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `kitita_export_${fileTypeName}_${timestamp}.txt`;
+    a.download = `kitita_export_${fileTypeName}_${timestamp}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
     hideExportModal();
-    showNotification(`Exported ${filteredItems.length} items to TXT file`, 'success');
+    showNotification(`Exported ${filteredItems.length} items to JSON file`, 'success');
 }
+
 
 // ========== INITIALIZE APP ==========
 document.addEventListener('DOMContentLoaded', () => {
@@ -901,6 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportCloseBtn = document.getElementById('export-close-btn');
     const pdfOption = document.getElementById('export-pdf-option');
     const txtOption = document.getElementById('export-txt-option');
+    const jsonOption = document.getElementById('export-json-option');
     const exportModal = document.getElementById('export-modal');
     
     if (searchInput) searchInput.addEventListener('input', filterItems);
@@ -921,6 +889,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (exportCloseBtn) exportCloseBtn.addEventListener('click', hideExportModal);
     if (pdfOption) pdfOption.addEventListener('click', exportAsPDF);
     if (txtOption) txtOption.addEventListener('click', exportAsTXT);
+    if (jsonOption) jsonOption.addEventListener('click', exportAsJSON);
     if (exportModal) {
         exportModal.addEventListener('click', (e) => {
             if (e.target === exportModal) hideExportModal();

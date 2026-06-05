@@ -10,3 +10,8 @@ DB_PASSWORD='dbrooti@MOH#'
 DB_STRICT_MODE=false
 DB_PERSISTENT=true
 drrh@general:/var/www/html/ehms-backend$
+
+
+
+test members
+444421 alter suggestion for admission
