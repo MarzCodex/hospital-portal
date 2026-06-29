@@ -54,7 +54,13 @@
                 <li><a href="../service guide/Translator.html#tab=visits" onclick="closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
             </ul>
         </li>
-        <li><a href="../user management/user-management.html" onclick="closeSidebarOnMobile()"><i class="fas fa-users"></i> User Management</a></li>
+        <li class="has-submenu">
+            <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-users"></i> User Management</a>
+            <ul class="submenu">
+                <li><a href="../user management/user-management.html" onclick="closeSidebarOnMobile()"><i class="fas fa-user"></i> Users</a></li>
+                <li><a href="../user management/access-control.html" onclick="closeSidebarOnMobile()"><i class="fas fa-lock"></i> Access Control</a></li>
+            </ul>
+        </li>
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)">
                 <i class="fas fa-gear"></i> Setup & Configurations

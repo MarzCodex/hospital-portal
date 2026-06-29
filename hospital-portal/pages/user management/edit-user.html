@@ -14,7 +14,7 @@
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            max-width: 800px;
+            max-width: 100%;
         }
 
         .page-header {
@@ -140,15 +140,247 @@
             display: block;
         }
 
-        .form-actions {
+        /* Reset Password Section */
+        .reset-section {
+            background: #fef9e7;
+            border: 1px solid #f39c12;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            padding-top: 20px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .reset-section .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #856404;
+        }
+
+        .reset-section .info i {
+            font-size: 20px;
+        }
+
+        /* ======================================== */
+        /* PERMISSIONS SECTION - MATCHES ACCESS CONTROL */
+        /* ======================================== */
+
+        .permissions-section {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
+        }
+
+        .permission-group {
+            margin-bottom: 15px;
+        }
+
+        .permission-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .permission-group-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Dashboard Privileges Grid (Matches Access Control) */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 8px;
+        }
+
+        .dashboard-grid .perm-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .dashboard-grid .perm-item:hover {
+            background: #e8f4fc;
+            border-color: var(--primary);
+        }
+
+        .dashboard-grid .perm-item .icon {
+            font-size: 16px;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .dashboard-grid .perm-item .icon.checked {
+            color: var(--success);
+        }
+
+        .dashboard-grid .perm-item .icon.unchecked {
+            color: var(--danger);
+        }
+
+        .dashboard-grid .perm-item .label {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .dashboard-grid .perm-item .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .dashboard-grid .perm-item .status-badge.granted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .dashboard-grid .perm-item .status-badge.denied {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .dashboard-grid .perm-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        /* Other Privileges Grid (Matches Access Control) */
+        .privileges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 8px;
+        }
+
+        .privileges-grid .priv-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .privileges-grid .priv-item:hover {
+            background: #e8f4fc;
+            border-color: var(--primary);
+        }
+
+        .privileges-grid .priv-item .icon {
+            font-size: 16px;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .privileges-grid .priv-item .icon.checked {
+            color: var(--success);
+        }
+
+        .privileges-grid .priv-item .icon.unchecked {
+            color: var(--danger);
+        }
+
+        .privileges-grid .priv-item .label {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .privileges-grid .priv-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        /* Permissions Actions */
+        .permissions-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid var(--border);
             flex-wrap: wrap;
         }
 
+        /* Quick Actions inside permissions */
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 8px 12px;
+            background: #f0f2f5;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .quick-actions .btn-sm {
+            padding: 4px 12px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .quick-actions .btn-grant {
+            background: var(--success);
+            color: white;
+        }
+
+        .quick-actions .btn-grant:hover {
+            background: #219653;
+        }
+
+        .quick-actions .btn-revoke {
+            background: var(--danger);
+            color: white;
+        }
+
+        .quick-actions .btn-revoke:hover {
+            background: #c0392b;
+        }
+
+        .quick-actions .divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+        }
+
+        .quick-actions .info-text {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        /* Buttons */
         .btn {
             padding: 10px 24px;
             border: none;
@@ -218,138 +450,20 @@
             transform: translateY(-2px);
         }
 
-        /* Password strength indicator */
-        .password-strength {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-            align-items: center;
-        }
-
-        .strength-bar {
-            flex: 1;
-            height: 4px;
-            background: #e0e0e0;
-            border-radius: 2px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .strength-bar .segment {
-            flex: 1;
-            height: 100%;
-            transition: background 0.3s;
-        }
-
-        .strength-bar .segment.filled {
-            background: var(--danger);
-        }
-
-        .strength-bar .segment.filled.weak {
-            background: var(--danger);
-        }
-
-        .strength-bar .segment.filled.medium {
-            background: var(--warning);
-        }
-
-        .strength-bar .segment.filled.strong {
-            background: var(--success);
-        }
-
-        .strength-label {
+        .btn-sm {
+            padding: 6px 12px;
             font-size: 12px;
-            font-weight: 500;
-            min-width: 60px;
-        }
-
-        /* Password wrapper */
-        .password-wrapper {
-            position: relative;
-        }
-
-        .password-wrapper input {
-            padding-right: 40px;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--gray);
-            background: none;
-            border: none;
-            font-size: 16px;
-            padding: 0;
             min-width: auto;
         }
 
-        .toggle-password:hover {
-            color: var(--primary);
-        }
-
-        /* Reset password section */
-        .reset-section {
-            background: #fef9e7;
-            border: 1px solid #f39c12;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-top: 10px;
+        /* Form Actions */
+        .form-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
             flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .reset-section .info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #856404;
-        }
-
-        .reset-section .info i {
-            font-size: 20px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .page-container {
-                margin: 10px;
-                padding: 15px;
-            }
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .form-actions {
-                flex-direction: column;
-            }
-            .form-actions .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .reset-section {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* Spinner */
-        .spinner-sm {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
         }
 
         /* Notification */
@@ -376,6 +490,63 @@
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        .spinner-sm {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .reset-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .privileges-grid {
+                grid-template-columns: 1fr;
+            }
+            .permissions-actions {
+                flex-direction: column;
+            }
+            .permissions-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .quick-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .quick-actions .divider {
+                width: 100%;
+                height: 1px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -393,11 +564,9 @@
                 <!-- Page Header -->
                 <div class="page-header">
                     <h2><i class="fas fa-user-edit"></i> Edit User</h2>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-secondary" onclick="window.location.href='user-management.html'">
-                            <i class="fas fa-arrow-left"></i> Back to Users
-                        </button>
-                    </div>
+                    <button class="btn btn-secondary" onclick="window.location.href='user-management.html'">
+                        <i class="fas fa-arrow-left"></i> Back to Users
+                    </button>
                 </div>
 
                 <!-- Loading State -->
@@ -483,6 +652,58 @@
                                 </div>
                                 <div class="help-text">Current password: <span id="current-password-display" style="font-weight: 600; font-family: monospace;">---</span></div>
                             </div>
+
+                            <!-- Custom Permissions Section (Full width) -->
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-lock"></i> User Permissions</label>
+                                <div class="help-text" style="margin-bottom: 8px;">
+                                    Assign or override permissions for this specific user.
+                                    <span style="color: var(--warning);">🟡</span> Changes affect only this user.
+                                </div>
+                                
+                                <div class="permissions-section" id="permissions-section">
+                                    <!-- Quick Actions -->
+                                    <div class="quick-actions">
+                                        <button type="button" class="btn-sm btn-grant" onclick="grantAllPermissions()">
+                                            <i class="fas fa-check-circle"></i> Grant All
+                                        </button>
+                                        <button type="button" class="btn-sm btn-revoke" onclick="revokeAllPermissions()">
+                                            <i class="fas fa-times-circle"></i> Revoke All
+                                        </button>
+                                        <div class="divider"></div>
+                                        <span class="info-text">⚠️ Grant only what the user needs</span>
+                                    </div>
+
+                                    <!-- Dashboard Privileges -->
+                                    <div class="permission-group">
+                                        <div class="permission-group-title"><i class="fas fa-th-large"></i> Dashboard Privileges</div>
+                                        <div class="dashboard-grid" id="module-overrides">
+                                            <!-- Dynamically populated -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Other Privileges -->
+                                    <div class="permission-group">
+                                        <div class="permission-group-title"><i class="fas fa-user-cog"></i> Other Privileges</div>
+                                        <div class="privileges-grid" id="privilege-overrides">
+                                            <!-- Dynamically populated -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Permissions Actions -->
+                                    <div class="permissions-actions">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="saveUserPermissions()">
+                                            <i class="fas fa-save"></i> Save Permissions
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-sm" onclick="resetUserPermissions()">
+                                            <i class="fas fa-undo-alt"></i> Reset All
+                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="reloadUserPermissions()">
+                                            <i class="fas fa-sync-alt"></i> Reload
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Form Actions -->
@@ -518,10 +739,36 @@
     <script src="../../assets/js/common.js"></script>
     <script>
         // ========================================
+        // PERMISSION DEFINITIONS
+        // ========================================
+        
+        const moduleDefinitions = [
+            { id: 'memberVerification', label: 'Member verification Works' },
+            { id: 'inpatient', label: 'Inpatient services Works' },
+            { id: 'referrals', label: 'Referral Management Works' },
+            { id: 'serviceApprovals', label: 'Service approvals Works' },
+            { id: 'claims', label: 'Claims Management Works' },
+            { id: 'serviceGuide', label: 'Service Guide Works' },
+            { id: 'userManagement', label: 'User Management Works' },
+            { id: 'setupConfig', label: 'Setup & Configuration Works' },
+            { id: 'payday', label: 'Payday Works' }
+        ];
+
+        const privilegeDefinitions = [
+            { id: 'canDeleteUser', label: 'Can Delete User' },
+            { id: 'canEditUser', label: 'Can edit user' },
+            { id: 'canCreateUser', label: 'Can Create User' },
+            { id: 'canDeactivateUser', label: 'Can Deactivate user account' },
+            { id: 'canReconcileClaims', label: 'Can Perform Claim Reconciliation' },
+            { id: 'canPrintBill', label: 'Can Print Bill Summary' }
+        ];
+
+        // ========================================
         // GLOBAL VARIABLES
         // ========================================
         let currentUserId = null;
         let currentUser = null;
+        let currentPermissions = { modules: {}, privileges: {} };
 
         // ========================================
         // GET USER ID FROM URL
@@ -581,17 +828,16 @@
                     return;
                 }
 
-                // Populate form
                 populateForm(currentUser);
+                await loadUserPermissions(userId);
 
-                // Show form, hide loading
                 document.getElementById('loading-state').style.display = 'none';
                 document.getElementById('form-container').style.display = 'block';
 
             } catch (error) {
                 console.error('Failed to load user:', error);
                 document.getElementById('loading-state').innerHTML = `
-                    <div style="font-size: 48px; margin-bottom: 20px;">❌</div>
+                    <div style="font-size: 48px; margin-bottom: 20px;"></div>
                     <h3>Failed to Load User</h3>
                     <p>${error.message || 'Please try again later.'}</p>
                     <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 15px;">
@@ -612,9 +858,196 @@
             document.getElementById('phone').value = user.phone || '';
             document.getElementById('role').value = user.role || '';
             document.getElementById('status').value = user.status || 'Active';
-            
-            // Display current password
             document.getElementById('current-password-display').textContent = user.password || 'HPU-2026';
+        }
+
+        // ========================================
+        // LOAD USER PERMISSIONS
+        // ========================================
+        async function loadUserPermissions(userId) {
+            try {
+                const user = await DataService.getUsers().then(users => users.find(u => u.id === userId));
+                const permissions = user?.permissions || { modules: {}, privileges: {} };
+                currentPermissions = {
+                    modules: permissions.modules || {},
+                    privileges: permissions.privileges || {}
+                };
+                renderPermissions();
+            } catch (error) {
+                console.error('Failed to load permissions:', error);
+                showNotification('Failed to load permissions', 'error');
+            }
+        }
+
+        // ========================================
+        // RENDER PERMISSIONS
+        // ========================================
+        function renderPermissions() {
+            renderModulePermissions();
+            renderPrivileges();
+        }
+
+        function renderModulePermissions() {
+            const container = document.getElementById('module-overrides');
+            const modulePerms = currentPermissions.modules || {};
+            
+            container.innerHTML = moduleDefinitions.map(module => {
+                const hasAccess = modulePerms[module.id] === true;
+                
+                return `
+                    <div class="perm-item">
+                        <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
+                            ${hasAccess ? '' : ''}
+                        </div>
+                        <div class="label">${module.label}</div>
+                        <span class="status-badge ${hasAccess ? 'granted' : 'denied'}">
+                            ${hasAccess ? 'Granted' : 'Denied'}
+                        </span>
+                        <input type="checkbox" 
+                               data-module="${module.id}"
+                               ${hasAccess ? 'checked' : ''}>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderPrivileges() {
+            const container = document.getElementById('privilege-overrides');
+            const privs = currentPermissions.privileges || {};
+            
+            container.innerHTML = privilegeDefinitions.map(priv => {
+                const hasAccess = privs[priv.id] === true;
+                
+                return `
+                    <div class="priv-item">
+                        <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
+                            ${hasAccess ? '' : ''}
+                        </div>
+                        <div class="label">${priv.label}</div>
+                        <input type="checkbox" 
+                               data-privilege="${priv.id}"
+                               ${hasAccess ? 'checked' : ''}>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // UPDATE DISPLAY FROM CHECKBOXES
+        // ========================================
+        function updateDisplayFromCheckboxes() {
+            // Update module permissions
+            document.querySelectorAll('#module-overrides .perm-item').forEach(item => {
+                const cb = item.querySelector('input[type="checkbox"]');
+                const icon = item.querySelector('.icon');
+                const badge = item.querySelector('.status-badge');
+                const isChecked = cb.checked;
+                
+                icon.textContent = isChecked ? '' : '';
+                icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
+                badge.textContent = isChecked ? 'Granted' : 'Denied';
+                badge.className = `status-badge ${isChecked ? 'granted' : 'denied'}`;
+            });
+            
+            // Update privileges
+            document.querySelectorAll('#privilege-overrides .priv-item').forEach(item => {
+                const cb = item.querySelector('input[type="checkbox"]');
+                const icon = item.querySelector('.icon');
+                const isChecked = cb.checked;
+                
+                icon.textContent = isChecked ? '' : '';
+                icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
+            });
+        }
+
+        // Add event listeners for checkbox changes
+        document.addEventListener('change', function(e) {
+            if (e.target.closest('#module-overrides') || e.target.closest('#privilege-overrides')) {
+                updateDisplayFromCheckboxes();
+            }
+        });
+
+        // ========================================
+        // GRANT / REVOKE ALL
+        // ========================================
+        function grantAllPermissions() {
+            document.querySelectorAll('#module-overrides input[type="checkbox"]').forEach(cb => cb.checked = true);
+            document.querySelectorAll('#privilege-overrides input[type="checkbox"]').forEach(cb => cb.checked = true);
+            updateDisplayFromCheckboxes();
+            showNotification('All permissions granted', 'info');
+        }
+
+        function revokeAllPermissions() {
+            document.querySelectorAll('#module-overrides input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('#privilege-overrides input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updateDisplayFromCheckboxes();
+            showNotification('All permissions revoked', 'info');
+        }
+
+        // ========================================
+        // SAVE USER PERMISSIONS
+        // ========================================
+        async function saveUserPermissions() {
+            if (!currentUserId) {
+                showNotification('No user selected', 'error');
+                return;
+            }
+            
+            const modules = {};
+            document.querySelectorAll('#module-overrides input[type="checkbox"]').forEach(cb => {
+                modules[cb.dataset.module] = cb.checked;
+            });
+            
+            const privileges = {};
+            document.querySelectorAll('#privilege-overrides input[type="checkbox"]').forEach(cb => {
+                privileges[cb.dataset.privilege] = cb.checked;
+            });
+            
+            const permissions = { modules, privileges };
+            
+            try {
+                const updated = await DataService.saveUserPermissions(currentUserId, permissions);
+                if (updated) {
+                    currentPermissions = permissions;
+                    showNotification('Permissions saved successfully!', 'success');
+                }
+            } catch (error) {
+                console.error('Failed to save permissions:', error);
+                showNotification('Failed to save permissions', 'error');
+            }
+        }
+
+        // ========================================
+        // RESET USER PERMISSIONS
+        // ========================================
+        async function resetUserPermissions() {
+            if (!currentUserId) {
+                showNotification('No user selected', 'error');
+                return;
+            }
+            
+            const user = await DataService.getUsers().then(users => users.find(u => u.id === currentUserId));
+            if (!confirm(`Reset all permissions for ${user?.fullName || 'this user'}?`)) return;
+            
+            try {
+                const updated = await DataService.resetUserPermissions(currentUserId);
+                if (updated) {
+                    currentPermissions = { modules: {}, privileges: {} };
+                    renderPermissions();
+                    showNotification('All permissions reset', 'success');
+                }
+            } catch (error) {
+                console.error('Failed to reset permissions:', error);
+                showNotification('Failed to reset permissions', 'error');
+            }
+        }
+
+        // ========================================
+        // RELOAD USER PERMISSIONS
+        // ========================================
+        async function reloadUserPermissions() {
+            await loadUserPermissions(currentUserId);
+            showNotification('Permissions reloaded', 'info');
         }
 
         // ========================================
@@ -638,18 +1071,14 @@
         function validateForm() {
             let isValid = true;
             
-            const empId = document.getElementById('employeeId').value.trim();
-            if (!validateField('employeeId', empId.length > 0, 'employeeId-error')) isValid = false;
-            
-            const fullName = document.getElementById('fullName').value.trim();
-            if (!validateField('fullName', fullName.length > 0, 'fullName-error')) isValid = false;
+            if (!validateField('employeeId', document.getElementById('employeeId').value.trim().length > 0, 'employeeId-error')) isValid = false;
+            if (!validateField('fullName', document.getElementById('fullName').value.trim().length > 0, 'fullName-error')) isValid = false;
             
             const email = document.getElementById('email').value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!validateField('email', emailRegex.test(email), 'email-error')) isValid = false;
             
-            const role = document.getElementById('role').value;
-            if (!validateField('role', role !== '', 'role-error')) isValid = false;
+            if (!validateField('role', document.getElementById('role').value !== '', 'role-error')) isValid = false;
             
             return isValid;
         }
@@ -683,6 +1112,7 @@
                 const updated = await DataService.updateUser(currentUserId, userData);
                 
                 if (updated) {
+                    await saveUserPermissions();
                     showNotification(`User ${userData.fullName} updated successfully!`, 'success');
                     
                     setTimeout(() => {
@@ -702,17 +1132,13 @@
         // RESET PASSWORD
         // ========================================
         async function resetPassword() {
-            if (!confirm(`Are you sure you want to reset ${currentUser?.fullName || 'this user'}'s password to HPU-2026?`)) {
-                return;
-            }
+            if (!confirm(`Reset ${currentUser?.fullName || 'this user'}'s password to HPU-2026?`)) return;
             
             try {
                 const success = await DataService.resetPassword(currentUserId);
                 if (success) {
                     document.getElementById('current-password-display').textContent = 'HPU-2026';
                     showNotification('Password reset to HPU-2026', 'success');
-                    
-                    // Update local user object
                     if (currentUser) currentUser.password = 'HPU-2026';
                 }
             } catch (error) {
@@ -725,17 +1151,17 @@
         // DELETE USER
         // ========================================
         async function deleteUser() {
-            if (!confirm(`Are you sure you want to permanently delete ${currentUser?.fullName || 'this user'}? This action cannot be undone.`)) {
-                return;
-            }
+            if (!confirm(`Permanently delete ${currentUser?.fullName || 'this user'}?`)) return;
             
             try {
                 const success = await DataService.deleteUser(currentUserId);
                 if (success) {
-                    showNotification(`User ${currentUser?.fullName || 'User'} deleted`, 'success');
-                    setTimeout(() => {
-                        window.location.href = 'user-management.html';
-                    }, 1500);
+                    const allOverrides = JSON.parse(localStorage.getItem('userPermissions') || '{}');
+                    delete allOverrides[currentUserId];
+                    localStorage.setItem('userPermissions', JSON.stringify(allOverrides));
+                    
+                    showNotification(`User deleted`, 'success');
+                    setTimeout(() => window.location.href = 'user-management.html', 1500);
                 }
             } catch (error) {
                 console.error('Delete failed:', error);
@@ -758,42 +1184,29 @@
         // ========================================
         // COMPONENT LOADING
         // ========================================
-        
         async function loadComponents() {
             try {
                 const sidebarRes = await fetch('../../components/sidebar.html');
-                if (sidebarRes.ok) {
-                    document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
-                }
+                if (sidebarRes.ok) document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
                 
                 const headerRes = await fetch('../../components/header.html');
-                if (headerRes.ok) {
-                    document.getElementById('header-container').innerHTML = await headerRes.text();
-                }
+                if (headerRes.ok) document.getElementById('header-container').innerHTML = await headerRes.text();
                 
                 const footerRes = await fetch('../../components/footer.html');
-                if (footerRes.ok) {
-                    document.getElementById('footer-container').innerHTML = await footerRes.text();
-                }
+                if (footerRes.ok) document.getElementById('footer-container').innerHTML = await footerRes.text();
                 
                 const modalsRes = await fetch('../../components/modals.html');
-                if (modalsRes.ok) {
-                    document.getElementById('modals-container').innerHTML = await modalsRes.text();
-                }
+                if (modalsRes.ok) document.getElementById('modals-container').innerHTML = await modalsRes.text();
                 
                 initPageComponents();
-                
             } catch (error) {
                 console.error('Error loading components:', error);
             }
         }
         
         function initPageComponents() {
-            if (typeof initUserDropdown === 'function') {
-                initUserDropdown();
-            }
+            if (typeof initUserDropdown === 'function') initUserDropdown();
             
-            // Set user info from sessionStorage
             const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
             const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
             
@@ -808,7 +1221,6 @@
                 userAvatar.textContent = initials;
             }
             
-            // Sidebar toggle
             const menuToggle = document.getElementById('menuToggle');
             if (menuToggle) {
                 menuToggle.addEventListener('click', function(e) {
@@ -825,21 +1237,27 @@
                 });
             }
 
-            if (typeof initSidebarState === 'function') {
-                initSidebarState();
-            }
+            if (typeof initSidebarState === 'function') initSidebarState();
 
             window.addEventListener('resize', function() {
-                if (typeof handleResponsiveSidebar === 'function') {
-                    handleResponsiveSidebar();
-                }
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
             });
             
-            // Load user data after components
             loadUserData();
         }
         
         document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.saveUserPermissions = saveUserPermissions;
+        window.resetUserPermissions = resetUserPermissions;
+        window.reloadUserPermissions = reloadUserPermissions;
+        window.grantAllPermissions = grantAllPermissions;
+        window.revokeAllPermissions = revokeAllPermissions;
+        window.resetPassword = resetPassword;
+        window.deleteUser = deleteUser;
     </script>
 </body>
 </html>

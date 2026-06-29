@@ -410,7 +410,7 @@ const DataService = {
     async getAuthorizationsByMember(memberId) {
         const all = await this.getAuthorizations();
         return all?.filter(a => a.memberId === memberId) || [];
-    }
+    },
     async getUsers() {
     return this.fetchData('users.json');
 },
