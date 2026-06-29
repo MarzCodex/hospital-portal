@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Edit User</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        /* Page specific styles */
+        .page-container {
+            padding: 20px;
+            margin: 20px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            color: var(--secondary);
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .page-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 60px;
+            color: var(--gray);
+        }
+
+        .loading-state .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Form Styles */
+        .form-container {
+            padding: 10px 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger);
+        }
+
+        .form-group .help-text {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .form-group .error-text {
+            font-size: 12px;
+            color: var(--danger);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group .error-text.show {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            align-items: center;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .strength-bar .segment {
+            flex: 1;
+            height: 100%;
+            transition: background 0.3s;
+        }
+
+        .strength-bar .segment.filled {
+            background: var(--danger);
+        }
+
+        .strength-bar .segment.filled.weak {
+            background: var(--danger);
+        }
+
+        .strength-bar .segment.filled.medium {
+            background: var(--warning);
+        }
+
+        .strength-bar .segment.filled.strong {
+            background: var(--success);
+        }
+
+        .strength-label {
+            font-size: 12px;
+            font-weight: 500;
+            min-width: 60px;
+        }
+
+        /* Password wrapper */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray);
+            background: none;
+            border: none;
+            font-size: 16px;
+            padding: 0;
+            min-width: auto;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        /* Reset password section */
+        .reset-section {
+            background: #fef9e7;
+            border: 1px solid #f39c12;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .reset-section .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #856404;
+        }
+
+        .reset-section .info i {
+            font-size: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .reset-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Spinner */
+        .spinner-sm {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+
+        .notification.success { background-color: var(--success); }
+        .notification.error { background-color: var(--danger); }
+        .notification.info { background-color: var(--primary); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="page-container">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h2><i class="fas fa-user-edit"></i> Edit User</h2>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="window.location.href='user-management.html'">
+                            <i class="fas fa-arrow-left"></i> Back to Users
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading-state" class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading user data...</p>
+                </div>
+
+                <!-- Form (hidden until loaded) -->
+                <div id="form-container" class="form-container" style="display: none;">
+                    <form id="edit-user-form" novalidate>
+                        <div class="form-grid">
+                            <!-- Employee ID -->
+                            <div class="form-group">
+                                <label for="employeeId">Employee ID <span class="required">*</span></label>
+                                <input type="text" id="employeeId" placeholder="e.g., EMP001" required>
+                                <div class="error-text" id="employeeId-error">Please enter employee ID</div>
+                            </div>
+
+                            <!-- Full Name -->
+                            <div class="form-group">
+                                <label for="fullName">Full Name <span class="required">*</span></label>
+                                <input type="text" id="fullName" placeholder="e.g., John Doe" required>
+                                <div class="error-text" id="fullName-error">Please enter full name</div>
+                            </div>
+
+                            <!-- Username (disabled - cannot change) -->
+                            <div class="form-group">
+                                <label for="username">Username <span class="required">*</span></label>
+                                <input type="text" id="username" disabled>
+                                <div class="help-text">Username cannot be changed</div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" placeholder="e.g., john.doe@hospital.com" required>
+                                <div class="error-text" id="email-error">Please enter a valid email address</div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="e.g., +255 712 345 678">
+                            </div>
+
+                            <!-- Role -->
+                            <div class="form-group">
+                                <label for="role">Role <span class="required">*</span></label>
+                                <select id="role" required>
+                                    <option value="">Select Role...</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Front Desk">Front Desk</option>
+                                    <option value="Data clerk">Data clerk</option>
+                                    <option value="Doctor">Doctor</option>
+                                </select>
+                                <div class="error-text" id="role-error">Please select a role</div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select id="status">
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+
+                            <!-- Password Reset Section (Full width) -->
+                            <div class="form-group full-width">
+                                <label>Password Management</label>
+                                <div class="reset-section">
+                                    <div class="info">
+                                        <i class="fas fa-key"></i>
+                                        <div>
+                                            <strong>Reset Password</strong>
+                                            <div style="font-size: 13px; color: #856404;">Password will be reset to: <code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px;">HPU-2026</code></div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-warning" onclick="resetPassword()">
+                                        <i class="fas fa-sync-alt"></i> Reset Password
+                                    </button>
+                                </div>
+                                <div class="help-text">Current password: <span id="current-password-display" style="font-weight: 600; font-family: monospace;">---</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="submit-btn">
+                                <i class="fas fa-save"></i> Update User
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fas fa-undo-alt"></i> Reset Changes
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="deleteUser()">
+                                <i class="fas fa-trash"></i> Delete User
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='user-management.html'">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        // ========================================
+        // GLOBAL VARIABLES
+        // ========================================
+        let currentUserId = null;
+        let currentUser = null;
+
+        // ========================================
+        // GET USER ID FROM URL
+        // ========================================
+        function getUserIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get('id'));
+        }
+
+        // ========================================
+        // SHOW NOTIFICATION
+        // ========================================
+        function showNotification(message, type = 'info', duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+
+        // ========================================
+        // LOAD USER DATA
+        // ========================================
+        async function loadUserData() {
+            const userId = getUserIdFromUrl();
+            
+            if (!userId) {
+                showNotification('No user ID provided', 'error');
+                document.getElementById('loading-state').innerHTML = `
+                    <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                    <h3>No User ID Provided</h3>
+                    <p>Please go back and select a user to edit.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='user-management.html'" style="margin-top: 15px;">
+                        <i class="fas fa-arrow-left"></i> Back to Users
+                    </button>
+                `;
+                return;
+            }
+
+            currentUserId = userId;
+
+            try {
+                const users = await DataService.getUsers() || [];
+                currentUser = users.find(u => u.id === userId);
+
+                if (!currentUser) {
+                    document.getElementById('loading-state').innerHTML = `
+                        <div style="font-size: 48px; margin-bottom: 20px;">😕</div>
+                        <h3>User Not Found</h3>
+                        <p>The user you're trying to edit doesn't exist or has been deleted.</p>
+                        <button class="btn btn-primary" onclick="window.location.href='user-management.html'" style="margin-top: 15px;">
+                            <i class="fas fa-arrow-left"></i> Back to Users
+                        </button>
+                    `;
+                    return;
+                }
+
+                // Populate form
+                populateForm(currentUser);
+
+                // Show form, hide loading
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('form-container').style.display = 'block';
+
+            } catch (error) {
+                console.error('Failed to load user:', error);
+                document.getElementById('loading-state').innerHTML = `
+                    <div style="font-size: 48px; margin-bottom: 20px;">❌</div>
+                    <h3>Failed to Load User</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                    <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 15px;">
+                        <i class="fas fa-sync-alt"></i> Retry
+                    </button>
+                `;
+            }
+        }
+
+        // ========================================
+        // POPULATE FORM
+        // ========================================
+        function populateForm(user) {
+            document.getElementById('employeeId').value = user.employeeId || '';
+            document.getElementById('fullName').value = user.fullName || '';
+            document.getElementById('username').value = user.username || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('role').value = user.role || '';
+            document.getElementById('status').value = user.status || 'Active';
+            
+            // Display current password
+            document.getElementById('current-password-display').textContent = user.password || 'HPU-2026';
+        }
+
+        // ========================================
+        // VALIDATION
+        // ========================================
+        function validateField(id, condition, errorId) {
+            const field = document.getElementById(id);
+            const error = document.getElementById(errorId);
+            
+            if (!condition) {
+                field.classList.add('error');
+                error.classList.add('show');
+                return false;
+            } else {
+                field.classList.remove('error');
+                error.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            
+            const empId = document.getElementById('employeeId').value.trim();
+            if (!validateField('employeeId', empId.length > 0, 'employeeId-error')) isValid = false;
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            if (!validateField('fullName', fullName.length > 0, 'fullName-error')) isValid = false;
+            
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!validateField('email', emailRegex.test(email), 'email-error')) isValid = false;
+            
+            const role = document.getElementById('role').value;
+            if (!validateField('role', role !== '', 'role-error')) isValid = false;
+            
+            return isValid;
+        }
+
+        // ========================================
+        // UPDATE USER
+        // ========================================
+        document.getElementById('edit-user-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                showNotification('Please fix all errors before submitting', 'error');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-sm"></span> Updating...';
+            submitBtn.disabled = true;
+            
+            try {
+                const userData = {
+                    employeeId: document.getElementById('employeeId').value.trim(),
+                    fullName: document.getElementById('fullName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    role: document.getElementById('role').value,
+                    status: document.getElementById('status').value
+                };
+                
+                const updated = await DataService.updateUser(currentUserId, userData);
+                
+                if (updated) {
+                    showNotification(`User ${userData.fullName} updated successfully!`, 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'user-management.html';
+                    }, 1500);
+                }
+                
+            } catch (error) {
+                console.error('Error updating user:', error);
+                showNotification('Failed to update user. Please try again.', 'error');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ========================================
+        // RESET PASSWORD
+        // ========================================
+        async function resetPassword() {
+            if (!confirm(`Are you sure you want to reset ${currentUser?.fullName || 'this user'}'s password to HPU-2026?`)) {
+                return;
+            }
+            
+            try {
+                const success = await DataService.resetPassword(currentUserId);
+                if (success) {
+                    document.getElementById('current-password-display').textContent = 'HPU-2026';
+                    showNotification('Password reset to HPU-2026', 'success');
+                    
+                    // Update local user object
+                    if (currentUser) currentUser.password = 'HPU-2026';
+                }
+            } catch (error) {
+                console.error('Password reset failed:', error);
+                showNotification('Failed to reset password', 'error');
+            }
+        }
+
+        // ========================================
+        // DELETE USER
+        // ========================================
+        async function deleteUser() {
+            if (!confirm(`Are you sure you want to permanently delete ${currentUser?.fullName || 'this user'}? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                const success = await DataService.deleteUser(currentUserId);
+                if (success) {
+                    showNotification(`User ${currentUser?.fullName || 'User'} deleted`, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'user-management.html';
+                    }, 1500);
+                }
+            } catch (error) {
+                console.error('Delete failed:', error);
+                showNotification('Failed to delete user', 'error');
+            }
+        }
+
+        // ========================================
+        // REAL-TIME VALIDATION
+        // ========================================
+        document.querySelectorAll('input, select').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.classList.remove('error');
+                const errorId = this.id + '-error';
+                const error = document.getElementById(errorId);
+                if (error) error.classList.remove('show');
+            });
+        });
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        
+        async function loadComponents() {
+            try {
+                const sidebarRes = await fetch('../../components/sidebar.html');
+                if (sidebarRes.ok) {
+                    document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
+                }
+                
+                const headerRes = await fetch('../../components/header.html');
+                if (headerRes.ok) {
+                    document.getElementById('header-container').innerHTML = await headerRes.text();
+                }
+                
+                const footerRes = await fetch('../../components/footer.html');
+                if (footerRes.ok) {
+                    document.getElementById('footer-container').innerHTML = await footerRes.text();
+                }
+                
+                const modalsRes = await fetch('../../components/modals.html');
+                if (modalsRes.ok) {
+                    document.getElementById('modals-container').innerHTML = await modalsRes.text();
+                }
+                
+                initPageComponents();
+                
+            } catch (error) {
+                console.error('Error loading components:', error);
+            }
+        }
+        
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') {
+                initUserDropdown();
+            }
+            
+            // Set user info from sessionStorage
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+            const userAvatar = document.getElementById('userAvatar');
+            
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+            
+            // Sidebar toggle
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') {
+                initSidebarState();
+            }
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') {
+                    handleResponsiveSidebar();
+                }
+            });
+            
+            // Load user data after components
+            loadUserData();
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+</body>
+</html>

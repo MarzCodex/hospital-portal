@@ -1,0 +1,67 @@
+[
+    {
+        "id": 1,
+        "employeeId": "EMP001",
+        "fullName": "Phillip Z.P",
+        "username": "admin",
+        "password": "HPU-2026",
+        "email": "admin@hospital.com",
+        "phone": "+255 712 345 678",
+        "role": "Administrator",
+        "status": "Active",
+        "lastLogin": "2025-05-26 08:30:00",
+        "createdDate": "2024-01-15"
+    },
+    {
+        "id": 2,
+        "employeeId": "EMP002",
+        "fullName": "Dr. Sarah Johnson",
+        "username": "doctor1",
+        "password": "HPU-2026",
+        "email": "sarah.johnson@hospital.com",
+        "phone": "+255 712 345 679",
+        "role": "Doctor",
+        "status": "Active",
+        "lastLogin": "2025-05-25 14:20:00",
+        "createdDate": "2024-02-01"
+    },
+    {
+        "id": 3,
+        "employeeId": "EMP003",
+        "fullName": "Jane Smith",
+        "username": "frontdesk1",
+        "password": "HPU-2026",
+        "email": "jane.smith@hospital.com",
+        "phone": "+255 712 345 680",
+        "role": "Front Desk",
+        "status": "Active",
+        "lastLogin": "2025-05-24 09:15:00",
+        "createdDate": "2024-01-20"
+    },
+    {
+        "id": 4,
+        "employeeId": "EMP004",
+        "fullName": "John Data",
+        "username": "dataclerk1",
+        "password": "HPU-2026",
+        "email": "john.data@hospital.com",
+        "phone": "+255 712 345 681",
+        "role": "Data clerk",
+        "status": "Inactive",
+        "lastLogin": "2025-05-20 11:00:00",
+        "createdDate": "2024-03-10"
+    },
+    {
+        "id": 5,
+        "employeeId": "EMP005",
+        "fullName": "Dr. Michael Brown",
+        "username": "doctor2",
+        "password": "HPU-2026",
+        "email": "michael.brown@hospital.com",
+        "phone": "+255 712 345 682",
+        "role": "Doctor",
+        "status": "Active",
+        "lastLogin": "2025-05-26 10:45:00",
+        "createdDate": "2024-04-05"
+    }
+]

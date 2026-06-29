@@ -411,6 +411,67 @@ const DataService = {
         const all = await this.getAuthorizations();
         return all?.filter(a => a.memberId === memberId) || [];
     }
+    async getUsers() {
+    return this.fetchData('users.json');
+},
+
+async addUser(userData) {
+    // For now, this will simulate adding a user
+    // In production, this would POST to an API
+    const users = await this.getUsers() || [];
+    const newUser = {
+        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+        ...userData,
+        password: 'HPU-2026', // Default password
+        createdDate: new Date().toISOString().split('T')[0],
+        lastLogin: null,
+        status: 'Active'
+    };
+    users.push(newUser);
+    // For prototype, we'll store in localStorage to persist
+    localStorage.setItem('users', JSON.stringify(users));
+    return newUser;
+},
+
+async updateUser(id, userData) {
+    const users = await this.getUsers() || [];
+    const index = users.findIndex(u => u.id === id);
+    if (index !== -1) {
+        users[index] = { ...users[index], ...userData };
+        localStorage.setItem('users', JSON.stringify(users));
+        return users[index];
+    }
+    return null;
+},
+
+async deleteUser(id) {
+    const users = await this.getUsers() || [];
+    const filtered = users.filter(u => u.id !== id);
+    localStorage.setItem('users', JSON.stringify(filtered));
+    return true;
+},
+
+async resetPassword(id) {
+    const users = await this.getUsers() || [];
+    const index = users.findIndex(u => u.id === id);
+    if (index !== -1) {
+        users[index].password = 'HPU-2026';
+        localStorage.setItem('users', JSON.stringify(users));
+        return true;
+    }
+    return false;
+},
+
+async toggleUserStatus(id) {
+    const users = await this.getUsers() || [];
+    const index = users.findIndex(u => u.id === id);
+    if (index !== -1) {
+        users[index].status = users[index].status === 'Active' ? 'Inactive' : 'Active';
+        localStorage.setItem('users', JSON.stringify(users));
+        return users[index];
+    }
+    return null;
+}
 };
 
 
