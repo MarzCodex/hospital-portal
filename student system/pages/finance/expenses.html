@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Expenses Management | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+.custom-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+
+.expense-banner{
+    background:linear-gradient(135deg,#dc2626,#991b1b);
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+.stats-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:24px;
+}
+
+.table thead{
+    background:#e2e8f0;
+}
+
+.badge-approved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.badge-pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.badge-rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.category-icon{
+    width:45px;
+    height:45px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+}
+
+.expense-summary{
+    border-left:5px solid #dc2626;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Expense Management
+            </h3>
+
+            <p class="text-muted mb-0">
+                Track institutional expenditures and budget utilization
+            </p>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="payments.html">Finance</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Expense Management
+                        </li>
+                    </ol>
+                </nav>
+
+
+
+        </div>
+
+        <div>
+
+            <button class="btn btn-danger">
+
+                <i class="fa fa-plus me-2"></i>
+                Record Expense
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- BANNER -->
+
+    <div class="expense-banner mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h2 class="fw-bold">
+                    Financial Expense Overview
+                </h2>
+
+                <p class="mb-0">
+                    Monitor departmental spending, procurement and operational costs.
+                </p>
+</div>
+
+            <div class="col-lg-4 text-end">
+
+                <h1 class="fw-bold">
+                    $94,800
+                </h1>
+
+                <small>This Month's Expenses</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATISTICS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6>Total Expenses</h6>
+                            <h3 class="fw-bold">$94,800</h3>
+                        </div>
+
+                        <div class="stats-icon bg-danger">
+                            <i class="fa fa-money-bill-wave"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6>Approved</h6>
+                            <h3 class="fw-bold">156</h3>
+                        </div>
+
+                        <div class="stats-icon bg-success">
+                            <i class="fa fa-check"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6>Pending</h6>
+                            <h3 class="fw-bold">21</h3>
+                        </div>
+
+                        <div class="stats-icon bg-warning">
+                            <i class="fa fa-clock"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6>Departments</h6>
+                            <h3 class="fw-bold">12</h3>
+                        </div>
+
+                        <div class="stats-icon bg-primary">
+                            <i class="fa fa-building"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- EXPENSE CATEGORIES -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="category-icon bg-primary me-3">
+                        <i class="fa fa-laptop"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="mb-0">Equipment</h6>
+                        <small>$21,500</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="category-icon bg-success me-3">
+                        <i class="fa fa-bolt"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="mb-0">Utilities</h6>
+                        <small>$12,800</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="category-icon bg-warning me-3">
+                        <i class="fa fa-screwdriver-wrench"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="mb-0">Maintenance</h6>
+                        <small>$18,300</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="category-icon bg-danger me-3">
+                        <i class="fa fa-truck"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="mb-0">Transport</h6>
+                        <small>$8,900</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FILTER SECTION -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Search expense...">
+                </div>
+
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option>All Categories</option>
+                        <option>Equipment</option>
+                        <option>Utilities</option>
+                        <option>Maintenance</option>
+                        <option>Transport</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option>All Status</option>
+                        <option>Approved</option>
+                        <option>Pending</option>
+                        <option>Rejected</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100">
+                        Filter
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- EXPENSE TABLE -->
+
+    <div class="card custom-card">
+
+        <div class="card-header bg-white border-0">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="fw-bold mb-0">
+                    Expense Records
+                </h5>
+
+                <button class="btn btn-success btn-sm">
+
+                    <i class="fa fa-download me-2"></i>
+                    Export
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>Reference</th>
+                            <th>Department</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>EXP-00125</td>
+                            <td>ICT Department</td>
+                            <td>Equipment</td>
+                            <td>Computer Laboratory Upgrade</td>
+                            <td>$8,500</td>
+                            <td>10 Jun 2026</td>
+
+                            <td>
+                                <span class="badge badge-approved">
+                                    Approved
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-success">
+                                    <i class="fa fa-print"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>EXP-00126</td>
+                            <td>Administration</td>
+                            <td>Utilities</td>
+                            <td>Electricity Bill Payment</td>
+                            <td>$2,450</td>
+                            <td>09 Jun 2026</td>
+
+                            <td>
+                                <span class="badge badge-approved">
+                                    Approved
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-success">
+                                    <i class="fa fa-print"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>EXP-00127</td>
+                            <td>Facilities</td>
+                            <td>Maintenance</td>
+                            <td>Classroom Renovation</td>
+                            <td>$6,800</td>
+                            <td>08 Jun 2026</td>
+
+                            <td>
+                                <span class="badge badge-pending">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-warning">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

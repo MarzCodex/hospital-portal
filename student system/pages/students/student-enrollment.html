@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<!-- Include Navbar -->
+<!-- ../../components/navbar.html -->
+
+<!-- Include Sidebar -->
+<!-- ../../components/sidebar.html -->
+
+<div class="container-fluid py-4">
+
+    <!-- ========================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-user-graduate text-primary me-2"></i>
+                Student Enrollment
+            </h2>
+
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="students.html">
+                            Students
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Enrollment
+                    </li>
+
+                </ol>
+
+            </nav>
+
+        </div>
+
+        <div>
+
+            <a href="student-profile.html"
+               class="btn btn-outline-primary">
+
+                <i class="fa-solid fa-user me-2"></i>
+                Student Profile
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- STUDENT SUMMARY -->
+    <!-- ========================================= -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-2 text-center">
+
+                    <img src="../../images/default-user.png"
+                         alt="Student"
+                         width="100"
+                         class="rounded-circle img-fluid">
+
+                </div>
+
+                <div class="col-md-7">
+
+                    <h4 class="fw-bold mb-1">
+                        John Doe
+                    </h4>
+
+                    <p class="mb-1 text-muted">
+                        Student Number: STD-2026-001
+                    </p>
+
+                    <p class="mb-0">
+                        Computer Science Department
+                    </p>
+
+                </div>
+
+                <div class="col-md-3 text-end">
+
+                    <span class="badge bg-success fs-6">
+                        Active Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- ENROLLMENT STATS -->
+    <!-- ========================================= -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-book-open fa-2x text-primary mb-2"></i>
+
+                    <h3 class="fw-bold">
+                        6
+                    </h3>
+
+                    <small class="text-muted">
+                        Current Courses
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-clock fa-2x text-success mb-2"></i>
+
+                    <h3 class="fw-bold">
+                        18
+                    </h3>
+
+                    <small class="text-muted">
+                        Credit Hours
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-calendar-days fa-2x text-warning mb-2"></i>
+
+                    <h3 class="fw-bold">
+                        Fall 2026
+                    </h3>
+
+                    <small class="text-muted">
+                        Current Semester
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-chart-line fa-2x text-danger mb-2"></i>
+
+                    <h3 class="fw-bold">
+                        3.75
+                    </h3>
+
+                    <small class="text-muted">
+                        GPA
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- NEW ENROLLMENT -->
+    <!-- ========================================= -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+
+                <i class="fa-solid fa-plus-circle me-2"></i>
+                Add Course Enrollment
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form>
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Semester
+                        </label>
+
+                        <select class="form-select">
+
+                            <option selected disabled>
+                                Select Semester
+                            </option>
+
+                            <option>
+                                Spring 2026
+                            </option>
+
+                            <option>
+                                Summer 2026
+                            </option>
+
+                            <option>
+                                Fall 2026
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Course
+                        </label>
+
+                        <select class="form-select">
+
+                            <option selected disabled>
+                                Select Course
+                            </option>
+
+                            <option>
+                                CS101 - Introduction to Programming
+                            </option>
+
+                            <option>
+                                CS201 - Data Structures
+                            </option>
+
+                            <option>
+                                CS301 - Database Systems
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Instructor
+                        </label>
+
+                        <select class="form-select">
+
+                            <option selected disabled>
+                                Select Instructor
+                            </option>
+
+                            <option>
+                                Dr. Sarah Johnson
+                            </option>
+
+                            <option>
+                                Prof. Michael Chen
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="text-end">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fa-solid fa-plus me-2"></i>
+                        Enroll Student
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- CURRENT ENROLLMENTS -->
+    <!-- ========================================= -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+
+                <i class="fa-solid fa-list-check me-2"></i>
+                Current Enrollments
+
+            </h5>
+
+            <a href="../courses/course-offerings.html"
+               class="btn btn-sm btn-outline-primary">
+
+                Course Offerings
+
+            </a>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Instructor</th>
+                        <th>Credits</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+
+                        <td>CS101</td>
+
+                        <td>
+                            Introduction to Programming
+                        </td>
+
+                        <td>
+                            Dr. Sarah Johnson
+                        </td>
+
+                        <td>3</td>
+
+                        <td>
+                            <span class="badge bg-success">
+                                Enrolled
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="btn-group">
+
+                                <a href="../courses/course-details.html"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                                <a href="../courses/course-schedule.html"
+                                   class="btn btn-sm btn-info text-white">
+
+                                    <i class="fa-solid fa-calendar"></i>
+
+                                </a>
+
+                                <button class="btn btn-sm btn-danger">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>CS201</td>
+
+                        <td>
+                            Data Structures
+                        </td>
+
+                        <td>
+                            Dr. Sarah Johnson
+                        </td>
+
+                        <td>4</td>
+
+                        <td>
+                            <span class="badge bg-success">
+                                Enrolled
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="btn-group">
+
+                                <a href="../courses/course-details.html"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                                <a href="../courses/course-schedule.html"
+                                   class="btn btn-sm btn-info text-white">
+
+                                    <i class="fa-solid fa-calendar"></i>
+
+                                </a>
+
+                                <button class="btn btn-sm btn-danger">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- QUICK LINKS -->
+    <!-- ========================================= -->
+
+    <div class="card border-0 shadow-sm mt-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Quick Navigation
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="student-profile.html"
+                       class="btn btn-outline-primary w-100">
+
+                        Student Profile
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="student-documents.html"
+                       class="btn btn-outline-success w-100">
+
+                        Documents
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="student-attendance.html"
+                       class="btn btn-outline-warning w-100">
+
+                        Attendance
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="student-timetable.html"
+                       class="btn btn-outline-danger w-100">
+
+                        Timetable
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Include Footer -->
+<!-- ../../components/footer.html -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

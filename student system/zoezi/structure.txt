@@ -1,0 +1,175 @@
+student-system/
+│
+├── README.md                              ✅ Built
+├── database.sql                           ✅ Built
+├── .gitignore                             ✅ Built
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   └── app.js
+│
+├── images/
+│
+├── assets/                                ✅ Built
+│   ├── uploads/
+│   │   ├── students/
+│   │   ├── instructors/
+│   │   ├── documents/
+│   │   └── receipts/
+│   │
+│   ├── icons/
+│   └── logos/
+│
+├── components/
+│   ├── sidebar.html                       ✅ Built
+│   ├── navbar.html                        ✅ Built
+│   ├── footer.html                        ✅ Built
+│   ├── breadcrumbs.html                   ✅ Built
+│   ├── modals.html                        ✅ Built
+│   └── alerts.html                        ✅ Built
+│
+└── pages/
+        ├── auth/
+        │   ├── login.html                         ✅ Built
+        │   ├── forgot-password.html               ✅ Built
+        │   ├── reset-password.html                ✅ Built
+        │   ├── verify-email.html                  ✅ Built
+        │   ├── change-password.html               ✅ Built
+        │   └── lock-screen.html                   ✅ Built
+        │
+        ├── dashboard/
+        │   └── index.html                         ✅ Built
+        │
+        ├── students/
+        │   ├── students.html                      ✅ Built
+        │   ├── add-student.html                   ✅ Built
+        │   ├── edit-student.html                  ✅ Built
+        │   ├── student-profile.html               ✅ Built
+        │   ├── student-results.html               ✅ Built
+        │   ├── student-transcript.html            ✅ Built
+        │   │
+        │   ├── student-id-card.html               ✅ Built
+        │   ├── student-clearance.html             ✅ Built
+        │   ├── student-graduation.html            ✅ Built
+        │   ├── student-documents.html             ✅ Built
+        │   ├── upload-document.html               ✅ Built
+        │   ├── student-enrollment.html            ✅ Built
+        │   ├── student-attendance.html            ✅ Built
+        │   ├── student-fees.html                  ✅ Built
+        │   ├── student-timetable.html             ✅ Built
+        │   └── guardian-details.html              ✅ Built
+        │
+        ├── departments/
+        │   ├── departments.html                   ✅ Built
+        │   ├── add-department.html                ✅ Built
+        │   └── department-details.html            ✅ Built
+        │
+        ├── semesters/
+        │   ├── semesters.html                     ✅ Built
+        │   ├── add-semester.html                  ✅ Built
+        │   └── edit-semester.html                 ✅ Built
+        │
+        ├── courses/
+        │   ├── courses.html                       ✅ Built
+        │   ├── add-course.html                    ✅ Built
+        │   ├── course-details.html                ✅ Built
+        │   │
+        │   ├── course-offerings.html              ✅ Built
+        │   ├── add-course-offering.html           ✅ Built
+        │   ├── assign-instructor.html             ✅ Built
+        │   ├── assign-students.html               ✅ Built
+        │   ├── course-schedule.html               ✅ Built
+        │   └── course-materials.html              ✅ Built
+        │
+        ├── instructors/
+        │   ├── instructors.html                   ✅ Built
+        │   ├── add-instructor.html                ✅ Built
+        │   ├── instructor-profile.html            ✅ Built
+        │   │
+        │   ├── instructor-schedule.html           ✅ Built
+        │   ├── instructor-payroll.html            ✅ Built
+        │   ├── instructor-attendance.html         ✅ Built
+        │   └── instructor-courses.html            ✅ Built
+        │
+        ├── attendance/
+        │   ├── attendance.html                    ✅ Built
+        │   ├── mark-attendance.html               ✅ Built
+        │   ├── attendance-report.html             ✅ Built
+        │   │
+        │   ├── attendance-sessions.html           ✅ Built
+        │   ├── qr-attendance.html                 ✅ Built
+        │   ├── biometric-attendance.html          ✅ Built
+        │   └── attendance-analytics.html          ✅ Built
+        │
+        ├── timetable/
+        │   ├── timetable.html                     ✅ Built
+        │   ├── classrooms.html                    ✅ Built
+        │   ├── add-classroom.html                 ✅ Built
+        │   └── schedule-manager.html              ✅ Built
+        │
+        ├── finance/
+        │   ├── payments.html                      ✅ Built
+        │   ├── invoice.html                       ✅ Built
+        │   ├── payment-history.html               ✅ Built
+        │   │
+        │   ├── invoices.html                      ✅ Built
+        │   ├── fee-structure.html                 ✅ Built
+        │   ├── scholarships.html                  ✅ Built
+        │   ├── payroll.html                       ✅ Built
+        │   ├── expenses.html                      ✅ Built
+        │   ├── receipts.html                      ✅ Built
+        │   ├── pending-payments.html              ✅ Built
+        │   └── financial-reports.html             ✅ Built
+        │
+        ├── library/
+        │   ├── library.html                       ✅ Built
+        │   ├── books.html                         ✅ Built
+        │   ├── add-book.html                      ✅ Built
+        │   ├── borrowed-books.html                ✅ Built
+        │   ├── issue-book.html                    ✅ Built
+        │   └── overdue-books.html                 ✅ Built
+        │
+        ├── reports/
+        │   ├── reports.html                       ✅ Built
+        │   │
+        │   ├── academic-reports.html              ✅ Built
+        │   ├── financial-reports.html             ✅ Built
+        │   ├── attendance-reports.html            ✅ Built
+        │   ├── student-reports.html               ✅ Built
+        │   ├── export-center.html                 ✅ Built
+        │   ├── analytics-dashboard.html           ✅ Built
+        │   └── charts-graphs.html                 ✅ Built
+        │
+        ├── notifications/
+        │   ├── notifications.html                 ✅ Built
+        │   │
+        │   ├── announcements.html                 ✅ Built
+        │   ├── send-notification.html             ✅ Built
+        │   ├── sms-center.html                    ✅ Built
+        │   ├── email-center.html                  ✅ Built
+        │   └── messaging.html                     ✅ Built
+        │
+        ├── users/
+        │   ├── profile.html                       ✅ Built
+        │   ├── settings.html                      ✅ Built
+        │   │
+        │   ├── users.html                         ✅ Built
+        │   ├── add-user.html                      ✅ Built
+        │   ├── roles.html                         ✅ Built
+        │   ├── permissions.html                   ✅ Built
+        │   ├── audit-logs.html                    ✅ Built
+        │   ├── activity-logs.html                 ✅ Built
+        │   └── user-sessions.html                 ✅ Built
+        │
+        ├── system/
+        │   ├── backup-restore.html                ✅ Built
+        │   ├── system-settings.html               ✅ Built
+        │   ├── maintenance-mode.html              ✅ Built
+        │   └── system-health.html                 ✅ Built
+        │
+        └──errors/
+            ├── 403.html                           ✅ Built
+            ├── 404.html                           ✅ Built
+            └── 500.html                           ✅ Built

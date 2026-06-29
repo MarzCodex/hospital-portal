@@ -1,0 +1,27 @@
+[
+  {
+    "id": "svc001",
+    "name": "Outpatient Service Issuance",
+    "description": "Issuing outpatient tickets and referrals",
+    "category": "Outpatient",
+    "html": "<div class='service'><h2>Outpatient Service Issuance</h2><p>Issuing outpatient tickets and referrals</p><span>Category: Outpatient</span></div>",
+    "active": true
+  },
+  {
+    "id": "svc002",
+    "name": "Inpatient Admission Issuance",
+    "description": "Issuing admission authorizations and bed assignments",
+    "category": "Inpatient",
+    "html": "<div class='service'><h2>Inpatient Admission Issuance</h2><p>Issuing admission authorizations and bed assignments</p><span>Category: Inpatient</span></div>",
+    "active": true
+  },
+  {
+    "id": "svc003",
+    "name": "Pharmacy Prescription Issuance",
+    "description": "Issuing pharmacy prescriptions and medication vouchers",
+    "category": "Pharmacy",
+    "html": "<div class='service'><h2>Pharmacy Prescription Issuance</h2><p>Issuing pharmacy prescriptions and medication vouchers</p><span>Category: Pharmacy</span></div>",
+    "active": true
+  }
+]
+    

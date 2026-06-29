@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SMS Center | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+.sms-banner{
+    background:linear-gradient(135deg,#15803d,#22c55e);
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+.sms-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:22px;
+}
+
+.template-card{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:15px;
+    transition:.3s;
+    cursor:pointer;
+}
+
+.template-card:hover{
+    border-color:#22c55e;
+    background:#f0fdf4;
+}
+
+.credit-box{
+    background:#ecfdf5;
+    border-left:5px solid #22c55e;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                SMS Center
+            </h3>
+
+            <p class="text-muted mb-0">
+                Manage bulk SMS communication and campaigns
+            </p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html" class="text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">SMS Center</li>
+                </ol>
+            </nav>
+
+        </div>
+
+        <button class="btn btn-success">
+
+            <i class="fa fa-paper-plane me-2"></i>
+            Send SMS
+
+        </button>
+
+    </div>
+
+    <!-- BANNER -->
+
+    <div class="sms-banner mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h2 class="fw-bold">
+                    SMS Communication Center
+                </h2>
+
+                <p class="mb-0">
+                    Send reminders, alerts, announcements and emergency notifications directly to mobile phones.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-end">
+
+                <h1 class="fw-bold">
+                    18,450
+                </h1>
+
+                <small>SMS Delivered This Month</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATISTICS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="card sms-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Sent Today</small>
+                            <h3 class="fw-bold">428</h3>
+                        </div>
+
+                        <div class="stat-icon bg-primary">
+                            <i class="fa fa-message"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card sms-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Delivered</small>
+                            <h3 class="fw-bold">17,980</h3>
+                        </div>
+
+                        <div class="stat-icon bg-success">
+                            <i class="fa fa-check"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card sms-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Failed</small>
+                            <h3 class="fw-bold">124</h3>
+                        </div>
+
+                        <div class="stat-icon bg-danger">
+                            <i class="fa fa-xmark"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card sms-card credit-box">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>SMS Credits</small>
+                            <h3 class="fw-bold">52,400</h3>
+                        </div>
+
+                        <div class="stat-icon bg-warning">
+                            <i class="fa fa-wallet"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SEND SMS -->
+
+    <div class="card sms-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Compose SMS
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Recipient Group
+                    </label>
+
+                    <select class="form-select">
+
+                        <option>All Students</option>
+                        <option>Parents</option>
+                        <option>Instructors</option>
+                        <option>Staff</option>
+                        <option>Specific Department</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        SMS Category
+                    </label>
+
+                    <select class="form-select">
+
+                        <option>General Notice</option>
+                        <option>Fee Reminder</option>
+                        <option>Attendance Alert</option>
+                        <option>Exam Notification</option>
+                        <option>Emergency Alert</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Schedule Time
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control">
+
+                </div>
+
+                <div class="col-12">
+
+                    <label class="form-label">
+                        SMS Message
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="5"
+                              maxlength="160"
+                              placeholder="Type SMS message here..."></textarea>
+
+                    <small class="text-muted">
+                        Maximum 160 characters per SMS.
+                    </small>
+
+                </div>
+
+                <div class="col-12">
+
+                    <button class="btn btn-success">
+                        <i class="fa fa-paper-plane me-2"></i>
+                        Send SMS
+                    </button>
+
+                    <button class="btn btn-secondary">
+                        Save Draft
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SMS TEMPLATES -->
+
+    <div class="card sms-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                SMS Templates
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+
+                    <div class="template-card text-center">
+
+                        <i class="fa fa-money-bill-wave fa-2x text-success mb-2"></i>
+
+                        <h6>Fee Reminder</h6>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="template-card text-center">
+
+                        <i class="fa fa-calendar-check fa-2x text-primary mb-2"></i>
+
+                        <h6>Attendance Alert</h6>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="template-card text-center">
+
+                        <i class="fa fa-graduation-cap fa-2x text-warning mb-2"></i>
+
+                        <h6>Exam Notice</h6>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="template-card text-center">
+
+                        <i class="fa fa-triangle-exclamation fa-2x text-danger mb-2"></i>
+
+                        <h6>Emergency Alert</h6>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DELIVERY REPORTS -->
+
+    <div class="card sms-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Recent SMS Delivery Reports
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th>Campaign</th>
+                        <th>Recipients</th>
+                        <th>Delivered</th>
+                        <th>Failed</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Fee Reminder June</td>
+                        <td>1,200</td>
+                        <td>1,180</td>
+                        <td>20</td>
+                        <td>
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Exam Schedule Notice</td>
+                        <td>2,850</td>
+                        <td>2,830</td>
+                        <td>20</td>
+                        <td>
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Attendance Alert</td>
+                        <td>500</td>
+                        <td>470</td>
+                        <td>30</td>
+                        <td>
+                            <span class="badge bg-warning text-dark">
+                                In Progress
+                            </span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- FAILED SMS -->
+
+    <div class="card sms-card">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Failed SMS Log
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th>Recipient</th>
+                        <th>Phone Number</th>
+                        <th>Campaign</th>
+                        <th>Reason</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>John Doe</td>
+                        <td>+255 XXX XXX XXX</td>
+                        <td>Fee Reminder June</td>
+                        <td>Invalid Number</td>
+                    </tr>
+
+                    <tr>
+                        <td>Mary Smith</td>
+                        <td>+255 XXX XXX XXX</td>
+                        <td>Attendance Alert</td>
+                        <td>Network Failure</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

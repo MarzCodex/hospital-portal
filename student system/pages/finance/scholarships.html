@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Scholarships | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+body{
+    background:#f1f5f9;
+}
+
+/* Main Layout */
+.main-content{
+    padding:20px;
+}
+
+/* Cards */
+.custom-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+
+/* Stats Icons */
+.stats-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:24px;
+}
+
+/* Scholarship Banner */
+.scholarship-banner{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+/* Table */
+.table thead{
+    background:#e2e8f0;
+}
+
+.table tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* Status Badges */
+.badge-active{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.badge-pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.badge-expired{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.student-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="main-content">
+
+    <div class="container-fluid mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h4 class="fw-bold text-dark mb-1">
+                    <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
+                    Student Management System
+                </h4>
+</div>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Scholarship Management
+            </h3>
+
+            <p class="text-muted mb-0">
+                Manage scholarships, beneficiaries and funding allocations
+            </p>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="payments.html">Finance</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Scholarship Management
+                        </li>
+                    </ol>
+                </nav>
+
+
+
+        </div>
+
+        <div>
+
+            <a href="scholarships.html" class="btn btn-primary">
+
+                <i class="fa fa-plus me-2"></i>
+                New Scholarship
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- BANNER -->
+
+    <div class="scholarship-banner mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h2 class="fw-bold">
+                    Academic Excellence Scholarship Program
+                </h2>
+
+                <p class="mb-0">
+                    Support outstanding students through tuition sponsorship,
+                    grants and financial aid opportunities.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-end">
+
+                <h1 class="fw-bold">
+                    $250K
+                </h1>
+
+                <small>
+                    Total Annual Budget
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATISTICS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6>Total Scholarships</h6>
+                            <h3 class="fw-bold">18</h3>
+
+                        </div>
+
+                        <div class="stats-icon bg-primary">
+
+                            <i class="fa fa-award"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6>Beneficiaries</h6>
+                            <h3 class="fw-bold">236</h3>
+
+                        </div>
+
+                        <div class="stats-icon bg-success">
+
+                            <i class="fa fa-user-graduate"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6>Pending Requests</h6>
+                            <h3 class="fw-bold">32</h3>
+
+                        </div>
+
+                        <div class="stats-icon bg-warning">
+
+                            <i class="fa fa-clock"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6>Funds Distributed</h6>
+                            <h3 class="fw-bold">$180K</h3>
+
+                        </div>
+
+                        <div class="stats-icon bg-danger">
+
+                            <i class="fa fa-dollar-sign"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FILTERS -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Search scholarship...">
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select class="form-select">
+
+                        <option>All Categories</option>
+                        <option>Academic</option>
+                        <option>Sports</option>
+                        <option>Research</option>
+                        <option>Financial Aid</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select class="form-select">
+
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Pending</option>
+                        <option>Expired</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button class="btn btn-primary w-100">
+                        Filter
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCHOLARSHIP TABLE -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white border-0">
+
+            <h5 class="fw-bold">
+                Scholarship Programs
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Scholarship</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Recipients</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>Academic Excellence</td>
+                            <td>Academic</td>
+                            <td>$5,000</td>
+                            <td>85 Students</td>
+
+                            <td>
+                                <span class="badge badge-active">
+                                    Active
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-success">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Sports Scholarship</td>
+                            <td>Sports</td>
+                            <td>$3,500</td>
+                            <td>42 Students</td>
+
+                            <td>
+                                <span class="badge badge-active">
+                                    Active
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-success">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Research Grant</td>
+                            <td>Research</td>
+                            <td>$8,000</td>
+                            <td>12 Students</td>
+
+                            <td>
+                                <span class="badge badge-pending">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-success">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT BENEFICIARIES -->
+
+    <div class="card custom-card">
+
+        <div class="card-header bg-white border-0">
+
+            <h5 class="fw-bold">
+                Recent Scholarship Beneficiaries
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Student</th>
+                            <th>ID</th>
+                            <th>Scholarship</th>
+                            <th>Award Amount</th>
+                            <th>Date Awarded</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    <img src="https://i.pravatar.cc/50?img=12"
+                                         class="student-avatar me-2">
+
+                                    John Doe
+
+                                </div>
+
+                            </td>
+
+                            <td>STU001</td>
+
+                            <td>Academic Excellence</td>
+
+                            <td>$5,000</td>
+
+                            <td>10 Jan 2026</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    <img src="https://i.pravatar.cc/50?img=15"
+                                         class="student-avatar me-2">
+
+                                    Sarah Wilson
+
+                                </div>
+
+                            </td>
+
+                            <td>STU008</td>
+
+                            <td>Sports Scholarship</td>
+
+                            <td>$3,500</td>
+
+                            <td>08 Jan 2026</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    <img src="https://i.pravatar.cc/50?img=18"
+                                         class="student-avatar me-2">
+
+                                    Michael Brown
+
+                                </div>
+
+                            </td>
+
+                            <td>STU017</td>
+
+                            <td>Research Grant</td>
+
+                            <td>$8,000</td>
+
+                            <td>05 Jan 2026</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

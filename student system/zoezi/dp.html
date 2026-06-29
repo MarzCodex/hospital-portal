@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Student Management Portal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/auth-theme.css">
+
+    <style>
+        :root {
+            --bg-main: #f4f7f6;
+            --sidebar-bg: #091e1a;
+            --sidebar-hover: #132f2a;
+            --sidebar-active: #173b34;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --accent-green-bg: #e6f7f2;
+            --accent-red: #f43f5e;
+            --accent-red-bg: #ffeef1;
+            --accent-blue: #0ea5e9;
+            --border-light: #e2e8f0;
+            --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: var(--font-stack);
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top left, rgba(14, 165, 233, 0.18), transparent 34%),
+                linear-gradient(135deg, #071714 0%, var(--sidebar-bg) 45%, #0f3f38 100%);
+        }
+
+        .login-shell {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 32px 16px;
+        }
+
+        .login-panel {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        }
+
+        span.system_name {
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        /* ===== SLIDESHOW CONTAINER ===== */
+        .slideshow-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            margin: 10px 0 0 0;
+            border-radius: 12px;
+            min-height: 380px;
+        }
+
+        .slides-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            height: 100%;
+            width: 100%;
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            min-height: 380px;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* ===== PICTURE FRAME ===== */
+        .picture-frame {
+            position: relative;
+            width: 160px;
+            height: 200px;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .frame-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            object-fit: fill;
+        }
+
+        .inner-picture-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 72%;
+            height: 72%;
+            overflow: hidden;
+            border-radius: 4px;
+            background: #1a1210;
+            z-index: 1;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .inner-picture-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .inner-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2a1f1a, #1a1210);
+            color: rgba(255, 255, 255, 0.12);
+            gap: 4px;
+            font-family: 'Georgia', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.6rem;
+        }
+
+        .inner-placeholder i {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.06);
+        }
+
+        .inner-placeholder .placeholder-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.3;
+        }
+
+        .inner-placeholder .placeholder-text span {
+            font-size: 0.5rem;
+            opacity: 0.4;
+        }
+
+        .portrait-nameplate {
+            background: linear-gradient(180deg, #5C3D2E, #4A3024);
+            padding: 4px 16px;
+            border-radius: 0 0 10px 10px;
+            color: #f5e6d3;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 215, 150, 0.1);
+            margin-top: -2px;
+            font-family: 'Georgia', serif;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+        }
+
+        /* ===== SLIDE CONTENT ===== */
+        .slide .slide-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .slide .slide-title .highlight {
+            color: #10b981;
+        }
+
+        .slide .slide-desc {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .slide .slide-subtitle {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.7rem;
+            margin-top: 8px;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        .slide .quote-mark {
+            color: #10b981;
+            font-size: 1rem;
+            opacity: 0.5;
+            margin: 0 3px;
+        }
+
+        /* ===== BRAND PANEL ===== */
+        .brand-panel {
+            position: relative;
+            min-height: 640px;
+            padding: 30px 24px;
+            color: #ffffff;
+            background:
+                linear-gradient(rgba(9, 30, 26, 0.82), rgba(9, 30, 26, 0.9)),
+                url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=80") center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-top,
+        .brand-content,
+        .brand-stats {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-mark {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: var(--accent-green);
+            color: var(--sidebar-bg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.55rem;
+            box-shadow: 0 14px 30px rgba(16, 185, 129, 0.25);
+        }
+
+        .brand-title {
+            max-width: 520px;
+            font-size: clamp(1.5rem, 3vw, 2.8rem);
+            line-height: 1.05;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .brand-copy {
+            max-width: 500px;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .feature-item i {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-green);
+        }
+
+        .brand-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat-box {
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.78rem;
+        }
+
+        .slide-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .slide-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .slide-dot.active {
+            background: var(--accent-green);
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        .slide-dot:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        .form-panel {
+            padding: 30px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #ffffff;
+        }
+
+        .login-badge {
+            width: fit-content;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--accent-green-bg);
+            color: #047857;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .form-title {
+            margin-top: 18px;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+        }
+
+        .role-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .role-option input {
+            display: none;
+        }
+
+        .role-option span {
+            width: 100%;
+            min-height: 72px;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .role-option i {
+            font-size: 1.15rem;
+        }
+
+        .role-option input:checked + span {
+            border-color: var(--accent-green);
+            background: var(--accent-green-bg);
+            color: #047857;
+        }
+
+        .input-field {
+            position: relative;
+        }
+
+        .input-field .field-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            z-index: 2;
+        }
+
+        .form-control {
+            min-height: 54px;
+            border-radius: 14px;
+            border-color: var(--border-light);
+            padding-left: 46px;
+            color: var(--text-main);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.13);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .password-toggle:hover {
+            background: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .auth-link {
+            color: var(--accent-blue);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .auth-link:hover {
+            color: var(--sidebar-active);
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            min-height: 54px;
+            border: none;
+            border-radius: 14px;
+            background: var(--sidebar-bg);
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 0;
+            transition: 0.2s ease;
+        }
+
+        .btn-login:hover {
+            background: var(--sidebar-active);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .quick-action {
+            min-height: 48px;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.2s ease;
+        }
+
+        .quick-action:hover {
+            border-color: var(--accent-green);
+            background: var(--accent-green-bg);
+            color: #047857;
+        }
+
+        .copyright {
+            margin-top: 5px;
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            text-align: center;
+        }
+
+        @media (max-width: 991px) {
+            .login-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-panel {
+                min-height: auto;
+                padding: 36px;
+            }
+
+            .brand-stats {
+                margin-top: 28px;
+            }
+            
+            .picture-frame {
+                width: 140px;
+                height: 175px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .login-shell {
+                padding: 0;
+                align-items: stretch;
+            }
+
+            .login-panel {
+                min-height: 100vh;
+                border-radius: 0;
+            }
+
+            .brand-panel,
+            .form-panel {
+                padding: 28px 20px;
+            }
+
+            .brand-stats,
+            .role-group,
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .form-title {
+                font-size: 1.65rem;
+            }
+            
+            .picture-frame {
+                width: 120px;
+                height: 150px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+    <main class="login-shell">
+        <section class="login-panel">
+            <aside class="brand-panel">
+                <div class="brand-top">
+                    <div class="brand-mark">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <span class="system_name">Student Management Portal</span>
+                </div>
+
+                <!-- ===== SLIDESHOW WRAPPER ===== -->
+                <div class="slideshow-wrapper">
+                    <div class="slides-track" id="slidesTrack">
+                        
+                        <!-- SLIDE 1: Welcome / Overview -->
+                        <div class="slide" data-index="0">
+                            <div class="brand-content">
+                                <h1 class="brand-title">Manage every student record from <span style="color:#10b981;">one secure place</span>.</h1>
+                                <p class="brand-copy">
+                                    Sign in to review students, courses, attendance, finance records, and daily academic activity with a clean dashboard built for school administrators.
+                                </p>
+
+                                <div class="feature-list">
+                                    <div class="feature-item">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                        Secure access for administrators, instructors, and staff
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        Live insights for enrollment, fees, classes, and attendance
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                        Organized student profiles, documents, and academic records
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="brand-stats">
+                                <div class="stat-box">
+                                    <span class="stat-value">Over 85</span>
+                                    <span class="stat-label">Available Courses</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-value">Over 1.2k</span>
+                                    <span class="stat-label">Students</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-value">Over 12K</span>
+                                    <span class="stat-label">Library Books</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SLIDE 2: Chancellor -->
+                        <div class="slide" data-index="1">
+                            <!-- Picture Frame (Image inside Image) -->
+                            <div class="picture-frame">
+                                <!-- The frame image (frame.png) -->
+                                <img src="frame.png" alt="Picture Frame" class="frame-image" 
+                                     onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(145deg, #5C3D2E, #3A2418)'; this.parentElement.style.borderRadius='8px'; this.parentElement.style.padding='8px';">
+                                
+                                <!-- Inner picture container -->
+                                <div class="inner-picture-container">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=250&fit=crop&crop=face" 
+                                         alt="Chancellor Portrait"
+                                         onerror="this.style.display='none'; this.parentElement.querySelector('.inner-placeholder').style.display='flex';">
+                                    <div class="inner-placeholder" style="display:none;">
+                                        <i class="fa-regular fa-image"></i>
+                                        <div class="placeholder-text">
+                                            YOUR
+                                            <span>IMAGE</span>
+                                            HERE
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portrait-nameplate">Chancellor</div>
+                            
+                            <h2 class="slide-title">Dr. <span class="highlight">John Smith</span></h2>
+                            <p class="slide-desc">
+                                <span class="quote-mark">"</span>Education is the most powerful weapon which you can use to change the world. Our institution is committed to excellence in teaching, research, and community service.<span class="quote-mark">"</span>
+                            </p>
+                            <div class="slide-subtitle">— 25 Years of Leadership Excellence</div>
+                        </div>
+
+                        <!-- SLIDE 3: Vice-Chancellor -->
+                        <div class="slide" data-index="2">
+                            <div class="picture-frame">
+                                <img src="frame.png" alt="Picture Frame" class="frame-image"
+                                     onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(145deg, #5C3D2E, #3A2418)'; this.parentElement.style.borderRadius='8px'; this.parentElement.style.padding='8px';">
+                                <div class="inner-picture-container">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=250&fit=crop&crop=face" 
+                                         alt="Vice-Chancellor Portrait"
+                                         onerror="this.style.display='none'; this.parentElement.querySelector('.inner-placeholder').style.display='flex';">
+                                    <div class="inner-placeholder" style="display:none;">
+                                        <i class="fa-regular fa-image"></i>
+                                        <div class="placeholder-text">
+                                            YOUR
+                                            <span>IMAGE</span>
+                                            HERE
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portrait-nameplate">Vice-Chancellor</div>
+                            
+                            <h2 class="slide-title">Prof. <span class="highlight">Sarah Johnson</span></h2>
+                            <p class="slide-desc">
+                                <span class="quote-mark">"</span>We are building a future-ready institution that fosters innovation, critical thinking, and global citizenship. Our graduates will lead with integrity and purpose.<span class="quote-mark">"</span>
+                            </p>
+                            <div class="slide-subtitle">— Driving Academic Excellence</div>
+                        </div>
+
+                        <!-- SLIDE 4: Dean of Students -->
+                        <div class="slide" data-index="3">
+                            <div class="picture-frame">
+                                <img src="frame.png" alt="Picture Frame" class="frame-image"
+                                     onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(145deg, #5C3D2E, #3A2418)'; this.parentElement.style.borderRadius='8px'; this.parentElement.style.padding='8px';">
+                                <div class="inner-picture-container">
+                                    <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=200&h=250&fit=crop&crop=face" 
+                                         alt="Dean of Students Portrait"
+                                         onerror="this.style.display='none'; this.parentElement.querySelector('.inner-placeholder').style.display='flex';">
+                                    <div class="inner-placeholder" style="display:none;">
+                                        <i class="fa-regular fa-image"></i>
+                                        <div class="placeholder-text">
+                                            YOUR
+                                            <span>IMAGE</span>
+                                            HERE
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portrait-nameplate">Dean of Students</div>
+                            
+                            <h2 class="slide-title">Dr. <span class="highlight">Michael Chen</span></h2>
+                            <p class="slide-desc">
+                                <span class="quote-mark">"</span>Every student matters. We are committed to providing holistic support, fostering personal growth, and ensuring every student has the resources they need to succeed.<span class="quote-mark">"</span>
+                            </p>
+                            <div class="slide-subtitle">— Student Welfare & Development</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Slide Dots -->
+                <div class="slide-dots" id="slideDots">
+                    <button class="slide-dot active" data-index="0" aria-label="Slide 1"></button>
+                    <button class="slide-dot" data-index="1" aria-label="Slide 2"></button>
+                    <button class="slide-dot" data-index="2" aria-label="Slide 3"></button>
+                    <button class="slide-dot" data-index="3" aria-label="Slide 4"></button>
+                </div>
+            </aside>
+
+            <section class="form-panel">
+                <span class="login-badge">
+                    <i class="fa-solid fa-lock"></i>
+                    Authorized access
+                </span>
+
+                <h2 class="form-title">Welcome!</h2>
+                <p class="form-subtitle">Choose your role and login to continue.</p>
+
+                <form action="../dashboard/index.html">
+                    <div class="role-group" aria-label="Select account role">
+                        <label class="role-option">
+                            <input type="radio" name="role" checked>
+                            <span>
+                                <i class="fa-solid fa-user-tie"></i>
+                                Admin
+                            </span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="role">
+                            <span>
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                                Instructor
+                            </span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="role">
+                            <span>
+                                <i class="fa-solid fa-user-graduate"></i>
+                                Student
+                            </span>
+                        </label>
+                    </div>
+
+                    <div name="user_mail" class="user_mail">
+                        <div class="input-field">
+                            <i class="fa-solid fa-envelope field-icon"></i>
+                            <input type="email" class="form-control" id="emailAddress" placeholder="Email" required>
+                        </div>
+                    </div>
+
+                    <div name="user_password" class="user_password">
+                        <div class="input-field">
+                            <i class="fa-solid fa-key field-icon"></i>
+                            <input type="password" class="form-control pe-5" id="password" placeholder="Password" required>
+                            <button class="password-toggle" type="button" id="togglePassword" aria-label="Show password">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                        </div>
+                        <a class="auth-link" href="forgot-password.html">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-login w-100">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>
+                        Login
+                    </button>
+                </form>
+
+                <div class="quick-actions">
+                    <a href="verify-email.html" class="quick-action">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                        Verify Email
+                    </a>
+                    <a href="lock-screen.html" class="quick-action">
+                        <i class="fa-solid fa-desktop"></i>
+                        Lock Screen
+                    </a>
+                </div>
+
+                <p class="copyright">
+                    &copy; 2026 Student Management Portal. All rights reserved.
+                </p>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        // ===== HORIZONTAL SLIDESHOW CONTROLLER =====
+        (function() {
+            const track = document.getElementById('slidesTrack');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slide-dot');
+            const totalSlides = slides.length;
+            let currentIndex = 0;
+            let slideInterval = null;
+            const INTERVAL_TIME = 8000;
+            let isTransitioning = false;
+
+            function goToSlide(index) {
+                if (isTransitioning || index === currentIndex) return;
+                isTransitioning = true;
+
+                track.style.transform = `translateX(-${index * 100}%)`;
+
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+
+                currentIndex = index;
+
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 600);
+            }
+
+            function nextSlide() {
+                const next = (currentIndex + 1) % totalSlides;
+                goToSlide(next);
+            }
+
+            function prevSlide() {
+                const prev = (currentIndex - 1 + totalSlides) % totalSlides;
+                goToSlide(prev);
+            }
+
+            function startAutoPlay() {
+                if (slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, INTERVAL_TIME);
+            }
+
+            function stopAutoPlay() {
+                if (slideInterval) {
+                    clearInterval(slideInterval);
+                    slideInterval = null;
+                }
+            }
+
+            // Dot click handlers
+            dots.forEach((dot) => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    goToSlide(index);
+                    stopAutoPlay();
+                    startAutoPlay();
+                });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextSlide();
+                    stopAutoPlay();
+                    startAutoPlay();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                    stopAutoPlay();
+                    startAutoPlay();
+                }
+            });
+
+            // Touch/Swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const wrapper = document.querySelector('.slideshow-wrapper');
+
+            wrapper.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            wrapper.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                    stopAutoPlay();
+                    startAutoPlay();
+                }
+            }, { passive: true });
+
+            // Pause on hover
+            const panel = document.querySelector('.brand-panel');
+            panel.addEventListener('mouseenter', stopAutoPlay);
+            panel.addEventListener('mouseleave', startAutoPlay);
+
+            // Initialize
+            goToSlide(0);
+            startAutoPlay();
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }, 100);
+            });
+
+            // Password toggle
+            document.getElementById('togglePassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const icon = this.querySelector('i');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+
+        })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

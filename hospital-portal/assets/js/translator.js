@@ -726,7 +726,7 @@ function exportAsPDF() {
     const fileTypeName = currentFileType === 'price_package' ? 'NHIF Price Package' : 'Visit Types';
     const now = new Date();
     
-    let printHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Kitita Export - ${fileTypeName}</title>
+    let printHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${fileTypeName}</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; margin: 20px; }
         h1 { color: #2c3e50; border-bottom: 2px solid #3498db; }
@@ -826,7 +826,7 @@ function exportAsJSON() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `kitita_export_${fileTypeName}_${timestamp}.json`;
+    a.download = `${fileTypeName}_${timestamp}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

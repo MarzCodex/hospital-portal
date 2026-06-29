@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Payment History | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+<style>
+
+        body{
+            background: #f1f5f9;
+        }
+
+        /* Sidebar */
+        .sidebar{
+            width: 260px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar .logo{
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .nav-link{
+            color: #cbd5e1;
+            padding: 12px 20px;
+            margin: 6px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background: #2563eb;
+            color: white;
+        }
+
+        .sidebar .nav-link i{
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content{
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        /* Navbar */
+        .top-navbar{
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Cards */
+        .custom-card{
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Header Banner */
+        .history-banner{
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border-radius: 18px;
+            padding: 35px;
+        }
+
+        /* Stats */
+        .stats-card{
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stats-icon{
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            margin-bottom: 15px;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Student Profile */
+        .student-profile{
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .student-avatar{
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Table */
+        .table thead{
+            background: #e2e8f0;
+        }
+
+        .table tbody tr:hover{
+            background: #f8fafc;
+        }
+
+        /* Status Badge */
+        .status-badge{
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Filter */
+        .form-control,
+        .form-select{
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        label{
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Timeline */
+        .timeline-item{
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 25px;
+        }
+
+        .timeline-item::before{
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2563eb;
+        }
+
+        .timeline-item::after{
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: #cbd5e1;
+        }
+
+        .timeline-item:last-child::after{
+            display: none;
+        }
+
+        /* Quick Buttons */
+        .quick-btn{
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        /* Responsive */
+        @media(max-width: 991px){
+
+            .sidebar{
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content{
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+  <div>
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <i class="fas fa-layer-group"></i>
+        <span>Student Management Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search modules...">
+    </div>
+
+    <div class="menu-group" id="mainMenu">
+      <span class="menu-label">Academic Modules</span>
+
+      <!-- DASHBOARD -->
+      <div class="menu-item-group">
+        <a class="menu-item" onclick="setActive(this)" href="../dashboard/index.html">
+          <div class="menu-link-inner">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+          </div>
+        </a>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-user-graduate"></i>
+            Students
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../students/students.html">All Students</a></li>
+          <li><a href="../students/add-student.html">Add Student</a></li>
+          <li><a href="../students/edit-student.html">Edit Student</a></li>
+          <li><a href="../students/student-profile.html">Student Profile</a></li>
+          <li><a href="../students/student-results.html">Student Results</a></li>
+          <li><a href="../students/student-transcript.html">Student Transcript</a></li>
+          <li><a href="../students/student-id-card.html">Student ID Card</a></li>
+          <li><a href="../students/student-clearance.html">Student Clearance</a></li>
+          <li><a href="../students/student-graduation.html">Student Graduation</a></li>
+          <li><a href="../students/student-documents.html">Student Documents</a></li>
+          <li><a href="../students/upload-document.html">Upload Document</a></li>
+          <li><a href="../students/student-enrollment.html">Student Enrollment</a></li>
+          <li><a href="../students/student-attendance.html">Student Attendance</a></li>
+          <li><a href="../students/student-fees.html">Student Fees</a></li>
+          <li><a href="../students/student-timetable.html">Student Timetable</a></li>
+          <li><a href="../students/guardian-details.html">Guardian Details</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-building"></i>
+            Departments
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../departments/departments.html">Departments</a></li>
+          <li><a href="../departments/add-department.html">Add Department</a></li>
+          <li><a href="../departments/department-details.html">Department Details</a></li>
+        </ul>
+      </div>
+
+      <!-- SEMESTERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-calendar-alt"></i>
+            Semesters
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../semesters/semesters.html">Semesters</a></li>
+          <li><a href="../semesters/add-semester.html">Add Semester</a></li>
+          <li><a href="../semesters/edit-semester.html">Edit Semester</a></li>
+        </ul>
+      </div>
+
+      <!-- COURSES -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book-open"></i>
+            Courses
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../courses/courses.html">Courses</a></li>
+          <li><a href="../courses/add-course.html">Add Course</a></li>
+          <li><a href="../courses/course-details.html">Course Details</a></li>
+          <li><a href="../courses/course-offerings.html">Course Offerings</a></li>
+          <li><a href="../courses/add-course-offering.html">Add Course Offering</a></li>
+          <li><a href="../courses/assign-instructor.html">Assign Instructor</a></li>
+          <li><a href="../courses/assign-students.html">Assign Students</a></li>
+          <li><a href="../courses/course-schedule.html">Course Schedule</a></li>
+          <li><a href="../courses/course-materials.html">Course Materials</a></li>
+        </ul>
+      </div>
+
+      <!-- INSTRUCTORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Instructors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../instructors/instructors.html">Instructors</a></li>
+          <li><a href="../instructors/add-instructor.html">Add Instructor</a></li>
+          <li><a href="../instructors/instructor-profile.html">Instructor Profile</a></li>
+          <li><a href="../instructors/instructor-schedule.html">Instructor Schedule</a></li>
+          <li><a href="../instructors/instructor-payroll.html">Instructor Payroll</a></li>
+          <li><a href="../instructors/instructor-attendance.html">Instructor Attendance</a></li>
+          <li><a href="../instructors/instructor-courses.html">Instructor Courses</a></li>
+        </ul>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clipboard-check"></i>
+            Attendance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../attendance/attendance.html">Attendance</a></li>
+          <li><a href="../attendance/mark-attendance.html">Mark Attendance</a></li>
+          <li><a href="../attendance/attendance-report.html">Attendance Report</a></li>
+          <li><a href="../attendance/attendance-sessions.html">Attendance Sessions</a></li>
+          <li><a href="../attendance/qr-attendance.html">QR Attendance</a></li>
+          <li><a href="../attendance/biometric-attendance.html">Biometric Attendance</a></li>
+          <li><a href="../attendance/attendance-analytics.html">Attendance Analytics</a></li>
+        </ul>
+      </div>
+
+      <!-- TIMETABLE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clock"></i>
+            Timetable
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../timetable/timetable.html">Timetable</a></li>
+          <li><a href="../timetable/classrooms.html">Classrooms</a></li>
+          <li><a href="../timetable/add-classroom.html">Add Classroom</a></li>
+          <li><a href="../timetable/schedule-manager.html">Schedule Manager</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINANCE & ASSETS -->
+    <div class="menu-group" id="financeMenu">
+      <span class="menu-label">Finance & Assets</span>
+
+      <!-- FINANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-coins"></i>
+            Finance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="payments.html">Payments</a></li>
+          <li><a href="invoice.html">Invoice</a></li>
+          <li><a href="payment-history.html">Payment History</a></li>
+          <li><a href="invoices.html">Invoices</a></li>
+          <li><a href="fee-structure.html">Fee Structure</a></li>
+          <li><a href="scholarships.html">Scholarships</a></li>
+          <li><a href="payroll.html">Payroll</a></li>
+          <li><a href="expenses.html">Expenses</a></li>
+          <li><a href="receipts.html">Receipts</a></li>
+          <li><a href="pending-payments.html">Pending Payments</a></li>
+          <li><a href="financial-reports.html">Financial Reports</a></li>
+        </ul>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book"></i>
+            Library
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../library/books.html">Books</a></li>
+          <li><a href="../library/add-book.html">Add Book</a></li>
+          <li><a href="../library/borrowed-books.html">Borrowed Books</a></li>
+          <li><a href="../library/issue-book.html">Issue Book</a></li>
+          <li><a href="../library/overdue-books.html">Overdue Books</a></li>
+        </ul>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div class="menu-group" id="adminMenu">
+      <span class="menu-label">Administration</span>
+
+      <!-- REPORTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chart-pie"></i>
+            Reports
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../reports/reports.html">Reports</a></li>
+          <li><a href="../reports/academic-reports.html">Academic Reports</a></li>
+          <li><a href="../reports/financial-reports.html">Financial Reports</a></li>
+          <li><a href="../reports/attendance-reports.html">Attendance Reports</a></li>
+          <li><a href="../reports/student-reports.html">Student Reports</a></li>
+          <li><a href="../reports/export-center.html">Export Center</a></li>
+          <li><a href="../reports/analytics-dashboard.html">Analytics Dashboard</a></li>
+          <li><a href="../reports/charts-graphs.html">Charts & Graphs</a></li>
+        </ul>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-bell"></i>
+            Notifications
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../notifications/notifications.html">Notifications</a></li>
+          <li><a href="../notifications/send-notification.html">Send Notification</a></li>
+          <li><a href="../notifications/sms-center.html">SMS Center</a></li>
+          <li><a href="../notifications/email-center.html">Email Center</a></li>
+          <li><a href="../notifications/messaging.html">Messaging</a></li>
+        </ul>
+      </div>
+
+      <!-- USERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-users-cog"></i>
+            Users
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../users/profile.html">Profile</a></li>
+          <li><a href="../users/settings.html">Settings</a></li>
+          <li><a href="../users/users.html">Users</a></li>
+          <li><a href="../users/add-user.html">Add User</a></li>
+          <li><a href="../users/roles.html">Roles</a></li>
+          <li><a href="../users/permissions.html">Permissions</a></li>
+          <li><a href="../users/audit-logs.html">Audit Logs</a></li>
+          <li><a href="../users/activity-logs.html">Activity Logs</a></li>
+          <li><a href="../users/user-sessions.html">User Sessions</a></li>
+        </ul>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-cog"></i>
+            System
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../system/backup-restore.html">Backup & Restore</a></li>
+          <li><a href="../system/system-settings.html">System Settings</a></li>
+          <li><a href="../system/maintenance-mode.html">Maintenance Mode</a></li>
+          <li><a href="../system/system-health.html">System Health</a></li>
+        </ul>
+      </div>
+
+      <!-- ERRORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-exclamation-triangle"></i>
+            Errors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../errors/403.html">403</a></li>
+          <li><a href="../errors/404.html">404</a></li>
+          <li><a href="../errors/500.html">500</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4 class="fw-bold mb-0">
+                    Payment History
+                </h4>
+
+                <small class="text-muted">
+                    View student transaction and payment records
+                </small>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            Finance
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Payment History
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-success">
+
+                    <i class="fa fa-file-excel me-2"></i>
+                    Export
+
+                </button>
+
+                <button class="btn btn-primary">
+
+                    <i class="fa fa-print me-2"></i>
+                    Print
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Banner -->
+        <div class="history-banner mb-4">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <h2 class="fw-bold mb-3">
+                        Financial Transactions Overview
+                    </h2>
+
+                    <p class="mb-3">
+                        Monitor tuition payments, invoices, balances,
+                        and complete student payment history.
+                    </p>
+
+                    <div class="d-flex gap-3 flex-wrap">
+
+                        <span>
+                            <i class="fa fa-calendar me-2"></i>
+                            Academic Year 2025/2026
+                        </span>
+
+                        <span>
+                            <i class="fa fa-wallet me-2"></i>
+                            Total Revenue: $145,000
+                        </span>
+
+                        <span>
+                            <i class="fa fa-users me-2"></i>
+                            1,240 Students
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                    <h1 class="fw-bold">
+                        89%
+                    </h1>
+
+                    <p class="mb-0">
+                        Fee Collection Rate
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Statistics -->
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-success">
+
+                        <i class="fa fa-money-bill-wave"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        $145K
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Total Payments
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-danger">
+
+                        <i class="fa fa-file-invoice-dollar"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        $18K
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Outstanding Balance
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-warning">
+
+                        <i class="fa fa-clock"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        45
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Pending Payments
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-primary">
+
+                        <i class="fa fa-chart-line"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        +12%
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Monthly Growth
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Payment Records -->
+            <div class="col-lg-8">
+
+                <!-- Filters -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Filter Transactions
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <label>Student</label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Search student">
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label>Payment Status</label>
+
+                                <select class="form-select">
+
+                                    <option>All Status</option>
+                                    <option>Paid</option>
+                                    <option>Pending</option>
+                                    <option>Overdue</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label>Payment Method</label>
+
+                                <select class="form-select">
+
+                                    <option>All Methods</option>
+                                    <option>Bank Transfer</option>
+                                    <option>Cash</option>
+                                    <option>Mobile Money</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Payment Table -->
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-4">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Recent Transactions
+                            </h5>
+
+                            <small class="text-muted">
+                                Student payment history records
+                            </small>
+
+                        </div>
+
+                        <a href="invoice.html"
+                           class="btn btn-primary btn-sm">
+
+                            <i class="fa fa-plus me-2"></i>
+                            Create Invoice
+
+                        </a>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Invoice ID</th>
+                                        <th>Method</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=12"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="fw-bold mb-1">
+                                                        John Doe
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-001
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>#INV-001</td>
+
+                                        <td>
+
+                                            <span class="badge bg-primary">
+                                                Bank Transfer
+                                            </span>
+
+                                        </td>
+
+                                        <td class="fw-bold text-success">
+                                            $1,250
+                                        </td>
+
+                                        <td>18 May 2026</td>
+
+                                        <td>
+
+                                            <span class="status-badge bg-success text-white">
+                                                Paid
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=32"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="fw-bold mb-1">
+                                                        Sarah Johnson
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-002
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>#INV-002</td>
+
+                                        <td>
+
+                                            <span class="badge bg-warning text-dark">
+                                                Mobile Money
+                                            </span>
+
+                                        </td>
+
+                                        <td class="fw-bold text-success">
+                                            $980
+                                        </td>
+
+                                        <td>15 May 2026</td>
+
+                                        <td>
+
+                                            <span class="status-badge bg-warning text-dark">
+                                                Pending
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=15"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="fw-bold mb-1">
+                                                        Michael Brown
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-003
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>#INV-003</td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Cash
+                                            </span>
+
+                                        </td>
+
+                                        <td class="fw-bold text-danger">
+                                            $650
+                                        </td>
+
+                                        <td>12 May 2026</td>
+
+                                        <td>
+
+                                            <span class="status-badge bg-danger text-white">
+                                                Overdue
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=45"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="fw-bold mb-1">
+                                                        Emily Davis
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-004
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>#INV-004</td>
+
+                                        <td>
+
+                                            <span class="badge bg-primary">
+                                                Bank Transfer
+                                            </span>
+
+                                        </td>
+
+                                        <td class="fw-bold text-success">
+                                            $1,500
+                                        </td>
+
+                                        <td>10 May 2026</td>
+
+                                        <td>
+
+                                            <span class="status-badge bg-success text-white">
+                                                Paid
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+
+                <!-- Student Financial Profile -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Student Financial Profile
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="student-profile">
+
+                            <div class="text-center mb-4">
+
+                                <img src="https://i.pravatar.cc/100?img=12"
+                                     class="student-avatar mb-3"
+                                     alt="Student">
+
+                                <h5 class="fw-bold mb-1">
+                                    John Doe
+                                </h5>
+
+                                <p class="text-muted mb-0">
+                                    Computer Science
+                                </p>
+
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3">
+
+                                <span class="text-muted">
+                                    Total Paid
+                                </span>
+
+                                <strong class="text-success">
+                                    $4,500
+                                </strong>
+
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3">
+
+                                <span class="text-muted">
+                                    Outstanding
+                                </span>
+
+                                <strong class="text-danger">
+                                    $750
+                                </strong>
+
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+
+                                <span class="text-muted">
+                                    Last Payment
+                                </span>
+
+                                <strong>
+                                    18 May 2026
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Transaction Timeline -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Transaction Timeline
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="timeline-item">
+
+                            <h6 class="fw-bold">
+                                Tuition Payment Completed
+                            </h6>
+
+                            <small class="text-muted">
+                                $1,250 paid via Bank Transfer
+                            </small>
+
+                        </div>
+
+                        <div class="timeline-item">
+
+                            <h6 class="fw-bold">
+                                Invoice Generated
+                            </h6>
+
+                            <small class="text-muted">
+                                Semester 2 Invoice created
+                            </small>
+
+                        </div>
+
+                        <div class="timeline-item">
+
+                            <h6 class="fw-bold">
+                                Payment Reminder Sent
+                            </h6>
+
+                            <small class="text-muted">
+                                Reminder email delivered
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Quick Actions
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body d-grid gap-3">
+
+                        <a href="invoice.html"
+                           class="btn btn-primary quick-btn">
+
+                            <i class="fa fa-file-invoice me-2"></i>
+                            Generate Invoice
+
+                        </a>
+
+                        <button class="btn btn-success quick-btn">
+
+                            <i class="fa fa-money-check-dollar me-2"></i>
+                            Record Payment
+
+                        </button>
+
+                        <button class="btn btn-warning quick-btn text-dark">
+
+                            <i class="fa fa-envelope me-2"></i>
+                            Send Reminder
+
+                        </button>
+
+                        <button class="btn btn-danger quick-btn">
+
+                            <i class="fa fa-file-pdf me-2"></i>
+                            Export Report
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

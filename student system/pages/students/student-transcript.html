@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Transcript | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+<style>
+
+        body{
+            background: #f1f5f9;
+        }
+
+        /* Sidebar */
+        .sidebar{
+            width: 260px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar .logo{
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .nav-link{
+            color: #cbd5e1;
+            padding: 12px 20px;
+            margin: 6px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background: #2563eb;
+            color: white;
+        }
+
+        .sidebar .nav-link i{
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content{
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        /* Top Navbar */
+        .top-navbar{
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Cards */
+        .custom-card{
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Transcript */
+        .transcript-header{
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            border-radius: 18px 18px 0 0;
+            padding: 30px;
+        }
+
+        .student-avatar{
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        /* Statistics */
+        .stats-box{
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Semester Cards */
+        .semester-card{
+            border-left: 5px solid #2563eb;
+        }
+
+        /* Grade Badges */
+        .grade-a{
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .grade-b{
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .grade-c{
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .grade-d{
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* Table */
+        .table thead{
+            background: #e2e8f0;
+        }
+
+        .table tbody tr:hover{
+            background: #f8fafc;
+        }
+
+        /* Footer */
+        .transcript-footer{
+            background: #f8fafc;
+            border-radius: 0 0 18px 18px;
+            padding: 25px;
+        }
+
+        /* Responsive */
+        @media(max-width: 991px){
+
+            .sidebar{
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content{
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+  <div>
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <i class="fas fa-layer-group"></i>
+        <span>Student Management Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search modules...">
+    </div>
+
+    <div class="menu-group" id="mainMenu">
+      <span class="menu-label">Academic Modules</span>
+
+      <!-- DASHBOARD -->
+      <div class="menu-item-group">
+        <a class="menu-item" onclick="setActive(this)" href="../dashboard/index.html">
+          <div class="menu-link-inner">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+          </div>
+        </a>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-user-graduate"></i>
+            Students
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="students.html">All Students</a></li>
+          <li><a href="add-student.html">Add Student</a></li>
+          <li><a href="edit-student.html">Edit Student</a></li>
+          <li><a href="student-profile.html">Student Profile</a></li>
+          <li><a href="student-results.html">Student Results</a></li>
+          <li><a href="student-transcript.html">Student Transcript</a></li>
+          <li><a href="student-id-card.html">Student ID Card</a></li>
+          <li><a href="student-clearance.html">Student Clearance</a></li>
+          <li><a href="student-graduation.html">Student Graduation</a></li>
+          <li><a href="student-documents.html">Student Documents</a></li>
+          <li><a href="upload-document.html">Upload Document</a></li>
+          <li><a href="student-enrollment.html">Student Enrollment</a></li>
+          <li><a href="student-attendance.html">Student Attendance</a></li>
+          <li><a href="student-fees.html">Student Fees</a></li>
+          <li><a href="student-timetable.html">Student Timetable</a></li>
+          <li><a href="guardian-details.html">Guardian Details</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-building"></i>
+            Departments
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../departments/departments.html">Departments</a></li>
+          <li><a href="../departments/add-department.html">Add Department</a></li>
+          <li><a href="../departments/department-details.html">Department Details</a></li>
+        </ul>
+      </div>
+
+      <!-- SEMESTERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-calendar-alt"></i>
+            Semesters
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../semesters/semesters.html">Semesters</a></li>
+          <li><a href="../semesters/add-semester.html">Add Semester</a></li>
+          <li><a href="../semesters/edit-semester.html">Edit Semester</a></li>
+        </ul>
+      </div>
+
+      <!-- COURSES -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book-open"></i>
+            Courses
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../courses/courses.html">Courses</a></li>
+          <li><a href="../courses/add-course.html">Add Course</a></li>
+          <li><a href="../courses/course-details.html">Course Details</a></li>
+          <li><a href="../courses/course-offerings.html">Course Offerings</a></li>
+          <li><a href="../courses/add-course-offering.html">Add Course Offering</a></li>
+          <li><a href="../courses/assign-instructor.html">Assign Instructor</a></li>
+          <li><a href="../courses/assign-students.html">Assign Students</a></li>
+          <li><a href="../courses/course-schedule.html">Course Schedule</a></li>
+          <li><a href="../courses/course-materials.html">Course Materials</a></li>
+        </ul>
+      </div>
+
+      <!-- INSTRUCTORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Instructors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../instructors/instructors.html">Instructors</a></li>
+          <li><a href="../instructors/add-instructor.html">Add Instructor</a></li>
+          <li><a href="../instructors/instructor-profile.html">Instructor Profile</a></li>
+          <li><a href="../instructors/instructor-schedule.html">Instructor Schedule</a></li>
+          <li><a href="../instructors/instructor-payroll.html">Instructor Payroll</a></li>
+          <li><a href="../instructors/instructor-attendance.html">Instructor Attendance</a></li>
+          <li><a href="../instructors/instructor-courses.html">Instructor Courses</a></li>
+        </ul>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clipboard-check"></i>
+            Attendance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../attendance/attendance.html">Attendance</a></li>
+          <li><a href="../attendance/mark-attendance.html">Mark Attendance</a></li>
+          <li><a href="../attendance/attendance-report.html">Attendance Report</a></li>
+          <li><a href="../attendance/attendance-sessions.html">Attendance Sessions</a></li>
+          <li><a href="../attendance/qr-attendance.html">QR Attendance</a></li>
+          <li><a href="../attendance/biometric-attendance.html">Biometric Attendance</a></li>
+          <li><a href="../attendance/attendance-analytics.html">Attendance Analytics</a></li>
+        </ul>
+      </div>
+
+      <!-- TIMETABLE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clock"></i>
+            Timetable
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../timetable/timetable.html">Timetable</a></li>
+          <li><a href="../timetable/classrooms.html">Classrooms</a></li>
+          <li><a href="../timetable/add-classroom.html">Add Classroom</a></li>
+          <li><a href="../timetable/schedule-manager.html">Schedule Manager</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINANCE & ASSETS -->
+    <div class="menu-group" id="financeMenu">
+      <span class="menu-label">Finance & Assets</span>
+
+      <!-- FINANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-coins"></i>
+            Finance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../finance/payments.html">Payments</a></li>
+          <li><a href="../finance/invoice.html">Invoice</a></li>
+          <li><a href="../finance/payment-history.html">Payment History</a></li>
+          <li><a href="../finance/invoices.html">Invoices</a></li>
+          <li><a href="../finance/fee-structure.html">Fee Structure</a></li>
+          <li><a href="../finance/scholarships.html">Scholarships</a></li>
+          <li><a href="../finance/payroll.html">Payroll</a></li>
+          <li><a href="../finance/expenses.html">Expenses</a></li>
+          <li><a href="../finance/receipts.html">Receipts</a></li>
+          <li><a href="../finance/pending-payments.html">Pending Payments</a></li>
+          <li><a href="../finance/financial-reports.html">Financial Reports</a></li>
+        </ul>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book"></i>
+            Library
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../library/books.html">Books</a></li>
+          <li><a href="../library/add-book.html">Add Book</a></li>
+          <li><a href="../library/borrowed-books.html">Borrowed Books</a></li>
+          <li><a href="../library/issue-book.html">Issue Book</a></li>
+          <li><a href="../library/overdue-books.html">Overdue Books</a></li>
+        </ul>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div class="menu-group" id="adminMenu">
+      <span class="menu-label">Administration</span>
+
+      <!-- REPORTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chart-pie"></i>
+            Reports
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../reports/reports.html">Reports</a></li>
+          <li><a href="../reports/academic-reports.html">Academic Reports</a></li>
+          <li><a href="../reports/financial-reports.html">Financial Reports</a></li>
+          <li><a href="../reports/attendance-reports.html">Attendance Reports</a></li>
+          <li><a href="../reports/student-reports.html">Student Reports</a></li>
+          <li><a href="../reports/export-center.html">Export Center</a></li>
+          <li><a href="../reports/analytics-dashboard.html">Analytics Dashboard</a></li>
+          <li><a href="../reports/charts-graphs.html">Charts & Graphs</a></li>
+        </ul>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-bell"></i>
+            Notifications
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../notifications/notifications.html">Notifications</a></li>
+          <li><a href="../notifications/send-notification.html">Send Notification</a></li>
+          <li><a href="../notifications/sms-center.html">SMS Center</a></li>
+          <li><a href="../notifications/email-center.html">Email Center</a></li>
+          <li><a href="../notifications/messaging.html">Messaging</a></li>
+        </ul>
+      </div>
+
+      <!-- USERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-users-cog"></i>
+            Users
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../users/profile.html">Profile</a></li>
+          <li><a href="../users/settings.html">Settings</a></li>
+          <li><a href="../users/users.html">Users</a></li>
+          <li><a href="../users/add-user.html">Add User</a></li>
+          <li><a href="../users/roles.html">Roles</a></li>
+          <li><a href="../users/permissions.html">Permissions</a></li>
+          <li><a href="../users/audit-logs.html">Audit Logs</a></li>
+          <li><a href="../users/activity-logs.html">Activity Logs</a></li>
+          <li><a href="../users/user-sessions.html">User Sessions</a></li>
+        </ul>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-cog"></i>
+            System
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../system/backup-restore.html">Backup & Restore</a></li>
+          <li><a href="../system/system-settings.html">System Settings</a></li>
+          <li><a href="../system/maintenance-mode.html">Maintenance Mode</a></li>
+          <li><a href="../system/system-health.html">System Health</a></li>
+        </ul>
+      </div>
+
+      <!-- ERRORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-exclamation-triangle"></i>
+            Errors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../errors/403.html">403</a></li>
+          <li><a href="../errors/404.html">404</a></li>
+          <li><a href="../errors/500.html">500</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4 class="fw-bold mb-0">
+                    Academic Transcript
+                </h4>
+
+                <small class="text-muted">
+                    Official student academic transcript and performance history
+                </small>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="students.html">Students</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Academic Transcript
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-success">
+
+                    <i class="fa fa-download me-2"></i>
+                    Download PDF
+
+                </button>
+
+                <button class="btn btn-primary">
+
+                    <i class="fa fa-print me-2"></i>
+                    Print Transcript
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Transcript Card -->
+        <div class="card custom-card overflow-hidden">
+
+            <!-- Header -->
+            <div class="transcript-header">
+
+                <div class="row align-items-center">
+
+                    <div class="col-lg-8">
+
+                        <div class="d-flex align-items-center">
+
+                            <img src="https://i.pravatar.cc/150?img=12"
+                                 class="student-avatar me-4"
+                                 alt="Student">
+
+                            <div>
+
+                                <h2 class="fw-bold mb-1">
+                                    John Doe
+                                </h2>
+
+                                <p class="mb-2">
+                                    Bachelor of Science in Computer Science
+                                </p>
+
+                                <div class="d-flex gap-3 flex-wrap">
+
+                                    <span>
+                                        <i class="fa fa-id-card me-2"></i>
+                                        STU-2026-001
+                                    </span>
+
+                                    <span>
+                                        <i class="fa fa-calendar me-2"></i>
+                                        Enrolled: 2023
+                                    </span>
+
+                                    <span>
+                                        <i class="fa fa-graduation-cap me-2"></i>
+                                        Semester 6
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                        <h5 class="fw-bold">
+                            Student Management System
+                        </h5>
+
+                        <p class="mb-0">
+                            Official Academic Transcript
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Body -->
+            <div class="card-body p-4">
+
+                <!-- Statistics -->
+                <div class="row g-4 mb-5">
+
+                    <div class="col-md-3">
+
+                        <div class="stats-box">
+
+                            <h3 class="fw-bold text-primary">
+                                3.8
+                            </h3>
+
+                            <p class="text-muted mb-0">
+                                Cumulative GPA
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="stats-box">
+
+                            <h3 class="fw-bold text-success">
+                                120
+                            </h3>
+
+                            <p class="text-muted mb-0">
+                                Credits Earned
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="stats-box">
+
+                            <h3 class="fw-bold text-warning">
+                                36
+                            </h3>
+
+                            <p class="text-muted mb-0">
+                                Courses Completed
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="stats-box">
+
+                            <h3 class="fw-bold text-danger">
+                                #5
+                            </h3>
+
+                            <p class="text-muted mb-0">
+                                Class Rank
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Semester 1 -->
+                <div class="card semester-card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Semester 1 - 2023
+                            </h5>
+
+                            <small class="text-muted">
+                                First Year Academic Session
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-primary px-3 py-2">
+                            GPA: 3.6
+                        </span>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Course Code</th>
+                                        <th>Course Title</th>
+                                        <th>Credits</th>
+                                        <th>Score</th>
+                                        <th>Grade</th>
+                                        <th>Status</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>CSC101</td>
+                                        <td>Introduction to Programming</td>
+                                        <td>3</td>
+                                        <td>95%</td>
+
+                                        <td>
+
+                                            <span class="badge grade-a px-3 py-2">
+                                                A+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Passed
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>MTH101</td>
+                                        <td>Calculus I</td>
+                                        <td>3</td>
+                                        <td>82%</td>
+
+                                        <td>
+
+                                            <span class="badge grade-b px-3 py-2">
+                                                B+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Passed
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>PHY101</td>
+                                        <td>Computer Hardware Basics</td>
+                                        <td>2</td>
+                                        <td>75%</td>
+
+                                        <td>
+
+                                            <span class="badge grade-c px-3 py-2">
+                                                C+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Passed
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Semester 2 -->
+                <div class="card semester-card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Semester 2 - 2024
+                            </h5>
+
+                            <small class="text-muted">
+                                Second Year Academic Session
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-success px-3 py-2">
+                            GPA: 3.9
+                        </span>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Course Code</th>
+                                        <th>Course Title</th>
+                                        <th>Credits</th>
+                                        <th>Score</th>
+                                        <th>Grade</th>
+                                        <th>Status</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>CSC202</td>
+                                        <td>Database Systems</td>
+                                        <td>4</td>
+                                        <td>88%</td>
+
+                                        <td>
+
+                                            <span class="badge grade-a px-3 py-2">
+                                                A
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Passed
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>CSC305</td>
+                                        <td>Web Development</td>
+                                        <td>4</td>
+                                        <td>91%</td>
+
+                                        <td>
+
+                                            <span class="badge grade-a px-3 py-2">
+                                                A+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Passed
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>MTH210</td>
+                                        <td>Discrete Mathematics</td>
+                                        <td>3</td>
+                                        <td>76%</td>
+
+                                        <td>
+
+                                            <span class="badge grade-b px-3 py-2">
+                                                B+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Passed
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Academic Summary -->
+                <div class="row g-4">
+
+                    <!-- Remarks -->
+                    <div class="col-lg-8">
+
+                        <div class="card custom-card">
+
+                            <div class="card-header bg-white border-0">
+
+                                <h5 class="fw-bold mb-0">
+                                    Academic Remarks
+                                </h5>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="alert alert-success border-0 mb-3">
+
+                                    <h6 class="fw-bold">
+                                        Excellent Academic Standing
+                                    </h6>
+
+                                    <p class="mb-0">
+                                        The student has maintained excellent
+                                        academic performance throughout the
+                                        academic sessions and demonstrates
+                                        strong problem-solving and software
+                                        development skills.
+                                    </p>
+
+                                </div>
+
+                                <div class="alert alert-primary border-0">
+
+                                    <h6 class="fw-bold">
+                                        Graduation Eligibility
+                                    </h6>
+
+                                    <p class="mb-0">
+                                        Student is on track for graduation
+                                        with all required credits successfully
+                                        completed according to the curriculum.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="col-lg-4">
+
+                        <div class="card custom-card">
+
+                            <div class="card-header bg-white border-0">
+
+                                <h5 class="fw-bold mb-0">
+                                    Academic Summary
+                                </h5>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-between mb-3">
+
+                                    <span>Total Credits</span>
+
+                                    <strong>120</strong>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-3">
+
+                                    <span>Courses Passed</span>
+
+                                    <strong>36</strong>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-3">
+
+                                    <span>Average Score</span>
+
+                                    <strong>87%</strong>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-3">
+
+                                    <span>Cumulative GPA</span>
+
+                                    <strong>3.8</strong>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+
+                                    <span>Academic Status</span>
+
+                                    <span class="badge bg-success">
+                                        Excellent
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="transcript-footer">
+
+                <div class="row align-items-center">
+
+                    <div class="col-md-6">
+
+                        <p class="mb-1 fw-semibold">
+                            Generated On:
+                        </p>
+
+                        <small class="text-muted">
+                            January 15, 2026 | 10:30 AM
+                        </small>
+
+                    </div>
+
+                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+
+                        <p class="mb-1 fw-semibold">
+                            Registrar Signature
+                        </p>
+
+                        <small class="text-muted">
+                            ________________________
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

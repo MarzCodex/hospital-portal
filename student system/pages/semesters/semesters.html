@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semesters | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid py-4">
+
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold">
+                    <i class="fa-solid fa-calendar-days text-primary me-2"></i>
+                    Academic Semesters
+                </h2>
+
+                <p class="text-muted">
+                    Manage school semesters, sessions, and academic periods
+                </p>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Academic Semesters
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <a href="add-semester.html" class="btn btn-primary">
+
+                <i class="fa-solid fa-plus me-2"></i>
+                Add Semester
+
+            </a>
+
+        </div>
+
+        <!-- Semester Statistics -->
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-calendar-check fa-3x text-success mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Active Semester
+                    </h5>
+
+                    <h3 class="fw-bold text-success">
+                        Fall 2026
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-book-open fa-3x text-primary mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Total Semesters
+                    </h5>
+
+                    <h2 class="fw-bold text-primary">
+                        12
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-clock fa-3x text-warning mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Upcoming
+                    </h5>
+
+                    <h2 class="fw-bold text-warning">
+                        2
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Semester Table -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-primary text-white">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <h5 class="mb-0">
+                        Semester List
+                    </h5>
+
+                    <input type="text"
+                        class="form-control w-25"
+                        placeholder="Search semester...">
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>Semester</th>
+                                <th>Academic Year</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>1</td>
+
+                                <td>Fall 2026</td>
+
+                                <td>2026/2027</td>
+
+                                <td>01 Sep 2026</td>
+
+                                <td>20 Dec 2026</td>
+
+                                <td>
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <a href="edit-semester.html"
+                                        class="btn btn-sm btn-warning text-white">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                    </a>
+
+                                    <button class="btn btn-sm btn-info text-white">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>2</td>
+
+                                <td>Spring 2026</td>
+
+                                <td>2025/2026</td>
+
+                                <td>10 Jan 2026</td>
+
+                                <td>30 Apr 2026</td>
+
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        Completed
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <a href="edit-semester.html"
+                                        class="btn btn-sm btn-warning text-white">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                    </a>
+
+                                    <button class="btn btn-sm btn-info text-white">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>3</td>
+
+                                <td>Summer 2027</td>
+
+                                <td>2026/2027</td>
+
+                                <td>15 May 2027</td>
+
+                                <td>15 Aug 2027</td>
+
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        Upcoming
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <a href="edit-semester.html"
+                                        class="btn btn-sm btn-warning text-white">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                    </a>
+
+                                    <button class="btn btn-sm btn-info text-white">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

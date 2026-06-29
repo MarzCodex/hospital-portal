@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Backup & Restore | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+.backup-banner{
+    background:linear-gradient(135deg,#059669,#047857);
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+.custom-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:22px;
+}
+
+.backup-item{
+    border:1px solid #e5e7eb;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.action-btn{
+    min-width:180px;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Backup & Restore
+            </h3>
+
+            <p class="text-muted mb-0">
+                Data protection and disaster recovery center
+            </p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html" class="text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Backup & Restore</li>
+                </ol>
+            </nav>
+
+        </div>
+
+        <button class="btn btn-success">
+
+            <i class="fa fa-download me-2"></i>
+            Create Backup
+
+        </button>
+
+    </div>
+
+    <!-- BANNER -->
+
+    <div class="backup-banner mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h2 class="fw-bold">
+                    System Recovery Center
+                </h2>
+
+                <p class="mb-0">
+                    Secure institutional data with automated backups and reliable recovery mechanisms.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-end">
+
+                <h1 class="fw-bold">
+                    128
+                </h1>
+
+                <small>Recovery Points Available</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Total Backups</small>
+                            <h3 class="fw-bold">128</h3>
+                        </div>
+
+                        <div class="stat-icon bg-primary">
+                            <i class="fa fa-database"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Successful</small>
+                            <h3 class="fw-bold">124</h3>
+                        </div>
+
+                        <div class="stat-icon bg-success">
+                            <i class="fa fa-circle-check"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Storage Used</small>
+                            <h3 class="fw-bold">82 GB</h3>
+                        </div>
+
+                        <div class="stat-icon bg-warning">
+                            <i class="fa fa-hard-drive"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Recovery Ready</small>
+                            <h3 class="fw-bold">100%</h3>
+                        </div>
+
+                        <div class="stat-icon bg-danger">
+                            <i class="fa fa-shield-heart"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Quick Backup Actions
+            </h5>
+        </div>
+
+        <div class="card-body text-center">
+
+            <button class="btn btn-success action-btn m-2">
+                <i class="fa fa-download me-2"></i>
+                Full Backup
+            </button>
+
+            <button class="btn btn-primary action-btn m-2">
+                <i class="fa fa-clock me-2"></i>
+                Schedule Backup
+            </button>
+
+            <button class="btn btn-warning action-btn m-2">
+                <i class="fa fa-rotate-left me-2"></i>
+                Restore System
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- SCHEDULE SETTINGS -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Automated Backup Schedule
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Backup Frequency
+                    </label>
+
+                    <select class="form-select">
+                        <option>Daily</option>
+                        <option>Weekly</option>
+                        <option>Monthly</option>
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Backup Time
+                    </label>
+
+                    <input type="time" class="form-control">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Storage Location
+                    </label>
+
+                    <select class="form-select">
+                        <option>Cloud Storage</option>
+                        <option>Local Server</option>
+                        <option>External Storage</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BACKUP HISTORY -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="fw-bold mb-0">
+                Backup History
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="backup-item">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h6 class="fw-bold mb-1">
+                            Full System Backup
+                        </h6>
+
+                        <small class="text-muted">
+                            June 22, 2026 • 02:00 AM • 2.4 GB
+                        </small>
+
+                    </div>
+
+                    <span class="badge bg-success">
+                        Successful
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="backup-item">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h6 class="fw-bold mb-1">
+                            Database Backup
+                        </h6>
+
+                        <small class="text-muted">
+                            June 21, 2026 • 02:00 AM • 1.1 GB
+                        </small>
+
+                    </div>
+
+                    <span class="badge bg-success">
+                        Successful
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="backup-item">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h6 class="fw-bold mb-1">
+                            Incremental Backup
+                        </h6>
+
+                        <small class="text-muted">
+                            June 20, 2026 • 02:00 AM • 650 MB
+                        </small>
+
+                    </div>
+
+                    <span class="badge bg-warning">
+                        Pending Verification
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECOVERY CENTER -->
+
+    <div class="card custom-card">
+
+        <div class="card-header bg-white">
+
+            <h5 class="fw-bold mb-0">
+                Disaster Recovery Center
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+
+                <i class="fa fa-triangle-exclamation me-2"></i>
+
+                Restoring a backup will overwrite current system data. Ensure a recent backup exists before proceeding.
+
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-md-8">
+
+                    <select class="form-select">
+
+                        <option>Select Recovery Point</option>
+                        <option>June 22, 2026 - Full System Backup</option>
+                        <option>June 21, 2026 - Database Backup</option>
+                        <option>June 20, 2026 - Incremental Backup</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <button class="btn btn-danger w-100">
+
+                        <i class="fa fa-rotate-left me-2"></i>
+                        Start Recovery
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Student Management System</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --bg-main: #f4f7f6;
+      --sidebar-bg: #091e1a;
+      --sidebar-hover: #132f2a;
+      --sidebar-active: #173b34;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #10b981;
+      --accent-green-bg: #e6f7f2;
+      --accent-red: #f43f5e;
+      --accent-red-bg: #ffeef1;
+      --accent-blue: #0ea5e9;
+      --border-light: #e2e8f0;
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+
+    .sidebar::-webkit-scrollbar { width: 6px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+    .sidebar-brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+    .logo-box { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; }
+    .logo-box i { color: var(--accent-green); font-size: 1.4rem; }
+
+    .sidebar-search { position: relative; margin-bottom: 20px; }
+    .sidebar-search input {
+      width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px; padding: 10px 12px 10px 36px; color: #ffffff; font-size: 0.85rem; outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent-green); }
+    .sidebar-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); }
+
+    .menu-group { margin-bottom: 20px; }
+    .menu-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px; padding-left: 8px; display: block; font-weight: 600;border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+
+    .menu-item-group { display: flex; flex-direction: column; margin-bottom: 4px; }
+
+    .menu-item {
+      display: flex; align-items: center; justify-content: space-between; padding: 10px 12px;
+      color: rgba(255, 255, 255, 0.7); text-decoration: none; border-radius: 8px; font-size: 0.9rem;
+      transition: all 0.2s ease; cursor: pointer;
+      user-select: none;
+    }
+    .menu-item:hover { background-color: var(--sidebar-hover); color: #ffffff; }
+    .menu-item.active { background-color: var(--sidebar-active); color: #ffffff; border-right: 3px solid var(--accent-green); }
+    .menu-link-inner { display: flex; align-items: center; gap: 12px; width: 100%; }
+
+    .chevron-icon { transition: transform 0.2s ease; color: rgba(255, 255, 255, 0.4); flex-shrink: 0; }
+    .menu-item.submenu-open .chevron-icon { transform: rotate(180deg); color: #ffffff; }
+
+    .submenu {
+      display: none;
+      list-style: none;
+      padding: 4px 0 4px 28px;
+      margin: 2px 0 6px 0;
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+    }
+    .submenu.show { display: block; animation: menuDropdownSlide 0.2s ease-out forwards; }
+
+    .submenu li a {
+      display: block; padding: 8px 12px; color: rgba(255, 255, 255, 0.6);
+      text-decoration: none; font-size: 0.85rem; border-radius: 6px; transition: all 0.15s ease;
+    }
+    .submenu li a:hover, .submenu li a.sub-active { color: var(--accent-green); background-color: rgba(255, 255, 255, 0.03); }
+
+    @keyframes menuDropdownSlide {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MAIN VIEWPORT */
+    .main-viewport { flex-grow: 1; padding: 24px 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+
+    .main-header { display: flex; justify-content: space-between; align-items: center;border-bottom: 1px solid var(--border-light); margin-bottom: 8px; }
+    .header-title h1 { font-size: 1.5rem; font-weight: 700; }
+    .header-title p { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+    .header-actions { display: flex; align-items: center; gap: 24px; }
+
+    .notification-btn { position: relative; cursor: pointer; color: var(--text-muted); transition: color 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border-light); }
+    .notification-btn:hover { color: var(--text-main); }
+    .notification-badge { position: absolute; top: -2px; right: -2px; background: var(--accent-red); color: white; font-size: 0.65rem; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-main); }
+
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-trigger { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: background 0.2s; }
+    .dropdown-trigger:hover { background: rgba(0,0,0,0.03); }
+    .profile-avatar { width: 34px; height: 34px; background: var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #091e1a; font-size: 0.8rem; }
+    .profile-text h4 { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+    .profile-text p { font-size: 0.7rem; color: var(--text-muted); }
+
+    .dropdown-menu { display: none; position: absolute; right: 0; top: 100%; margin-top: 8px; min-width: 180px; background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); z-index: 100; list-style: none; padding: 8px 0; }
+    .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { display: block; }
+    .dropdown-item { display: block; padding: 8px 16px; text-decoration: none; color: var(--text-main); font-size: 0.85rem; transition: background 0.2s; }
+    .dropdown-item:hover { background: var(--bg-main); }
+    .dropdown-divider { height: 1px; background: var(--border-light); margin: 6px 0; border: none; }
+    .text-danger { color: var(--accent-red); }
+
+    /* KPI Cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .kpi-card { background-color: var(--card-bg); border: 1px solid var(--border-light); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: box-shadow 0.2s; }
+    .kpi-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .kpi-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 700; }
+    .kpi-value-container { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px; }
+
+    .badge { font-size: 0.72rem; font-weight: 600; padding: 2px 6px; border-radius: 6px; display: inline-flex; align-items: center; gap: 2px; }
+    .badge.positive { background-color: var(--accent-green-bg); color: var(--accent-green); }
+    .badge.negative { background-color: var(--accent-red-bg); color: var(--accent-red); }
+
+    .kpi-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; border-top: 1px solid #f8fafc; padding-top: 8px; }
+    .kpi-icon-wrapper { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; border-radius: 50%; background-color: var(--bg-main); display: flex; align-items: center; justify-content: center; color: var(--text-main); }
+
+    .mid-grid { display: grid; grid-template-columns: 2.2fr 1fr; gap: 16px; }
+    .chart-card, .funnel-card { background-color: var(--card-bg); border: 1px solid var(--border-light); border-radius: 12px; padding: 20px; }
+    .chart-inner-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+    .chart-selectors { display: flex; gap: 8px; margin-top: 12px; }
+    .chart-selectors select { background: var(--bg-main); border: 1px solid var(--border-light); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; color: var(--text-main); outline: none; }
+    .chart-legend { display: flex; gap: 16px; font-size: 0.8rem; color: var(--text-muted); }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-color { width: 8px; height: 8px; border-radius: 2px; }
+
+    .funnel-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-light); }
+    .funnel-row:last-child { border-bottom: none; }
+    .funnel-label { font-size: 0.85rem; font-weight: 600; }
+    .funnel-subtext { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .funnel-value { font-weight: 700; font-size: 0.95rem; }
+
+    .bottom-grid { display: grid; grid-template-columns: 1fr 2.2fr; gap: 16px; }
+    .upgrade-card, .table-card { background-color: var(--card-bg); border: 1px solid var(--border-light); border-radius: 12px; padding: 24px; }
+    .upgrade-card { display: flex; flex-direction: column; justify-content: space-between; }
+    .upgrade-header-row { display: flex; justify-content: space-between; align-items: center; }
+    .upgrade-btn { background-color: var(--text-main); color: #ffffff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+    .upgrade-btn:hover { opacity: 0.8; }
+
+    .upgrade-metrics-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background-color: var(--bg-main); padding: 12px; border-radius: 8px; margin-top: 16px; }
+    .upgrade-stat-title { font-size: 0.75rem; color: var(--text-muted); }
+    .upgrade-stat-val { font-size: 0.95rem; font-weight: 700; margin-top: 2px; }
+
+    .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .table-search { position: relative; width: 240px; }
+    .table-search input { width: 100%; background-color: var(--bg-main); border: 1px solid var(--border-light); padding: 8px 12px 8px 32px; border-radius: 6px; font-size: 0.82rem; outline: none; }
+    .table-search i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+    .refresh-btn { background: none; border: 1px solid var(--border-light); padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted); transition: all 0.2s; }
+    .refresh-btn:hover { background: var(--bg-main); }
+    .refresh-btn.spin i { animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    th { color: var(--text-muted); font-weight: 600; padding: 10px 8px; border-bottom: 1px solid var(--border-light); text-transform: uppercase; font-size: 0.72rem; }
+    td { padding: 12px 8px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+    tr.hidden { display: none; }
+
+    .switch { position: relative; display: inline-block; width: 32px; height: 18px; margin: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 18px; }
+    .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    input:checked + .slider { background-color: var(--accent-green); }
+    input:checked + .slider:before { transform: translateX(14px); }
+  </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+      /* Override the global layout rules for this dashboard page */
+      .main-viewport {
+        margin-left: 280px !important;
+      }
+      @media (max-width: 991px) {
+        .main-viewport {
+          margin-left: 0 !important;
+        }
+      }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR (Collapsible with Font Awesome icons) -->
+<aside class="sidebar">
+  <div>
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <i class="fas fa-layer-group"></i>
+        <span>Student Management Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search modules...">
+    </div>
+
+    <div class="menu-group" id="mainMenu">
+      <span class="menu-label">Academic Modules</span>
+
+      <!-- DASHBOARD -->
+      <div class="menu-item-group">
+        <a class="menu-item" onclick="setActive(this)" href="index.html">
+          <div class="menu-link-inner">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+          </div>
+        </a>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-user-graduate"></i>
+            Students
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../students/students.html">All Students</a></li>
+          <li><a href="../students/add-student.html">Add Student</a></li>
+          <li><a href="../students/edit-student.html">Edit Student</a></li>
+          <li><a href="../students/student-profile.html">Student Profile</a></li>
+          <li><a href="../students/student-results.html">Student Results</a></li>
+          <li><a href="../students/student-transcript.html">Student Transcript</a></li>
+          <li><a href="../students/student-id-card.html">Student ID Card</a></li>
+          <li><a href="../students/student-clearance.html">Student Clearance</a></li>
+          <li><a href="../students/student-graduation.html">Student Graduation</a></li>
+          <li><a href="../students/student-documents.html">Student Documents</a></li>
+          <li><a href="../students/upload-document.html">Upload Document</a></li>
+          <li><a href="../students/student-enrollment.html">Student Enrollment</a></li>
+          <li><a href="../students/student-attendance.html">Student Attendance</a></li>
+          <li><a href="../students/student-fees.html">Student Fees</a></li>
+          <li><a href="../students/student-timetable.html">Student Timetable</a></li>
+          <li><a href="../students/guardian-details.html">Guardian Details</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-building"></i>
+            Departments
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../departments/departments.html">Departments</a></li>
+          <li><a href="../departments/add-department.html">Add Department</a></li>
+          <li><a href="../departments/department-details.html">Department Details</a></li>
+        </ul>
+      </div>
+
+      <!-- SEMESTERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-calendar-alt"></i>
+            Semesters
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../semesters/semesters.html">Semesters</a></li>
+          <li><a href="../semesters/add-semester.html">Add Semester</a></li>
+          <li><a href="../semesters/edit-semester.html">Edit Semester</a></li>
+        </ul>
+      </div>
+
+      <!-- COURSES -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book-open"></i>
+            Courses
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../courses/courses.html">Courses</a></li>
+          <li><a href="../courses/add-course.html">Add Course</a></li>
+          <li><a href="../courses/course-details.html">Course Details</a></li>
+          <li><a href="../courses/course-offerings.html">Course Offerings</a></li>
+          <li><a href="../courses/add-course-offering.html">Add Course Offering</a></li>
+          <li><a href="../courses/assign-instructor.html">Assign Instructor</a></li>
+          <li><a href="../courses/assign-students.html">Assign Students</a></li>
+          <li><a href="../courses/course-schedule.html">Course Schedule</a></li>
+          <li><a href="../courses/course-materials.html">Course Materials</a></li>
+        </ul>
+      </div>
+
+      <!-- INSTRUCTORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Instructors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../instructors/instructors.html">Instructors</a></li>
+          <li><a href="../instructors/add-instructor.html">Add Instructor</a></li>
+          <li><a href="../instructors/instructor-profile.html">Instructor Profile</a></li>
+          <li><a href="../instructors/instructor-schedule.html">Instructor Schedule</a></li>
+          <li><a href="../instructors/instructor-payroll.html">Instructor Payroll</a></li>
+          <li><a href="../instructors/instructor-attendance.html">Instructor Attendance</a></li>
+          <li><a href="../instructors/instructor-courses.html">Instructor Courses</a></li>
+        </ul>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clipboard-check"></i>
+            Attendance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../attendance/attendance.html">Attendance</a></li>
+          <li><a href="../attendance/mark-attendance.html">Mark Attendance</a></li>
+          <li><a href="../attendance/attendance-report.html">Attendance Report</a></li>
+          <li><a href="../attendance/attendance-sessions.html">Attendance Sessions</a></li>
+          <li><a href="../attendance/qr-attendance.html">QR Attendance</a></li>
+          <li><a href="../attendance/biometric-attendance.html">Biometric Attendance</a></li>
+          <li><a href="../attendance/attendance-analytics.html">Attendance Analytics</a></li>
+        </ul>
+      </div>
+
+      <!-- TIMETABLE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clock"></i>
+            Timetable
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../timetable/timetable.html">Timetable</a></li>
+          <li><a href="../timetable/classrooms.html">Classrooms</a></li>
+          <li><a href="../timetable/add-classroom.html">Add Classroom</a></li>
+          <li><a href="../timetable/schedule-manager.html">Schedule Manager</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINANCE & ASSETS -->
+    <div class="menu-group" id="financeMenu">
+      <span class="menu-label">Finance & Assets</span>
+
+      <!-- FINANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-coins"></i>
+            Finance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../finance/payments.html">Payments</a></li>
+          <li><a href="../finance/invoice.html">Invoice</a></li>
+          <li><a href="../finance/payment-history.html">Payment History</a></li>
+          <li><a href="../finance/invoices.html">Invoices</a></li>
+          <li><a href="../finance/fee-structure.html">Fee Structure</a></li>
+          <li><a href="../finance/scholarships.html">Scholarships</a></li>
+          <li><a href="../finance/payroll.html">Payroll</a></li>
+          <li><a href="../finance/expenses.html">Expenses</a></li>
+          <li><a href="../finance/receipts.html">Receipts</a></li>
+          <li><a href="../finance/pending-payments.html">Pending Payments</a></li>
+          <li><a href="../finance/financial-reports.html">Financial Reports</a></li>
+        </ul>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book"></i>
+            Library
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../library/books.html">Books</a></li>
+          <li><a href="../library/add-book.html">Add Book</a></li>
+          <li><a href="../library/borrowed-books.html">Borrowed Books</a></li>
+          <li><a href="../library/issue-book.html">Issue Book</a></li>
+          <li><a href="../library/overdue-books.html">Overdue Books</a></li>
+        </ul>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div class="menu-group" id="adminMenu">
+      <span class="menu-label">Administration</span>
+
+      <!-- REPORTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chart-pie"></i>
+            Reports
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../reports/reports.html">Reports</a></li>
+          <li><a href="../reports/academic-reports.html">Academic Reports</a></li>
+          <li><a href="../reports/financial-reports.html">Financial Reports</a></li>
+          <li><a href="../reports/attendance-reports.html">Attendance Reports</a></li>
+          <li><a href="../reports/student-reports.html">Student Reports</a></li>
+          <li><a href="../reports/export-center.html">Export Center</a></li>
+          <li><a href="../reports/analytics-dashboard.html">Analytics Dashboard</a></li>
+          <li><a href="../reports/charts-graphs.html">Charts & Graphs</a></li>
+        </ul>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-bell"></i>
+            Notifications
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../notifications/notifications.html">Notifications</a></li>
+          <li><a href="../notifications/send-notification.html">Send Notification</a></li>
+          <li><a href="../notifications/sms-center.html">SMS Center</a></li>
+          <li><a href="../notifications/email-center.html">Email Center</a></li>
+          <li><a href="../notifications/messaging.html">Messaging</a></li>
+        </ul>
+      </div>
+
+      <!-- USERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-users-cog"></i>
+            Users
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../users/profile.html">Profile</a></li>
+          <li><a href="../users/settings.html">Settings</a></li>
+          <li><a href="../users/users.html">Users</a></li>
+          <li><a href="../users/add-user.html">Add User</a></li>
+          <li><a href="../users/roles.html">Roles</a></li>
+          <li><a href="../users/permissions.html">Permissions</a></li>
+          <li><a href="../users/audit-logs.html">Audit Logs</a></li>
+          <li><a href="../users/activity-logs.html">Activity Logs</a></li>
+          <li><a href="../users/user-sessions.html">User Sessions</a></li>
+        </ul>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-cog"></i>
+            System
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../system/backup-restore.html">Backup & Restore</a></li>
+          <li><a href="../system/system-settings.html">System Settings</a></li>
+          <li><a href="../system/maintenance-mode.html">Maintenance Mode</a></li>
+          <li><a href="../system/system-health.html">System Health</a></li>
+        </ul>
+      </div>
+
+      <!-- ERRORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-exclamation-triangle"></i>
+            Errors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../errors/403.html">403</a></li>
+          <li><a href="../errors/404.html">404</a></li>
+          <li><a href="../errors/500.html">500</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-viewport">
+  <header class="main-header">
+    <div class="header-title">
+      <h1>Dashboard</h1>
+      <p id="timeGreeting">Welcome back, Tony</p>
+    </div>
+    <div class="header-actions">
+      <div class="notification-btn" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">3</span>
+      </div>
+      <div class="dropdown">
+        <div class="dropdown-trigger" tabindex="0">
+          <div class="profile-avatar">TR</div>
+          <div class="profile-text"><h4>Tony Robert</h4><p>Super Admin</p></div>
+          <i class="fas fa-chevron-down" style="color:var(--text-muted);"></i>
+        </div>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="../users/profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+          <li><a class="dropdown-item" href="../users/settings.html"><i class="fas fa-sliders-h me-2"></i>Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI Grid -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div>
+        <span class="kpi-label">Total Students</span>
+        <div class="kpi-value-container">
+          <span class="kpi-value">1,200</span>
+          <span class="badge positive"><i class="fas fa-arrow-up me-1"></i>12.0%</span>
+        </div>
+      </div>
+      <div class="kpi-footer">
+        <span>Active status rows</span>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="kpi-icon-wrapper">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div>
+        <span class="kpi-label">Total Courses</span>
+        <div class="kpi-value-container">
+          <span class="kpi-value">85</span>
+          <span class="badge positive"><i class="fas fa-arrow-up me-1"></i>16.9%</span>
+        </div>
+      </div>
+      <div class="kpi-footer">
+        <span>Current Semester</span>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="kpi-icon-wrapper">
+        <i class="fas fa-book-open"></i>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div>
+        <span class="kpi-label">Instructors</span>
+        <div class="kpi-value-container">
+          <span class="kpi-value">42</span>
+          <span class="badge negative"><i class="fas fa-arrow-down me-1"></i>3.0%</span>
+        </div>
+      </div>
+      <div class="kpi-footer">
+        <span>All Instructors</span>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="kpi-icon-wrapper">
+        <i class="fas fa-file-invoice-dollar"></i>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div>
+        <span class="kpi-label">Borrowed Books</span>
+        <div class="kpi-value-container">
+          <span class="kpi-value">220</span>
+          <span class="badge positive"><i class="fas fa-arrow-up me-1"></i>12.0%</span>
+        </div>
+      </div>
+      <div class="kpi-footer">
+        <span>Library</span>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="kpi-icon-wrapper">
+        <i class="fas fa-book"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mid Grid -->
+  <section class="mid-grid">
+    <div class="chart-card">
+      <div class="chart-inner-header">
+        <div>
+          <span class="kpi-label">Revenue Collection Chart</span>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
+            <span style="font-size:1.6rem; font-weight:700;">$63,332</span>
+            <span class="badge positive"><i class="fas fa-arrow-up me-1"></i>10.5%</span>
+          </div>
+          <div class="chart-selectors">
+            <select><option>Current Semester</option></select>
+          </div>
+        </div>
+        <div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-color" style="background:var(--accent-green);"></div>Paid</div>
+            <div class="legend-item"><div class="legend-color" style="background:var(--accent-blue);"></div>Pending</div>
+          </div>
+        </div>
+      </div>
+      <div style="width:100%; height:180px; position:relative; margin-top:16px;">
+        <svg viewBox="0 0 600 180" width="100%" height="100%">
+          <defs><linearGradient id="areaGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981" stop-opacity="0.15"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient></defs>
+          <line x1="0" y1="30" x2="600" y2="30" stroke="#f1f5f9" stroke-width="1" />
+          <line x1="0" y1="75" x2="600" y2="75" stroke="#f1f5f9" stroke-width="1" />
+          <line x1="0" y1="120" x2="600" y2="120" stroke="#f1f5f9" stroke-width="1" />
+          <path d="M0,130 C100,140 180,110 260,115 C340,120 450,85 600,105" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.5"/>
+          <path d="M0,95 C100,60 180,65 260,35 C340,10 450,75 600,45" fill="none" stroke="#10b981" stroke-width="3" />
+          <path d="M0,95 C100,60 180,65 260,35 C340,10 450,75 600,45 L600,180 L0,180 Z" fill="url(#areaGlow)"/>
+          <line x1="260" y1="0" x2="260" y2="180" stroke="#10b981" stroke-width="1" stroke-dasharray="4,4"/>
+          <circle cx="260" cy="35" r="4" fill="#10b981"/>
+          <circle cx="260" cy="115" r="4" fill="#0ea5e9"/>
+        </svg>
+      </div>
+    </div>
+    <div class="funnel-card">
+      <div>
+        <span class="kpi-label">Attendance Conversion</span>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:4px; margin-bottom:12px;">
+          <span style="font-size:1.4rem; font-weight:700;">89.5%</span>
+          <span class="badge positive">Avg Present</span>
+        </div>
+      </div>
+      <div class="funnel-row"><div><div class="funnel-label">Total Enrolled</div><div class="funnel-subtext">Active DB Records</div></div><span class="funnel-value">1,200</span></div>
+      <div class="funnel-row"><div><div class="funnel-label">Present</div><div class="funnel-subtext">Status Enum</div></div><span class="funnel-value" style="color:var(--accent-green);">1,074</span></div>
+      <div class="funnel-row"><div><div class="funnel-label">Late / Excused</div><div class="funnel-subtext">Status Enum</div></div><span class="funnel-value" style="color:var(--accent-blue);">98</span></div>
+      <div class="funnel-row"><div><div class="funnel-label">Absent</div><div class="funnel-subtext">Requires Intervention</div></div><span class="funnel-value" style="color:var(--accent-red);">28</span></div>
+    </div>
+  </section>
+
+  <!-- Bottom Grid -->
+  <section class="bottom-grid">
+    <div class="upgrade-card">
+      <div>
+        <div class="upgrade-header-row">
+          <div><span class="kpi-label" style="color:var(--text-muted);">System Settings</span><h3 style="font-size:1.1rem; font-weight:700; margin-top:4px;">Active Term</h3></div>
+          <button class="upgrade-btn">Configure</button>
+        </div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:14px; line-height:1.4;">
+          Semester Status: <strong>Spring 2026</strong>.<br> Academic year constraints currently locked for grading.
+        </p>
+      </div>
+      <div class="upgrade-metrics-box">
+        <div><span class="upgrade-stat-title">Data Status</span><div class="upgrade-stat-val" style="color:var(--accent-green);">Live Sync</div></div>
+        <div><span class="upgrade-stat-title">Roles Active</span><div class="upgrade-stat-val">5 Nodes</div></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-toolbar">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="kpi-label" style="font-size:0.8rem;">Leading Faculty Performance</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+      <table id="studentTable">
+        <thead>
+          <tr><th>Rank</th><th>Faculty Name</th><th>Department</th><th style="text-align:center;">Award</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:monospace; color:var(--text-muted);">1</td>
+            <td class="searchable">BSc. Computer Science</td>
+            <td class="searchable">IT & Telecommunication</td>
+            <td style="font-weight:600;"><i class="fa-solid fa-star"></i></td>
+          </tr>
+          <tr>
+            <td style="font-family:monospace; color:var(--text-muted);">2</td>
+            <td class="searchable">BA. Business Administration</td>
+            <td class="searchable">Business Administration</td>
+            <td style="font-weight:600;"><i class="fa-solid fa-star"></i></td>
+			</tr>
+          <tr>
+            <td style="font-family:monospace; color:var(--text-muted);">3</td>
+            <td class="searchable">BCom. Accounts</td>
+            <td class="searchable">Accounting & Finance</td>
+            <td style="font-weight:600;"><i class="fa-solid fa-star"></i></td>
+			</tr>
+          <tr>
+            <td style="font-family:monospace; color:var(--text-muted);">4</td>
+            <td class="searchable">BSc. Mathematics and Statistics</td>
+            <td class="searchable">Mathematics and Statistics</td>
+           <td style="font-weight:600;"><i class="fa-solid fa-star"></i></td>
+		   </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Sidebar active, toggle submenu, filter, refresh, toggle log, greeting
+  function setActive(element) {
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+  }
+
+  function toggleSubmenu(clickedElement) {
+    const parentGroup = clickedElement.parentElement;
+    const targetSubmenu = clickedElement.nextElementSibling;
+    const isAlreadyOpen = clickedElement.classList.contains('submenu-open');
+
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.classList.remove('submenu-open');
+    });
+    document.querySelectorAll('.submenu').forEach(menu => {
+      menu.classList.remove('show');
+    });
+
+    if (!isAlreadyOpen) {
+      clickedElement.classList.add('submenu-open');
+      if (targetSubmenu) {
+        targetSubmenu.classList.add('show');
+      }
+    }
+    setActive(clickedElement);
+  }
+
+  function filterTable() {
+    const input = document.getElementById("searchInput").value.toUpperCase();
+    const table = document.getElementById("studentTable");
+    const tr = table.getElementsByTagName("tr");
+    for (let i = 1; i < tr.length; i++) {
+      let tdArray = tr[i].getElementsByClassName("searchable");
+      let matchFound = false;
+      for (let j = 0; j < tdArray.length; j++) {
+        if (tdArray[j]) {
+          let txtValue = tdArray[j].textContent || tdArray[j].innerText;
+          if (txtValue.toUpperCase().indexOf(input) > -1) {
+            matchFound = true;
+            break;
+          }
+        }
+      }
+      tr[i].style.display = matchFound ? "" : "none";
+    }
+  }
+
+  function refreshData() {
+    const btn = document.getElementById("refreshBtn");
+    btn.classList.add("spin");
+    setTimeout(() => {
+      btn.classList.remove("spin");
+      console.log("Data successfully re-synced from database.");
+    }, 800);
+  }
+
+  function logToggle(checkbox) {
+    const row = checkbox.closest('tr');
+    const studentId = row.querySelector('td').innerText;
+    const status = checkbox.checked ? 'Active' : 'Suspended';
+    console.log(`Database Update: Student ${studentId} status changed to ${status}`);
+  }
+
+  window.onload = function() {
+    const hour = new Date().getHours();
+    let greeting = "Welcome back";
+    if (hour < 12) greeting = "Good morning";
+    else if (hour < 18) greeting = "Good afternoon";
+    else greeting = "Good evening";
+    document.getElementById('timeGreeting').innerText = `${greeting}, Tony`;
+  };
+</script>
+
+<!-- Bootstrap JS (optional for dropdowns, but we use CSS :hover) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

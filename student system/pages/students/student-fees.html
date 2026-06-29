@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fees | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid py-4">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold">
+                    <i class="fa-solid fa-money-bill-wave text-success me-2"></i>
+                    Student Fees
+                </h2>
+
+                <p class="text-muted">
+                    View student fee structure, balances, and payments
+                </p>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="students.html">Students</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Student Fees
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div>
+
+                <button class="btn btn-success me-2">
+
+                    <i class="fa-solid fa-credit-card me-2"></i>
+                    Make Payment
+
+                </button>
+
+                <button class="btn btn-primary">
+
+                    <i class="fa-solid fa-print me-2"></i>
+                    Print Statement
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Student Summary -->
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <div class="col-md-2 text-center">
+
+                        <img src="../images/default-user.png"
+                            class="rounded-circle img-fluid"
+                            width="110">
+
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <h4 class="fw-bold">
+                            John Doe
+                        </h4>
+
+                        <div class="row mt-3">
+
+                            <div class="col-md-3">
+                                <p><strong>Student ID:</strong> STD-2026-001</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p><strong>Department:</strong> Computer Science</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p><strong>Semester:</strong> Fall 2026</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p><strong>Status:</strong>
+                                    <span class="badge bg-warning text-dark">
+                                        Partial Payment
+                                    </span>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Fee Statistics -->
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-wallet fa-3x text-primary mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Total Fees
+                    </h5>
+
+                    <h2 class="fw-bold text-primary">
+                        $5,000
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-circle-check fa-3x text-success mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Paid Amount
+                    </h5>
+
+                    <h2 class="fw-bold text-success">
+                        $3,500
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-triangle-exclamation fa-3x text-danger mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Balance Due
+                    </h5>
+
+                    <h2 class="fw-bold text-danger">
+                        $1,500
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Fee Breakdown -->
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <h5 class="mb-0">
+                    Fee Breakdown
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Fee Type</th>
+                            <th>Amount</th>
+                            <th>Paid</th>
+                            <th>Balance</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>Tuition Fee</td>
+                            <td>$3,000</td>
+                            <td>$3,000</td>
+                            <td>$0</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Paid
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Library Fee</td>
+                            <td>$500</td>
+                            <td>$500</td>
+                            <td>$0</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Paid
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Hostel Fee</td>
+                            <td>$1,500</td>
+                            <td>$0</td>
+                            <td>$1,500</td>
+
+                            <td>
+                                <span class="badge bg-danger">
+                                    Unpaid
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- Payment History -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-success text-white">
+
+                <h5 class="mb-0">
+                    Payment History
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-hover">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Date</th>
+                            <th>Reference</th>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>15 May 2026</td>
+                            <td>TXN-001245</td>
+                            <td>Bank Transfer</td>
+                            <td>$2,000</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Completed
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>01 May 2026</td>
+                            <td>TXN-001120</td>
+                            <td>Credit Card</td>
+                            <td>$1,500</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Completed
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

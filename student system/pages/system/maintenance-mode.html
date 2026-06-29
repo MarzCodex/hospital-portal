@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Maintenance Mode | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+.maintenance-banner{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+.custom-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:22px;
+}
+
+.maintenance-log{
+    border-left:4px solid #f59e0b;
+    padding-left:15px;
+    margin-bottom:20px;
+}
+
+.status-active{
+    color:#dc2626;
+    font-weight:600;
+}
+
+.status-ready{
+    color:#10b981;
+    font-weight:600;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Maintenance Mode
+            </h3>
+
+            <p class="text-muted mb-0">
+                Manage system downtime, upgrades and service availability
+            </p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html" class="text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Maintenance Mode</li>
+                </ol>
+            </nav>
+
+        </div>
+
+        <button class="btn btn-warning text-dark">
+
+            <i class="fa fa-screwdriver-wrench me-2"></i>
+            Start Maintenance
+
+        </button>
+
+    </div>
+
+    <!-- BANNER -->
+
+    <div class="maintenance-banner mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h2 class="fw-bold">
+                    Maintenance Control Center
+                </h2>
+
+                <p class="mb-0">
+                    Schedule upgrades, notify users, manage downtime and perform system maintenance safely.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-end">
+
+                <h1 class="fw-bold">
+                    READY
+                </h1>
+
+                <small>Maintenance Status</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATUS CARDS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>System Status</small>
+                            <h4 class="status-ready">Online</h4>
+                        </div>
+
+                        <div class="stat-icon bg-success">
+                            <i class="fa fa-circle-check"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Active Users</small>
+                            <h3 class="fw-bold">347</h3>
+                        </div>
+
+                        <div class="stat-icon bg-primary">
+                            <i class="fa fa-users"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Scheduled Tasks</small>
+                            <h3 class="fw-bold">6</h3>
+                        </div>
+
+                        <div class="stat-icon bg-warning">
+                            <i class="fa fa-calendar-days"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card custom-card">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <small>Completed Jobs</small>
+                            <h3 class="fw-bold">128</h3>
+                        </div>
+
+                        <div class="stat-icon bg-info">
+                            <i class="fa fa-list-check"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MAINTENANCE CONTROL -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Maintenance Controls
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="form-check form-switch mb-4">
+
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="maintenanceSwitch">
+
+                <label class="form-check-label fw-semibold"
+                       for="maintenanceSwitch">
+
+                    Enable Maintenance Mode
+
+                </label>
+
+            </div>
+
+            <div class="alert alert-warning">
+
+                <i class="fa fa-triangle-exclamation me-2"></i>
+
+                When enabled, users will be redirected to a maintenance notification page.
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCHEDULE MAINTENANCE -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Schedule Maintenance Window
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Start Date & Time
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        End Date & Time
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Maintenance Type
+                    </label>
+
+                    <select class="form-select">
+
+                        <option>System Upgrade</option>
+                        <option>Database Maintenance</option>
+                        <option>Security Update</option>
+                        <option>Server Migration</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- USER NOTIFICATION -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                User Notification Message
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <textarea class="form-control"
+                      rows="5">
+
+The Student Management System is currently undergoing scheduled maintenance. Please try again later. We apologize for any inconvenience.
+
+            </textarea>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVE SESSIONS -->
+
+    <div class="card custom-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Active User Sessions
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Login Time</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Admin User</td>
+                        <td>Administrator</td>
+                        <td>08:15 AM</td>
+                        <td>
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>John Student</td>
+                        <td>Student</td>
+                        <td>09:05 AM</td>
+                        <td>
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- HISTORY & EMERGENCY -->
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card custom-card">
+
+                <div class="card-header bg-white">
+                    <h5 class="fw-bold mb-0">
+                        Maintenance History
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="maintenance-log">
+
+                        <h6 class="fw-bold">
+                            Security Patch Deployment
+                        </h6>
+
+                        <p class="text-muted mb-1">
+                            Applied critical security updates successfully.
+                        </p>
+
+                        <small>15 June 2026</small>
+
+                    </div>
+
+                    <div class="maintenance-log">
+
+                        <h6 class="fw-bold">
+                            Database Optimization
+                        </h6>
+
+                        <p class="text-muted mb-1">
+                            Optimized database indexes and performance.
+                        </p>
+
+                        <small>02 June 2026</small>
+
+                    </div>
+
+                    <div class="maintenance-log">
+
+                        <h6 class="fw-bold">
+                            System Upgrade
+                        </h6>
+
+                        <p class="text-muted mb-1">
+                            Updated core platform services.
+                        </p>
+
+                        <small>20 May 2026</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card custom-card">
+
+                <div class="card-header bg-white">
+                    <h5 class="fw-bold mb-0">
+                        Emergency Controls
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="alert alert-danger">
+
+                        <i class="fa fa-radiation me-2"></i>
+                        Emergency actions should only be performed by authorized administrators.
+
+                    </div>
+
+                    <button class="btn btn-danger w-100 mb-3">
+
+                        <i class="fa fa-power-off me-2"></i>
+                        Emergency Shutdown
+
+                    </button>
+
+                    <button class="btn btn-dark w-100">
+
+                        <i class="fa fa-user-lock me-2"></i>
+                        Lock All Sessions
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

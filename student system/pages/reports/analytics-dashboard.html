@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Analytics Dashboard | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+.dashboard-banner{
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+    border-radius:20px;
+    padding:35px;
+}
+
+.analytics-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
+
+.kpi-icon{
+    width:65px;
+    height:65px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:24px;
+}
+
+.insight-card{
+    border-left:5px solid #2563eb;
+}
+
+.metric-value{
+    font-size:28px;
+    font-weight:700;
+}
+
+.table thead{
+    background:#f1f5f9;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Analytics Dashboard
+            </h3>
+
+            <p class="text-muted mb-0">
+                Executive analytics and institutional intelligence center
+            </p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html" class="text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Analytics Dashboard</li>
+                </ol>
+            </nav>
+
+        </div>
+
+        <div>
+
+            <button class="btn btn-primary">
+                <i class="fa fa-download me-2"></i>
+                Export Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- BANNER -->
+
+    <div class="dashboard-banner mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h2 class="fw-bold">
+                    Executive Performance Dashboard
+                </h2>
+
+                <p class="mb-0">
+                    Real-time overview of academic, financial, operational and student performance.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-end">
+
+                <h1 class="fw-bold">
+                    96%
+                </h1>
+
+                <small>Institution Health Score</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- KPI CARDS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small>Total Students</small>
+                            <div class="metric-value">
+                                3,542
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon bg-primary">
+
+                            <i class="fa fa-user-graduate"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small>Total Revenue</small>
+
+                            <div class="metric-value">
+                                $4.2M
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon bg-success">
+
+                            <i class="fa fa-dollar-sign"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small>Attendance Rate</small>
+
+                            <div class="metric-value">
+                                91.8%
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon bg-warning">
+
+                            <i class="fa fa-calendar-check"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small>Average GPA</small>
+
+                            <div class="metric-value">
+                                3.58
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon bg-danger">
+
+                            <i class="fa fa-award"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SECONDARY KPIs -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+            <div class="card analytics-card">
+                <div class="card-body">
+                    <h6>Departments</h6>
+                    <h3>12</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="card analytics-card">
+                <div class="card-body">
+                    <h6>Courses</h6>
+                    <h3>148</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="card analytics-card">
+                <div class="card-body">
+                    <h6>Instructors</h6>
+                    <h3>167</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="card analytics-card">
+                <div class="card-body">
+                    <h6>Library Books</h6>
+                    <h3>8,426</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EXECUTIVE INSIGHTS -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-6">
+
+            <div class="card analytics-card insight-card">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        Executive Insights
+                    </h5>
+
+                    <ul class="mb-0">
+
+                        <li>Student enrollment increased by 14% this semester.</li>
+                        <li>Revenue exceeded target by 8%.</li>
+                        <li>Attendance improved by 4.3% compared to last semester.</li>
+                        <li>Computer Science remains the top-performing department.</li>
+                        <li>Graduation eligibility stands at 92%.</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        Quick Actions
+                    </h5>
+
+                    <div class="d-grid gap-2">
+
+                        <a href="academic-reports.html" class="btn btn-outline-primary">
+                            Academic Reports
+                        </a>
+
+                        <a href="financial-reports.html" class="btn btn-outline-success">
+                            Financial Reports
+                        </a>
+
+                        <a href="attendance-reports.html" class="btn btn-outline-warning">
+                            Attendance Reports
+                        </a>
+
+                        <a href="student-reports.html" class="btn btn-outline-info">
+                            Student Reports
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOP DEPARTMENTS -->
+
+    <div class="card analytics-card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="fw-bold mb-0">
+                Department Rankings
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead>
+
+                        <tr>
+                            <th>Rank</th>
+                            <th>Department</th>
+                            <th>Students</th>
+                            <th>Average GPA</th>
+                            <th>Attendance</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>🥇</td>
+                            <td>Computer Science</td>
+                            <td>850</td>
+                            <td>3.72</td>
+                            <td>95%</td>
+                        </tr>
+
+                        <tr>
+                            <td>🥈</td>
+                            <td>Engineering</td>
+                            <td>620</td>
+                            <td>3.58</td>
+                            <td>91%</td>
+                        </tr>
+
+                        <tr>
+                            <td>🥉</td>
+                            <td>Business</td>
+                            <td>540</td>
+                            <td>3.39</td>
+                            <td>88%</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODULE PERFORMANCE -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-4">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        Academic Performance
+                    </h5>
+
+                    <p>Average GPA: <strong>3.58</strong></p>
+                    <p>Pass Rate: <strong>92.4%</strong></p>
+                    <p>Graduation Rate: <strong>89%</strong></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        Financial Performance
+                    </h5>
+
+                    <p>Revenue: <strong>$4.2M</strong></p>
+                    <p>Collection Rate: <strong>91%</strong></p>
+                    <p>Outstanding Fees: <strong>$420K</strong></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card analytics-card">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        Library Statistics
+                    </h5>
+
+                    <p>Total Books: <strong>8,426</strong></p>
+                    <p>Borrowed Books: <strong>1,235</strong></p>
+                    <p>Overdue Books: <strong>83</strong></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

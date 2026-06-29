@@ -1,0 +1,852 @@
+-- =====================================================
+-- STUDENT MANAGEMENT SYSTEM (ENTERPRISE VERSION)
+-- DATABASE ARCHITECTURE UPGRADE
+-- =====================================================
+
+DROP DATABASE IF EXISTS student_management_system;
+CREATE DATABASE student_management_system;
+USE student_management_system;
+
+-- =====================================================
+-- 1. DEPARTMENTS
+-- =====================================================
+
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY AUTO_INCREMENT,
+    department_name VARCHAR(100) NOT NULL UNIQUE,
+    department_code VARCHAR(20) NOT NULL UNIQUE,
+    hod_name VARCHAR(100),
+    office_phone VARCHAR(30),
+    budget DECIMAL(15,2),
+    established_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- 2. SEMESTERS
+-- =====================================================
+
+CREATE TABLE semesters (
+    semester_id INT PRIMARY KEY AUTO_INCREMENT,
+    semester_name VARCHAR(50) NOT NULL,
+    academic_year VARCHAR(20) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    status ENUM('Upcoming','Active','Completed') 
+        DEFAULT 'Upcoming',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- 3. ROLES
+-- =====================================================
+
+CREATE TABLE roles (
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT
+);
+
+-- =====================================================
+-- 4. PERMISSIONS
+-- =====================================================
+
+CREATE TABLE permissions (
+    permission_id INT PRIMARY KEY AUTO_INCREMENT,
+    permission_name VARCHAR(100) UNIQUE NOT NULL,
+    module_name VARCHAR(100),
+    description TEXT
+);
+
+-- =====================================================
+-- 5. ROLE PERMISSIONS
+-- =====================================================
+
+CREATE TABLE role_permissions (
+    role_permission_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_id INT NOT NULL,
+    permission_id INT NOT NULL,
+
+    FOREIGN KEY (role_id)
+        REFERENCES roles(role_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (permission_id)
+        REFERENCES permissions(permission_id)
+        ON DELETE CASCADE,
+
+    UNIQUE(role_id, permission_id)
+);
+
+-- =====================================================
+-- 6. STUDENTS
+-- =====================================================
+
+CREATE TABLE students (
+    student_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_number VARCHAR(30) UNIQUE NOT NULL,
+
+    first_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50),
+    last_name VARCHAR(50) NOT NULL,
+
+    gender ENUM('Male','Female','Other') NOT NULL,
+
+    date_of_birth DATE NOT NULL,
+
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(30),
+
+    address TEXT,
+    city VARCHAR(50),
+    state VARCHAR(50),
+    postal_code VARCHAR(20),
+    country VARCHAR(50),
+
+    photo VARCHAR(255),
+
+    department_id INT,
+
+    admission_date DATE NOT NULL,
+    graduation_date DATE,
+
+    gpa DECIMAL(3,2) DEFAULT 0.00,
+
+    status ENUM(
+        'Active',
+        'Inactive',
+        'Graduated',
+        'Suspended',
+        'Withdrawn'
+    ) DEFAULT 'Active',
+
+    deleted_at TIMESTAMP NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 7. STUDENT GUARDIANS
+-- =====================================================
+
+CREATE TABLE student_guardians (
+    guardian_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id INT NOT NULL,
+
+    full_name VARCHAR(100) NOT NULL,
+    relationship VARCHAR(50),
+    phone VARCHAR(30),
+    email VARCHAR(100),
+    address TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 8. DOCUMENTS
+-- =====================================================
+
+CREATE TABLE documents (
+    document_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id INT NOT NULL,
+
+    document_type VARCHAR(100),
+    file_name VARCHAR(255),
+    file_path VARCHAR(255),
+
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 9. INSTRUCTORS
+-- =====================================================
+
+CREATE TABLE instructors (
+    instructor_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    instructor_number VARCHAR(30) UNIQUE NOT NULL,
+
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+
+    gender ENUM('Male','Female','Other'),
+
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(30),
+
+    specialization VARCHAR(100),
+
+    department_id INT,
+
+    hire_date DATE NOT NULL,
+
+    salary DECIMAL(12,2),
+
+    status ENUM(
+        'Active',
+        'On Leave',
+        'Retired',
+        'Inactive'
+    ) DEFAULT 'Active',
+
+    photo VARCHAR(255),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 10. COURSES
+-- =====================================================
+
+CREATE TABLE courses (
+    course_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    course_code VARCHAR(20) UNIQUE NOT NULL,
+    course_name VARCHAR(100) NOT NULL,
+
+    credits INT NOT NULL,
+
+    description TEXT,
+
+    department_id INT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 11. COURSE OFFERINGS
+-- =====================================================
+
+CREATE TABLE course_offerings (
+    offering_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    course_id INT NOT NULL,
+    instructor_id INT,
+    semester_id INT NOT NULL,
+
+    max_students INT DEFAULT 50,
+
+    room VARCHAR(50),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (instructor_id)
+        REFERENCES instructors(instructor_id)
+        ON DELETE SET NULL,
+
+    FOREIGN KEY (semester_id)
+        REFERENCES semesters(semester_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 12. CLASSROOMS
+-- =====================================================
+
+CREATE TABLE classrooms (
+    classroom_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    room_name VARCHAR(50),
+    building_name VARCHAR(100),
+    capacity INT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- 13. SCHEDULES / TIMETABLES
+-- =====================================================
+
+CREATE TABLE schedules (
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    offering_id INT NOT NULL,
+    classroom_id INT,
+
+    day_of_week ENUM(
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+    ),
+
+    start_time TIME,
+    end_time TIME,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (offering_id)
+        REFERENCES course_offerings(offering_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (classroom_id)
+        REFERENCES classrooms(classroom_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 14. ENROLLMENTS
+-- =====================================================
+
+CREATE TABLE enrollments (
+    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id INT NOT NULL,
+    offering_id INT NOT NULL,
+
+    enrollment_date DATE NOT NULL,
+
+    status ENUM(
+        'Enrolled',
+        'Completed',
+        'Dropped',
+        'Incomplete'
+    ) DEFAULT 'Enrolled',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (offering_id)
+        REFERENCES course_offerings(offering_id)
+        ON DELETE CASCADE,
+
+    UNIQUE(student_id, offering_id)
+);
+
+-- =====================================================
+-- 15. RESULTS
+-- =====================================================
+
+CREATE TABLE results (
+    result_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    enrollment_id INT NOT NULL,
+
+    score DECIMAL(5,2),
+
+    grade_letter VARCHAR(2),
+
+    grade_point DECIMAL(3,2),
+
+    remarks TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (enrollment_id)
+        REFERENCES enrollments(enrollment_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 16. ATTENDANCE SESSIONS
+-- =====================================================
+
+CREATE TABLE attendance_sessions (
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    offering_id INT NOT NULL,
+
+    session_topic VARCHAR(255),
+
+    session_date DATE NOT NULL,
+
+    start_time TIME,
+    end_time TIME,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (offering_id)
+        REFERENCES course_offerings(offering_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 17. ATTENDANCE RECORDS
+-- =====================================================
+
+CREATE TABLE attendance_records (
+    attendance_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    session_id INT NOT NULL,
+    student_id INT NOT NULL,
+
+    attendance_status ENUM(
+        'Present',
+        'Absent',
+        'Late',
+        'Excused'
+    ) NOT NULL,
+
+    remarks TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (session_id)
+        REFERENCES attendance_sessions(session_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE,
+
+    UNIQUE(session_id, student_id)
+);
+
+-- =====================================================
+-- 18. FEE STRUCTURES
+-- =====================================================
+
+CREATE TABLE fee_structures (
+    fee_structure_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    department_id INT,
+    semester_id INT,
+
+    fee_type ENUM(
+        'Tuition',
+        'Library',
+        'Lab',
+        'Hostel',
+        'Examination',
+        'Other'
+    ),
+
+    amount DECIMAL(12,2),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+        ON DELETE SET NULL,
+
+    FOREIGN KEY (semester_id)
+        REFERENCES semesters(semester_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 19. INVOICES
+-- =====================================================
+
+CREATE TABLE invoices (
+    invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id INT NOT NULL,
+    semester_id INT,
+
+    invoice_number VARCHAR(50) UNIQUE,
+
+    total_amount DECIMAL(12,2),
+    amount_paid DECIMAL(12,2) DEFAULT 0,
+    balance DECIMAL(12,2),
+
+    status ENUM(
+        'Pending',
+        'Partially Paid',
+        'Paid',
+        'Cancelled'
+    ) DEFAULT 'Pending',
+
+    due_date DATE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (semester_id)
+        REFERENCES semesters(semester_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 20. INVOICE ITEMS
+-- =====================================================
+
+CREATE TABLE invoice_items (
+    invoice_item_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    invoice_id INT NOT NULL,
+
+    fee_type VARCHAR(100),
+    amount DECIMAL(12,2),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (invoice_id)
+        REFERENCES invoices(invoice_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 21. PAYMENTS
+-- =====================================================
+
+CREATE TABLE payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    invoice_id INT NOT NULL,
+
+    amount_paid DECIMAL(12,2) NOT NULL,
+
+    payment_date DATE NOT NULL,
+
+    payment_method ENUM(
+        'Cash',
+        'Bank Transfer',
+        'Credit Card',
+        'Debit Card',
+        'Mobile Money',
+        'Cheque'
+    ),
+
+    transaction_reference VARCHAR(100),
+
+    payment_status ENUM(
+        'Pending',
+        'Completed',
+        'Failed',
+        'Refunded'
+    ) DEFAULT 'Completed',
+
+    remarks TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (invoice_id)
+        REFERENCES invoices(invoice_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 22. SCHOLARSHIPS
+-- =====================================================
+
+CREATE TABLE scholarships (
+    scholarship_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id INT NOT NULL,
+
+    scholarship_name VARCHAR(100),
+    sponsor_name VARCHAR(100),
+
+    amount DECIMAL(12,2),
+
+    start_date DATE,
+    end_date DATE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 23. BOOKS
+-- =====================================================
+
+CREATE TABLE books (
+    book_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    isbn VARCHAR(30) UNIQUE,
+
+    title VARCHAR(255),
+    author VARCHAR(255),
+    publisher VARCHAR(255),
+
+    publication_year YEAR,
+
+    total_copies INT DEFAULT 1,
+    available_copies INT DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- 24. BORROWED BOOKS
+-- =====================================================
+
+CREATE TABLE borrowed_books (
+    borrow_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id INT NOT NULL,
+    book_id INT NOT NULL,
+
+    issue_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    return_date DATE,
+
+    fine_amount DECIMAL(10,2) DEFAULT 0,
+
+    status ENUM(
+        'Issued',
+        'Returned',
+        'Overdue',
+        'Lost'
+    ) DEFAULT 'Issued',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (book_id)
+        REFERENCES books(book_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 25. NOTIFICATIONS
+-- =====================================================
+
+CREATE TABLE notifications (
+    notification_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    title VARCHAR(255),
+    message TEXT,
+
+    notification_type ENUM(
+        'General',
+        'Academic',
+        'Finance',
+        'Attendance',
+        'System'
+    ),
+
+    created_by INT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- 26. USER NOTIFICATIONS
+-- =====================================================
+
+CREATE TABLE user_notifications (
+    user_notification_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    notification_id INT NOT NULL,
+    user_id INT NOT NULL,
+
+    is_read BOOLEAN DEFAULT FALSE,
+    read_at TIMESTAMP NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- 27. USERS
+-- =====================================================
+
+CREATE TABLE users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+
+    password_hash VARCHAR(255) NOT NULL,
+
+    role_id INT NOT NULL,
+
+    student_id INT NULL,
+    instructor_id INT NULL,
+
+    is_active BOOLEAN DEFAULT TRUE,
+
+    last_login TIMESTAMP NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (role_id)
+        REFERENCES roles(role_id)
+        ON DELETE RESTRICT,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (instructor_id)
+        REFERENCES instructors(instructor_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE password_resets (
+    reset_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    reset_token VARCHAR(255),
+    expires_at DATETIME,
+    used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+-- =====================================================
+-- 28. AUDIT LOGS
+-- =====================================================
+
+CREATE TABLE audit_logs (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    user_id INT,
+
+    action_type VARCHAR(100),
+    table_name VARCHAR(100),
+    record_id INT,
+
+    old_values JSON,
+    new_values JSON,
+
+    ip_address VARCHAR(100),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE SET NULL
+);
+
+-- =====================================================
+-- 29. PAYROLL
+-- =====================================================
+
+CREATE TABLE payroll (
+    payroll_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    instructor_id INT NOT NULL,
+
+    basic_salary DECIMAL(12,2),
+    allowances DECIMAL(12,2),
+    deductions DECIMAL(12,2),
+
+    net_salary DECIMAL(12,2),
+
+    payment_month VARCHAR(20),
+    payment_year YEAR,
+
+    payment_status ENUM(
+        'Pending',
+        'Paid'
+    ) DEFAULT 'Pending',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (instructor_id)
+        REFERENCES instructors(instructor_id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- 30. SYSTEM SETTINGS
+-- =====================================================
+
+CREATE TABLE system_settings (
+    setting_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    setting_key VARCHAR(100) UNIQUE,
+    setting_value TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================
+-- INDEXES
+-- =====================================================
+
+CREATE INDEX idx_students_department
+ON students(department_id);
+
+CREATE INDEX idx_students_status
+ON students(status);
+
+CREATE INDEX idx_enrollments_student
+ON enrollments(student_id);
+
+CREATE INDEX idx_enrollments_offering
+ON enrollments(offering_id);
+
+CREATE INDEX idx_results_enrollment
+ON results(enrollment_id);
+
+CREATE INDEX idx_attendance_session
+ON attendance_records(session_id);
+
+CREATE INDEX idx_payments_invoice
+ON payments(invoice_id);
+
+CREATE INDEX idx_users_role
+ON users(role_id);
+
+CREATE INDEX idx_notifications_type
+ON notifications(notification_type);
+
+-- =====================================================
+-- SAMPLE ROLES
+-- =====================================================
+
+INSERT INTO roles (role_name, description)
+VALUES
+('Super Admin', 'Full system access'),
+('Admin', 'Administrative operations'),
+('Instructor', 'Manage classes and results'),
+('Student', 'Student portal access'),
+('Accountant', 'Manage financial records');
+
+-- =====================================================
+-- SAMPLE PERMISSIONS
+-- =====================================================
+
+INSERT INTO permissions (permission_name, module_name)
+VALUES
+('manage_students', 'Students'),
+('manage_courses', 'Courses'),
+('manage_payments', 'Finance'),
+('manage_attendance', 'Attendance'),
+('manage_users', 'Administration');
+
+-- =====================================================
+-- DATABASE COMPLETE
+-- =====================================================
+
+SELECT 'Student Management System Database Created Successfully'
+AS STATUS;

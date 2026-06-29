@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Schedule | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<!-- Include Navbar -->
+<!-- ../../components/navbar.html -->
+
+<!-- Include Sidebar -->
+<!-- ../../components/sidebar.html -->
+
+<div class="container-fluid py-4">
+
+    <!-- ===================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-calendar-week text-primary me-2"></i>
+                Instructor Schedule
+            </h2>
+
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html">Dashboard</a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="instructors.html">Instructors</a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Schedule
+                    </li>
+
+                </ol>
+
+            </nav>
+
+        </div>
+
+        <div>
+
+            <a href="instructor-profile.html"
+               class="btn btn-outline-primary">
+
+                <i class="fa-solid fa-user me-2"></i>
+                Profile
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- INSTRUCTOR SUMMARY -->
+    <!-- ===================================== -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-2 text-center">
+
+                    <img src="../../images/instructor-avatar.png"
+                         alt="Instructor"
+                         class="rounded-circle img-fluid"
+                         style="width:100px;height:100px;object-fit:cover;">
+
+                </div>
+
+                <div class="col-md-10">
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <strong>Instructor ID</strong>
+                            <p>INS-001</p>
+                        </div>
+
+                        <div class="col-md-3">
+                            <strong>Name</strong>
+                            <p>Dr. Sarah Johnson</p>
+                        </div>
+
+                        <div class="col-md-3">
+                            <strong>Department</strong>
+                            <p>Computer Science</p>
+                        </div>
+
+                        <div class="col-md-3">
+                            <strong>Specialization</strong>
+                            <p>Artificial Intelligence</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- STATISTICS -->
+    <!-- ===================================== -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-book fa-2x text-primary mb-2"></i>
+
+                    <h3>4</h3>
+
+                    <small class="text-muted">
+                        Assigned Courses
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-clock fa-2x text-success mb-2"></i>
+
+                    <h3>16</h3>
+
+                    <small class="text-muted">
+                        Weekly Hours
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-users fa-2x text-warning mb-2"></i>
+
+                    <h3>145</h3>
+
+                    <small class="text-muted">
+                        Total Students
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-calendar-check fa-2x text-danger mb-2"></i>
+
+                    <h3>12</h3>
+
+                    <small class="text-muted">
+                        Sessions This Week
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- WEEKLY TIMETABLE -->
+    <!-- ===================================== -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+
+                Weekly Teaching Schedule
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-primary">
+
+                        <tr>
+
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Course</th>
+                            <th>Room</th>
+                            <th>Students</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>Monday</td>
+                            <td>08:00 - 10:00</td>
+                            <td>CS201 - Data Structures</td>
+                            <td>Room A101</td>
+                            <td>36</td>
+
+                            <td>
+
+                                <a href="../courses/course-details.html"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Tuesday</td>
+                            <td>13:00 - 15:00</td>
+                            <td>CS301 - Database Systems</td>
+                            <td>Lab B105</td>
+                            <td>42</td>
+
+                            <td>
+
+                                <a href="../courses/course-details.html"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Wednesday</td>
+                            <td>08:00 - 10:00</td>
+                            <td>CS201 - Data Structures</td>
+                            <td>Room A101</td>
+                            <td>36</td>
+
+                            <td>
+
+                                <a href="../courses/course-details.html"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Friday</td>
+                            <td>10:00 - 12:00</td>
+                            <td>CS401 - Artificial Intelligence</td>
+                            <td>Lab C201</td>
+                            <td>31</td>
+
+                            <td>
+
+                                <a href="../courses/course-details.html"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TODAY'S CLASSES -->
+    <!-- ===================================== -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Today's Classes
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="list-group">
+
+                <div class="list-group-item">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="mb-1">
+                                CS201 - Data Structures
+                            </h6>
+
+                            <small class="text-muted">
+                                Room A101 • 08:00 AM - 10:00 AM
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-success">
+                            Upcoming
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="list-group-item">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="mb-1">
+                                CS301 - Database Systems
+                            </h6>
+
+                            <small class="text-muted">
+                                Lab B105 • 01:00 PM - 03:00 PM
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-primary">
+                            Scheduled
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- QUICK ACTIONS -->
+    <!-- ===================================== -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Quick Actions
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="instructor-courses.html"
+                       class="btn btn-outline-primary w-100">
+
+                        My Courses
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="instructor-attendance.html"
+                       class="btn btn-outline-success w-100">
+
+                        Attendance
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="../attendance/attendance-sessions.html"
+                       class="btn btn-outline-warning w-100">
+
+                        Sessions
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="../timetable/timetable.html"
+                       class="btn btn-outline-danger w-100">
+
+                        Master Timetable
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Include Footer -->
+<!-- ../../components/footer.html -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

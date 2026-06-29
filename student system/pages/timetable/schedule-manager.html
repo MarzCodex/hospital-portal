@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Schedule Manager | Student Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+
+.schedule-table th{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.schedule-table td{
+    min-width:180px;
+    height:90px;
+    vertical-align:top;
+}
+
+.schedule-card{
+    border-radius:10px;
+    padding:8px;
+    margin-bottom:5px;
+    font-size:.85rem;
+}
+
+.cs-course{
+    background:#dbeafe;
+    border-left:4px solid #0d6efd;
+}
+
+.math-course{
+    background:#dcfce7;
+    border-left:4px solid #198754;
+}
+
+.business-course{
+    background:#fff3cd;
+    border-left:4px solid #ffc107;
+}
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<!-- ../../components/navbar.html -->
+<!-- ../../components/sidebar.html -->
+
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                <i class="fa-solid fa-calendar-days text-primary me-2"></i>
+                Schedule Manager
+            </h2>
+
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="timetable.html">
+                            Timetable
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Schedule Manager
+                    </li>
+
+                </ol>
+
+            </nav>
+
+        </div>
+
+        <div>
+
+            <button class="btn btn-success me-2">
+
+                <i class="fa-solid fa-check me-2"></i>
+                Publish Timetable
+
+            </button>
+
+            <a href="timetable.html"
+               class="btn btn-primary">
+
+                <i class="fa-solid fa-table me-2"></i>
+                View Timetable
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-book fa-2x text-primary mb-2"></i>
+
+                    <h3>84</h3>
+
+                    <small>Scheduled Courses</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-user-tie fa-2x text-success mb-2"></i>
+
+                    <h3>27</h3>
+
+                    <small>Assigned Lecturers</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-door-open fa-2x text-warning mb-2"></i>
+
+                    <h3>24</h3>
+
+                    <small>Classrooms Used</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <i class="fa-solid fa-triangle-exclamation fa-2x text-danger mb-2"></i>
+
+                    <h3>2</h3>
+
+                    <small>Conflicts Detected</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CREATE SCHEDULE -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Create Schedule Entry
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form>
+
+                <div class="row">
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Course Offering
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>Select Course</option>
+                            <option>CS201 - Data Structures</option>
+                            <option>CS301 - Database Systems</option>
+                            <option>MTH201 - Calculus II</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Instructor
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>Select Instructor</option>
+                            <option>Dr. Sarah Johnson</option>
+                            <option>Prof. Michael Chen</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Classroom
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>A101</option>
+                            <option>B202</option>
+                            <option>C301</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Day
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                            <option>Wednesday</option>
+                            <option>Thursday</option>
+                            <option>Friday</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Time
+                        </label>
+
+                        <input type="time"
+                               class="form-control">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+
+                        <label class="form-label">
+                            Duration
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>1 Hour</option>
+                            <option>2 Hours</option>
+                            <option>3 Hours</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-10 d-flex align-items-end">
+
+                        <button class="btn btn-primary">
+
+                            <i class="fa-solid fa-plus me-2"></i>
+                            Add Schedule
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- CONFLICTS -->
+
+    <div class="alert alert-warning">
+
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+
+        Classroom B202 has a scheduling conflict on Tuesday at 10:00 AM.
+
+    </div>
+
+    <!-- WEEKLY GRID -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Weekly Schedule Grid
+            </h5>
+
+        </div>
+
+        <div class="card-body table-responsive">
+
+            <table class="table table-bordered schedule-table">
+
+                <thead class="table-primary">
+
+                    <tr>
+
+                        <th>Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <th>08:00</th>
+
+                        <td>
+
+                            <div class="schedule-card cs-course">
+
+                                CS201<br>
+                                A101<br>
+                                Sarah Johnson
+
+                            </div>
+
+                        </td>
+
+                        <td></td>
+
+                        <td>
+
+                            <div class="schedule-card math-course">
+
+                                MTH201<br>
+                                B202
+
+                            </div>
+
+                        </td>
+
+                        <td></td>
+
+                        <td></td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>10:00</th>
+
+                        <td></td>
+
+                        <td>
+
+                            <div class="schedule-card business-course">
+
+                                BUS101<br>
+                                C301
+
+                            </div>
+
+                        </td>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT SCHEDULES -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Recent Schedule Entries
+            </h5>
+
+        </div>
+
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Course</th>
+                        <th>Instructor</th>
+                        <th>Room</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>CS201</td>
+                        <td>Sarah Johnson</td>
+                        <td>A101</td>
+                        <td>Monday</td>
+                        <td>08:00</td>
+
+                        <td>
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-warning">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Quick Navigation
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="classrooms.html"
+                       class="btn btn-outline-primary w-100">
+
+                        Classrooms
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="add-classroom.html"
+                       class="btn btn-outline-success w-100">
+
+                        Add Classroom
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="../courses/course-schedule.html"
+                       class="btn btn-outline-warning w-100">
+
+                        Course Schedule
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="../attendance/attendance-sessions.html"
+                       class="btn btn-outline-danger w-100">
+
+                        Attendance Sessions
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ../../components/footer.html -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

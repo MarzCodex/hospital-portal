@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Details | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid py-4">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold">
+                    <i class="fa-solid fa-building-columns text-primary me-2"></i>
+                    Department Details
+                </h2>
+
+                <p class="text-muted">
+                    Complete department information and statistics
+                </p>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="departments.html">Departments</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Department Details
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div>
+
+                <button class="btn btn-warning text-white me-2">
+
+                    <i class="fa-solid fa-pen me-2"></i>
+                    Edit
+
+                </button>
+
+                <button class="btn btn-primary">
+
+                    <i class="fa-solid fa-print me-2"></i>
+                    Print
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Department Profile -->
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <div class="col-md-2 text-center">
+
+                        <div class="bg-primary text-white rounded-circle d-inline-flex 
+                            align-items-center justify-content-center"
+                            style="width: 110px; height: 110px; font-size: 40px;">
+
+                            <i class="fa-solid fa-building"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <h3 class="fw-bold">
+                            Computer Science Department
+                        </h3>
+
+                        <div class="row mt-3">
+
+                            <div class="col-md-3">
+                                <p><strong>Code:</strong> CS</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p><strong>Established:</strong> 2001</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p><strong>Head:</strong> Dr. Sarah Johnson</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p><strong>Status:</strong>
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Department Statistics -->
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-user-graduate fa-3x text-primary mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Students
+                    </h5>
+
+                    <h2 class="fw-bold text-primary">
+                        450
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-chalkboard-user fa-3x text-success mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Instructors
+                    </h5>
+
+                    <h2 class="fw-bold text-success">
+                        24
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-book-open fa-3x text-warning mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Courses
+                    </h5>
+
+                    <h2 class="fw-bold text-warning">
+                        25
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm text-center p-4">
+
+                    <i class="fa-solid fa-money-bill-wave fa-3x text-danger mb-3"></i>
+
+                    <h5 class="fw-bold">
+                        Budget
+                    </h5>
+
+                    <h2 class="fw-bold text-danger">
+                        $1.5M
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- About Department -->
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <h5 class="mb-0">
+                    About Department
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <p class="mb-0">
+
+                    The Computer Science Department offers high-quality education 
+                    in programming, software engineering, artificial intelligence, 
+                    networking, and cybersecurity. The department prepares students 
+                    for careers in modern technology industries.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Department Courses -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-success text-white">
+
+                <h5 class="mb-0">
+                    Department Courses
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Credits</th>
+                                <th>Instructor</th>
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>CS101</td>
+                                <td>Introduction to Programming</td>
+                                <td>3</td>
+                                <td>Dr. Sarah Johnson</td>
+
+                                <td>
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>CS202</td>
+                                <td>Data Structures</td>
+                                <td>4</td>
+                                <td>Michael Brown</td>
+
+                                <td>
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>CS305</td>
+                                <td>Artificial Intelligence</td>
+                                <td>4</td>
+                                <td>Emily Davis</td>
+
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        Upcoming
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

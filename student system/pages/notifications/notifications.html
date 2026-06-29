@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+<style>
+
+        body{
+            background: #f1f5f9;
+        }
+
+        /* Sidebar */
+        .sidebar{
+            width: 260px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar .logo{
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .nav-link{
+            color: #cbd5e1;
+            padding: 12px 20px;
+            margin: 6px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background: #2563eb;
+            color: white;
+        }
+
+        .sidebar .nav-link i{
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content{
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        /* Top Navbar */
+        .top-navbar{
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Cards */
+        .custom-card{
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Header Banner */
+        .notification-banner{
+            background: linear-gradient(135deg, #1e293b, #2563eb);
+            color: white;
+            border-radius: 22px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification-banner::before{
+            content: '';
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            top: -100px;
+            right: -100px;
+        }
+
+        /* Stats */
+        .stats-box{
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .stats-box:hover{
+            transform: translateY(-4px);
+        }
+
+        .stats-icon{
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            margin-bottom: 15px;
+            color: white;
+            font-size: 22px;
+        }
+
+        /* Notification Item */
+        .notification-item{
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            border-radius: 16px;
+            transition: 0.3s;
+            margin-bottom: 15px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+        }
+
+        .notification-item:hover{
+            background: #f8fafc;
+        }
+
+        .notification-icon{
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Status Badge */
+        .badge-status{
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Filter Buttons */
+        .filter-btn{
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-weight: 600;
+        }
+
+        /* Activity List */
+        .activity-item{
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .activity-dot{
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2563eb;
+            margin-right: 15px;
+        }
+
+        /* Buttons */
+        .btn{
+            border-radius: 12px;
+            padding: 12px 18px;
+        }
+
+        /* Responsive */
+        @media(max-width: 991px){
+
+            .sidebar{
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content{
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+  <div>
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <i class="fas fa-layer-group"></i>
+        <span>Student Management Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search modules...">
+    </div>
+
+    <div class="menu-group" id="mainMenu">
+      <span class="menu-label">Academic Modules</span>
+
+      <!-- DASHBOARD -->
+      <div class="menu-item-group">
+        <a class="menu-item" onclick="setActive(this)" href="../dashboard/index.html">
+          <div class="menu-link-inner">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+          </div>
+        </a>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-user-graduate"></i>
+            Students
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../students/students.html">All Students</a></li>
+          <li><a href="../students/add-student.html">Add Student</a></li>
+          <li><a href="../students/edit-student.html">Edit Student</a></li>
+          <li><a href="../students/student-profile.html">Student Profile</a></li>
+          <li><a href="../students/student-results.html">Student Results</a></li>
+          <li><a href="../students/student-transcript.html">Student Transcript</a></li>
+          <li><a href="../students/student-id-card.html">Student ID Card</a></li>
+          <li><a href="../students/student-clearance.html">Student Clearance</a></li>
+          <li><a href="../students/student-graduation.html">Student Graduation</a></li>
+          <li><a href="../students/student-documents.html">Student Documents</a></li>
+          <li><a href="../students/upload-document.html">Upload Document</a></li>
+          <li><a href="../students/student-enrollment.html">Student Enrollment</a></li>
+          <li><a href="../students/student-attendance.html">Student Attendance</a></li>
+          <li><a href="../students/student-fees.html">Student Fees</a></li>
+          <li><a href="../students/student-timetable.html">Student Timetable</a></li>
+          <li><a href="../students/guardian-details.html">Guardian Details</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-building"></i>
+            Departments
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../departments/departments.html">Departments</a></li>
+          <li><a href="../departments/add-department.html">Add Department</a></li>
+          <li><a href="../departments/department-details.html">Department Details</a></li>
+        </ul>
+      </div>
+
+      <!-- SEMESTERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-calendar-alt"></i>
+            Semesters
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../semesters/semesters.html">Semesters</a></li>
+          <li><a href="../semesters/add-semester.html">Add Semester</a></li>
+          <li><a href="../semesters/edit-semester.html">Edit Semester</a></li>
+        </ul>
+      </div>
+
+      <!-- COURSES -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book-open"></i>
+            Courses
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../courses/courses.html">Courses</a></li>
+          <li><a href="../courses/add-course.html">Add Course</a></li>
+          <li><a href="../courses/course-details.html">Course Details</a></li>
+          <li><a href="../courses/course-offerings.html">Course Offerings</a></li>
+          <li><a href="../courses/add-course-offering.html">Add Course Offering</a></li>
+          <li><a href="../courses/assign-instructor.html">Assign Instructor</a></li>
+          <li><a href="../courses/assign-students.html">Assign Students</a></li>
+          <li><a href="../courses/course-schedule.html">Course Schedule</a></li>
+          <li><a href="../courses/course-materials.html">Course Materials</a></li>
+        </ul>
+      </div>
+
+      <!-- INSTRUCTORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Instructors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../instructors/instructors.html">Instructors</a></li>
+          <li><a href="../instructors/add-instructor.html">Add Instructor</a></li>
+          <li><a href="../instructors/instructor-profile.html">Instructor Profile</a></li>
+          <li><a href="../instructors/instructor-schedule.html">Instructor Schedule</a></li>
+          <li><a href="../instructors/instructor-payroll.html">Instructor Payroll</a></li>
+          <li><a href="../instructors/instructor-attendance.html">Instructor Attendance</a></li>
+          <li><a href="../instructors/instructor-courses.html">Instructor Courses</a></li>
+        </ul>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clipboard-check"></i>
+            Attendance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../attendance/attendance.html">Attendance</a></li>
+          <li><a href="../attendance/mark-attendance.html">Mark Attendance</a></li>
+          <li><a href="../attendance/attendance-report.html">Attendance Report</a></li>
+          <li><a href="../attendance/attendance-sessions.html">Attendance Sessions</a></li>
+          <li><a href="../attendance/qr-attendance.html">QR Attendance</a></li>
+          <li><a href="../attendance/biometric-attendance.html">Biometric Attendance</a></li>
+          <li><a href="../attendance/attendance-analytics.html">Attendance Analytics</a></li>
+        </ul>
+      </div>
+
+      <!-- TIMETABLE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clock"></i>
+            Timetable
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../timetable/timetable.html">Timetable</a></li>
+          <li><a href="../timetable/classrooms.html">Classrooms</a></li>
+          <li><a href="../timetable/add-classroom.html">Add Classroom</a></li>
+          <li><a href="../timetable/schedule-manager.html">Schedule Manager</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINANCE & ASSETS -->
+    <div class="menu-group" id="financeMenu">
+      <span class="menu-label">Finance & Assets</span>
+
+      <!-- FINANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-coins"></i>
+            Finance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../finance/payments.html">Payments</a></li>
+          <li><a href="../finance/invoice.html">Invoice</a></li>
+          <li><a href="../finance/payment-history.html">Payment History</a></li>
+          <li><a href="../finance/invoices.html">Invoices</a></li>
+          <li><a href="../finance/fee-structure.html">Fee Structure</a></li>
+          <li><a href="../finance/scholarships.html">Scholarships</a></li>
+          <li><a href="../finance/payroll.html">Payroll</a></li>
+          <li><a href="../finance/expenses.html">Expenses</a></li>
+          <li><a href="../finance/receipts.html">Receipts</a></li>
+          <li><a href="../finance/pending-payments.html">Pending Payments</a></li>
+          <li><a href="../finance/financial-reports.html">Financial Reports</a></li>
+        </ul>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book"></i>
+            Library
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../library/books.html">Books</a></li>
+          <li><a href="../library/add-book.html">Add Book</a></li>
+          <li><a href="../library/borrowed-books.html">Borrowed Books</a></li>
+          <li><a href="../library/issue-book.html">Issue Book</a></li>
+          <li><a href="../library/overdue-books.html">Overdue Books</a></li>
+        </ul>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div class="menu-group" id="adminMenu">
+      <span class="menu-label">Administration</span>
+
+      <!-- REPORTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chart-pie"></i>
+            Reports
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../reports/reports.html">Reports</a></li>
+          <li><a href="../reports/academic-reports.html">Academic Reports</a></li>
+          <li><a href="../reports/financial-reports.html">Financial Reports</a></li>
+          <li><a href="../reports/attendance-reports.html">Attendance Reports</a></li>
+          <li><a href="../reports/student-reports.html">Student Reports</a></li>
+          <li><a href="../reports/export-center.html">Export Center</a></li>
+          <li><a href="../reports/analytics-dashboard.html">Analytics Dashboard</a></li>
+          <li><a href="../reports/charts-graphs.html">Charts & Graphs</a></li>
+        </ul>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-bell"></i>
+            Notifications
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="notifications.html">Notifications</a></li>
+          <li><a href="send-notification.html">Send Notification</a></li>
+          <li><a href="sms-center.html">SMS Center</a></li>
+          <li><a href="email-center.html">Email Center</a></li>
+          <li><a href="messaging.html">Messaging</a></li>
+        </ul>
+      </div>
+
+      <!-- USERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-users-cog"></i>
+            Users
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../users/profile.html">Profile</a></li>
+          <li><a href="../users/settings.html">Settings</a></li>
+          <li><a href="../users/users.html">Users</a></li>
+          <li><a href="../users/add-user.html">Add User</a></li>
+          <li><a href="../users/roles.html">Roles</a></li>
+          <li><a href="../users/permissions.html">Permissions</a></li>
+          <li><a href="../users/audit-logs.html">Audit Logs</a></li>
+          <li><a href="../users/activity-logs.html">Activity Logs</a></li>
+          <li><a href="../users/user-sessions.html">User Sessions</a></li>
+        </ul>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-cog"></i>
+            System
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../system/backup-restore.html">Backup & Restore</a></li>
+          <li><a href="../system/system-settings.html">System Settings</a></li>
+          <li><a href="../system/maintenance-mode.html">Maintenance Mode</a></li>
+          <li><a href="../system/system-health.html">System Health</a></li>
+        </ul>
+      </div>
+
+      <!-- ERRORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-exclamation-triangle"></i>
+            Errors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../errors/403.html">403</a></li>
+          <li><a href="../errors/404.html">404</a></li>
+          <li><a href="../errors/500.html">500</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4 class="fw-bold mb-0">
+                    Notifications Center
+                </h4>
+
+                <small class="text-muted">
+                    Manage system alerts and updates
+                </small>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Notifications Center
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary">
+
+                    <i class="fa fa-check-double me-2"></i>
+                    Mark All Read
+
+                </button>
+
+                <button class="btn btn-primary">
+
+                    <i class="fa fa-gear me-2"></i>
+                    Notification Settings
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Banner -->
+        <div class="notification-banner mb-4">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <h2 class="fw-bold mb-3">
+                        Stay Updated With System Activities
+                    </h2>
+
+                    <p class="mb-3">
+                        Track student updates, payments, attendance alerts,
+                        and important academic notifications.
+                    </p>
+
+                    <div class="d-flex gap-3 flex-wrap">
+
+                        <span>
+                            <i class="fa fa-bell me-2"></i>
+                            24 New Notifications
+                        </span>
+
+                        <span>
+                            <i class="fa fa-envelope me-2"></i>
+                            12 Messages
+                        </span>
+
+                        <span>
+                            <i class="fa fa-triangle-exclamation me-2"></i>
+                            4 Alerts
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                    <h1 class="fw-bold">
+                        40
+                    </h1>
+
+                    <p class="mb-0">
+                        Total Notifications Today
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Stats -->
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-3">
+
+                <div class="stats-box">
+
+                    <div class="stats-icon bg-primary">
+
+                        <i class="fa fa-bell"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        24
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Unread Notifications
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-box">
+
+                    <div class="stats-icon bg-success">
+
+                        <i class="fa fa-check-circle"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        156
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Resolved Alerts
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-box">
+
+                    <div class="stats-icon bg-warning">
+
+                        <i class="fa fa-clock"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        8
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Pending Actions
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-box">
+
+                    <div class="stats-icon bg-danger">
+
+                        <i class="fa fa-triangle-exclamation"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        4
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Critical Alerts
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Notifications -->
+            <div class="col-lg-8">
+
+                <!-- Filter -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-body d-flex flex-wrap gap-2">
+
+                        <button class="btn btn-primary filter-btn">
+                            All
+                        </button>
+
+                        <button class="btn btn-outline-primary filter-btn">
+                            Students
+                        </button>
+
+                        <button class="btn btn-outline-success filter-btn">
+                            Payments
+                        </button>
+
+                        <button class="btn btn-outline-warning filter-btn">
+                            Attendance
+                        </button>
+
+                        <button class="btn btn-outline-danger filter-btn">
+                            Alerts
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Notification List -->
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Recent Notifications
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Item -->
+                        <div class="notification-item">
+
+                            <div class="notification-icon bg-success">
+
+                                <i class="fa fa-credit-card"></i>
+
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <div class="d-flex justify-content-between align-items-start">
+
+                                    <div>
+
+                                        <h6 class="fw-bold mb-1">
+                                            Tuition Payment Received
+                                        </h6>
+
+                                        <p class="text-muted mb-2">
+                                            John Doe successfully paid
+                                            Semester 2 tuition fees.
+                                        </p>
+
+                                        <small class="text-muted">
+                                            10 minutes ago
+                                        </small>
+
+                                    </div>
+
+                                    <span class="badge bg-success badge-status">
+                                        Payment
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Item -->
+                        <div class="notification-item">
+
+                            <div class="notification-icon bg-warning">
+
+                                <i class="fa fa-calendar-check"></i>
+
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <div class="d-flex justify-content-between align-items-start">
+
+                                    <div>
+
+                                        <h6 class="fw-bold mb-1">
+                                            Attendance Alert
+                                        </h6>
+
+                                        <p class="text-muted mb-2">
+                                            15 students marked absent in
+                                            Database Systems class.
+                                        </p>
+
+                                        <small class="text-muted">
+                                            30 minutes ago
+                                        </small>
+
+                                    </div>
+
+                                    <span class="badge bg-warning text-dark badge-status">
+                                        Attendance
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Item -->
+                        <div class="notification-item">
+
+                            <div class="notification-icon bg-primary">
+
+                                <i class="fa fa-user-plus"></i>
+
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <div class="d-flex justify-content-between align-items-start">
+
+                                    <div>
+
+                                        <h6 class="fw-bold mb-1">
+                                            New Student Registration
+                                        </h6>
+
+                                        <p class="text-muted mb-2">
+                                            Emily Johnson registered for
+                                            Computer Science program.
+                                        </p>
+
+                                        <small class="text-muted">
+                                            1 hour ago
+                                        </small>
+
+                                    </div>
+
+                                    <span class="badge bg-primary badge-status">
+                                        Student
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Item -->
+                        <div class="notification-item">
+
+                            <div class="notification-icon bg-danger">
+
+                                <i class="fa fa-triangle-exclamation"></i>
+
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <div class="d-flex justify-content-between align-items-start">
+
+                                    <div>
+
+                                        <h6 class="fw-bold mb-1">
+                                            Outstanding Payment Alert
+                                        </h6>
+
+                                        <p class="text-muted mb-2">
+                                            5 students have overdue tuition balances.
+                                        </p>
+
+                                        <small class="text-muted">
+                                            2 hours ago
+                                        </small>
+
+                                    </div>
+
+                                    <span class="badge bg-danger badge-status">
+                                        Alert
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Item -->
+                        <div class="notification-item">
+
+                            <div class="notification-icon bg-info">
+
+                                <i class="fa fa-book"></i>
+
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <div class="d-flex justify-content-between align-items-start">
+
+                                    <div>
+
+                                        <h6 class="fw-bold mb-1">
+                                            Course Schedule Updated
+                                        </h6>
+
+                                        <p class="text-muted mb-2">
+                                            Web Development class schedule
+                                            has been updated.
+                                        </p>
+
+                                        <small class="text-muted">
+                                            3 hours ago
+                                        </small>
+
+                                    </div>
+
+                                    <span class="badge bg-info badge-status">
+                                        Course
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+
+                <!-- Quick Actions -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Quick Actions
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body d-grid gap-3">
+
+                        <button class="btn btn-primary">
+
+                            <i class="fa fa-paper-plane me-2"></i>
+                            Send Announcement
+
+                        </button>
+
+                        <button class="btn btn-success">
+
+                            <i class="fa fa-envelope me-2"></i>
+                            Send Email
+
+                        </button>
+
+                        <button class="btn btn-warning text-dark">
+
+                            <i class="fa fa-calendar me-2"></i>
+                            Schedule Alert
+
+                        </button>
+
+                        <button class="btn btn-danger">
+
+                            <i class="fa fa-trash me-2"></i>
+                            Clear Notifications
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            System Activity
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="activity-item">
+
+                            <div class="activity-dot"></div>
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Report Generated
+                                </h6>
+
+                                <small class="text-muted">
+                                    Financial report exported
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-dot bg-success"></div>
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    New Instructor Added
+                                </h6>
+
+                                <small class="text-muted">
+                                    Dr. Michael joined faculty
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-dot bg-warning"></div>
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Attendance Submitted
+                                </h6>
+
+                                <small class="text-muted">
+                                    CS101 attendance updated
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div class="activity-item mb-0">
+
+                            <div class="activity-dot bg-danger"></div>
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Payment Reminder Sent
+                                </h6>
+
+                                <small class="text-muted">
+                                    Reminder emails delivered
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

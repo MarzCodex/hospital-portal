@@ -98,7 +98,7 @@ function signOut() {
         sessionStorage.clear();
         showNotification('Signed out successfully', 'success');
         setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = '../../../login.html';
         }, 1500);
     }
 }

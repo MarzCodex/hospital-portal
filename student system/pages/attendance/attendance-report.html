@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Report | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+<style>
+
+        body{
+            background: #f1f5f9;
+        }
+
+        /* Sidebar */
+        .sidebar{
+            width: 260px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar .logo{
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .nav-link{
+            color: #cbd5e1;
+            padding: 12px 20px;
+            margin: 6px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background: #2563eb;
+            color: white;
+        }
+
+        .sidebar .nav-link i{
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content{
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        /* Navbar */
+        .top-navbar{
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Cards */
+        .custom-card{
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Report Banner */
+        .report-banner{
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            border-radius: 18px;
+            padding: 35px;
+        }
+
+        /* Statistics */
+        .stats-card{
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stats-icon{
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin: auto;
+            margin-bottom: 15px;
+        }
+
+        /* Filters */
+        .form-control,
+        .form-select{
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        label{
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Tables */
+        .table thead{
+            background: #e2e8f0;
+        }
+
+        .table tbody tr:hover{
+            background: #f8fafc;
+        }
+
+        /* Progress */
+        .progress{
+            height: 10px;
+            border-radius: 10px;
+        }
+
+        /* Student Card */
+        .student-card{
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 18px;
+            transition: 0.3s;
+        }
+
+        .student-card:hover{
+            background: #eff6ff;
+        }
+
+        .student-avatar{
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Responsive */
+        @media(max-width: 991px){
+
+            .sidebar{
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content{
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+  <div>
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <i class="fas fa-layer-group"></i>
+        <span>Student Management Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search modules...">
+    </div>
+
+    <div class="menu-group" id="mainMenu">
+      <span class="menu-label">Academic Modules</span>
+
+      <!-- DASHBOARD -->
+      <div class="menu-item-group">
+        <a class="menu-item" onclick="setActive(this)" href="../dashboard/index.html">
+          <div class="menu-link-inner">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+          </div>
+        </a>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-user-graduate"></i>
+            Students
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../students/students.html">All Students</a></li>
+          <li><a href="../students/add-student.html">Add Student</a></li>
+          <li><a href="../students/edit-student.html">Edit Student</a></li>
+          <li><a href="../students/student-profile.html">Student Profile</a></li>
+          <li><a href="../students/student-results.html">Student Results</a></li>
+          <li><a href="../students/student-transcript.html">Student Transcript</a></li>
+          <li><a href="../students/student-id-card.html">Student ID Card</a></li>
+          <li><a href="../students/student-clearance.html">Student Clearance</a></li>
+          <li><a href="../students/student-graduation.html">Student Graduation</a></li>
+          <li><a href="../students/student-documents.html">Student Documents</a></li>
+          <li><a href="../students/upload-document.html">Upload Document</a></li>
+          <li><a href="../students/student-enrollment.html">Student Enrollment</a></li>
+          <li><a href="../students/student-attendance.html">Student Attendance</a></li>
+          <li><a href="../students/student-fees.html">Student Fees</a></li>
+          <li><a href="../students/student-timetable.html">Student Timetable</a></li>
+          <li><a href="../students/guardian-details.html">Guardian Details</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-building"></i>
+            Departments
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../departments/departments.html">Departments</a></li>
+          <li><a href="../departments/add-department.html">Add Department</a></li>
+          <li><a href="../departments/department-details.html">Department Details</a></li>
+        </ul>
+      </div>
+
+      <!-- SEMESTERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-calendar-alt"></i>
+            Semesters
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../semesters/semesters.html">Semesters</a></li>
+          <li><a href="../semesters/add-semester.html">Add Semester</a></li>
+          <li><a href="../semesters/edit-semester.html">Edit Semester</a></li>
+        </ul>
+      </div>
+
+      <!-- COURSES -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book-open"></i>
+            Courses
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../courses/courses.html">Courses</a></li>
+          <li><a href="../courses/add-course.html">Add Course</a></li>
+          <li><a href="../courses/course-details.html">Course Details</a></li>
+          <li><a href="../courses/course-offerings.html">Course Offerings</a></li>
+          <li><a href="../courses/add-course-offering.html">Add Course Offering</a></li>
+          <li><a href="../courses/assign-instructor.html">Assign Instructor</a></li>
+          <li><a href="../courses/assign-students.html">Assign Students</a></li>
+          <li><a href="../courses/course-schedule.html">Course Schedule</a></li>
+          <li><a href="../courses/course-materials.html">Course Materials</a></li>
+        </ul>
+      </div>
+
+      <!-- INSTRUCTORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Instructors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../instructors/instructors.html">Instructors</a></li>
+          <li><a href="../instructors/add-instructor.html">Add Instructor</a></li>
+          <li><a href="../instructors/instructor-profile.html">Instructor Profile</a></li>
+          <li><a href="../instructors/instructor-schedule.html">Instructor Schedule</a></li>
+          <li><a href="../instructors/instructor-payroll.html">Instructor Payroll</a></li>
+          <li><a href="../instructors/instructor-attendance.html">Instructor Attendance</a></li>
+          <li><a href="../instructors/instructor-courses.html">Instructor Courses</a></li>
+        </ul>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clipboard-check"></i>
+            Attendance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="attendance.html">Attendance</a></li>
+          <li><a href="mark-attendance.html">Mark Attendance</a></li>
+          <li><a href="attendance-report.html">Attendance Report</a></li>
+          <li><a href="attendance-sessions.html">Attendance Sessions</a></li>
+          <li><a href="qr-attendance.html">QR Attendance</a></li>
+          <li><a href="biometric-attendance.html">Biometric Attendance</a></li>
+          <li><a href="attendance-analytics.html">Attendance Analytics</a></li>
+        </ul>
+      </div>
+
+      <!-- TIMETABLE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clock"></i>
+            Timetable
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../timetable/timetable.html">Timetable</a></li>
+          <li><a href="../timetable/classrooms.html">Classrooms</a></li>
+          <li><a href="../timetable/add-classroom.html">Add Classroom</a></li>
+          <li><a href="../timetable/schedule-manager.html">Schedule Manager</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINANCE & ASSETS -->
+    <div class="menu-group" id="financeMenu">
+      <span class="menu-label">Finance & Assets</span>
+
+      <!-- FINANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-coins"></i>
+            Finance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../finance/payments.html">Payments</a></li>
+          <li><a href="../finance/invoice.html">Invoice</a></li>
+          <li><a href="../finance/payment-history.html">Payment History</a></li>
+          <li><a href="../finance/invoices.html">Invoices</a></li>
+          <li><a href="../finance/fee-structure.html">Fee Structure</a></li>
+          <li><a href="../finance/scholarships.html">Scholarships</a></li>
+          <li><a href="../finance/payroll.html">Payroll</a></li>
+          <li><a href="../finance/expenses.html">Expenses</a></li>
+          <li><a href="../finance/receipts.html">Receipts</a></li>
+          <li><a href="../finance/pending-payments.html">Pending Payments</a></li>
+          <li><a href="../finance/financial-reports.html">Financial Reports</a></li>
+        </ul>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book"></i>
+            Library
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../library/books.html">Books</a></li>
+          <li><a href="../library/add-book.html">Add Book</a></li>
+          <li><a href="../library/borrowed-books.html">Borrowed Books</a></li>
+          <li><a href="../library/issue-book.html">Issue Book</a></li>
+          <li><a href="../library/overdue-books.html">Overdue Books</a></li>
+        </ul>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div class="menu-group" id="adminMenu">
+      <span class="menu-label">Administration</span>
+
+      <!-- REPORTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chart-pie"></i>
+            Reports
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../reports/reports.html">Reports</a></li>
+          <li><a href="../reports/academic-reports.html">Academic Reports</a></li>
+          <li><a href="../reports/financial-reports.html">Financial Reports</a></li>
+          <li><a href="../reports/attendance-reports.html">Attendance Reports</a></li>
+          <li><a href="../reports/student-reports.html">Student Reports</a></li>
+          <li><a href="../reports/export-center.html">Export Center</a></li>
+          <li><a href="../reports/analytics-dashboard.html">Analytics Dashboard</a></li>
+          <li><a href="../reports/charts-graphs.html">Charts & Graphs</a></li>
+        </ul>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-bell"></i>
+            Notifications
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../notifications/notifications.html">Notifications</a></li>
+          <li><a href="../notifications/send-notification.html">Send Notification</a></li>
+          <li><a href="../notifications/sms-center.html">SMS Center</a></li>
+          <li><a href="../notifications/email-center.html">Email Center</a></li>
+          <li><a href="../notifications/messaging.html">Messaging</a></li>
+        </ul>
+      </div>
+
+      <!-- USERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-users-cog"></i>
+            Users
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../users/profile.html">Profile</a></li>
+          <li><a href="../users/settings.html">Settings</a></li>
+          <li><a href="../users/users.html">Users</a></li>
+          <li><a href="../users/add-user.html">Add User</a></li>
+          <li><a href="../users/roles.html">Roles</a></li>
+          <li><a href="../users/permissions.html">Permissions</a></li>
+          <li><a href="../users/audit-logs.html">Audit Logs</a></li>
+          <li><a href="../users/activity-logs.html">Activity Logs</a></li>
+          <li><a href="../users/user-sessions.html">User Sessions</a></li>
+        </ul>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-cog"></i>
+            System
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../system/backup-restore.html">Backup & Restore</a></li>
+          <li><a href="../system/system-settings.html">System Settings</a></li>
+          <li><a href="../system/maintenance-mode.html">Maintenance Mode</a></li>
+          <li><a href="../system/system-health.html">System Health</a></li>
+        </ul>
+      </div>
+
+      <!-- ERRORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-exclamation-triangle"></i>
+            Errors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../errors/403.html">403</a></li>
+          <li><a href="../errors/404.html">404</a></li>
+          <li><a href="../errors/500.html">500</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4 class="fw-bold mb-0">
+                    Attendance Report
+                </h4>
+
+                <small class="text-muted">
+                    Analyze student attendance performance and trends
+                </small>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="attendance.html">Attendance</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Attendance Report
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-success">
+
+                    <i class="fa fa-file-excel me-2"></i>
+                    Export Excel
+
+                </button>
+
+                <button class="btn btn-danger">
+
+                    <i class="fa fa-file-pdf me-2"></i>
+                    Export PDF
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Banner -->
+        <div class="report-banner mb-4">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <h2 class="fw-bold mb-3">
+                        Attendance Overview Report
+                    </h2>
+
+                    <p class="mb-3">
+                        Monitor attendance rates, student participation
+                        and academic engagement across all courses.
+                    </p>
+
+                    <div class="d-flex gap-3 flex-wrap">
+
+                        <span>
+                            <i class="fa fa-calendar me-2"></i>
+                            Academic Year 2025/2026
+                        </span>
+
+                        <span>
+                            <i class="fa fa-book me-2"></i>
+                            24 Active Courses
+                        </span>
+
+                        <span>
+                            <i class="fa fa-users me-2"></i>
+                            1,240 Students
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                    <h1 class="fw-bold">
+                        91%
+                    </h1>
+
+                    <p class="mb-0">
+                        Average Attendance Rate
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Statistics -->
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-success">
+
+                        <i class="fa fa-user-check"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        1,130
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Present Students
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-danger">
+
+                        <i class="fa fa-user-times"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        72
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Absent Students
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-warning">
+
+                        <i class="fa fa-clock"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        38
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Late Students
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="stats-card">
+
+                    <div class="stats-icon bg-primary">
+
+                        <i class="fa fa-chart-line"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold">
+                        +4.2%
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Monthly Improvement
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Filters -->
+        <div class="card custom-card mb-4">
+
+            <div class="card-header bg-white border-0 pt-4">
+
+                <h5 class="fw-bold mb-0">
+                    Filter Attendance Report
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-3">
+
+                        <label>Select Course</label>
+
+                        <select class="form-select">
+
+                            <option>All Courses</option>
+                            <option>Web Development</option>
+                            <option>Database Systems</option>
+                            <option>Software Engineering</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>Select Department</label>
+
+                        <select class="form-select">
+
+                            <option>All Departments</option>
+                            <option>Computer Science</option>
+                            <option>Engineering</option>
+                            <option>Business</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>From Date</label>
+
+                        <input type="date"
+                               class="form-control">
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>To Date</label>
+
+                        <input type="date"
+                               class="form-control">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Attendance Table -->
+            <div class="col-lg-8">
+
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-4">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Student Attendance Records
+                            </h5>
+
+                            <small class="text-muted">
+                                Attendance summary by student
+                            </small>
+
+                        </div>
+
+                        <button class="btn btn-primary btn-sm">
+
+                            <i class="fa fa-print me-2"></i>
+                            Print Report
+
+                        </button>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Course</th>
+                                        <th>Present</th>
+                                        <th>Absent</th>
+                                        <th>Rate</th>
+                                        <th>Status</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=12"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="mb-1 fw-bold">
+                                                        John Doe
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-001
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>Web Development</td>
+
+                                        <td>28</td>
+
+                                        <td>2</td>
+
+                                        <td width="180">
+
+                                            <div class="progress mb-2">
+
+                                                <div class="progress-bar bg-success"
+                                                     style="width: 93%">
+                                                </div>
+
+                                            </div>
+
+                                            <small>93%</small>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+                                                Excellent
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=32"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="mb-1 fw-bold">
+                                                        Sarah Johnson
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-002
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>Database Systems</td>
+
+                                        <td>24</td>
+
+                                        <td>6</td>
+
+                                        <td width="180">
+
+                                            <div class="progress mb-2">
+
+                                                <div class="progress-bar bg-primary"
+                                                     style="width: 80%">
+                                                </div>
+
+                                            </div>
+
+                                            <small>80%</small>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-primary">
+                                                Good
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <img src="https://i.pravatar.cc/100?img=15"
+                                                     class="student-avatar me-3"
+                                                     alt="Student">
+
+                                                <div>
+
+                                                    <h6 class="mb-1 fw-bold">
+                                                        Michael Brown
+                                                    </h6>
+
+                                                    <small class="text-muted">
+                                                        STU-003
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>Software Engineering</td>
+
+                                        <td>18</td>
+
+                                        <td>12</td>
+
+                                        <td width="180">
+
+                                            <div class="progress mb-2">
+
+                                                <div class="progress-bar bg-warning"
+                                                     style="width: 60%">
+                                                </div>
+
+                                            </div>
+
+                                            <small>60%</small>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-warning text-dark">
+                                                Warning
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+
+                <!-- Top Performers -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Top Attendance Students
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="student-card mb-3">
+
+                            <div class="d-flex align-items-center">
+
+                                <img src="https://i.pravatar.cc/100?img=45"
+                                     class="student-avatar me-3"
+                                     alt="Student">
+
+                                <div class="flex-grow-1">
+
+                                    <h6 class="fw-bold mb-1">
+                                        Emily Davis
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        98% Attendance
+                                    </small>
+
+                                </div>
+
+                                <i class="fa fa-trophy text-warning"></i>
+
+                            </div>
+
+                        </div>
+
+                        <div class="student-card mb-3">
+
+                            <div class="d-flex align-items-center">
+
+                                <img src="https://i.pravatar.cc/100?img=12"
+                                     class="student-avatar me-3"
+                                     alt="Student">
+
+                                <div class="flex-grow-1">
+
+                                    <h6 class="fw-bold mb-1">
+                                        John Doe
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        93% Attendance
+                                    </small>
+
+                                </div>
+
+                                <i class="fa fa-medal text-primary"></i>
+
+                            </div>
+
+                        </div>
+
+                        <div class="student-card">
+
+                            <div class="d-flex align-items-center">
+
+                                <img src="https://i.pravatar.cc/100?img=20"
+                                     class="student-avatar me-3"
+                                     alt="Student">
+
+                                <div class="flex-grow-1">
+
+                                    <h6 class="fw-bold mb-1">
+                                        Sophia Wilson
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        91% Attendance
+                                    </small>
+
+                                </div>
+
+                                <i class="fa fa-award text-success"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Attendance Summary -->
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Attendance Summary
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Total Sessions
+                            </span>
+
+                            <strong>
+                                420
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Highest Attendance
+                            </span>
+
+                            <strong class="text-success">
+                                98%
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Lowest Attendance
+                            </span>
+
+                            <strong class="text-danger">
+                                52%
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Average Attendance
+                            </span>
+
+                            <strong class="text-primary">
+                                91%
+                            </strong>
+
+                        </div>
+
+                        <hr>
+
+                        <button class="btn btn-primary w-100">
+
+                            <i class="fa fa-chart-bar me-2"></i>
+                            View Full Analytics
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

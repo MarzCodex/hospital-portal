@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Course | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+<style>
+
+        body{
+            background: #f1f5f9;
+        }
+
+        /* Sidebar */
+        .sidebar{
+            width: 260px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar .logo{
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .nav-link{
+            color: #cbd5e1;
+            padding: 12px 20px;
+            margin: 6px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background: #2563eb;
+            color: white;
+        }
+
+        .sidebar .nav-link i{
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content{
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        /* Navbar */
+        .top-navbar{
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Cards */
+        .custom-card{
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Form Controls */
+        .form-control,
+        .form-select{
+            height: 52px;
+            border-radius: 12px;
+        }
+
+        textarea.form-control{
+            height: auto;
+        }
+
+        label{
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Upload Box */
+        .upload-box{
+            border: 2px dashed #cbd5e1;
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+            background: #f8fafc;
+            transition: 0.3s;
+        }
+
+        .upload-box:hover{
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        /* Buttons */
+        .btn{
+            border-radius: 12px;
+            padding: 12px 20px;
+        }
+
+        /* Course Info */
+        .info-box{
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .info-icon{
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        /* Responsive */
+        @media(max-width: 991px){
+
+            .sidebar{
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content{
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+  <div>
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <i class="fas fa-layer-group"></i>
+        <span>Student Management Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search modules...">
+    </div>
+
+    <div class="menu-group" id="mainMenu">
+      <span class="menu-label">Academic Modules</span>
+
+      <!-- DASHBOARD -->
+      <div class="menu-item-group">
+        <a class="menu-item" onclick="setActive(this)" href="../dashboard/index.html">
+          <div class="menu-link-inner">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+          </div>
+        </a>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-user-graduate"></i>
+            Students
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../students/students.html">All Students</a></li>
+          <li><a href="../students/add-student.html">Add Student</a></li>
+          <li><a href="../students/edit-student.html">Edit Student</a></li>
+          <li><a href="../students/student-profile.html">Student Profile</a></li>
+          <li><a href="../students/student-results.html">Student Results</a></li>
+          <li><a href="../students/student-transcript.html">Student Transcript</a></li>
+          <li><a href="../students/student-id-card.html">Student ID Card</a></li>
+          <li><a href="../students/student-clearance.html">Student Clearance</a></li>
+          <li><a href="../students/student-graduation.html">Student Graduation</a></li>
+          <li><a href="../students/student-documents.html">Student Documents</a></li>
+          <li><a href="../students/upload-document.html">Upload Document</a></li>
+          <li><a href="../students/student-enrollment.html">Student Enrollment</a></li>
+          <li><a href="../students/student-attendance.html">Student Attendance</a></li>
+          <li><a href="../students/student-fees.html">Student Fees</a></li>
+          <li><a href="../students/student-timetable.html">Student Timetable</a></li>
+          <li><a href="../students/guardian-details.html">Guardian Details</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-building"></i>
+            Departments
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../departments/departments.html">Departments</a></li>
+          <li><a href="../departments/add-department.html">Add Department</a></li>
+          <li><a href="../departments/department-details.html">Department Details</a></li>
+        </ul>
+      </div>
+
+      <!-- SEMESTERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-calendar-alt"></i>
+            Semesters
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../semesters/semesters.html">Semesters</a></li>
+          <li><a href="../semesters/add-semester.html">Add Semester</a></li>
+          <li><a href="../semesters/edit-semester.html">Edit Semester</a></li>
+        </ul>
+      </div>
+
+      <!-- COURSES -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book-open"></i>
+            Courses
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="add-course.html">Add Course</a></li>
+          <li><a href="course-details.html">Course Details</a></li>
+          <li><a href="course-offerings.html">Course Offerings</a></li>
+          <li><a href="add-course-offering.html">Add Course Offering</a></li>
+          <li><a href="assign-instructor.html">Assign Instructor</a></li>
+          <li><a href="assign-students.html">Assign Students</a></li>
+          <li><a href="course-schedule.html">Course Schedule</a></li>
+          <li><a href="course-materials.html">Course Materials</a></li>
+        </ul>
+      </div>
+
+      <!-- INSTRUCTORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Instructors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../instructors/instructors.html">Instructors</a></li>
+          <li><a href="../instructors/add-instructor.html">Add Instructor</a></li>
+          <li><a href="../instructors/instructor-profile.html">Instructor Profile</a></li>
+          <li><a href="../instructors/instructor-schedule.html">Instructor Schedule</a></li>
+          <li><a href="../instructors/instructor-payroll.html">Instructor Payroll</a></li>
+          <li><a href="../instructors/instructor-attendance.html">Instructor Attendance</a></li>
+          <li><a href="../instructors/instructor-courses.html">Instructor Courses</a></li>
+        </ul>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clipboard-check"></i>
+            Attendance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../attendance/attendance.html">Attendance</a></li>
+          <li><a href="../attendance/mark-attendance.html">Mark Attendance</a></li>
+          <li><a href="../attendance/attendance-report.html">Attendance Report</a></li>
+          <li><a href="../attendance/attendance-sessions.html">Attendance Sessions</a></li>
+          <li><a href="../attendance/qr-attendance.html">QR Attendance</a></li>
+          <li><a href="../attendance/biometric-attendance.html">Biometric Attendance</a></li>
+          <li><a href="../attendance/attendance-analytics.html">Attendance Analytics</a></li>
+        </ul>
+      </div>
+
+      <!-- TIMETABLE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-clock"></i>
+            Timetable
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../timetable/timetable.html">Timetable</a></li>
+          <li><a href="../timetable/classrooms.html">Classrooms</a></li>
+          <li><a href="../timetable/add-classroom.html">Add Classroom</a></li>
+          <li><a href="../timetable/schedule-manager.html">Schedule Manager</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINANCE & ASSETS -->
+    <div class="menu-group" id="financeMenu">
+      <span class="menu-label">Finance & Assets</span>
+
+      <!-- FINANCE -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-coins"></i>
+            Finance
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../finance/payments.html">Payments</a></li>
+          <li><a href="../finance/invoice.html">Invoice</a></li>
+          <li><a href="../finance/payment-history.html">Payment History</a></li>
+          <li><a href="../finance/invoices.html">Invoices</a></li>
+          <li><a href="../finance/fee-structure.html">Fee Structure</a></li>
+          <li><a href="../finance/scholarships.html">Scholarships</a></li>
+          <li><a href="../finance/payroll.html">Payroll</a></li>
+          <li><a href="../finance/expenses.html">Expenses</a></li>
+          <li><a href="../finance/receipts.html">Receipts</a></li>
+          <li><a href="../finance/pending-payments.html">Pending Payments</a></li>
+          <li><a href="../finance/financial-reports.html">Financial Reports</a></li>
+        </ul>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-book"></i>
+            Library
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../library/books.html">Books</a></li>
+          <li><a href="../library/add-book.html">Add Book</a></li>
+          <li><a href="../library/borrowed-books.html">Borrowed Books</a></li>
+          <li><a href="../library/issue-book.html">Issue Book</a></li>
+          <li><a href="../library/overdue-books.html">Overdue Books</a></li>
+        </ul>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div class="menu-group" id="adminMenu">
+      <span class="menu-label">Administration</span>
+
+      <!-- REPORTS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-chart-pie"></i>
+            Reports
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../reports/reports.html">Reports</a></li>
+          <li><a href="../reports/academic-reports.html">Academic Reports</a></li>
+          <li><a href="../reports/financial-reports.html">Financial Reports</a></li>
+          <li><a href="../reports/attendance-reports.html">Attendance Reports</a></li>
+          <li><a href="../reports/student-reports.html">Student Reports</a></li>
+          <li><a href="../reports/export-center.html">Export Center</a></li>
+          <li><a href="../reports/analytics-dashboard.html">Analytics Dashboard</a></li>
+          <li><a href="../reports/charts-graphs.html">Charts & Graphs</a></li>
+        </ul>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-bell"></i>
+            Notifications
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../notifications/notifications.html">Notifications</a></li>
+          <li><a href="../notifications/send-notification.html">Send Notification</a></li>
+          <li><a href="../notifications/sms-center.html">SMS Center</a></li>
+          <li><a href="../notifications/email-center.html">Email Center</a></li>
+          <li><a href="../notifications/messaging.html">Messaging</a></li>
+        </ul>
+      </div>
+
+      <!-- USERS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-users-cog"></i>
+            Users
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../users/profile.html">Profile</a></li>
+          <li><a href="../users/settings.html">Settings</a></li>
+          <li><a href="../users/users.html">Users</a></li>
+          <li><a href="../users/add-user.html">Add User</a></li>
+          <li><a href="../users/roles.html">Roles</a></li>
+          <li><a href="../users/permissions.html">Permissions</a></li>
+          <li><a href="../users/audit-logs.html">Audit Logs</a></li>
+          <li><a href="../users/activity-logs.html">Activity Logs</a></li>
+          <li><a href="../users/user-sessions.html">User Sessions</a></li>
+        </ul>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-cog"></i>
+            System
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../system/backup-restore.html">Backup & Restore</a></li>
+          <li><a href="../system/system-settings.html">System Settings</a></li>
+          <li><a href="../system/maintenance-mode.html">Maintenance Mode</a></li>
+          <li><a href="../system/system-health.html">System Health</a></li>
+        </ul>
+      </div>
+
+      <!-- ERRORS -->
+      <div class="menu-item-group">
+        <div class="menu-item" onclick="toggleSubmenu(this)">
+          <div class="menu-link-inner">
+            <i class="fas fa-exclamation-triangle"></i>
+            Errors
+          </div>
+          <i class="fas fa-chevron-down chevron-icon"></i>
+        </div>
+        <ul class="submenu">
+          <li><a href="../errors/403.html">403</a></li>
+          <li><a href="../errors/404.html">404</a></li>
+          <li><a href="../errors/500.html">500</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4 class="fw-bold mb-0">
+                    Add New Course
+                </h4>
+
+                <small class="text-muted">
+                    Create and manage academic courses
+                </small>
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="../dashboard/index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="courses.html">Courses</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Add New Course
+                        </li>
+                    </ol>
+                </nav>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <a href="courses.html"
+                   class="btn btn-secondary">
+
+                    <i class="fa fa-arrow-left me-2"></i>
+                    Back to Courses
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Form -->
+            <div class="col-lg-8">
+
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Course Information
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <form>
+
+                            <!-- Basic Information -->
+                            <h6 class="fw-bold text-primary mb-3">
+                                Basic Information
+                            </h6>
+
+                            <div class="row g-3 mb-4">
+
+                                <div class="col-md-6">
+
+                                    <label>Course Title</label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter course title">
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Course Code</label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="e.g CSC101">
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Department</label>
+
+                                    <select class="form-select">
+
+                                        <option selected disabled>
+                                            Select department
+                                        </option>
+
+                                        <option>
+                                            Computer Science
+                                        </option>
+
+                                        <option>
+                                            Business Administration
+                                        </option>
+
+                                        <option>
+                                            Engineering
+                                        </option>
+
+                                        <option>
+                                            Information Technology
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Course Category</label>
+
+                                    <select class="form-select">
+
+                                        <option selected disabled>
+                                            Select category
+                                        </option>
+
+                                        <option>Core</option>
+                                        <option>Elective</option>
+                                        <option>Practical</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Academic Details -->
+                            <h6 class="fw-bold text-primary mb-3">
+                                Academic Details
+                            </h6>
+
+                            <div class="row g-3 mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Credit Hours</label>
+
+                                    <input type="number"
+                                           class="form-control"
+                                           placeholder="3">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Semester</label>
+
+                                    <select class="form-select">
+
+                                        <option selected disabled>
+                                            Select semester
+                                        </option>
+
+                                        <option>Semester 1</option>
+                                        <option>Semester 2</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Academic Year</label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="2026">
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Instructor</label>
+
+                                    <select class="form-select">
+
+                                        <option selected disabled>
+                                            Assign instructor
+                                        </option>
+
+                                        <option>Dr. Smith</option>
+                                        <option>Prof. Johnson</option>
+                                        <option>Mr. Williams</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Course Status</label>
+
+                                    <select class="form-select">
+
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Schedule -->
+                            <h6 class="fw-bold text-primary mb-3">
+                                Course Schedule
+                            </h6>
+
+                            <div class="row g-3 mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Class Days</label>
+
+                                    <select class="form-select">
+
+                                        <option>Monday - Wednesday</option>
+                                        <option>Tuesday - Thursday</option>
+                                        <option>Weekend</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Start Time</label>
+
+                                    <input type="time"
+                                           class="form-control">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>End Time</label>
+
+                                    <input type="time"
+                                           class="form-control">
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Classroom</label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Room A-12">
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Maximum Students</label>
+
+                                    <input type="number"
+                                           class="form-control"
+                                           placeholder="50">
+
+                                </div>
+
+                            </div>
+
+                            <!-- Course Description -->
+                            <h6 class="fw-bold text-primary mb-3">
+                                Course Description
+                            </h6>
+
+                            <div class="mb-4">
+
+                                <label>Description</label>
+
+                                <textarea class="form-control"
+                                          rows="5"
+                                          placeholder="Enter course description..."></textarea>
+
+                            </div>
+
+                            <!-- Upload -->
+                            <h6 class="fw-bold text-primary mb-3">
+                                Upload Course Material
+                            </h6>
+
+                            <div class="upload-box mb-4">
+
+                                <i class="fa fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+
+                                <h5 class="fw-bold">
+                                    Upload Course Outline
+                                </h5>
+
+                                <p class="text-muted">
+                                    PDF, DOCX or PPT files up to 10MB
+                                </p>
+
+                                <button type="button"
+                                        class="btn btn-primary">
+
+                                    <i class="fa fa-upload me-2"></i>
+                                    Choose File
+
+                                </button>
+
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-end gap-3">
+
+                                <button type="reset"
+                                        class="btn btn-light border">
+
+                                    <i class="fa fa-rotate-left me-2"></i>
+                                    Reset
+
+                                </button>
+
+                                <button type="submit"
+                                        class="btn btn-success">
+
+                                    <i class="fa fa-save me-2"></i>
+                                    Save Course
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+
+                <!-- Quick Tips -->
+                <div class="card custom-card mb-4">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Course Guidelines
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="info-box mb-3">
+
+                            <div class="d-flex">
+
+                                <div class="info-icon bg-primary me-3">
+
+                                    <i class="fa fa-book"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Course Content
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Ensure the course outline includes
+                                        objectives and learning outcomes.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="info-box mb-3">
+
+                            <div class="d-flex">
+
+                                <div class="info-icon bg-success me-3">
+
+                                    <i class="fa fa-users"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Student Capacity
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Set realistic class limits based
+                                        on classroom capacity.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="info-box">
+
+                            <div class="d-flex">
+
+                                <div class="info-icon bg-warning me-3">
+
+                                    <i class="fa fa-clock"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="fw-bold">
+                                        Scheduling
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Avoid timetable conflicts with
+                                        existing classes.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Course Preview -->
+                <div class="card custom-card">
+
+                    <div class="card-header bg-white border-0 pt-4">
+
+                        <h5 class="fw-bold mb-0">
+                            Course Preview
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="text-center mb-4">
+
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                                 style="width:80px;height:80px;">
+
+                                <i class="fa fa-book fa-2x"></i>
+
+                            </div>
+
+                        </div>
+
+                        <h5 class="fw-bold text-center">
+                            New Course
+                        </h5>
+
+                        <p class="text-muted text-center">
+                            Course details preview will appear here
+                        </p>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Course Code
+                            </span>
+
+                            <strong>
+                                ---
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Credits
+                            </span>
+
+                            <strong>
+                                ---
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Instructor
+                            </span>
+
+                            <strong>
+                                ---
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <span class="text-muted">
+                                Status
+                            </span>
+
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

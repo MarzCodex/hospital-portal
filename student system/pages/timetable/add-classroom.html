@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Classroom | Student Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<!-- ../../components/navbar.html -->
+<!-- ../../components/sidebar.html -->
+
+<div class="container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-plus-circle text-primary me-2"></i>
+                Add New Classroom
+            </h2>
+
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard/index.html">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="classrooms.html">
+                            Classrooms
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Add Classroom
+                    </li>
+
+                </ol>
+
+            </nav>
+
+        </div>
+
+        <div>
+
+            <a href="classrooms.html"
+               class="btn btn-outline-secondary">
+
+                <i class="fa-solid fa-arrow-left me-2"></i>
+                Back to Classrooms
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- FORM CARD -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Classroom Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form>
+
+                <div class="row">
+
+                    <!-- Room Number -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Room Number
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               placeholder="e.g. A101">
+
+                    </div>
+
+                    <!-- Room Name -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Room Name
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               placeholder="e.g. Main Lecture Hall">
+
+                    </div>
+
+                    <!-- Building -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Building
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               placeholder="e.g. Science Block">
+
+                    </div>
+
+                    <!-- Floor -->
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Floor
+                        </label>
+
+                        <select class="form-select">
+
+                            <option selected>Select Floor</option>
+                            <option>Ground Floor</option>
+                            <option>1st Floor</option>
+                            <option>2nd Floor</option>
+                            <option>3rd Floor</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Room Type -->
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Room Type
+                        </label>
+
+                        <select class="form-select">
+
+                            <option selected>Select Type</option>
+                            <option>Lecture Room</option>
+                            <option>Computer Lab</option>
+                            <option>Science Lab</option>
+                            <option>Conference Room</option>
+                            <option>Exam Hall</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Capacity -->
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Capacity
+                        </label>
+
+                        <input type="number"
+                               class="form-control"
+                               placeholder="50">
+
+                    </div>
+
+                    <!-- Status -->
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>Available</option>
+                            <option>Occupied</option>
+                            <option>Maintenance</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- EQUIPMENT SECTION -->
+
+                <div class="card bg-light border-0 mb-4">
+
+                    <div class="card-body">
+
+                        <h6 class="mb-3">
+                            Room Equipment
+                        </h6>
+
+                        <div class="row">
+
+                            <div class="col-md-3">
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="projector">
+
+                                    <label class="form-check-label"
+                                           for="projector">
+
+                                        Projector
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="whiteboard">
+
+                                    <label class="form-check-label"
+                                           for="whiteboard">
+
+                                        Whiteboard
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="computers">
+
+                                    <label class="form-check-label"
+                                           for="computers">
+
+                                        Computers
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="aircon">
+
+                                    <label class="form-check-label"
+                                           for="aircon">
+
+                                        Air Conditioning
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- DESCRIPTION -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Description / Notes
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="4"
+                              placeholder="Enter additional classroom information..."></textarea>
+
+                </div>
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a href="classrooms.html"
+                       class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+                    <button type="reset"
+                            class="btn btn-warning">
+
+                        Reset
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fa-solid fa-save me-2"></i>
+                        Save Classroom
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- QUICK LINKS -->
+
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Quick Navigation
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="classrooms.html"
+                       class="btn btn-outline-primary w-100">
+
+                        Classroom List
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="schedule-manager.html"
+                       class="btn btn-outline-success w-100">
+
+                        Schedule Manager
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="timetable.html"
+                       class="btn btn-outline-warning w-100">
+
+                        Timetable
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <a href="../courses/course-schedule.html"
+                       class="btn btn-outline-danger w-100">
+
+                        Course Schedule
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ../../components/footer.html -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
