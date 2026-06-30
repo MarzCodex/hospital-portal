@@ -463,7 +463,7 @@
                     <div class="filter-group">
                         <select id="filter-role">
                             <option value="">All Roles</option>
-                            <option value="Administrator">Administrator</option>
+                            <option value="Administrator">System Administrator</option>
                             <option value="Front Desk">Front Desk</option>
                             <option value="Data clerk">Data clerk</option>
                             <option value="Doctor">Doctor</option>
@@ -487,7 +487,8 @@
                                 <th style="width: 50px;">S/N</th>
                                 <th>Employee ID</th>
                                 <th>Full Name</th>
-                                <th>Designation</th>
+                                <th>Role</th>
+                                <th>Department</th>
                                 <th>Status</th>
                                 <th>Last Login</th>
                                 <th>Username</th>
@@ -616,6 +617,7 @@
                         <td><strong>${user.employeeId || 'N/A'}</strong></td>
                         <td>${user.fullName || 'N/A'}</td>
                         <td>${user.role || 'N/A'}</td>
+                        <td>${user.department || 'N/A'}</td>
                         <td><span class="status-badge ${statusClass}">${user.status || 'Inactive'}</span></td>
                         <td>${user.lastLogin || 'Never'}</td>
                         <td>${user.username || 'N/A'}</td>
