@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
-        /* Page specific styles */
+        /* ===== Page Specific Styles ===== */
         .page-container {
             padding: 20px;
             margin: 20px;
@@ -39,7 +39,7 @@
             margin-right: 10px;
         }
 
-        /* Loading State */
+        /* ===== Loading State ===== */
         .loading-state {
             text-align: center;
             padding: 60px;
@@ -61,61 +61,102 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Form Styles */
-        .form-container {
-            padding: 10px 0;
+        /* ===== Form Sections ===== */
+        .form-section {
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px 20px;
+            margin-bottom: 18px;
         }
 
+        .form-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-section-title i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        /* ===== Form Grid ===== */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px 20px;
         }
 
-        .form-group {
-            margin-bottom: 5px;
+        .form-grid.three-col {
+            grid-template-columns: 1fr 1fr 1fr;
         }
 
-        .form-group.full-width {
+        .form-grid.four-col {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .full-width {
             grid-column: 1 / -1;
         }
 
+        /* ===== Form Group ===== */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .form-group label {
-            display: block;
-            margin-bottom: 6px;
+            font-size: 13px;
             font-weight: 500;
-            font-size: 14px;
             color: var(--secondary);
         }
 
         .form-group label .required {
             color: var(--danger);
-            margin-left: 4px;
+            font-weight: 700;
+        }
+
+        .form-group label .hint {
+            color: var(--gray);
+            font-weight: 400;
+            font-size: 11px;
         }
 
         .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group select {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
+            padding: 9px 12px;
+            border: 1.5px solid var(--border);
             border-radius: 6px;
             font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--white);
             transition: all 0.3s;
-            background: white;
+            color: var(--secondary);
         }
 
         .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
+        .form-group input::placeholder {
+            color: #b0b8c0;
+            font-size: 13px;
+        }
+
         .form-group input:disabled {
-            background: #f5f5f5;
+            background: #f0f0f0;
             cursor: not-allowed;
+            opacity: 0.7;
         }
 
         .form-group input.error,
@@ -124,15 +165,15 @@
         }
 
         .form-group .help-text {
-            font-size: 12px;
+            font-size: 11.5px;
             color: var(--gray);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .form-group .error-text {
-            font-size: 12px;
+            font-size: 11.5px;
             color: var(--danger);
-            margin-top: 4px;
+            margin-top: 2px;
             display: none;
         }
 
@@ -140,18 +181,202 @@
             display: block;
         }
 
-        /* Reset Password Section */
+        /* ===== Input with Button ===== */
+        .input-with-btn {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .input-with-btn input,
+        .input-with-btn select {
+            flex: 1;
+        }
+
+        .input-with-btn .btn-sm {
+            flex-shrink: 0;
+        }
+
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 12.5px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm:hover {
+            transform: translateY(-1px);
+        }
+
+        /* ===== Password Wrapper ===== */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+            transition: all 0.3s;
+            min-width: auto;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        /* ===== Password Strength ===== */
+        .password-strength {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background: #e8ecf0;
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+            gap: 2px;
+            max-width: 200px;
+        }
+
+        .strength-bar .segment {
+            flex: 1;
+            height: 100%;
+            background: #e8ecf0;
+            transition: all 0.3s;
+            border-radius: 1px;
+        }
+
+        .strength-bar .segment.filled.weak {
+            background: var(--danger);
+        }
+
+        .strength-bar .segment.filled.medium {
+            background: var(--warning);
+        }
+
+        .strength-bar .segment.filled.strong {
+            background: var(--success);
+        }
+
+        .strength-label {
+            font-size: 12px;
+            font-weight: 500;
+            min-width: 65px;
+            color: var(--gray);
+        }
+
+        .strength-label.weak { color: var(--danger); }
+        .strength-label.medium { color: var(--warning); }
+        .strength-label.strong { color: var(--success); }
+
+        /* ===== Match Status ===== */
+        .match-status {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .match-status.show {
+            display: block;
+        }
+
+        .match-status.match {
+            color: var(--success);
+        }
+
+        .match-status.unmatch {
+            color: var(--danger);
+        }
+
+        /* ===== Toggle Switch ===== */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--danger);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: var(--success);
+        }
+
+        .toggle-switch .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 27px;
+        }
+
+        .toggle-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .toggle-label.active {
+            color: var(--success);
+        }
+
+        .toggle-label.inactive {
+            color: var(--danger);
+        }
+
+        /* ===== Reset Password Section ===== */
         .reset-section {
             background: #fef9e7;
             border: 1px solid #f39c12;
             border-radius: 8px;
-            padding: 15px 20px;
-            margin-top: 10px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
+            margin-bottom: 10px;
         }
 
         .reset-section .info {
@@ -162,13 +387,10 @@
         }
 
         .reset-section .info i {
-            font-size: 20px;
+            font-size: 18px;
         }
 
-        /* ======================================== */
-        /* PERMISSIONS SECTION - MATCHES ACCESS CONTROL */
-        /* ======================================== */
-
+        /* ===== Permissions Section ===== */
         .permissions-section {
             background: #f8f9fa;
             border: 1px solid var(--border);
@@ -177,35 +399,17 @@
             margin-top: 10px;
         }
 
-        .permission-group {
-            margin-bottom: 15px;
-        }
-
-        .permission-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .permission-group-title {
-            font-weight: 600;
-            color: var(--secondary);
-            font-size: 14px;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        /* Dashboard Privileges Grid (Matches Access Control) */
-        .dashboard-grid {
+        .permissions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 8px;
         }
 
-        .dashboard-grid .perm-item {
+        .permissions-grid .perm-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: white;
             border-radius: 6px;
             border: 1px solid var(--border);
@@ -213,51 +417,34 @@
             cursor: pointer;
         }
 
-        .dashboard-grid .perm-item:hover {
+        .permissions-grid .perm-item:hover {
             background: #e8f4fc;
             border-color: var(--primary);
         }
 
-        .dashboard-grid .perm-item .icon {
+        .permissions-grid .perm-item .icon {
             font-size: 16px;
             width: 28px;
             text-align: center;
             flex-shrink: 0;
         }
 
-        .dashboard-grid .perm-item .icon.checked {
+        .permissions-grid .perm-item .icon.checked {
             color: var(--success);
         }
 
-        .dashboard-grid .perm-item .icon.unchecked {
+        .permissions-grid .perm-item .icon.unchecked {
             color: var(--danger);
         }
 
-        .dashboard-grid .perm-item .label {
+        .permissions-grid .perm-item .label {
             flex: 1;
             font-size: 13px;
             font-weight: 500;
             color: var(--secondary);
         }
 
-        .dashboard-grid .perm-item .status-badge {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-
-        .dashboard-grid .perm-item .status-badge.granted {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .dashboard-grid .perm-item .status-badge.denied {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .dashboard-grid .perm-item input[type="checkbox"] {
+        .permissions-grid .perm-item input[type="checkbox"] {
             width: 16px;
             height: 16px;
             cursor: pointer;
@@ -265,61 +452,6 @@
             flex-shrink: 0;
         }
 
-        /* Other Privileges Grid (Matches Access Control) */
-        .privileges-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 8px;
-        }
-
-        .privileges-grid .priv-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .privileges-grid .priv-item:hover {
-            background: #e8f4fc;
-            border-color: var(--primary);
-        }
-
-        .privileges-grid .priv-item .icon {
-            font-size: 16px;
-            width: 28px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .privileges-grid .priv-item .icon.checked {
-            color: var(--success);
-        }
-
-        .privileges-grid .priv-item .icon.unchecked {
-            color: var(--danger);
-        }
-
-        .privileges-grid .priv-item .label {
-            flex: 1;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--secondary);
-        }
-
-        .privileges-grid .priv-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            accent-color: var(--primary);
-            flex-shrink: 0;
-        }
-
-        /* Permissions Actions */
         .permissions-actions {
             display: flex;
             gap: 10px;
@@ -329,7 +461,7 @@
             flex-wrap: wrap;
         }
 
-        /* Quick Actions inside permissions */
+        /* ===== Quick Actions ===== */
         .quick-actions {
             display: flex;
             gap: 12px;
@@ -380,7 +512,7 @@
             color: var(--gray);
         }
 
-        /* Buttons */
+        /* ===== Buttons ===== */
         .btn {
             padding: 10px 24px;
             border: none;
@@ -392,6 +524,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .btn-primary {
@@ -404,20 +538,24 @@
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
+        .btn-success {
+            background: var(--success);
             color: white;
         }
 
-        .btn-secondary:hover {
-            background: #1a252f;
-            transform: translateY(-2px);
+        .btn-success:hover {
+            background: #219653;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d68910;
+            transform: translateY(-1px);
         }
 
         .btn-danger {
@@ -427,70 +565,37 @@
 
         .btn-danger:hover {
             background: #c0392b;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
-        .btn-success {
-            background: var(--success);
+        .btn-secondary {
+            background: var(--secondary);
             color: white;
         }
 
-        .btn-success:hover {
-            background: #219653;
-            transform: translateY(-2px);
+        .btn-secondary:hover {
+            background: #1a252f;
+            transform: translateY(-1px);
         }
 
-        .btn-warning {
-            background: var(--warning);
-            color: white;
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
         }
 
-        .btn-warning:hover {
-            background: #e67e22;
-            transform: translateY(-2px);
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-            min-width: auto;
-        }
-
-        /* Form Actions */
+        /* ===== Form Actions ===== */
         .form-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 14px;
+            margin-top: 22px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-            max-width: 350px;
-        }
-
-        .notification.success { background-color: var(--success); }
-        .notification.error { background-color: var(--danger); }
-        .notification.info { background-color: var(--primary); }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
+        /* ===== Spinner ===== */
         .spinner-sm {
             display: inline-block;
             width: 16px;
@@ -501,51 +606,29 @@
             animation: spin 0.8s linear infinite;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
+        /* ===== Responsive ===== */
+        @media (max-width: 992px) {
+            .form-grid.four-col {
+                grid-template-columns: 1fr 1fr;
             }
+        }
+
+        @media (max-width: 768px) {
             .page-container {
                 margin: 10px;
                 padding: 15px;
             }
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .form-actions {
-                flex-direction: column;
-            }
-            .form-actions .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .reset-section {
-                flex-direction: column;
-                text-align: center;
-            }
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            .privileges-grid {
-                grid-template-columns: 1fr;
-            }
-            .permissions-actions {
-                flex-direction: column;
-            }
-            .permissions-actions .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .quick-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .quick-actions .divider {
-                width: 100%;
-                height: 1px;
-            }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-grid.three-col { grid-template-columns: 1fr; }
+            .form-grid.four-col { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; justify-content: center; }
+            .form-section { padding: 14px 12px; }
+            .reset-section { flex-direction: column; text-align: center; }
+            .permissions-grid { grid-template-columns: 1fr; }
+            .quick-actions { flex-direction: column; align-items: stretch; }
+            .quick-actions .divider { width: 100%; height: 1px; }
         }
     </style>
 </head>
@@ -553,7 +636,7 @@
     <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
 
-    <!-- Main Content -->
+    <!-- Main Content Wrapper -->
     <div class="main-content" id="mainContent">
         <!-- Header Container -->
         <div id="header-container"></div>
@@ -563,7 +646,10 @@
             <div class="page-container">
                 <!-- Page Header -->
                 <div class="page-header">
-                    <h2><i class="fas fa-user-edit"></i> Edit User</h2>
+                    <h2>
+                        <i class="fas fa-user-edit"></i>
+                        Edit User
+                    </h2>
                     <button class="btn btn-secondary" onclick="window.location.href='user-management.html'">
                         <i class="fas fa-arrow-left"></i> Back to Users
                     </button>
@@ -576,151 +662,300 @@
                 </div>
 
                 <!-- Form (hidden until loaded) -->
-                <div id="form-container" class="form-container" style="display: none;">
-                    <form id="edit-user-form" novalidate>
-                        <div class="form-grid">
-                            <!-- Employee ID -->
-                            <div class="form-group">
-                                <label for="employeeId">Employee ID <span class="required">*</span></label>
-                                <input type="text" id="employeeId" placeholder="e.g., EMP001" required>
-                                <div class="error-text" id="employeeId-error">Please enter employee ID</div>
-                            </div>
+                <div id="form-container" style="display: none;">
+                    <form id="editUserForm" novalidate>
 
-                            <!-- Full Name -->
-                            <div class="form-group">
-                                <label for="fullName">Full Name <span class="required">*</span></label>
-                                <input type="text" id="fullName" placeholder="e.g., John Doe" required>
-                                <div class="error-text" id="fullName-error">Please enter full name</div>
+                        <!-- ===== SECTION 1: Name Details ===== -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-pen"></i>
+                                Name Details
                             </div>
-
-                            <!-- Username (disabled - cannot change) -->
-                            <div class="form-group">
-                                <label for="username">Username <span class="required">*</span></label>
-                                <input type="text" id="username" disabled>
-                                <div class="help-text">Username cannot be changed</div>
-                            </div>
-
-                            <!-- Email -->
-                            <div class="form-group">
-                                <label for="email">Email Address <span class="required">*</span></label>
-                                <input type="email" id="email" placeholder="e.g., john.doe@hospital.com" required>
-                                <div class="error-text" id="email-error">Please enter a valid email address</div>
-                            </div>
-
-                            <!-- Phone -->
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" placeholder="e.g., +255 712 345 678">
-                            </div>
-
-                            <!-- Role -->
-                            <div class="form-group">
-                                <label for="role">Role <span class="required">*</span></label>
-                                <select id="role" required>
-                                    <option value="">Select Role...</option>
-                                    <option value="Administrator">Administrator</option>
-                                    <option value="Front Desk">Front Desk</option>
-                                    <option value="Data clerk">Data clerk</option>
-                                    <option value="Doctor">Doctor</option>
-                                </select>
-                                <div class="error-text" id="role-error">Please select a role</div>
-                            </div>
-
-                            <!-- Status -->
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select id="status">
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                </select>
-                            </div>
-
-                            <!-- Password Reset Section (Full width) -->
-                            <div class="form-group full-width">
-                                <label>Password Management</label>
-                                <div class="reset-section">
-                                    <div class="info">
-                                        <i class="fas fa-key"></i>
-                                        <div>
-                                            <strong>Reset Password</strong>
-                                            <div style="font-size: 13px; color: #856404;">Password will be reset to: <code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px;">HPU-2026</code></div>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-warning" onclick="resetPassword()">
-                                        <i class="fas fa-sync-alt"></i> Reset Password
-                                    </button>
+                            <div class="form-grid four-col">
+                                <div class="form-group">
+                                    <label>Employee ID <span class="required">*</span></label>
+                                    <input type="text" id="employeeId" disabled>
+                                    <span class="help-text">Auto-generated, cannot be changed</span>
                                 </div>
-                                <div class="help-text">Current password: <span id="current-password-display" style="font-weight: 600; font-family: monospace;">---</span></div>
+                                <div class="form-group">
+                                    <label>
+                                        Username <span class="required">*</span>
+                                        <span class="hint">(locked)</span>
+                                    </label>
+                                    <input type="text" id="username" disabled>
+                                    <div class="help-text">Username cannot be changed</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>First Name <span class="required">*</span></label>
+                                    <input type="text" id="firstName" required>
+                                    <div class="error-text" id="firstName-error">Please enter first name</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Middle Name</label>
+                                    <input type="text" id="middleName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name <span class="required">*</span></label>
+                                    <input type="text" id="lastName" required>
+                                    <div class="error-text" id="lastName-error">Please enter last name</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== SECTION 2: Role & Designation ===== -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-user-tag"></i>
+                                Role & Designation
+                            </div>
+                            <div class="form-grid three-col">
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select id="role">
+                                        <option value="">Select Role</option>
+                                        <option value="clinical">Clinical</option>
+                                        <option value="non-clinical">Non-Clinical</option>
+                                        <option value="administrative">Administrative</option>
+                                        <option value="support">Support Staff</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Designation <span class="required">*</span></label>
+                                    <div class="input-with-btn">
+                                        <select id="designation" required>
+                                            <option value="">Select Designation</option>
+                                            <option value="System Administrator">System Administrator</option>
+                                            <option value="Senior Physician">Senior Physician</option>
+                                            <option value="Head Nurse">Head Nurse</option>
+                                            <option value="Nursing Officer">Nursing Officer</option>
+                                            <option value="Pharmacist">Pharmacist</option>
+                                            <option value="Lab Scientist">Lab Scientist</option>
+                                            <option value="Radiologist">Radiologist</option>
+                                            <option value="Data Clerk">Data Clerk</option>
+                                            <option value="Accountant">Accountant</option>
+                                            <option value="Hospital Administrator">Hospital Administrator</option>
+                                        </select>
+                                        <button type="button" class="btn-sm btn-success" id="addDesignationBtn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="error-text" id="designation-error">Please select a designation</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Department <span class="required">*</span></label>
+                                    <select id="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="ICT">ICT</option>
+                                        <option value="Medical">Medical</option>
+                                        <option value="Nursing">Nursing</option>
+                                        <option value="Pharmacy">Pharmacy</option>
+                                        <option value="Laboratory">Laboratory</option>
+                                        <option value="Radiology">Radiology</option>
+                                        <option value="Administration">Administration</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="HR">Human Resources</option>
+                                        <option value="Medical Records">Medical Records</option>
+                                        <option value="Admissions">Admissions & Registration</option>
+                                    </select>
+                                    <div class="error-text" id="department-error">Please select a department</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== SECTION 3: Identifiers & Contact ===== -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-id-card"></i>
+                                Identifiers & Contact
+                            </div>
+                            <div class="form-grid three-col">
+                                <div class="form-group">
+                                    <label>Doctors License / MCT NO. <span class="required">*</span></label>
+                                    <input type="text" id="licenseNo" required>
+                                    <div class="help-text">Medical Council of Tanzania registration number</div>
+                                    <div class="error-text" id="licenseNo-error">Please enter license number</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number <span class="required">*</span></label>
+                                    <input type="tel" id="phoneNumber" required>
+                                    <div class="error-text" id="phoneNumber-error">Please enter phone number</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address <span class="required">*</span></label>
+                                    <input type="email" id="email" required>
+                                    <div class="error-text" id="email-error">Please enter a valid email</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== SECTION 4: Account Activation/Deactivation ===== -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-clock"></i>
+                                Account Activation/Deactivation
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Expire Time <span class="required">*</span></label>
+                                    <input type="number" id="expireTime" min="1" max="99" required>
+                                    <div class="help-text">Enter number of years/months until account expires</div>
+                                    <div class="error-text" id="expireTime-error">Please enter expire time</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Expiry Format <span class="required">*</span></label>
+                                    <select id="expiryFormat" required>
+                                        <option value="years">Years</option>
+                                        <option value="months">Months</option>
+                                        <option value="days">Days</option>
+                                    </select>
+                                    <div class="error-text" id="expiryFormat-error">Please select expiry format</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="toggle-wrapper">
+                                        <div class="toggle-switch active" id="statusToggle" onclick="toggleStatus()">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                        <span class="toggle-label active" id="statusLabel">Active</span>
+                                    </div>
+                                    <input type="hidden" id="status" value="Active">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== SECTION 5: Security (Optional) ===== -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-lock"></i>
+                                Security <span class="hint">(Leave blank to keep current password)</span>
                             </div>
 
-                            <!-- Custom Permissions Section (Full width) -->
-                            <div class="form-group full-width">
-                                <label><i class="fas fa-lock"></i> User Permissions</label>
-                                <div class="help-text" style="margin-bottom: 8px;">
-                                    Assign or override permissions for this specific user.
-                                    <span style="color: var(--warning);">🟡</span> Changes affect only this user.
+                            <!-- Reset Password Section -->
+                            <div class="reset-section">
+                                <div class="info">
+                                    <i class="fas fa-key"></i>
+                                    <div>
+                                        <strong>Reset Password</strong>
+                                        <div style="font-size: 12px; color: #856404;">Password will be reset to: <code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px;">HPU-2026</code></div>
+                                    </div>
                                 </div>
-                                
-                                <div class="permissions-section" id="permissions-section">
-                                    <!-- Quick Actions -->
-                                    <div class="quick-actions">
-                                        <button type="button" class="btn-sm btn-grant" onclick="grantAllPermissions()">
-                                            <i class="fas fa-check-circle"></i> Grant All
-                                        </button>
-                                        <button type="button" class="btn-sm btn-revoke" onclick="revokeAllPermissions()">
-                                            <i class="fas fa-times-circle"></i> Revoke All
-                                        </button>
-                                        <div class="divider"></div>
-                                        <span class="info-text">⚠️ Grant only what the user needs</span>
-                                    </div>
+                                <button type="button" class="btn btn-warning btn-sm" onclick="resetPassword()">
+                                    <i class="fas fa-sync-alt"></i> Reset Password
+                                </button>
+                            </div>
 
-                                    <!-- Dashboard Privileges -->
-                                    <div class="permission-group">
-                                        <div class="permission-group-title"><i class="fas fa-th-large"></i> Dashboard Privileges</div>
-                                        <div class="dashboard-grid" id="module-overrides">
-                                            <!-- Dynamically populated -->
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Current Password</label>
+                                <div class="help-text" style="font-weight: 600; font-family: monospace; font-size: 14px;" id="current-password-display">HPU-2026</div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" id="password" placeholder="Enter new password (min 8 chars)">
+                                        <button type="button" class="toggle-password" data-target="password">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="help-text">Min 8 characters. Leave blank to keep current.</div>
+                                    <div class="error-text" id="password-error">Password must be at least 8 characters</div>
+                                    <div class="password-strength" id="passwordStrength">
+                                        <div class="strength-bar">
+                                            <div class="segment" data-index="0"></div>
+                                            <div class="segment" data-index="1"></div>
+                                            <div class="segment" data-index="2"></div>
+                                            <div class="segment" data-index="3"></div>
                                         </div>
+                                        <span class="strength-label">Weak</span>
                                     </div>
-
-                                    <!-- Other Privileges -->
-                                    <div class="permission-group">
-                                        <div class="permission-group-title"><i class="fas fa-user-cog"></i> Other Privileges</div>
-                                        <div class="privileges-grid" id="privilege-overrides">
-                                            <!-- Dynamically populated -->
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                                        <button type="button" class="toggle-password" data-target="confirmPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </div>
-
-                                    <!-- Permissions Actions -->
-                                    <div class="permissions-actions">
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="saveUserPermissions()">
-                                            <i class="fas fa-save"></i> Save Permissions
-                                        </button>
-                                        <button type="button" class="btn btn-warning btn-sm" onclick="resetUserPermissions()">
-                                            <i class="fas fa-undo-alt"></i> Reset All
-                                        </button>
-                                        <button type="button" class="btn btn-secondary btn-sm" onclick="reloadUserPermissions()">
-                                            <i class="fas fa-sync-alt"></i> Reload
-                                        </button>
+                                    <div class="match-status" id="matchStatus">
+                                        <i class="fas"></i> <span id="matchText"></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Form Actions -->
+                        <!-- ===== SECTION 6: Custom Permissions ===== -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-lock"></i>
+                                Custom Permissions Overrides
+                            </div>
+                            <div class="help-text" style="margin-bottom: 10px; font-size: 12px; color: var(--gray);">
+                                Assign or override permissions for this specific user. Changes affect only this user.
+                            </div>
+
+                            <div class="permissions-section" id="permissions-section">
+                                <!-- Quick Actions -->
+                                <div class="quick-actions">
+                                    <button type="button" class="btn-sm btn-grant" onclick="grantAllPermissions()">
+                                        <i class="fas fa-check-circle"></i> Grant All
+                                    </button>
+                                    <button type="button" class="btn-sm btn-revoke" onclick="revokeAllPermissions()">
+                                        <i class="fas fa-times-circle"></i> Revoke All
+                                    </button>
+                                    <div class="divider"></div>
+                                    <span class="info-text">⚠️ Grant only what the user needs</span>
+                                </div>
+
+                                <!-- Dashboard Privileges -->
+                                <div style="margin-bottom: 12px;">
+                                    <div style="font-size: 13px; font-weight: 600; color: var(--secondary); margin-bottom: 6px;">
+                                        <i class="fas fa-th-large"></i> Dashboard Privileges
+                                    </div>
+                                    <div class="permissions-grid" id="module-permissions">
+                                        <!-- Dynamically populated -->
+                                    </div>
+                                </div>
+
+                                <!-- Other Privileges -->
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 600; color: var(--secondary); margin-bottom: 6px;">
+                                        <i class="fas fa-user-cog"></i> Other Privileges
+                                    </div>
+                                    <div class="permissions-grid" id="privilege-permissions">
+                                        <!-- Dynamically populated -->
+                                    </div>
+                                </div>
+
+                                <!-- Permissions Actions -->
+                                <div class="permissions-actions">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveUserPermissions()">
+                                        <i class="fas fa-save"></i> Save Permissions
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="resetUserPermissions()">
+                                        <i class="fas fa-undo-alt"></i> Reset All
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="reloadUserPermissions()">
+                                        <i class="fas fa-sync-alt"></i> Reload
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== FORM ACTIONS ===== -->
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" id="submit-btn">
-                                <i class="fas fa-save"></i> Update User
-                            </button>
                             <button type="reset" class="btn btn-secondary">
-                                <i class="fas fa-undo-alt"></i> Reset Changes
+                                <i class="fas fa-undo"></i> Reset
                             </button>
                             <button type="button" class="btn btn-danger" onclick="deleteUser()">
                                 <i class="fas fa-trash"></i> Delete User
                             </button>
-                            <button type="button" class="btn btn-secondary" onclick="window.location.href='user-management.html'">
-                                <i class="fas fa-times"></i> Cancel
+                            <button type="submit" class="btn btn-success" id="updateUserBtn">
+                                <i class="fas fa-save"></i> Update User
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -733,8 +968,23 @@
     <!-- Modals Container -->
     <div id="modals-container"></div>
 
+    <!-- Add Designation Modal -->
+    <div id="addDesignationModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3><i class="fas fa-plus-circle"></i> Add Designation</h3>
+            <input type="text" id="newDesignationInput" placeholder="Enter new designation" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 15px;">
+            <div class="modal-buttons" style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="save" onclick="saveNewDesignation()" style="padding: 8px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Add</button>
+                <button class="cancel" onclick="closeAddDesignationModal()" style="padding: 8px 20px; background: var(--gray); color: white; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
-    <div id="notification" class="notification"></div>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationMessage">User updated successfully!</span>
+    </div>
 
     <script src="../../assets/js/common.js"></script>
     <script>
@@ -779,13 +1029,127 @@
         }
 
         // ========================================
+        // TOGGLE STATUS
+        // ========================================
+        function toggleStatus() {
+            const toggle = document.getElementById('statusToggle');
+            const label = document.getElementById('statusLabel');
+            const hidden = document.getElementById('status');
+            
+            toggle.classList.toggle('active');
+            
+            if (toggle.classList.contains('active')) {
+                label.textContent = 'Active';
+                label.className = 'toggle-label active';
+                hidden.value = 'Active';
+            } else {
+                label.textContent = 'Inactive';
+                label.className = 'toggle-label inactive';
+                hidden.value = 'Inactive';
+            }
+        }
+
+        // ========================================
+        // TOGGLE PASSWORD VISIBILITY
+        // ========================================
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'fas fa-eye';
+                }
+            });
+        });
+
+        // ========================================
+        // DESIGNATION MODAL
+        // ========================================
+        function openAddDesignationModal() {
+            document.getElementById('addDesignationModal').classList.add('active');
+            document.getElementById('newDesignationInput').value = '';
+            document.getElementById('newDesignationInput').focus();
+        }
+
+        function closeAddDesignationModal() {
+            document.getElementById('addDesignationModal').classList.remove('active');
+        }
+
+        function saveNewDesignation() {
+            const newDesignation = document.getElementById('newDesignationInput').value.trim();
+            
+            if (!newDesignation) {
+                showNotification('Please enter a designation name', 'error');
+                return;
+            }
+            
+            const designationSelect = document.getElementById('designation');
+            for (let i = 0; i < designationSelect.options.length; i++) {
+                if (designationSelect.options[i].value === newDesignation) {
+                    showNotification('Designation already exists', 'error');
+                    closeAddDesignationModal();
+                    return;
+                }
+            }
+            
+            const option = document.createElement('option');
+            option.value = newDesignation;
+            option.textContent = newDesignation;
+            designationSelect.appendChild(option);
+            designationSelect.value = newDesignation;
+            
+            const designations = JSON.parse(localStorage.getItem('designations') || '[]');
+            designations.push(newDesignation);
+            localStorage.setItem('designations', JSON.stringify(designations));
+            
+            showNotification(`Designation "${newDesignation}" added successfully!`, 'success');
+            closeAddDesignationModal();
+        }
+
+        // ========================================
+        // LOAD SAVED DESIGNATIONS
+        // ========================================
+        function loadSavedDesignations() {
+            const designations = JSON.parse(localStorage.getItem('designations') || '[]');
+            const designationSelect = document.getElementById('designation');
+            
+            designations.forEach(des => {
+                let exists = false;
+                for (let i = 0; i < designationSelect.options.length; i++) {
+                    if (designationSelect.options[i].value === des) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    const option = document.createElement('option');
+                    option.value = des;
+                    option.textContent = des;
+                    designationSelect.appendChild(option);
+                }
+            });
+        }
+
+        // ========================================
         // SHOW NOTIFICATION
         // ========================================
         function showNotification(message, type = 'info', duration = 3000) {
             const notification = document.getElementById('notification');
-            notification.textContent = message;
+            const icon = notification.querySelector('i');
+            const text = document.getElementById('notificationMessage');
+            
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                             type === 'error' ? 'fas fa-exclamation-circle' : 
+                             'fas fa-info-circle';
+            text.textContent = message;
             notification.className = `notification ${type}`;
             notification.style.display = 'block';
+            
             setTimeout(() => {
                 notification.style.display = 'none';
             }, duration);
@@ -837,7 +1201,7 @@
             } catch (error) {
                 console.error('Failed to load user:', error);
                 document.getElementById('loading-state').innerHTML = `
-                    <div style="font-size: 48px; margin-bottom: 20px;"></div>
+                    <div style="font-size: 48px; margin-bottom: 20px;">❌</div>
                     <h3>Failed to Load User</h3>
                     <p>${error.message || 'Please try again later.'}</p>
                     <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 15px;">
@@ -852,17 +1216,37 @@
         // ========================================
         function populateForm(user) {
             document.getElementById('employeeId').value = user.employeeId || '';
-            document.getElementById('fullName').value = user.fullName || '';
             document.getElementById('username').value = user.username || '';
-            document.getElementById('email').value = user.email || '';
-            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('firstName').value = user.firstName || '';
+            document.getElementById('middleName').value = user.middleName || '';
+            document.getElementById('lastName').value = user.lastName || '';
             document.getElementById('role').value = user.role || '';
+            document.getElementById('designation').value = user.designation || '';
+            document.getElementById('department').value = user.department || '';
+            document.getElementById('licenseNo').value = user.licenseNo || '';
+            document.getElementById('phoneNumber').value = user.phone || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('expireTime').value = user.expireTime || 12;
+            document.getElementById('expiryFormat').value = user.expiryFormat || 'years';
             document.getElementById('status').value = user.status || 'Active';
             document.getElementById('current-password-display').textContent = user.password || 'HPU-2026';
+
+            // Update toggle state
+            const toggle = document.getElementById('statusToggle');
+            const label = document.getElementById('statusLabel');
+            if (user.status === 'Active') {
+                toggle.classList.add('active');
+                label.textContent = 'Active';
+                label.className = 'toggle-label active';
+            } else {
+                toggle.classList.remove('active');
+                label.textContent = 'Inactive';
+                label.className = 'toggle-label inactive';
+            }
         }
 
         // ========================================
-        // LOAD USER PERMISSIONS
+        // USER PERMISSIONS
         // ========================================
         async function loadUserPermissions(userId) {
             try {
@@ -879,25 +1263,21 @@
             }
         }
 
-        // ========================================
-        // RENDER PERMISSIONS
-        // ========================================
         function renderPermissions() {
             renderModulePermissions();
             renderPrivileges();
         }
 
         function renderModulePermissions() {
-            const container = document.getElementById('module-overrides');
+            const container = document.getElementById('module-permissions');
             const modulePerms = currentPermissions.modules || {};
             
             container.innerHTML = moduleDefinitions.map(module => {
                 const hasAccess = modulePerms[module.id] === true;
-                
                 return `
                     <div class="perm-item">
                         <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
-                            ${hasAccess ? '' : ''}
+                            ${hasAccess ? '✅' : '❌'}
                         </div>
                         <div class="label">${module.label}</div>
                         <span class="status-badge ${hasAccess ? 'granted' : 'denied'}">
@@ -912,16 +1292,15 @@
         }
 
         function renderPrivileges() {
-            const container = document.getElementById('privilege-overrides');
+            const container = document.getElementById('privilege-permissions');
             const privs = currentPermissions.privileges || {};
             
             container.innerHTML = privilegeDefinitions.map(priv => {
                 const hasAccess = privs[priv.id] === true;
-                
                 return `
-                    <div class="priv-item">
+                    <div class="perm-item">
                         <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
-                            ${hasAccess ? '' : ''}
+                            ${hasAccess ? '✅' : '❌'}
                         </div>
                         <div class="label">${priv.label}</div>
                         <input type="checkbox" 
@@ -932,54 +1311,44 @@
             }).join('');
         }
 
-        // ========================================
-        // UPDATE DISPLAY FROM CHECKBOXES
-        // ========================================
         function updateDisplayFromCheckboxes() {
             // Update module permissions
-            document.querySelectorAll('#module-overrides .perm-item').forEach(item => {
+            document.querySelectorAll('#module-permissions .perm-item').forEach(item => {
                 const cb = item.querySelector('input[type="checkbox"]');
                 const icon = item.querySelector('.icon');
                 const badge = item.querySelector('.status-badge');
                 const isChecked = cb.checked;
                 
-                icon.textContent = isChecked ? '' : '';
+                icon.textContent = isChecked ? '✅' : '❌';
                 icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
                 badge.textContent = isChecked ? 'Granted' : 'Denied';
                 badge.className = `status-badge ${isChecked ? 'granted' : 'denied'}`;
             });
             
             // Update privileges
-            document.querySelectorAll('#privilege-overrides .priv-item').forEach(item => {
+            document.querySelectorAll('#privilege-permissions .priv-item').forEach(item => {
                 const cb = item.querySelector('input[type="checkbox"]');
                 const icon = item.querySelector('.icon');
                 const isChecked = cb.checked;
                 
-                icon.textContent = isChecked ? '' : '';
+                icon.textContent = isChecked ? '✅' : '❌';
                 icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
             });
         }
-
-        // Add event listeners for checkbox changes
-        document.addEventListener('change', function(e) {
-            if (e.target.closest('#module-overrides') || e.target.closest('#privilege-overrides')) {
-                updateDisplayFromCheckboxes();
-            }
-        });
 
         // ========================================
         // GRANT / REVOKE ALL
         // ========================================
         function grantAllPermissions() {
-            document.querySelectorAll('#module-overrides input[type="checkbox"]').forEach(cb => cb.checked = true);
-            document.querySelectorAll('#privilege-overrides input[type="checkbox"]').forEach(cb => cb.checked = true);
+            document.querySelectorAll('#module-permissions input[type="checkbox"]').forEach(cb => cb.checked = true);
+            document.querySelectorAll('#privilege-permissions input[type="checkbox"]').forEach(cb => cb.checked = true);
             updateDisplayFromCheckboxes();
             showNotification('All permissions granted', 'info');
         }
 
         function revokeAllPermissions() {
-            document.querySelectorAll('#module-overrides input[type="checkbox"]').forEach(cb => cb.checked = false);
-            document.querySelectorAll('#privilege-overrides input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('#module-permissions input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('#privilege-permissions input[type="checkbox"]').forEach(cb => cb.checked = false);
             updateDisplayFromCheckboxes();
             showNotification('All permissions revoked', 'info');
         }
@@ -994,12 +1363,12 @@
             }
             
             const modules = {};
-            document.querySelectorAll('#module-overrides input[type="checkbox"]').forEach(cb => {
+            document.querySelectorAll('#module-permissions input[type="checkbox"]').forEach(cb => {
                 modules[cb.dataset.module] = cb.checked;
             });
             
             const privileges = {};
-            document.querySelectorAll('#privilege-overrides input[type="checkbox"]').forEach(cb => {
+            document.querySelectorAll('#privilege-permissions input[type="checkbox"]').forEach(cb => {
                 privileges[cb.dataset.privilege] = cb.checked;
             });
             
@@ -1026,8 +1395,7 @@
                 return;
             }
             
-            const user = await DataService.getUsers().then(users => users.find(u => u.id === currentUserId));
-            if (!confirm(`Reset all permissions for ${user?.fullName || 'this user'}?`)) return;
+            if (!confirm(`Reset all permissions for ${currentUser?.fullName || 'this user'}?`)) return;
             
             try {
                 const updated = await DataService.resetUserPermissions(currentUserId);
@@ -1051,7 +1419,76 @@
         }
 
         // ========================================
-        // VALIDATION
+        // PASSWORD STRENGTH
+        // ========================================
+        function updatePasswordStrength(password) {
+            const segments = document.querySelectorAll('#passwordStrength .segment');
+            const label = document.querySelector('#passwordStrength .strength-label');
+            
+            if (!password) {
+                segments.forEach(s => { s.className = 'segment'; });
+                label.textContent = 'Weak';
+                label.className = 'strength-label';
+                return;
+            }
+            
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^a-zA-Z0-9]/.test(password)) score++;
+            score = Math.min(score, 4);
+            
+            segments.forEach((seg, index) => {
+                seg.className = 'segment';
+                if (index < score) {
+                    seg.classList.add('filled');
+                    if (score <= 2) seg.classList.add('weak');
+                    else if (score === 3) seg.classList.add('medium');
+                    else seg.classList.add('strong');
+                }
+            });
+            
+            const labels = ['Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
+            const classes = ['', 'weak', 'medium', 'strong', 'strong'];
+            label.textContent = labels[score];
+            label.className = `strength-label ${classes[score]}`;
+        }
+
+        // ========================================
+        // PASSWORD MATCH
+        // ========================================
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            const matchStatus = document.getElementById('matchStatus');
+            const matchText = document.getElementById('matchText');
+            const confirmField = document.getElementById('confirmPassword');
+            const error = document.getElementById('confirmPassword-error');
+            
+            if (!confirmPwd) {
+                matchStatus.classList.remove('show');
+                confirmField.classList.remove('error');
+                error.classList.remove('show');
+                return;
+            }
+            
+            if (password === confirmPwd) {
+                matchText.textContent = 'Passwords match';
+                matchStatus.className = 'match-status show match';
+                confirmField.classList.remove('error');
+                error.classList.remove('show');
+            } else {
+                matchText.textContent = 'Passwords do not match';
+                matchStatus.className = 'match-status show unmatch';
+                confirmField.classList.add('error');
+                error.classList.add('show');
+            }
+        }
+
+        // ========================================
+        // VALIDATION HELPERS
         // ========================================
         function validateField(id, condition, errorId) {
             const field = document.getElementById(id);
@@ -1071,68 +1508,62 @@
         function validateForm() {
             let isValid = true;
             
-            if (!validateField('employeeId', document.getElementById('employeeId').value.trim().length > 0, 'employeeId-error')) isValid = false;
-            if (!validateField('fullName', document.getElementById('fullName').value.trim().length > 0, 'fullName-error')) isValid = false;
+            const requiredFields = [
+                { id: 'employeeId', errorId: null, condition: (val) => val.length > 0 },
+                { id: 'firstName', errorId: 'firstName-error', condition: (val) => val.length > 0 },
+                { id: 'lastName', errorId: 'lastName-error', condition: (val) => val.length > 0 },
+                { id: 'designation', errorId: 'designation-error', condition: (val) => val !== '' },
+                { id: 'department', errorId: 'department-error', condition: (val) => val !== '' },
+                { id: 'licenseNo', errorId: 'licenseNo-error', condition: (val) => val.length > 0 },
+                { id: 'phoneNumber', errorId: 'phoneNumber-error', condition: (val) => val.length > 0 },
+                { id: 'email', errorId: 'email-error', condition: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+                { id: 'expireTime', errorId: 'expireTime-error', condition: (val) => parseInt(val) > 0 },
+                { id: 'expiryFormat', errorId: 'expiryFormat-error', condition: (val) => val !== '' }
+            ];
             
-            const email = document.getElementById('email').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!validateField('email', emailRegex.test(email), 'email-error')) isValid = false;
+            requiredFields.forEach(({ id, errorId, condition }) => {
+                const field = document.getElementById(id);
+                const val = field.value.trim();
+                if (!condition(val)) {
+                    field.classList.add('error');
+                    if (errorId) document.getElementById(errorId).classList.add('show');
+                    isValid = false;
+                } else {
+                    field.classList.remove('error');
+                    if (errorId) document.getElementById(errorId).classList.remove('show');
+                }
+            });
             
-            if (!validateField('role', document.getElementById('role').value !== '', 'role-error')) isValid = false;
+            // Check password if both fields are filled
+            const password = document.getElementById('password').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            
+            if (password || confirmPwd) {
+                if (password.length < 8) {
+                    document.getElementById('password').classList.add('error');
+                    document.getElementById('password-error').classList.add('show');
+                    isValid = false;
+                }
+                if (password !== confirmPwd) {
+                    document.getElementById('confirmPassword').classList.add('error');
+                    document.getElementById('confirmPassword-error').classList.add('show');
+                    isValid = false;
+                }
+            }
             
             return isValid;
         }
 
         // ========================================
-        // UPDATE USER
-        // ========================================
-        document.getElementById('edit-user-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!validateForm()) {
-                showNotification('Please fix all errors before submitting', 'error');
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submit-btn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="spinner-sm"></span> Updating...';
-            submitBtn.disabled = true;
-            
-            try {
-                const userData = {
-                    employeeId: document.getElementById('employeeId').value.trim(),
-                    fullName: document.getElementById('fullName').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
-                    role: document.getElementById('role').value,
-                    status: document.getElementById('status').value
-                };
-                
-                const updated = await DataService.updateUser(currentUserId, userData);
-                
-                if (updated) {
-                    await saveUserPermissions();
-                    showNotification(`User ${userData.fullName} updated successfully!`, 'success');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'user-management.html';
-                    }, 1500);
-                }
-                
-            } catch (error) {
-                console.error('Error updating user:', error);
-                showNotification('Failed to update user. Please try again.', 'error');
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
-        // ========================================
         // RESET PASSWORD
         // ========================================
         async function resetPassword() {
-            if (!confirm(`Reset ${currentUser?.fullName || 'this user'}'s password to HPU-2026?`)) return;
+            if (!currentUser) {
+                showNotification('No user loaded', 'error');
+                return;
+            }
+            
+            if (!confirm(`Reset ${currentUser.fullName}'s password to HPU-2026?`)) return;
             
             try {
                 const success = await DataService.resetPassword(currentUserId);
@@ -1151,17 +1582,25 @@
         // DELETE USER
         // ========================================
         async function deleteUser() {
-            if (!confirm(`Permanently delete ${currentUser?.fullName || 'this user'}?`)) return;
+            if (!currentUser) {
+                showNotification('No user loaded', 'error');
+                return;
+            }
+            
+            if (!confirm(`Permanently delete ${currentUser.fullName}? This action cannot be undone.`)) return;
             
             try {
                 const success = await DataService.deleteUser(currentUserId);
                 if (success) {
+                    // Clean up permissions
                     const allOverrides = JSON.parse(localStorage.getItem('userPermissions') || '{}');
                     delete allOverrides[currentUserId];
                     localStorage.setItem('userPermissions', JSON.stringify(allOverrides));
                     
-                    showNotification(`User deleted`, 'success');
-                    setTimeout(() => window.location.href = 'user-management.html', 1500);
+                    showNotification('User deleted successfully', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'user-management.html';
+                    }, 1500);
                 }
             } catch (error) {
                 console.error('Delete failed:', error);
@@ -1170,8 +1609,79 @@
         }
 
         // ========================================
+        // FORM SUBMIT
+        // ========================================
+        document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                showNotification('Please fix all errors before submitting', 'error');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('updateUserBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            submitBtn.disabled = true;
+            
+            try {
+                const userData = {
+                    employeeId: document.getElementById('employeeId').value.trim(),
+                    firstName: document.getElementById('firstName').value.trim(),
+                    middleName: document.getElementById('middleName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    fullName: `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
+                    role: document.getElementById('role').value,
+                    designation: document.getElementById('designation').value,
+                    department: document.getElementById('department').value,
+                    licenseNo: document.getElementById('licenseNo').value.trim(),
+                    phone: document.getElementById('phoneNumber').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    expireTime: parseInt(document.getElementById('expireTime').value),
+                    expiryFormat: document.getElementById('expiryFormat').value,
+                    status: document.getElementById('status').value
+                };
+                
+                // Only update password if provided
+                const password = document.getElementById('password').value;
+                if (password && password.length >= 8) {
+                    userData.password = password;
+                }
+                
+                const updated = await DataService.updateUser(currentUserId, userData);
+                
+                if (updated) {
+                    // Save permissions as well
+                    await saveUserPermissions();
+                    showNotification('User updated successfully!', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'user-management.html';
+                    }, 1500);
+                }
+                
+            } catch (error) {
+                console.error('Error updating user:', error);
+                showNotification('Failed to update user. Please try again.', 'error');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ========================================
         // REAL-TIME VALIDATION
         // ========================================
+        
+        // Password strength and match
+        document.getElementById('password').addEventListener('input', function() {
+            updatePasswordStrength(this.value);
+            checkPasswordMatch();
+            validateField(this.id, this.value.length >= 8 || this.value === '', 'password-error');
+        });
+
+        document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+        // Clear errors on focus
         document.querySelectorAll('input, select').forEach(field => {
             field.addEventListener('focus', function() {
                 this.classList.remove('error');
@@ -1180,6 +1690,31 @@
                 if (error) error.classList.remove('show');
             });
         });
+
+        // Add event listeners for checkbox changes
+        document.addEventListener('change', function(e) {
+            if (e.target.closest('#module-permissions') || e.target.closest('#privilege-permissions')) {
+                updateDisplayFromCheckboxes();
+            }
+        });
+        
+                    // Add Designation button (with null check)
+            const addDesignationBtn = document.getElementById('addDesignationBtn');
+            if (addDesignationBtn) {
+                addDesignationBtn.addEventListener('click', openAddDesignationModal);
+            } else {
+                console.log('Add Designation button not found - feature disabled in Edit User');
+            }
+
+            // Cancel button
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
+                        window.location.href = 'user-management.html';
+                    }
+                });
+            };
 
         // ========================================
         // COMPONENT LOADING
@@ -1243,6 +1778,7 @@
                 if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
             });
             
+            loadSavedDesignations();
             loadUserData();
         }
         
@@ -1258,6 +1794,11 @@
         window.revokeAllPermissions = revokeAllPermissions;
         window.resetPassword = resetPassword;
         window.deleteUser = deleteUser;
+        window.showNotification = showNotification;
+        window.toggleStatus = toggleStatus;
+        window.openAddDesignationModal = openAddDesignationModal;
+        window.closeAddDesignationModal = closeAddDesignationModal;
+        window.saveNewDesignation = saveNewDesignation;
     </script>
 </body>
 </html>

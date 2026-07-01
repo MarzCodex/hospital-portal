@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Service Portal | Add User</title>
+    <title>Hospital Service Portal | Add New User</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
-        /* Page specific styles */
+        /* ===== Page Specific Styles ===== */
         .page-container {
             padding: 20px;
             margin: 20px;
@@ -39,56 +39,102 @@
             margin-right: 10px;
         }
 
-        /* Form Styles */
-        .form-container {
-            padding: 10px 0;
+        /* ===== Form Sections ===== */
+        .form-section {
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px 20px;
+            margin-bottom: 18px;
         }
 
+        .form-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-section-title i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        /* ===== Form Grid ===== */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px 20px;
         }
 
-        .form-group {
-            margin-bottom: 5px;
+        .form-grid.three-col {
+            grid-template-columns: 1fr 1fr 1fr;
         }
 
-        .form-group.full-width {
+        .form-grid.four-col {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .full-width {
             grid-column: 1 / -1;
         }
 
+        /* ===== Form Group ===== */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .form-group label {
-            display: block;
-            margin-bottom: 6px;
+            font-size: 13px;
             font-weight: 500;
-            font-size: 14px;
             color: var(--secondary);
         }
 
         .form-group label .required {
             color: var(--danger);
-            margin-left: 4px;
+            font-weight: 700;
+        }
+
+        .form-group label .hint {
+            color: var(--gray);
+            font-weight: 400;
+            font-size: 11px;
         }
 
         .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group select {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
+            padding: 9px 12px;
+            border: 1.5px solid var(--border);
             border-radius: 6px;
             font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--white);
             transition: all 0.3s;
-            background: white;
+            color: var(--secondary);
+        }
+
+        .form-group input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
         .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #b0b8c0;
+            font-size: 13px;
         }
 
         .form-group input.error,
@@ -97,15 +143,15 @@
         }
 
         .form-group .help-text {
-            font-size: 12px;
+            font-size: 11.5px;
             color: var(--gray);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .form-group .error-text {
-            font-size: 12px;
+            font-size: 11.5px;
             color: var(--danger);
-            margin-top: 4px;
+            margin-top: 2px;
             display: none;
         }
 
@@ -113,99 +159,92 @@
             display: block;
         }
 
-        .form-actions {
+        /* ===== Input with Button ===== */
+        .input-with-btn {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
         }
 
-        .btn {
-            padding: 10px 24px;
+        .input-with-btn input,
+        .input-with-btn select {
+            flex: 1;
+        }
+
+        .input-with-btn .btn-sm {
+            flex-shrink: 0;
+        }
+
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 12.5px;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 5px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
+        .btn-sm:hover {
+            transform: translateY(-1px);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        /* ===== Password Wrapper ===== */
+        .password-wrapper {
+            position: relative;
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .password-wrapper input {
+            padding-right: 40px;
         }
 
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+            transition: all 0.3s;
+            min-width: auto;
         }
 
-        .btn-secondary:hover {
-            background: #1a252f;
-            transform: translateY(-2px);
+        .toggle-password:hover {
+            color: var(--primary);
         }
 
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #219653;
-            transform: translateY(-2px);
-        }
-
-        /* Password strength indicator */
+        /* ===== Password Strength ===== */
         .password-strength {
             display: flex;
-            gap: 8px;
-            margin-top: 8px;
             align-items: center;
+            gap: 10px;
+            margin-top: 6px;
         }
 
         .strength-bar {
             flex: 1;
             height: 4px;
-            background: #e0e0e0;
+            background: #e8ecf0;
             border-radius: 2px;
             overflow: hidden;
             display: flex;
+            gap: 2px;
+            max-width: 200px;
         }
 
         .strength-bar .segment {
             flex: 1;
             height: 100%;
-            transition: background 0.3s;
-        }
-
-        .strength-bar .segment.filled {
-            background: var(--danger);
+            background: #e8ecf0;
+            transition: all 0.3s;
+            border-radius: 1px;
         }
 
         .strength-bar .segment.filled.weak {
@@ -223,97 +262,191 @@
         .strength-label {
             font-size: 12px;
             font-weight: 500;
-            min-width: 60px;
-        }
-
-        /* Password visibility toggle */
-        .password-wrapper {
-            position: relative;
-        }
-
-        .password-wrapper input {
-            padding-right: 40px;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
+            min-width: 65px;
             color: var(--gray);
-            background: none;
+        }
+
+        .strength-label.weak { color: var(--danger); }
+        .strength-label.medium { color: var(--warning); }
+        .strength-label.strong { color: var(--success); }
+
+        /* ===== Match Status ===== */
+        .match-status {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .match-status.show {
+            display: block;
+        }
+
+        .match-status.match {
+            color: var(--success);
+        }
+
+        .match-status.unmatch {
+            color: var(--danger);
+        }
+
+        /* ===== Form Actions ===== */
+        .form-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* ===== Buttons ===== */
+        .btn {
+            padding: 10px 24px;
             border: none;
-            font-size: 16px;
-            padding: 0;
-            min-width: auto;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .toggle-password:hover {
-            color: var(--primary);
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d68910;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #1a252f;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ===== Toggle Switch ===== */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--danger);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: var(--success);
+        }
+
+        .toggle-switch .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 27px;
+        }
+
+        .toggle-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .toggle-label.active {
+            color: var(--success);
+        }
+
+        .toggle-label.inactive {
+            color: var(--danger);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 992px) {
+            .form-grid.four-col {
+                grid-template-columns: 1fr 1fr;
             }
+        }
+
+        @media (max-width: 768px) {
             .page-container {
                 margin: 10px;
                 padding: 15px;
             }
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .form-actions {
-                flex-direction: column;
-            }
-            .form-actions .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* Loading spinner inline */
-        .spinner-sm {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Notification override for page */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-            max-width: 350px;
-        }
-
-        .notification.success { background-color: var(--success); }
-        .notification.error { background-color: var(--danger); }
-        .notification.info { background-color: var(--primary); }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-grid.three-col { grid-template-columns: 1fr; }
+            .form-grid.four-col { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+            .input-with-btn { flex-wrap: wrap; }
+            .input-with-btn .btn-sm { width: 100%; justify-content: center; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; justify-content: center; }
+            .form-section { padding: 14px 12px; }
         }
     </style>
 </head>
@@ -321,7 +454,7 @@
     <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
 
-    <!-- Main Content -->
+    <!-- Main Content Wrapper -->
     <div class="main-content" id="mainContent">
         <!-- Header Container -->
         <div id="header-container"></div>
@@ -331,124 +464,241 @@
             <div class="page-container">
                 <!-- Page Header -->
                 <div class="page-header">
-                    <h2><i class="fas fa-user-plus"></i> Add New User</h2>
+                    <h2>
+                        <i class="fas fa-user-plus"></i>
+                        Add New User
+                    </h2>
                     <button class="btn btn-secondary" onclick="window.location.href='user-management.html'">
                         <i class="fas fa-arrow-left"></i> Back to Users
                     </button>
                 </div>
 
                 <!-- Form -->
-                <div class="form-container">
-                    <form id="add-user-form" novalidate>
+                <form class="form-container" id="addUserForm" novalidate>
+
+                    <!-- ===== SECTION 1: Name Details ===== -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-pen"></i>
+                            Name Details
+                        </div>
+                        <div class="form-grid four-col">
+                            <div class="form-group">
+                                <label>Employee ID <span class="required">*</span></label>
+                                <input type="text" id="employeeId" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Username <span class="required">*</span>
+                                </label>
+                                <div class="input-with-btn">
+                                    <input type="text" id="username" placeholder="Auto-generated" required disabled>
+                                    <button style="display: none;" type="button" class="btn-sm btn-secondary" id="autoUsernameBtn" title="Generate username">
+                                        <i class="fas fa-magic"></i> Auto
+                                    </button>
+                                </div>
+                                <div class="error-text" id="username-error">Please enter a username</div>
+                            </div>
+                            <div class="form-group">
+                                <label>First Name <span class="required">*</span></label>
+                                <input type="text" id="firstName" required>
+                                <div class="error-text" id="firstName-error">Please enter first name</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Middle Name</label>
+                                <input type="text" id="middleName">
+                                <div class="error-text" id="middleName-error">Please enter middle name</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name <span class="required">*</span></label>
+                                <input type="text" id="lastName" required>
+                                <div class="error-text" id="lastName-error">Please enter last name</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 2: Role & Designation ===== -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-user-tag"></i>
+                            Role & Designation
+                        </div>
+                        <div class="form-grid three-col">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select id="Role">
+                                    <option value="">Select Role</option>
+                                    <option value="clinical">Clinical</option>
+                                    <option value="non-clinical">Non-Clinical</option>
+                                    <option value="administrative">Administrative</option>
+                                    <option value="support">Support Staff</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Designation <span class="required">*</span></label>
+                                <div class="input-with-btn">
+                                    <select id="designation" required>
+                                        <option value="">Select Designation</option>
+                                        <option value="System Administrator">System Administrator</option>
+                                        <option value="Senior Physician">Senior Physician</option>
+                                        <option value="Head Nurse">Head Nurse</option>
+                                        <option value="Nursing Officer">Nursing Officer</option>
+                                        <option value="Pharmacist">Pharmacist</option>
+                                        <option value="Lab Scientist">Lab Scientist</option>
+                                        <option value="Radiologist">Radiologist</option>
+                                        <option value="Data Clerk">Data Clerk</option>
+                                        <option value="Accountant">Accountant</option>
+                                        <option value="Hospital Administrator">Hospital Administrator</option>
+                                    </select>
+                                    <button type="button" class="btn-sm btn-success" id="addDesignationBtn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="error-text" id="designation-error">Please select a designation</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Department <span class="required">*</span></label>
+                                <select id="department" required>
+                                    <option value="">Select Department</option>
+                                    <option value="ICT">ICT</option>
+                                    <option value="Medical">Medical</option>
+                                    <option value="Nursing">Nursing</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Laboratory">Laboratory</option>
+                                    <option value="Radiology">Radiology</option>
+                                    <option value="Administration">Administration</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="HR">Human Resources</option>
+                                    <option value="Medical Records">Medical Records</option>
+                                    <option value="Admissions">Admissions & Registration</option>
+                                </select>
+                                <div class="error-text" id="department-error">Please select a department</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 3: Identifiers & Contact ===== -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-id-card"></i>
+                            Identifiers & Contact
+                        </div>
+                        <div class="form-grid three-col">
+                            <div class="form-group">
+                                <label>Doctors License / MCT NO. <span class="required">*</span></label>
+                                <input type="text" id="licenseNo" placeholder="LIC-2024-001" required>
+                                <div class="help-text">Medical Council of Tanzania registration number</div>
+                                <div class="error-text" id="licenseNo-error">Please enter license number</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phoneNumber" placeholder="+255 712 345 678" required>
+                                <div class="error-text" id="phoneNumber-error">Please enter phone number</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" placeholder="john.doe@hospital.com" required>
+                                <div class="error-text" id="email-error">Please enter a valid email</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 4: Expiration & Status ===== -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-clock"></i>
+                            Account Activation/Deactivation
+                        </div>
                         <div class="form-grid">
-                            <!-- Employee ID -->
                             <div class="form-group">
-                                <label for="employeeId">Employee ID <span class="required">*</span></label>
-                                <input type="text" id="employeeId" placeholder="e.g., EMP001" required>
-                                <div class="error-text" id="employeeId-error">Please enter employee ID</div>
+                                <label>Expire Time <span class="required">*</span></label>
+                                <input type="number" id="expireTime" value="12" min="1" max="99" required>
+                                <div class="help-text">Enter number of years/months until account expires</div>
+                                <div class="error-text" id="expireTime-error">Please enter expire time</div>
                             </div>
-
-                            <!-- Full Name -->
                             <div class="form-group">
-                                <label for="fullName">Full Name <span class="required">*</span></label>
-                                <input type="text" id="fullName" placeholder="e.g., John Doe" required>
-                                <div class="error-text" id="fullName-error">Please enter full name</div>
-                            </div>
-
-                            <!-- Username -->
-                            <div class="form-group">
-                                <label for="username">Username <span class="required">*</span></label>
-                                <input type="text" id="username" placeholder="e.g., johndoe" required>
-                                <div class="help-text">Username must be unique and at least 3 characters</div>
-                                <div class="error-text" id="username-error">Please enter a valid username (min 3 characters)</div>
-                            </div>
-
-                            <!-- Email -->
-                            <div class="form-group">
-                                <label for="email">Email Address <span class="required">*</span></label>
-                                <input type="email" id="email" placeholder="e.g., john.doe@hospital.com" required>
-                                <div class="error-text" id="email-error">Please enter a valid email address</div>
-                            </div>
-
-                            <!-- Phone -->
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" placeholder="e.g., +255 712 345 678">
-                            </div>
-
-                            <!-- Role -->
-                            <div class="form-group">
-                                <label for="role">Role <span class="required">*</span></label>
-                                <select id="role" required>
-                                    <option value="">Select Role...</option>
-                                    <option value="Administrator">Administrator</option>
-                                    <option value="Front Desk">Front Desk</option>
-                                    <option value="Data clerk">Data clerk</option>
-                                    <option value="Doctor">Doctor</option>
+                                <label>Expiry Format <span class="required">*</span></label>
+                                <select id="expiryFormat" required>
+                                    <option value="years">Years</option>
+                                    <option value="months">Months</option>
+                                    <option value="days">Days</option>
                                 </select>
-                                <div class="error-text" id="role-error">Please select a role</div>
+                                <div class="error-text" id="expiryFormat-error">Please select expiry format</div>
                             </div>
-
-                            <!-- Status -->
                             <div class="form-group">
-                                <label for="status">Status</label>
-                                <select id="status">
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                </select>
+                                <label>Status</label>
+                                <div class="toggle-wrapper">
+                                    <div class="toggle-switch active" id="statusToggle" onclick="toggleStatus()">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                    <span class="toggle-label active" id="statusLabel">Active</span>
+                                </div>
+                                <input type="hidden" id="status" value="Active">
                             </div>
+                        </div>
+                    </div>
 
-                            <!-- Password (Full width) -->
-                            <div class="form-group full-width">
-                                <label for="password">Password <span class="required">*</span></label>
+                    <!-- ===== SECTION 5: Security ===== -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-lock"></i>
+                            Security
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <div class="help-text" style="font-weight: 600; font-family: monospace; font-size: 14px;" id="current-password-display">HPU-2026</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password <span class="required">*</span></label>
                                 <div class="password-wrapper">
-                                    <input type="password" id="password" placeholder="Enter password (min 8 characters)" required>
-                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">
+                                    <input type="password" id="password" placeholder="Enter password (min 8 chars)" required>
+                                    <button type="button" class="toggle-password" data-target="password">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
-                                <div class="help-text">Password must be at least 8 characters</div>
+                                <div class="help-text">Min 8 characters with mix of letters, numbers & symbols</div>
                                 <div class="error-text" id="password-error">Password must be at least 8 characters</div>
-                                
-                                <!-- Password Strength -->
-                                <div class="password-strength" id="password-strength">
+                                <div class="password-strength" id="passwordStrength">
                                     <div class="strength-bar">
-                                        <div class="segment" id="strength-1"></div>
-                                        <div class="segment" id="strength-2"></div>
-                                        <div class="segment" id="strength-3"></div>
-                                        <div class="segment" id="strength-4"></div>
+                                        <div class="segment" data-index="0"></div>
+                                        <div class="segment" data-index="1"></div>
+                                        <div class="segment" data-index="2"></div>
+                                        <div class="segment" data-index="3"></div>
                                     </div>
-                                    <span class="strength-label" id="strength-label">Weak</span>
+                                    <span class="strength-label">Weak</span>
                                 </div>
                             </div>
-
-                            <!-- Confirm Password (Full width) -->
-                            <div class="form-group full-width">
-                                <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                            <div class="form-group">
+                                <label>Confirm Password <span class="required">*</span></label>
                                 <div class="password-wrapper">
                                     <input type="password" id="confirmPassword" placeholder="Confirm password" required>
-                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword')">
+                                    <button type="button" class="toggle-password" data-target="confirmPassword">
                                         <i class="fas fa-eye"></i>
                                     </button>
+                                </div>
+                                <div class="match-status" id="matchStatus">
+                                    <i class="fas"></i> <span id="matchText"></span>
                                 </div>
                                 <div class="error-text" id="confirmPassword-error">Passwords do not match</div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Form Actions -->
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" id="submit-btn">
-                                <i class="fas fa-save"></i> Create User
-                            </button>
-                            <button type="reset" class="btn btn-secondary">
-                                <i class="fas fa-undo-alt"></i> Reset Form
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="window.location.href='user-management.html'">
-                                <i class="fas fa-times"></i> Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <!-- ===== FORM ACTIONS ===== -->
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                        <button type="button" class="btn btn-danger" id="cancelBtn">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success" id="createUserBtn">
+                            <i class="fas fa-user-plus"></i> Create User
+                        </button>
+                    </div>
+
+                </form>
             </div>
         </div>
 
@@ -459,191 +709,338 @@
     <!-- Modals Container -->
     <div id="modals-container"></div>
 
+    <!-- Add Designation Modal -->
+    <div id="addDesignationModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3><i class="fas fa-plus-circle"></i> Add Designation</h3>
+            <input type="text" id="newDesignationInput" placeholder="Enter new designation" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 15px;">
+            <div class="modal-buttons" style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="save" onclick="saveNewDesignation()" style="padding: 8px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Add</button>
+                <button class="cancel" onclick="closeAddDesignationModal()" style="padding: 8px 20px; background: var(--gray); color: white; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
-    <div id="notification" class="notification"></div>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationMessage">User created successfully!</span>
+    </div>
 
     <script src="../../assets/js/common.js"></script>
     <script>
         // ========================================
-        // TOGGLE PASSWORD VISIBILITY
+        // TOGGLE STATUS
         // ========================================
-        function togglePasswordVisibility(fieldId) {
-            const input = document.getElementById(fieldId);
-            const toggleBtn = input.parentElement.querySelector('.toggle-password');
+        function toggleStatus() {
+            const toggle = document.getElementById('statusToggle');
+            const label = document.getElementById('statusLabel');
+            const hidden = document.getElementById('status');
             
-            if (input.type === 'password') {
-                input.type = 'text';
-                toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            toggle.classList.toggle('active');
+            
+            if (toggle.classList.contains('active')) {
+                label.textContent = 'Active';
+                label.className = 'toggle-label active';
+                hidden.value = 'Active';
             } else {
-                input.type = 'password';
-                toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
+                label.textContent = 'Inactive';
+                label.className = 'toggle-label inactive';
+                hidden.value = 'Inactive';
             }
         }
 
         // ========================================
-        // PASSWORD STRENGTH CHECKER
+        // TOGGLE PASSWORD VISIBILITY
         // ========================================
-        function checkPasswordStrength(password) {
-            let score = 0;
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'fas fa-eye';
+                }
+            });
+        });
+
+        // ========================================
+        // AUTO-GENERATE USERNAME
+        // ========================================
+        async function autoGenerateUsername() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const usernameField = document.getElementById('username');
             
-            // Length check
-            if (password.length >= 8) score++;
-            if (password.length >= 12) score++;
+            if (!firstName || !lastName) {
+                if (!firstName && !lastName) usernameField.value = '';
+                return;
+            }
             
-            // Complexity checks
-            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
-            if (/\d/.test(password)) score++;
-            if (/[^a-zA-Z0-9]/.test(password)) score++;
+            const users = await DataService.getUsers() || [];
+            let username = (firstName.charAt(0) + lastName).toLowerCase();
+            username = username.replace(/[^a-z0-9]/g, '');
             
-            // Cap at 4
-            return Math.min(score, 4);
+            let counter = 1;
+            let baseUsername = username;
+            while (users.some(u => u.username === username)) {
+                username = `${baseUsername}${counter}`;
+                counter++;
+            }
+            
+            usernameField.value = username;
+            usernameField.classList.remove('error');
+            document.getElementById('username-error').classList.remove('show');
         }
 
+        // ========================================
+        // PASSWORD STRENGTH
+        // ========================================
         function updatePasswordStrength(password) {
-            const segments = [
-                document.getElementById('strength-1'),
-                document.getElementById('strength-2'),
-                document.getElementById('strength-3'),
-                document.getElementById('strength-4')
-            ];
-            const label = document.getElementById('strength-label');
+            const segments = document.querySelectorAll('#passwordStrength .segment');
+            const label = document.querySelector('#passwordStrength .strength-label');
             
             if (!password) {
                 segments.forEach(s => { s.className = 'segment'; });
                 label.textContent = 'Weak';
-                label.style.color = 'var(--gray)';
+                label.className = 'strength-label';
                 return;
             }
             
-            const strength = checkPasswordStrength(password);
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^a-zA-Z0-9]/.test(password)) score++;
+            score = Math.min(score, 4);
             
             segments.forEach((seg, index) => {
                 seg.className = 'segment';
-                if (index < strength) {
+                if (index < score) {
                     seg.classList.add('filled');
-                    if (strength <= 2) seg.classList.add('weak');
-                    else if (strength === 3) seg.classList.add('medium');
+                    if (score <= 2) seg.classList.add('weak');
+                    else if (score === 3) seg.classList.add('medium');
                     else seg.classList.add('strong');
                 }
             });
             
             const labels = ['Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
-            label.textContent = labels[strength];
-            
-            const colors = ['var(--gray)', 'var(--danger)', 'var(--warning)', 'var(--success)', '#27ae60'];
-            label.style.color = colors[strength];
+            const classes = ['', 'weak', 'medium', 'strong', 'strong'];
+            label.textContent = labels[score];
+            label.className = `strength-label ${classes[score]}`;
         }
 
         // ========================================
-        // FORM VALIDATION
+        // PASSWORD MATCH
         // ========================================
-        function validateField(id, condition, errorId) {
-            const field = document.getElementById(id);
-            const error = document.getElementById(errorId);
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            const matchStatus = document.getElementById('matchStatus');
+            const matchText = document.getElementById('matchText');
+            const confirmField = document.getElementById('confirmPassword');
+            const error = document.getElementById('confirmPassword-error');
             
-            if (!condition) {
-                field.classList.add('error');
-                error.classList.add('show');
-                return false;
-            } else {
-                field.classList.remove('error');
+            if (!confirmPwd) {
+                matchStatus.classList.remove('show');
+                confirmField.classList.remove('error');
                 error.classList.remove('show');
-                return true;
+                return;
+            }
+            
+            if (password === confirmPwd) {
+                matchText.textContent = 'Passwords match';
+                matchStatus.className = 'match-status show match';
+                confirmField.classList.remove('error');
+                error.classList.remove('show');
+            } else {
+                matchText.textContent = 'Passwords do not match';
+                matchStatus.className = 'match-status show unmatch';
+                confirmField.classList.add('error');
+                error.classList.add('show');
             }
         }
 
-        function validateForm() {
-            let isValid = true;
+        // ========================================
+        // DESIGNATION MODAL
+        // ========================================
+        function openAddDesignationModal() {
+            document.getElementById('addDesignationModal').classList.add('active');
+            document.getElementById('newDesignationInput').value = '';
+            document.getElementById('newDesignationInput').focus();
+        }
+
+        function closeAddDesignationModal() {
+            document.getElementById('addDesignationModal').classList.remove('active');
+        }
+
+        function saveNewDesignation() {
+            const newDesignation = document.getElementById('newDesignationInput').value.trim();
             
-            // Employee ID
-            const empId = document.getElementById('employeeId').value.trim();
-            if (!validateField('employeeId', empId.length > 0, 'employeeId-error')) isValid = false;
+            if (!newDesignation) {
+                showNotification('Please enter a designation name', 'error');
+                return;
+            }
             
-            // Full Name
-            const fullName = document.getElementById('fullName').value.trim();
-            if (!validateField('fullName', fullName.length > 0, 'fullName-error')) isValid = false;
+            const designationSelect = document.getElementById('designation');
+            for (let i = 0; i < designationSelect.options.length; i++) {
+                if (designationSelect.options[i].value === newDesignation) {
+                    showNotification('Designation already exists', 'error');
+                    closeAddDesignationModal();
+                    return;
+                }
+            }
             
-            // Username
-            const username = document.getElementById('username').value.trim();
-            if (!validateField('username', username.length >= 3, 'username-error')) isValid = false;
+            const option = document.createElement('option');
+            option.value = newDesignation;
+            option.textContent = newDesignation;
+            designationSelect.appendChild(option);
+            designationSelect.value = newDesignation;
             
-            // Email
-            const email = document.getElementById('email').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!validateField('email', emailRegex.test(email), 'email-error')) isValid = false;
+            const designations = JSON.parse(localStorage.getItem('designations') || '[]');
+            designations.push(newDesignation);
+            localStorage.setItem('designations', JSON.stringify(designations));
             
-            // Role
-            const role = document.getElementById('role').value;
-            if (!validateField('role', role !== '', 'role-error')) isValid = false;
+            showNotification(`Designation "${newDesignation}" added successfully!`, 'success');
+            closeAddDesignationModal();
+        }
+
+        // ========================================
+        // LOAD SAVED DESIGNATIONS
+        // ========================================
+        function loadSavedDesignations() {
+            const designations = JSON.parse(localStorage.getItem('designations') || '[]');
+            const designationSelect = document.getElementById('designation');
             
-            // Password
-            const password = document.getElementById('password').value;
-            if (!validateField('password', password.length >= 8, 'password-error')) isValid = false;
-            
-            // Confirm Password
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            if (!validateField('confirmPassword', password === confirmPassword && password.length > 0, 'confirmPassword-error')) isValid = false;
-            
-            return isValid;
+            designations.forEach(des => {
+                let exists = false;
+                for (let i = 0; i < designationSelect.options.length; i++) {
+                    if (designationSelect.options[i].value === des) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    const option = document.createElement('option');
+                    option.value = des;
+                    option.textContent = des;
+                    designationSelect.appendChild(option);
+                }
+            });
         }
 
         // ========================================
         // SHOW NOTIFICATION
         // ========================================
-        function showNotification(message, type = 'info', duration = 3000) {
+        function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
-            notification.textContent = message;
+            const icon = notification.querySelector('i');
+            const text = document.getElementById('notificationMessage');
+            
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                             type === 'error' ? 'fas fa-exclamation-circle' : 
+                             'fas fa-info-circle';
+            text.textContent = message;
             notification.className = `notification ${type}`;
             notification.style.display = 'block';
+            
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, duration);
+            }, 4000);
         }
 
         // ========================================
-        // FORM SUBMISSION
+        // FORM SUBMIT
         // ========================================
-        document.getElementById('add-user-form').addEventListener('submit', async function(e) {
+        document.getElementById('addUserForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (!validateForm()) {
+            let isValid = true;
+            
+            const requiredFields = [
+                { id: 'employeeId', errorId: null, condition: (val) => val.length > 0 },
+                { id: 'username', errorId: 'username-error', condition: (val) => val.length >= 3 },
+                { id: 'firstName', errorId: 'firstName-error', condition: (val) => val.length > 0 },
+                { id: 'lastName', errorId: 'lastName-error', condition: (val) => val.length > 0 },
+                { id: 'designation', errorId: 'designation-error', condition: (val) => val !== '' },
+                { id: 'department', errorId: 'department-error', condition: (val) => val !== '' },
+                { id: 'licenseNo', errorId: 'licenseNo-error', condition: (val) => val.length > 0 },
+                { id: 'phoneNumber', errorId: 'phoneNumber-error', condition: (val) => val.length > 0 },
+                { id: 'email', errorId: 'email-error', condition: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+                { id: 'expireTime', errorId: 'expireTime-error', condition: (val) => parseInt(val) > 0 },
+                { id: 'expiryFormat', errorId: 'expiryFormat-error', condition: (val) => val !== '' },
+                { id: 'password', errorId: 'password-error', condition: (val) => val.length >= 8 }
+            ];
+            
+            requiredFields.forEach(({ id, errorId, condition }) => {
+                const field = document.getElementById(id);
+                const val = field.value.trim();
+                if (!condition(val)) {
+                    field.classList.add('error');
+                    if (errorId) document.getElementById(errorId).classList.add('show');
+                    isValid = false;
+                } else {
+                    field.classList.remove('error');
+                    if (errorId) document.getElementById(errorId).classList.remove('show');
+                }
+            });
+            
+            const password = document.getElementById('password').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            if (password !== confirmPwd) {
+                document.getElementById('confirmPassword').classList.add('error');
+                document.getElementById('confirmPassword-error').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!isValid) {
                 showNotification('Please fix all errors before submitting', 'error');
                 return;
             }
             
-            const submitBtn = document.getElementById('submit-btn');
+            const submitBtn = document.getElementById('createUserBtn');
             const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="spinner-sm"></span> Creating...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
             submitBtn.disabled = true;
             
             try {
                 const userData = {
-                    employeeId: document.getElementById('employeeId').value.trim(),
-                    fullName: document.getElementById('fullName').value.trim(),
+                    employeeId: document.getElementById('employeeId').value.trim() || 'EMP001',
                     username: document.getElementById('username').value.trim(),
+                    firstName: document.getElementById('firstName').value.trim(),
+                    middleName: document.getElementById('middleName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    fullName: `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
+                    Role: document.getElementById('Role').value,
+                    designation: document.getElementById('designation').value,
+                    department: document.getElementById('department').value,
+                    licenseNo: document.getElementById('licenseNo').value.trim(),
+                    phone: document.getElementById('phoneNumber').value.trim(),
                     email: document.getElementById('email').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
-                    role: document.getElementById('role').value,
+                    expireTime: parseInt(document.getElementById('expireTime').value),
+                    expiryFormat: document.getElementById('expiryFormat').value,
+                    password: document.getElementById('password').value,
                     status: document.getElementById('status').value,
-                    password: document.getElementById('password').value
+                    permissions: { modules: {}, privileges: {} }
                 };
                 
-                // Check if username already exists
                 const existingUsers = await DataService.getUsers() || [];
                 if (existingUsers.some(u => u.username === userData.username)) {
-                    showNotification('Username already exists. Please choose another.', 'error');
+                    showNotification('Username already exists. Please generate a new one.', 'error');
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     return;
                 }
                 
-                // Add user via DataService
                 const newUser = await DataService.addUser(userData);
                 
                 if (newUser) {
                     showNotification(`User ${userData.fullName} created successfully!`, 'success');
-                    
-                    // Redirect after short delay
                     setTimeout(() => {
                         window.location.href = 'user-management.html';
                     }, 1500);
@@ -660,49 +1057,27 @@
         // ========================================
         // REAL-TIME VALIDATION
         // ========================================
-        
-        // Password strength on input
         document.getElementById('password').addEventListener('input', function() {
             updatePasswordStrength(this.value);
-            
-            // Validate password length
-            const password = this.value;
-            const error = document.getElementById('password-error');
-            if (password.length >= 8) {
+            checkPasswordMatch();
+            if (this.value.length >= 8) {
                 this.classList.remove('error');
-                error.classList.remove('show');
-            } else if (password.length > 0) {
-                this.classList.add('error');
-                error.classList.add('show');
-            }
-            
-            // Check confirm password match
-            const confirmPwd = document.getElementById('confirmPassword');
-            const confirmError = document.getElementById('confirmPassword-error');
-            if (confirmPwd.value && confirmPwd.value !== password) {
-                confirmPwd.classList.add('error');
-                confirmError.classList.add('show');
-            } else if (confirmPwd.value) {
-                confirmPwd.classList.remove('error');
-                confirmError.classList.remove('show');
+                document.getElementById('password-error').classList.remove('show');
             }
         });
 
-        // Confirm password validation
-        document.getElementById('confirmPassword').addEventListener('input', function() {
-            const password = document.getElementById('password').value;
-            const error = document.getElementById('confirmPassword-error');
-            
-            if (this.value && this.value !== password) {
-                this.classList.add('error');
-                error.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                error.classList.remove('show');
+        document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+        document.getElementById('firstName').addEventListener('input', autoGenerateUsername);
+        document.getElementById('lastName').addEventListener('input', autoGenerateUsername);
+        document.getElementById('autoUsernameBtn').addEventListener('click', autoGenerateUsername);
+        document.getElementById('addDesignationBtn').addEventListener('click', openAddDesignationModal);
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel? All entered data will be lost.')) {
+                window.location.href = 'user-management.html';
             }
         });
 
-        // Clear errors on focus
         document.querySelectorAll('input, select').forEach(field => {
             field.addEventListener('focus', function() {
                 this.classList.remove('error');
@@ -715,42 +1090,29 @@
         // ========================================
         // COMPONENT LOADING
         // ========================================
-        
         async function loadComponents() {
             try {
                 const sidebarRes = await fetch('../../components/sidebar.html');
-                if (sidebarRes.ok) {
-                    document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
-                }
+                if (sidebarRes.ok) document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
                 
                 const headerRes = await fetch('../../components/header.html');
-                if (headerRes.ok) {
-                    document.getElementById('header-container').innerHTML = await headerRes.text();
-                }
+                if (headerRes.ok) document.getElementById('header-container').innerHTML = await headerRes.text();
                 
                 const footerRes = await fetch('../../components/footer.html');
-                if (footerRes.ok) {
-                    document.getElementById('footer-container').innerHTML = await footerRes.text();
-                }
+                if (footerRes.ok) document.getElementById('footer-container').innerHTML = await footerRes.text();
                 
                 const modalsRes = await fetch('../../components/modals.html');
-                if (modalsRes.ok) {
-                    document.getElementById('modals-container').innerHTML = await modalsRes.text();
-                }
+                if (modalsRes.ok) document.getElementById('modals-container').innerHTML = await modalsRes.text();
                 
                 initPageComponents();
-                
             } catch (error) {
                 console.error('Error loading components:', error);
             }
         }
         
         function initPageComponents() {
-            if (typeof initUserDropdown === 'function') {
-                initUserDropdown();
-            }
+            if (typeof initUserDropdown === 'function') initUserDropdown();
             
-            // Set user info from sessionStorage
             const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
             const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
             
@@ -765,7 +1127,6 @@
                 userAvatar.textContent = initials;
             }
             
-            // Sidebar toggle
             const menuToggle = document.getElementById('menuToggle');
             if (menuToggle) {
                 menuToggle.addEventListener('click', function(e) {
@@ -782,25 +1143,40 @@
                 });
             }
 
-            if (typeof initSidebarState === 'function') {
-                initSidebarState();
-            }
+            if (typeof initSidebarState === 'function') initSidebarState();
 
             window.addEventListener('resize', function() {
-                if (typeof handleResponsiveSidebar === 'function') {
-                    handleResponsiveSidebar();
-                }
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
             });
             
-            // Generate default Employee ID if empty
+            loadSavedDesignations();
+            
+            // Auto-generate Employee ID
             const empIdField = document.getElementById('employeeId');
-            if (empIdField && !empIdField.value) {
+            if (!empIdField.value) {
                 const timestamp = Date.now().toString().slice(-4);
-                empIdField.placeholder = `e.g., EMP${timestamp}`;
+                empIdField.value = `EMP${timestamp}`;
+            }
+            
+            // Auto-generate username if name fields have values
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            if (firstName.value && lastName.value) {
+                autoGenerateUsername();
             }
         }
         
         document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.openAddDesignationModal = openAddDesignationModal;
+        window.closeAddDesignationModal = closeAddDesignationModal;
+        window.saveNewDesignation = saveNewDesignation;
+        window.showNotification = showNotification;
+        window.autoGenerateUsername = autoGenerateUsername;
+        window.toggleStatus = toggleStatus;
     </script>
 </body>
 </html>
