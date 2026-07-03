@@ -525,8 +525,9 @@
                         </div>
                         <div class="form-grid three-col">
                             <div class="form-group">
-                                <label>Role</label>
-                                <input type="text" id="role">
+                                <label>Role <span class="required">*</span></label>
+                                <input type="text" id="role" required>
+                                <div class="error-text" id="role-error">Please enter role</div>
                             </div>
                             <div class="form-group">
                                 <label>Designation <span class="required">*</span></label>
@@ -958,6 +959,7 @@
                 { id: 'username', errorId: 'username-error', condition: (val) => val.length >= 3 },
                 { id: 'firstName', errorId: 'firstName-error', condition: (val) => val.length > 0 },
                 { id: 'lastName', errorId: 'lastName-error', condition: (val) => val.length > 0 },
+                { id: 'role', errorId: 'role-error', condition: (val) => val !== '' },
                 { id: 'designation', errorId: 'designation-error', condition: (val) => val !== '' },
                 { id: 'department', errorId: 'department-error', condition: (val) => val !== '' },
                 { id: 'phoneNumber', errorId: 'phoneNumber-error', condition: (val) => val.length > 0 },
