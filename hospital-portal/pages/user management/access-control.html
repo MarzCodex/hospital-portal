@@ -506,7 +506,6 @@
                             <i class="fas fa-times-circle"></i> Revoke All
                         </button>
                         <div class="divider"></div>
-                        <span class="info-text">⚠️ Grant only what the user needs</span>
                     </div>
 
                     <!-- Dashboard Privileges -->
@@ -706,7 +705,7 @@
                 return `
                     <div class="perm-item">
                         <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
-                            ${hasAccess ? '✅' : ''}
+                            ${hasAccess ? '' : ''}
                         </div>
                         <div class="label">${module.label}</div>
                         <span class="status-badge ${hasAccess ? 'granted' : 'denied'}">
@@ -730,7 +729,7 @@
                 return `
                     <div class="priv-item">
                         <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
-                            ${hasAccess ? '✅' : ''}
+                            ${hasAccess ? '' : ''}
                         </div>
                         <div class="label">${priv.label}</div>
                         <input type="checkbox" 
@@ -776,7 +775,7 @@
                 const badge = item.querySelector('.status-badge');
                 const isChecked = cb.checked;
                 
-                icon.textContent = isChecked ? '✅' : '';
+                icon.textContent = isChecked ? '' : '';
                 icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
                 badge.textContent = isChecked ? 'Granted' : 'Denied';
                 badge.className = `status-badge ${isChecked ? 'granted' : 'denied'}`;
@@ -788,7 +787,7 @@
                 const icon = item.querySelector('.icon');
                 const isChecked = cb.checked;
                 
-                icon.textContent = isChecked ? '✅' : '';
+                icon.textContent = isChecked ? '' : '';
                 icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
             });
         }

@@ -88,8 +88,8 @@
         /* ===== Form Grid ===== */
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px 20px;
+            grid-template-columns: 20em 20em 20em;
+            gap: 20px;
         }
 
         .form-grid.three-col {
@@ -444,6 +444,11 @@
             color: var(--secondary);
         }
 
+        .dashboard-grid .perm-item .status-badge.denied {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         .permissions-grid .perm-item input[type="checkbox"] {
             width: 16px;
             height: 16px;
@@ -675,7 +680,6 @@
                                 <div class="form-group">
                                     <label>Employee ID <span class="required">*</span></label>
                                     <input type="text" id="employeeId" disabled>
-                                    <span class="help-text">Auto-generated, cannot be changed</span>
                                 </div>
                                 <div class="form-group">
                                     <label>
@@ -683,7 +687,6 @@
                                         <span class="hint">(locked)</span>
                                     </label>
                                     <input type="text" id="username" disabled>
-                                    <div class="help-text">Username cannot be changed</div>
                                 </div>
                                 <div class="form-group">
                                     <label>First Name <span class="required">*</span></label>
@@ -702,22 +705,16 @@
                             </div>
                         </div>
 
-                        <!-- ===== SECTION 2: Role & Designation ===== -->
+                        <!-- ===== SECTION 2: Professional Profile ===== -->
                         <div class="form-section">
                             <div class="form-section-title">
                                 <i class="fas fa-user-tag"></i>
-                                Role & Designation
+                                Professional Profile
                             </div>
                             <div class="form-grid three-col">
                                 <div class="form-group">
                                     <label>Role</label>
-                                    <select id="role">
-                                        <option value="">Select Role</option>
-                                        <option value="clinical">Clinical</option>
-                                        <option value="non-clinical">Non-Clinical</option>
-                                        <option value="administrative">Administrative</option>
-                                        <option value="support">Support Staff</option>
-                                    </select>
+                                    <input type="text" id="role">
                                 </div>
                                 <div class="form-group">
                                     <label>Designation <span class="required">*</span></label>
@@ -770,10 +767,8 @@
                             </div>
                             <div class="form-grid three-col">
                                 <div class="form-group">
-                                    <label>Doctors License / MCT NO. <span class="required">*</span></label>
-                                    <input type="text" id="licenseNo" required>
-                                    <div class="help-text">Medical Council of Tanzania registration number</div>
-                                    <div class="error-text" id="licenseNo-error">Please enter license number</div>
+                                    <label>Doctors License / MCT NO. <span class="required"></span></label>
+                                    <input type="text" id="licenseNo">
                                 </div>
                                 <div class="form-group">
                                     <label>Phone Number <span class="required">*</span></label>
@@ -804,9 +799,9 @@
                                 <div class="form-group">
                                     <label>Expiry Format <span class="required">*</span></label>
                                     <select id="expiryFormat" required>
-                                        <option value="years">Years</option>
+                                        <option value="years">Days</option>
                                         <option value="months">Months</option>
-                                        <option value="days">Days</option>
+                                        <option value="days">Years</option>
                                     </select>
                                     <div class="error-text" id="expiryFormat-error">Please select expiry format</div>
                                 </div>
@@ -881,6 +876,7 @@
                                     <div class="match-status" id="matchStatus">
                                         <i class="fas"></i> <span id="matchText"></span>
                                     </div>
+                                    <div class="error-text" id="confirmPassword-error">Passwords do not match</div>
                                 </div>
                             </div>
                         </div>
@@ -890,9 +886,6 @@
                             <div class="form-section-title">
                                 <i class="fas fa-lock"></i>
                                 Custom Permissions Overrides
-                            </div>
-                            <div class="help-text" style="margin-bottom: 10px; font-size: 12px; color: var(--gray);">
-                                Assign or override permissions for this specific user. Changes affect only this user.
                             </div>
 
                             <div class="permissions-section" id="permissions-section">
@@ -905,7 +898,6 @@
                                         <i class="fas fa-times-circle"></i> Revoke All
                                     </button>
                                     <div class="divider"></div>
-                                    <span class="info-text">⚠️ Grant only what the user needs</span>
                                 </div>
 
                                 <!-- Dashboard Privileges -->
@@ -1156,6 +1148,44 @@
         }
 
         // ========================================
+        // SPLIT FULL NAME HELPER
+        // ========================================
+        function splitFullName(fullName) {
+            if (!fullName) {
+                return { firstName: '', middleName: '', lastName: '' };
+            }
+            
+            const nameParts = fullName.trim().split(/\s+/).filter(part => part.length > 0);
+            const partCount = nameParts.length;
+            
+            if (partCount === 0) {
+                return { firstName: '', middleName: '', lastName: '' };
+            } else if (partCount === 1) {
+                return { firstName: nameParts[0], middleName: '', lastName: '' };
+            } else if (partCount === 2) {
+                return { firstName: nameParts[0], middleName: '', lastName: nameParts[1] };
+            } else if (partCount >= 3) {
+                return {
+                    firstName: nameParts[0],
+                    middleName: nameParts.slice(1, -1).join(' '),
+                    lastName: nameParts[nameParts.length - 1]
+                };
+            }
+            
+            return { firstName: fullName, middleName: '', lastName: '' };
+        }
+
+        // ========================================
+        // RECONSTRUCT FULL NAME
+        // ========================================
+        function reconstructFullName(firstName, middleName, lastName) {
+            let fullName = firstName || '';
+            if (middleName) fullName += ' ' + middleName;
+            if (lastName) fullName += ' ' + lastName;
+            return fullName.trim();
+        }
+
+        // ========================================
         // LOAD USER DATA
         // ========================================
         async function loadUserData() {
@@ -1201,7 +1231,7 @@
             } catch (error) {
                 console.error('Failed to load user:', error);
                 document.getElementById('loading-state').innerHTML = `
-                    <div style="font-size: 48px; margin-bottom: 20px;">❌</div>
+                    <div style="font-size: 48px; margin-bottom: 20px;"></div>
                     <h3>Failed to Load User</h3>
                     <p>${error.message || 'Please try again later.'}</p>
                     <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 15px;">
@@ -1212,14 +1242,18 @@
         }
 
         // ========================================
-        // POPULATE FORM
+        // POPULATE FORM (with Full Name Split)
         // ========================================
         function populateForm(user) {
+            // Split fullName into parts
+            const { firstName, middleName, lastName } = splitFullName(user.fullName);
+            
+            // Populate name fields
             document.getElementById('employeeId').value = user.employeeId || '';
             document.getElementById('username').value = user.username || '';
-            document.getElementById('firstName').value = user.firstName || '';
-            document.getElementById('middleName').value = user.middleName || '';
-            document.getElementById('lastName').value = user.lastName || '';
+            document.getElementById('firstName').value = firstName;
+            document.getElementById('middleName').value = middleName;
+            document.getElementById('lastName').value = lastName;
             document.getElementById('role').value = user.role || '';
             document.getElementById('designation').value = user.designation || '';
             document.getElementById('department').value = user.department || '';
@@ -1277,7 +1311,7 @@
                 return `
                     <div class="perm-item">
                         <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
-                            ${hasAccess ? '✅' : '❌'}
+                            ${hasAccess ? '' : ''}
                         </div>
                         <div class="label">${module.label}</div>
                         <span class="status-badge ${hasAccess ? 'granted' : 'denied'}">
@@ -1300,7 +1334,7 @@
                 return `
                     <div class="perm-item">
                         <div class="icon ${hasAccess ? 'checked' : 'unchecked'}">
-                            ${hasAccess ? '✅' : '❌'}
+                            ${hasAccess ? '' : ''}
                         </div>
                         <div class="label">${priv.label}</div>
                         <input type="checkbox" 
@@ -1319,7 +1353,7 @@
                 const badge = item.querySelector('.status-badge');
                 const isChecked = cb.checked;
                 
-                icon.textContent = isChecked ? '✅' : '❌';
+                icon.textContent = isChecked ? '' : '';
                 icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
                 badge.textContent = isChecked ? 'Granted' : 'Denied';
                 badge.className = `status-badge ${isChecked ? 'granted' : 'denied'}`;
@@ -1331,7 +1365,7 @@
                 const icon = item.querySelector('.icon');
                 const isChecked = cb.checked;
                 
-                icon.textContent = isChecked ? '✅' : '❌';
+                icon.textContent = isChecked ? '' : '';
                 icon.className = `icon ${isChecked ? 'checked' : 'unchecked'}`;
             });
         }
@@ -1514,7 +1548,6 @@
                 { id: 'lastName', errorId: 'lastName-error', condition: (val) => val.length > 0 },
                 { id: 'designation', errorId: 'designation-error', condition: (val) => val !== '' },
                 { id: 'department', errorId: 'department-error', condition: (val) => val !== '' },
-                { id: 'licenseNo', errorId: 'licenseNo-error', condition: (val) => val.length > 0 },
                 { id: 'phoneNumber', errorId: 'phoneNumber-error', condition: (val) => val.length > 0 },
                 { id: 'email', errorId: 'email-error', condition: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
                 { id: 'expireTime', errorId: 'expireTime-error', condition: (val) => parseInt(val) > 0 },
@@ -1609,7 +1642,7 @@
         }
 
         // ========================================
-        // FORM SUBMIT
+        // FORM SUBMIT (with Full Name Reconstruction)
         // ========================================
         document.getElementById('editUserForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1625,12 +1658,17 @@
             submitBtn.disabled = true;
             
             try {
+                // Get form values
+                const firstName = document.getElementById('firstName').value.trim();
+                const middleName = document.getElementById('middleName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                
+                // Reconstruct fullName from parts
+                const fullName = reconstructFullName(firstName, middleName, lastName);
+                
                 const userData = {
                     employeeId: document.getElementById('employeeId').value.trim(),
-                    firstName: document.getElementById('firstName').value.trim(),
-                    middleName: document.getElementById('middleName').value.trim(),
-                    lastName: document.getElementById('lastName').value.trim(),
-                    fullName: `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
+                    fullName: fullName,
                     role: document.getElementById('role').value,
                     designation: document.getElementById('designation').value,
                     department: document.getElementById('department').value,
@@ -1697,24 +1735,22 @@
                 updateDisplayFromCheckboxes();
             }
         });
-        
-                    // Add Designation button (with null check)
-            const addDesignationBtn = document.getElementById('addDesignationBtn');
-            if (addDesignationBtn) {
-                addDesignationBtn.addEventListener('click', openAddDesignationModal);
-            } else {
-                console.log('Add Designation button not found - feature disabled in Edit User');
-            }
 
-            // Cancel button
-            const cancelBtn = document.getElementById('cancelBtn');
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', function() {
-                    if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
-                        window.location.href = 'user-management.html';
-                    }
-                });
-            };
+        // Add Designation button
+        const addDesignationBtn = document.getElementById('addDesignationBtn');
+        if (addDesignationBtn) {
+            addDesignationBtn.addEventListener('click', openAddDesignationModal);
+        }
+
+        // Cancel button
+        const cancelBtn = document.getElementById('cancelBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
+                    window.location.href = 'user-management.html';
+                }
+            });
+        }
 
         // ========================================
         // COMPONENT LOADING
@@ -1799,6 +1835,8 @@
         window.openAddDesignationModal = openAddDesignationModal;
         window.closeAddDesignationModal = closeAddDesignationModal;
         window.saveNewDesignation = saveNewDesignation;
+        window.splitFullName = splitFullName;
+        window.reconstructFullName = reconstructFullName;
     </script>
 </body>
 </html>

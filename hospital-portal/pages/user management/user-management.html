@@ -442,7 +442,7 @@
                         <span class="icon" style="color: var(--warning);"><i class="fas fa-user-tag"></i></span>
                         <div>
                             <div class="number" id="role-count">0</div>
-                            <div class="label">Roles</div>
+                            <div class="label">Designations</div>
                         </div>
                     </div>
                 </div>
@@ -460,10 +460,10 @@
                         <input type="text" id="search-users" placeholder="Search by name, username, email, or employee ID...">
                     </div>
                     <div class="filter-group">
-                        <select id="filter-role">
-                            <option value="">All Roles</option>
+                        <select type="text" id="filter-role">
+                            <option value="">All Designations</option>
                             <option value="Administrator">System Administrator</option>
-                            <option value="Front Desk">Front Desk</option>
+                            <option value="Front Desk">ICT Officer II</option>
                             <option value="Data clerk">Data clerk</option>
                             <option value="Doctor">Doctor</option>
                         </select>
@@ -486,7 +486,7 @@
                                 <th style="width: 50px;">S/N</th>
                                 <th>Employee ID</th>
                                 <th>Full Name</th>
-                                <th>Role</th>
+                                <th>Designation</th>
                                 <th>Department</th>
                                 <th>Status</th>
                                 <th>Last Login</th>
@@ -503,7 +503,7 @@
 
                 <!-- Empty State -->
                 <div class="empty-state" id="empty-state" style="display: none;">
-                    <div class="empty-state-icon">👥</div>
+                    <div class="empty-state-icon"><i class="fas fa-users"></i></div>
                     <h3>No Users Found</h3>
                     <p>Try adjusting your search or filter criteria</p>
                 </div>
