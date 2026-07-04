@@ -1,0 +1,342 @@
+[
+  {
+    "CardNo": "101200737854",
+    "FullName": "Febronia Qorro",
+    "ItemName": "Reading Glasses",
+    "ServiceReferenceNo": "170625352711",
+    "QuantitySession": 1,
+    "UnitPrice": 20000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "101603803161",
+    "FullName": "Henrick Mkarafu",
+    "ItemName": "CT Scan Brain",
+    "ServiceReferenceNo": "970625350536",
+    "QuantitySession": 1,
+    "UnitPrice": 120000,
+    "AmountClaimed": 120000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "01-8942757",
+    "FullName": "Elfrida Kaduma",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "470625350276",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "106200263667",
+    "FullName": "Rose Msigwa",
+    "ItemName": "Reading Glasses",
+    "ServiceReferenceNo": "770625349949",
+    "QuantitySession": 1,
+    "UnitPrice": 20000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "108600273318",
+    "FullName": "Douglas Teete",
+    "ItemName": "Reading Glasses",
+    "ServiceReferenceNo": "370625349264",
+    "QuantitySession": 1,
+    "UnitPrice": 20000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "407800125510",
+    "FullName": "Grace Simtanda",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "170625348963",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "01-6586351",
+    "FullName": "Neema E. Mkaruka mkaruka",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "770625348821",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "402201762688",
+    "FullName": "Mary Kaihura",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "170625348679",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "405604167897",
+    "FullName": "Anna Irira",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "170625348494",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "107502700644",
+    "FullName": "Zacharia Otaro",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "270625348376",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "406100597020",
+    "FullName": "Asha Kimolo",
+    "ItemName": "Reading Glasses",
+    "ServiceReferenceNo": "370625348188",
+    "QuantitySession": 1,
+    "UnitPrice": 20000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "305100934145",
+    "FullName": "Asnath Waziri",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "170625347529",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "106500223169",
+    "FullName": "Ezekiel Kyando",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "670625346985",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "106900193268",
+    "FullName": "Niuka Nambeto",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "770625346812",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "106600639961",
+    "FullName": "Mussa Komba",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "970625346746",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "01-10022409",
+    "FullName": "Examilida Sindila",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "670625346505",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "107502008153",
+    "FullName": "Vestina Rwelengera",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "370625346377",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "101104886366",
+    "FullName": "RAMADHANI MSENGI",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "270625346143",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "101400559124",
+    "FullName": "Grace Mchome",
+    "ItemName": "Consultation Fee - Specialist",
+    "ServiceReferenceNo": "170625345912",
+    "QuantitySession": 1,
+    "UnitPrice": 25000,
+    "AmountClaimed": 25000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "108800914233",
+    "FullName": "Baraka Mwanzalila",
+    "ItemName": "Full Blood Count (FBC)",
+    "ServiceReferenceNo": "470625345781",
+    "QuantitySession": 1,
+    "UnitPrice": 15000,
+    "AmountClaimed": 15000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "01-5549210",
+    "FullName": "Tumaini Njau",
+    "ItemName": "Amoxicillin 500mg Caps (21)",
+    "ServiceReferenceNo": "870625345620",
+    "QuantitySession": 1,
+    "UnitPrice": 7500,
+    "AmountClaimed": 7500,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "402301884912",
+    "FullName": "Neema Shao",
+    "ItemName": "Ultrasound Pelvic",
+    "ServiceReferenceNo": "370625345511",
+    "QuantitySession": 1,
+    "UnitPrice": 35000,
+    "AmountClaimed": 35000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "106300471255",
+    "FullName": "Juma Abdallah",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "970625345399",
+    "QuantitySession": 2,
+    "UnitPrice": 10000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "101900228374",
+    "FullName": "Subira Kibwana",
+    "ItemName": "Reading Glasses",
+    "ServiceReferenceNo": "270625345214",
+    "QuantitySession": 1,
+    "UnitPrice": 20000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "01-9921473",
+    "FullName": "Emmanuel Lema",
+    "ItemName": "X-Ray Chest PA",
+    "ServiceReferenceNo": "570625345102",
+    "QuantitySession": 1,
+    "UnitPrice": 30000,
+    "AmountClaimed": 30000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "405704229108",
+    "FullName": "Zuwena Rashid",
+    "ItemName": "Metformin 500mg Tabs (60)",
+    "ServiceReferenceNo": "670625344988",
+    "QuantitySession": 1,
+    "UnitPrice": 12000,
+    "AmountClaimed": 12000,
+    "IssuedDate": "2026-07-03"
+  },
+  {
+    "CardNo": "101500448122",
+    "FullName": "Josephat Mwita",
+    "ItemName": "CT Scan Abdomen",
+    "ServiceReferenceNo": "170625343211",
+    "QuantitySession": 1,
+    "UnitPrice": 150000,
+    "AmountClaimed": 150000,
+    "IssuedDate": "2026-06-12"
+  },
+  {
+    "CardNo": "402401995811",
+    "FullName": "Amina Said",
+    "ItemName": "CT Scan Chest",
+    "ServiceReferenceNo": "370625342988",
+    "QuantitySession": 1,
+    "UnitPrice": 130000,
+    "AmountClaimed": 130000,
+    "IssuedDate": "2026-06-15"
+  },
+  {
+    "CardNo": "106400334412",
+    "FullName": "David Mndeme",
+    "ItemName": "CT Scan Brain (Contrast)",
+    "ServiceReferenceNo": "970625342501",
+    "QuantitySession": 1,
+    "UnitPrice": 160000,
+    "AmountClaimed": 160000,
+    "IssuedDate": "2026-06-20"
+  },
+  {
+    "CardNo": "01-7749102",
+    "FullName": "Martha Lyimo",
+    "ItemName": "CT Scan Spine (Lumbar)",
+    "ServiceReferenceNo": "470625341994",
+    "QuantitySession": 1,
+    "UnitPrice": 140000,
+    "AmountClaimed": 140000,
+    "IssuedDate": "2026-06-25"
+  },
+  {
+    "CardNo": "108900772154",
+    "FullName": "Said Sembua",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ServiceReferenceNo": "570625341233",
+    "QuantitySession": 1,
+    "UnitPrice": 10000,
+    "AmountClaimed": 10000,
+    "IssuedDate": "2026-06-28"
+  },
+  {
+    "CardNo": "405804332199",
+    "FullName": "Fatma Zarali",
+    "ItemName": "CT Scan Pelvis",
+    "ServiceReferenceNo": "270625340877",
+    "QuantitySession": 1,
+    "UnitPrice": 135000,
+    "AmountClaimed": 135000,
+    "IssuedDate": "2026-07-01"
+  },
+  {
+    "CardNo": "101104992388",
+    "FullName": "Charles Mushi",
+    "ItemName": "Reading Glasses",
+    "ServiceReferenceNo": "670625340512",
+    "QuantitySession": 1,
+    "UnitPrice": 20000,
+    "AmountClaimed": 20000,
+    "IssuedDate": "2026-07-02"
+  },
+  {
+    "CardNo": "01-10044921",
+    "FullName": "Khadija Omari",
+    "ItemName": "CT Scan Paranasal Sinuses (PNS)",
+    "ServiceReferenceNo": "870625340105",
+    "QuantitySession": 1,
+    "UnitPrice": 110000,
+    "AmountClaimed": 110000,
+    "IssuedDate": "2026-07-03"
+  }
+]

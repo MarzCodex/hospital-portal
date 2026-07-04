@@ -1,27 +1,242 @@
 [
   {
-    "id": "svc001",
-    "name": "Outpatient Service Issuance",
-    "description": "Issuing outpatient tickets and referrals",
-    "category": "Outpatient",
-    "html": "<div class='service'><h2>Outpatient Service Issuance</h2><p>Issuing outpatient tickets and referrals</p><span>Category: Outpatient</span></div>",
-    "active": true
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Reading Glasses",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
   },
   {
-    "id": "svc002",
-    "name": "Inpatient Admission Issuance",
-    "description": "Issuing admission authorizations and bed assignments",
-    "category": "Inpatient",
-    "html": "<div class='service'><h2>Inpatient Admission Issuance</h2><p>Issuing admission authorizations and bed assignments</p><span>Category: Inpatient</span></div>",
-    "active": true
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Brain",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": "970625350536",
+    "Action": "issuing service"
   },
   {
-    "id": "svc003",
-    "name": "Pharmacy Prescription Issuance",
-    "description": "Issuing pharmacy prescriptions and medication vouchers",
-    "category": "Pharmacy",
-    "html": "<div class='service'><h2>Pharmacy Prescription Issuance</h2><p>Issuing pharmacy prescriptions and medication vouchers</p><span>Category: Pharmacy</span></div>",
-    "active": true
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Physiotherapy and Rehabilitative Service",
+    "ApprovedQuantitySession": 6,
+    "RemainQuantitySession": 4,
+    "ServiceReferenceNo": "470625350276",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Abdomen",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "170625343211",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Chest",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Brain (Contrast)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "970625342501",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Spine (Lumbar)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": "470625341994",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Pelvis",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "270625340877",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Paranasal Sinuses (PNS)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Consultation Fee - Specialist",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "170625345912",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Full Blood Count (FBC)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "470625345781",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Ultrasound Pelvic",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": "370625345511",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "X-Ray Chest PA",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "570625345102",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Amoxicillin 500mg Caps (21)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "870625345620",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Metformin 500mg Tabs (60)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "MRI Brain",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Bifocal Lenses",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "270625339112",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Hemoglobin A1c (HbA1c)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "170625338554",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Echocardiography (Echo)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": "570625338120",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Electrocardiogram (ECG)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "370625337901",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Dialysis Session",
+    "ApprovedQuantitySession": 8,
+    "RemainQuantitySession": 5,
+    "ServiceReferenceNo": "670625337411",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Dental Scaling and Polishing",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Cervical Spine",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "870625336522",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Atorvastatin 20mg Tabs (30)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "170625336100",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Losartan 50mg Tabs (30)",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "970625335904",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Urinalysis",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "270625335411",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Serum Creatinine",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "470625335122",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Blood Glucose Fasting",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 0,
+    "ServiceReferenceNo": "770625334901",
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "Yes",
+    "ItemName": "CT Scan Angiography",
+    "ApprovedQuantitySession": 1,
+    "RemainQuantitySession": 1,
+    "ServiceReferenceNo": null,
+    "Action": "issuing service"
+  },
+  {
+    "RequiresBiometricVerification": "No",
+    "ItemName": "Surgical Wound Dressing",
+    "ApprovedQuantitySession": 3,
+    "RemainQuantitySession": 2,
+    "ServiceReferenceNo": "370625334110",
+    "Action": "issuing service"
   }
 ]
-    

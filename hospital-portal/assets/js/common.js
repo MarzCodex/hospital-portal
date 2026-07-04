@@ -384,11 +384,13 @@ const DataService = {
     },
     
     async getIssuingServices() {
-    // For now, derive from approvals (approved services)
-    const approvals = await this.getApprovals();
-    return approvals?.filter(a => a.status === 'Approved') || [];
+        return this.fetchData('issuing-services.json');
     },
 
+    async getIssuedServices() {
+    return this.fetchData('issued-services.json');
+    },
+    
     async getReferrals() {
         return this.fetchData('referrals.json');
     },
