@@ -390,7 +390,7 @@ const DataService = {
     async getIssuedServices() {
     return this.fetchData('issued-services.json');
     },
-    
+
     async getReferrals() {
         return this.fetchData('referrals.json');
     },
@@ -403,7 +403,10 @@ const DataService = {
         return this.fetchData('Visit types.json');
     },
     
-    // Filtered queries (simulates API query params)
+    async getRestrictedItems() {
+        return this.fetchData('restricted-items.json');
+    },
+        // Filtered queries (simulates API query params)
     async getApprovalsByStatus(status) {
         const all = await this.getApprovals();
         return all?.filter(a => a.status === status) || [];

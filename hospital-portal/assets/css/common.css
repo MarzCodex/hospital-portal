@@ -1008,3 +1008,53 @@ footer {
         overflow-x: auto;
     }
 }
+
+/* ======================================== */
+/* FIX: MODAL DROPDOWN WIDTH CONSTRAINTS    */
+/* ======================================== */
+
+#addServiceModal .modal-content {
+    max-width: 700px !important;
+    width: 90% !important;
+    overflow: hidden !important;
+}
+
+#addServiceModal select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Fix for dropdown overflow - constrain options */
+#addServiceModal select option {
+    max-width: 280px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* Ensure the select doesn't overflow its container */
+#addServiceModal .form-group {
+    position: relative;
+    overflow: visible;
+    max-width: 100%;
+}
+
+/* For the dropdown container */
+#addServiceModal div[style*="grid-template-columns"] {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #addServiceModal .modal-content {
+        max-width: 95% !important;
+        width: 95% !important;
+        margin: 10px;
+    }
+    #addServiceModal select option {
+        max-width: 200px !important;
+    }
+}
