@@ -153,6 +153,7 @@
 
         .data-table td {
             font-size: 13px;
+            border-right: 1px solid var(--border);
         }
 
         .data-table tbody tr:hover {
@@ -775,6 +776,148 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        /* ======================================== */
+/* MULTI-SELECT WITH TAGS                   */
+/* ======================================== */
+
+.multi-select-container {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
+    transition: border-color 0.3s;
+    cursor: text;
+}
+
+.multi-select-container:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.multi-select-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 2px;
+}
+
+.multi-select-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--primary);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    animation: tagFadeIn 0.2s ease;
+}
+
+.multi-select-tag .tag-remove {
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    color: white;
+    padding: 0 2px;
+}
+
+.multi-select-tag .tag-remove:hover {
+    opacity: 1;
+}
+
+.multi-select-input-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 120px;
+}
+
+.multi-select-input-wrapper input {
+    width: 100%;
+    padding: 4px 6px;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    background: transparent;
+    min-height: 28px;
+}
+
+.multi-select-input-wrapper input::placeholder {
+    color: #b0b8c0;
+}
+
+.multi-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 2px;
+}
+
+.multi-select-dropdown .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multi-select-dropdown .dropdown-item:hover {
+    background-color: #f1f8ff;
+}
+
+.multi-select-dropdown .dropdown-item.selected {
+    background-color: #e8f4fc;
+}
+
+.multi-select-dropdown .dropdown-item .check-mark {
+    color: var(--success);
+    font-weight: bold;
+}
+
+.multi-select-dropdown .no-results {
+    padding: 12px;
+    text-align: center;
+    color: var(--gray);
+    font-style: italic;
+    font-size: 13px;
+}
+
+@keyframes tagFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .multi-select-tag {
+        font-size: 11px;
+        padding: 2px 6px;
+    }
+    .multi-select-input-wrapper input {
+        font-size: 12px;
+        min-height: 24px;
+    }
+}
     </style>
 </head>
 <body>
@@ -883,17 +1026,21 @@
                                     <input type="date" id="serviceDate">
                                 </div>
                                 <div class="detail-row">
-                                    <label>Diagnosis Code:</label>
-                                    <select id="diagnosisCode">
-                                        <option value="">Select Diagnosis</option>
-                                        <option value="A09">A09 - Infectious gastroenteritis</option>
-                                        <option value="J06">J06 - Acute upper respiratory infections</option>
-                                        <option value="E11">E11 - Type 2 diabetes mellitus</option>
-                                        <option value="I10">I10 - Essential hypertension</option>
-                                        <option value="M54">M54 - Back pain</option>
-                                        <option value="N39">N39 - Urinary tract infection</option>
-                                        <option value="R51">R51 - Headache</option>
-                                    </select>
+                                    <label>Diagnosis Codes:</label>
+                                    <div class="multi-select-container" id="diagnosisContainer">
+                                        <div class="multi-select-tags" id="diagnosisTags">
+                                            <!-- Selected tags will appear here -->
+                                        </div>
+                                        <div class="multi-select-input-wrapper">
+                                            <input type="text" id="diagnosisSearch" placeholder="Type to search diagnosis..." autocomplete="off">
+                                            <div class="multi-select-dropdown" id="diagnosisDropdown" style="display: none;">
+                                                <!-- Options will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="help-text" style="font-size: 11px; color: var(--gray); margin-top: 4px;">
+                                        Type to search, click to select multiple diagnoses
+                                    </div>
                                 </div>
                             </div>
 
@@ -908,8 +1055,8 @@
                         <div style="margin-top: 25px;">
                             <!-- Sub Tabs -->
                             <div class="sub-tabs">
-                                <button class="sub-tab active" data-subtab="cost">📊 Cost of Service(s)</button>
-                                <button class="sub-tab" data-subtab="documents">📎 Supporting Documents (Optional)</button>
+                                <button class="sub-tab active" data-subtab="cost"><i class="fa-solid fa-chart-line"></i> Cost of Service(s)</button>
+                                <button class="sub-tab" data-subtab="documents"><i class="fa-solid fa-paperclip"></i> Supporting Documents (Optional)</button>
                             </div>
 
                             <!-- Cost of Service(s) Tab -->
@@ -926,15 +1073,17 @@
                                             <tr>
                                                 <th style="width: 15%;">Service Type</th>
                                                 <th style="width: 30%;">Item Details</th>
-                                                <th style="width: 15%;">Unit Price</th>
+                                                <th style="width: 15%;">Unit Price (TZS)</th>
                                                 <th style="width: 10%;">Quantity</th>
-                                                <th style="width: 20%;">Amount Claimed</th>
+                                                <th style="width: 20%;">Amount Claimed (TZS)</th>
                                                 <th style="width: 10%;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="servicesTableBody">
                                             <tr class="empty-row">
-                                                <td colspan="6">No services added. Click "Add" to add a service.</td>
+                                                <td colspan="6" style="text-align: center; padding: 30px; color: var(--gray); font-style: italic;">
+                                                    No services added. Click <strong>"Add"</strong> to add a service.
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1241,981 +1390,1064 @@
         </div>
 
     <script src="../../assets/js/common.js"></script>
-    <script>
-        // ========================================
-        // DATA STORES (Populated from DataService)
-        // ========================================
-        let mockApprovals = [];
-        let mockIssuingServices = [];
-        let mockAuthorizations = {};
-        let mockIssuedServices = [];
+        <script>
+    // ========================================
+    // DATA STORES (Populated from DataService)
+    // ========================================
+    let mockApprovals = [];
+    let mockIssuingServices = [];
+    let mockAuthorizations = {};
+    let mockIssuedServices = [];
 
-        // ========================================
-        // DATA LOADING FUNCTIONS
-        // ========================================
+    // ========================================
+    // DATA LOADING FUNCTIONS
+    // ========================================
 
-        async function loadApprovals() {
-            const approvals = await DataService.getApprovals();
-            if (approvals) {
-                mockApprovals = approvals;
-                displayApprovals(mockApprovals);
-            }
+    async function loadApprovals() {
+        const approvals = await DataService.getApprovals();
+        if (approvals) {
+            mockApprovals = approvals;
+            displayApprovals(mockApprovals);
         }
+    }
 
-        async function loadIssuingServices() {
-            const services = await DataService.getIssuingServices();
-            if (services) {
-                mockIssuingServices = services;
-                displayIssuingServices(mockIssuingServices);
-            }
+    async function loadIssuingServices() {
+        const services = await DataService.getIssuingServices();
+        if (services) {
+            mockIssuingServices = services;
+            displayIssuingServices(mockIssuingServices);
         }
+    }
 
-        async function loadAuthorizations() {
-            try {
-                const authorizations = await DataService.getAuthorizations();
-                if (authorizations && Array.isArray(authorizations)) {
-                    mockAuthorizations = {};
-                    authorizations.forEach(auth => {
-                        mockAuthorizations[auth.authNumber] = auth;
-                    });
-                } else {
-                    console.warn('No authorizations data found');
-                    mockAuthorizations = {};
-                }
-            } catch (error) {
-                console.error('Failed to load authorizations:', error);
+    async function loadAuthorizations() {
+        try {
+            const authorizations = await DataService.getAuthorizations();
+            if (authorizations && Array.isArray(authorizations)) {
+                mockAuthorizations = {};
+                authorizations.forEach(auth => {
+                    mockAuthorizations[auth.authNumber] = auth;
+                });
+            } else {
+                console.warn('No authorizations data found');
                 mockAuthorizations = {};
             }
+        } catch (error) {
+            console.error('Failed to load authorizations:', error);
+            mockAuthorizations = {};
         }
+    }
 
-        async function loadIssuedServices() {
-            try {
-                const services = await DataService.getIssuedServices();
-                if (services && Array.isArray(services)) {
-                    mockIssuedServices = services;
-                    displayIssuedServices(mockIssuedServices);
-                } else {
-                    mockIssuedServices = [];
-                    displayIssuedServices([]);
-                }
-            } catch (error) {
-                console.error('Failed to load issued services:', error);
+    async function loadIssuedServices() {
+        try {
+            const services = await DataService.getIssuedServices();
+            if (services && Array.isArray(services)) {
+                mockIssuedServices = services;
+                displayIssuedServices(mockIssuedServices);
+            } else {
                 mockIssuedServices = [];
                 displayIssuedServices([]);
             }
+        } catch (error) {
+            console.error('Failed to load issued services:', error);
+            mockIssuedServices = [];
+            displayIssuedServices([]);
         }
+    }
 
-        // ========================================
-        // HELPER FUNCTIONS
-        // ========================================
+    // ========================================
+    // HELPER FUNCTIONS
+    // ========================================
 
-        function showNotification(msg, type = 'info') {
-            const notification = document.getElementById('notification');
-            if (!notification) {
-                const n = document.createElement('div');
-                n.id = 'notification';
-                n.className = `notification ${type}`;
-                n.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
-                document.body.appendChild(n);
-                n.style.display = 'block';
-                setTimeout(() => n.remove(), 3000);
-            } else {
-                notification.className = `notification ${type}`;
-                notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
-                notification.style.display = 'block';
-                setTimeout(() => notification.style.display = 'none', 3000);
+    function showNotification(msg, type = 'info') {
+        const notification = document.getElementById('notification');
+        if (!notification) {
+            const n = document.createElement('div');
+            n.id = 'notification';
+            n.className = `notification ${type}`;
+            n.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+            document.body.appendChild(n);
+            n.style.display = 'block';
+            setTimeout(() => n.remove(), 3000);
+        } else {
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+            notification.style.display = 'block';
+            setTimeout(() => notification.style.display = 'none', 3000);
+        }
+    }
+
+    function getStatusBadge(status) {
+        const statusClass = status === 'Pending' ? 'status-pending' :
+            (status === 'Approved' ? 'status-approved' :
+                (status === 'Issued' ? 'status-issued' : 'status-rejected'));
+        return `<span class="status-badge ${statusClass}">${status}</span>`;
+    }
+
+    function formatCurrency(amount) {
+        if (amount == null || isNaN(amount)) return '0.00';
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(amount);
+    }
+
+    // ========================================
+    // DIAGNOSIS CODE MULTI-SELECT
+    // ========================================
+
+    const diagnosisOptions = [
+        { code: 'A09', description: 'Infectious gastroenteritis' },
+        { code: 'J06', description: 'Acute upper respiratory infections' },
+        { code: 'E11', description: 'Type 2 diabetes mellitus' },
+        { code: 'I10', description: 'Essential hypertension' },
+        { code: 'M54', description: 'Back pain' },
+        { code: 'N39', description: 'Urinary tract infection' },
+        { code: 'R51', description: 'Headache' },
+        { code: 'J45', description: 'Asthma' },
+        { code: 'K21', description: 'Gastroesophageal reflux disease' },
+        { code: 'N18', description: 'Chronic kidney disease' },
+        { code: 'F32', description: 'Depressive episode' },
+        { code: 'G40', description: 'Epilepsy' },
+        { code: 'I50', description: 'Heart failure' },
+        { code: 'J44', description: 'COPD' },
+        { code: 'K35', description: 'Appendicitis' },
+        { code: 'M17', description: 'Osteoarthritis of knee' },
+        { code: 'N20', description: 'Kidney stone' },
+        { code: 'R10', description: 'Abdominal pain' },
+        { code: 'S06', description: 'Concussion' },
+        { code: 'Z23', description: 'Immunization' }
+    ];
+
+    let selectedDiagnoses = [];
+
+    function initDiagnosisMultiSelect() {
+        const searchInput = document.getElementById('diagnosisSearch');
+        const dropdown = document.getElementById('diagnosisDropdown');
+        const tagsContainer = document.getElementById('diagnosisTags');
+
+        renderDropdown(diagnosisOptions);
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const filtered = diagnosisOptions.filter(opt =>
+                opt.code.toLowerCase().includes(searchTerm) ||
+                opt.description.toLowerCase().includes(searchTerm)
+            );
+            renderDropdown(filtered);
+            dropdown.style.display = 'block';
+        });
+
+        searchInput.addEventListener('focus', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const filtered = searchTerm ?
+                diagnosisOptions.filter(opt =>
+                    opt.code.toLowerCase().includes(searchTerm) ||
+                    opt.description.toLowerCase().includes(searchTerm)
+                ) : diagnosisOptions;
+            renderDropdown(filtered);
+            dropdown.style.display = 'block';
+        });
+
+        searchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 200);
+        });
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                dropdown.style.display = 'none';
+                this.blur();
             }
-        }
-
-        function getStatusBadge(status) {
-            const statusClass = status === 'Pending' ? 'status-pending' :
-                (status === 'Approved' ? 'status-approved' :
-                    (status === 'Issued' ? 'status-issued' : 'status-rejected'));
-            return `<span class="status-badge ${statusClass}">${status}</span>`;
-        }
-
-        function formatCurrency(amount) {
-            if (amount == null || isNaN(amount)) return 'N/A';
-            return new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-
-        // ========================================
-        // SUB-TAB SWITCHING
-        // ========================================
-        document.querySelectorAll('.sub-tab').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
-
-                this.classList.add('active');
-                const subTabId = this.getAttribute('data-subtab');
-                document.getElementById(`subtab-${subTabId}`).classList.add('active');
-            });
+            if (e.key === 'Enter' && dropdown.style.display === 'block') {
+                const firstItem = dropdown.querySelector('.dropdown-item:not(.no-results)');
+                if (firstItem) {
+                    const code = firstItem.dataset.code;
+                    toggleDiagnosis(code);
+                    this.value = '';
+                    dropdown.style.display = 'block';
+                    renderDropdown(diagnosisOptions);
+                }
+            }
         });
 
-        // ========================================
-        // TAB SWITCHING (Main)
-        // ========================================
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.addEventListener('click', function(e) {
+            const container = document.getElementById('diagnosisContainer');
+            if (!container.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    }
 
-                this.classList.add('active');
-                const tabId = this.getAttribute('data-tab');
-                const tabContent = document.getElementById(`tab-${tabId}`);
+    function renderDropdown(options) {
+        const dropdown = document.getElementById('diagnosisDropdown');
+        const selectedCodes = selectedDiagnoses.map(d => d.code);
 
-                if (tabContent) {
-                    tabContent.classList.add('active');
-                } else {
-                    console.warn(`Tab content not found: tab-${tabId}`);
-                    return;
-                }
+        if (!options || options.length === 0) {
+            dropdown.innerHTML = `<div class="no-results">No matching diagnoses found</div>`;
+            return;
+        }
 
-                if (tabId === 'search') {
-                    setDefaultDates();
-                    if (mockApprovals.length === 0) {
-                        loadApprovals();
-                    } else {
-                        displayApprovals(mockApprovals);
-                    }
-                }
-                if (tabId === 'issuing') {
-                    if (mockIssuingServices.length === 0) {
-                        loadIssuingServices();
-                    } else {
-                        displayIssuingServices(mockIssuingServices);
-                    }
-                }
-                if (tabId === 'issued') {
-                    if (mockIssuedServices.length === 0) {
-                        loadIssuedServices();
-                    } else {
-                        displayIssuedServices(mockIssuedServices);
-                    }
-                }
+        dropdown.innerHTML = options.map(opt => `
+            <div class="dropdown-item ${selectedCodes.includes(opt.code) ? 'selected' : ''}" 
+                data-code="${opt.code}"
+                onclick="toggleDiagnosis('${opt.code}')">
+                <span><strong>${opt.code}</strong> - ${opt.description}</span>
+                ${selectedCodes.includes(opt.code) ? '<span class="check-mark">✓</span>' : ''}
+            </div>
+        `).join('');
+    }
+
+    function toggleDiagnosis(code) {
+        const index = selectedDiagnoses.findIndex(d => d.code === code);
+
+        if (index === -1) {
+            const option = diagnosisOptions.find(opt => opt.code === code);
+            if (option) {
+                selectedDiagnoses.push(option);
+            }
+        } else {
+            selectedDiagnoses.splice(index, 1);
+        }
+
+        updateDiagnosisTags();
+        updateHiddenField();
+        renderDropdown(diagnosisOptions);
+        document.getElementById('diagnosisSearch').value = '';
+    }
+
+    function updateDiagnosisTags() {
+        const tagsContainer = document.getElementById('diagnosisTags');
+
+        if (selectedDiagnoses.length === 0) {
+            tagsContainer.innerHTML = '';
+            return;
+        }
+
+        tagsContainer.innerHTML = selectedDiagnoses.map(d => `
+            <span class="multi-select-tag">
+                ${d.code}
+                <button type="button" class="tag-remove" onclick="toggleDiagnosis('${d.code}')">&times;</button>
+            </span>
+        `).join('');
+    }
+
+    function updateHiddenField() {
+        const codes = selectedDiagnoses.map(d => d.code).join(', ');
+        let hiddenInput = document.getElementById('diagnosisCodes');
+        if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.id = 'diagnosisCodes';
+            hiddenInput.name = 'diagnosisCodes';
+            document.getElementById('diagnosisContainer').appendChild(hiddenInput);
+        }
+        hiddenInput.value = codes;
+
+        const select = document.getElementById('diagnosisCode');
+        if (select) {
+            select.innerHTML = '';
+            selectedDiagnoses.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.code;
+                opt.textContent = `${d.code} - ${d.description}`;
+                opt.selected = true;
+                select.appendChild(opt);
             });
+        }
+    }
+
+    function setDiagnoses(codes) {
+        if (!codes) return;
+        selectedDiagnoses = [];
+        const codeArray = Array.isArray(codes) ? codes : codes.split(',').map(c => c.trim());
+        codeArray.forEach(code => {
+            const option = diagnosisOptions.find(opt => opt.code === code);
+            if (option) {
+                selectedDiagnoses.push(option);
+            }
+        });
+        updateDiagnosisTags();
+        updateHiddenField();
+        renderDropdown(diagnosisOptions);
+    }
+
+    // ========================================
+    // SUB-TAB SWITCHING
+    // ========================================
+    document.querySelectorAll('.sub-tab').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            const subTabId = this.getAttribute('data-subtab');
+            document.getElementById(`subtab-${subTabId}`).classList.add('active');
+        });
+    });
+
+    // ========================================
+    // TAB SWITCHING (Main)
+    // ========================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            const tabId = this.getAttribute('data-tab');
+            const tabContent = document.getElementById(`tab-${tabId}`);
+
+            if (tabContent) {
+                tabContent.classList.add('active');
+            } else {
+                console.warn(`Tab content not found: tab-${tabId}`);
+                return;
+            }
+
+            if (tabId === 'search') {
+                setDefaultDates();
+                if (mockApprovals.length === 0) {
+                    loadApprovals();
+                } else {
+                    displayApprovals(mockApprovals);
+                }
+            }
+            if (tabId === 'issuing') {
+                if (mockIssuingServices.length === 0) {
+                    loadIssuingServices();
+                } else {
+                    displayIssuingServices(mockIssuingServices);
+                }
+            }
+            if (tabId === 'issued') {
+                if (mockIssuedServices.length === 0) {
+                    loadIssuedServices();
+                } else {
+                    displayIssuedServices(mockIssuedServices);
+                }
+            }
+        });
+    });
+
+    // ========================================
+    // ADD SERVICE MODAL FUNCTIONS
+    // ========================================
+
+    function openAddServiceModal() {
+        const modal = document.getElementById('addServiceModal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        document.getElementById('addServiceForm').reset();
+        document.getElementById('modalQuantity').value = 1;
+        document.getElementById('modalAddBtn').disabled = true;
+        document.getElementById('modalAddBtn').style.background = 'var(--gray)';
+        document.getElementById('modalAddBtn').style.cursor = 'not-allowed';
+
+        document.querySelectorAll('#addServiceModal .error-text').forEach(el => {
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('#addServiceModal input, #addServiceModal select').forEach(el => {
+            el.classList.remove('error');
         });
 
-        // ========================================
-        // ADD SERVICE MODAL FUNCTIONS
-        // ========================================
+        populateModalItemDetails();
+    }
 
-        // Open the modal
-        function openAddServiceModal() {
-            const modal = document.getElementById('addServiceModal');
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Reset form
-            document.getElementById('addServiceForm').reset();
-            document.getElementById('modalQuantity').value = 1;
-            document.getElementById('modalAddBtn').disabled = true;
-            document.getElementById('modalAddBtn').style.background = 'var(--gray)';
-            document.getElementById('modalAddBtn').style.cursor = 'not-allowed';
-            
-            // Clear errors
-            document.querySelectorAll('#addServiceModal .error-text').forEach(el => {
-                el.classList.remove('show');
-            });
-            document.querySelectorAll('#addServiceModal input, #addServiceModal select').forEach(el => {
-                el.classList.remove('error');
-            });
-            
-            // Populate item details from price list
-            populateModalItemDetails();
-        }
+    function closeAddServiceModal() {
+        const modal = document.getElementById('addServiceModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-        // Close the modal
-        function closeAddServiceModal() {
-            const modal = document.getElementById('addServiceModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+    async function populateModalItemDetails() {
+        try {
+            const restrictedItems = await DataService.getRestrictedItems();
+            const select = document.getElementById('modalItemDetails');
 
-        // Populate Item Details dropdown from restricted-items.json
-        async function populateModalItemDetails() {
-            try {
-                // ✅ READ FROM restricted-items.json
-                const restrictedItems = await DataService.getRestrictedItems();
-                const select = document.getElementById('modalItemDetails');
-                
-                // Clear existing options (keep default)
-                select.innerHTML = '<option value="">Select Item</option>';
-                
-                if (restrictedItems && Array.isArray(restrictedItems)) {
-                    // Get items with their prices
-                    const items = restrictedItems.map(item => ({
-                        name: item.ItemName || item.name || 'Unknown',
-                        price: item.UnitPrice || item.unitPrice || 0,
-                        code: item.ItemCode || item.code || ''
-                    }));
-                    
-                    // Add options
-                    items.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.name;
-                        option.dataset.price = item.price;
-                        option.dataset.code = item.code || '';
-                        // Display: Item Name (Price)
-                        option.textContent = item.price ? `${item.name} (${formatCurrency(item.price)})` : item.name;
-                        select.appendChild(option);
-                    });
-                } else {
-                    // Fallback: add sample restricted items
-                    const fallbackItems = [
-                        'CT Scan Brain (120,000)',
-                        'CT Scan Abdomen (150,000)',
-                        'CT Scan Chest (130,000)',
-                        'MRI Brain (160,000)',
-                        'CT Scan Spine (140,000)',
-                        'CT Scan Pelvis (135,000)',
-                        'CT Scan PNS (110,000)',
-                        'Ultrasound Pelvic (35,000)',
-                        'X-Ray Chest PA (30,000)',
-                        'Consultation - Specialist (25,000)'
-                    ];
-                    fallbackItems.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item;
-                        option.textContent = item;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (error) {
-                console.error('Failed to load restricted items:', error);
-                // Show fallback items
-                const select = document.getElementById('modalItemDetails');
-                const fallbackItems = [
-                    'CT Scan Brain (120,000)',
-                    'CT Scan Abdomen (150,000)',
-                    'MRI Brain (160,000)',
-                    'Ultrasound Pelvic (35,000)',
-                    'X-Ray Chest PA (30,000)',
-                    'Consultation - Specialist (25,000)'
-                ];
-                fallbackItems.forEach(item => {
+            select.innerHTML = '<option value="">Select Item</option>';
+
+            if (restrictedItems && Array.isArray(restrictedItems)) {
+                const items = restrictedItems.map(item => ({
+                    name: item.ItemName || item.name || 'Unknown',
+                    price: item.UnitPrice || item.unitPrice || 0,
+                    code: item.ItemCode || item.code || ''
+                }));
+
+                items.forEach(item => {
                     const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
+                    option.value = item.name;
+                    option.dataset.price = item.price;
+                    option.dataset.code = item.code || '';
+                    option.textContent = item.price ? `${item.name} (${formatCurrency(item.price)})` : item.name;
                     select.appendChild(option);
                 });
             }
+        } catch (error) {
+            console.error('Failed to load restricted items:', error);
+            const select = document.getElementById('modalItemDetails');
+            const fallbackItems = [
+                'CT Scan Brain (120,000)',
+                'CT Scan Abdomen (150,000)',
+                'MRI Brain (160,000)',
+                'Ultrasound Pelvic (35,000)',
+                'X-Ray Chest PA (30,000)',
+                'Consultation - Specialist (25,000)'
+            ];
+            fallbackItems.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                select.appendChild(option);
+            });
         }
-        // Auto-fill Unit Price when Item Details is selected
-        document.getElementById('modalItemDetails').addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const price = selectedOption.dataset.price;
-            if (price) {
-                document.getElementById('modalUnitPrice').value = price;
-            } else {
-                document.getElementById('modalUnitPrice').value = '';
-            }
-            validateModalForm();
+    }
+
+    document.getElementById('modalItemDetails').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const price = selectedOption.dataset.price;
+        if (price) {
+            document.getElementById('modalUnitPrice').value = price;
+        } else {
+            document.getElementById('modalUnitPrice').value = '';
+        }
+        validateModalForm();
+    });
+
+    function validateModalForm() {
+        const itemType = document.getElementById('modalItemType').value;
+        const quantity = document.getElementById('modalQuantity').value;
+        const itemDetails = document.getElementById('modalItemDetails').value;
+        const addBtn = document.getElementById('modalAddBtn');
+
+        const isValid = quantity && quantity > 0 && (itemType || itemDetails);
+
+        if (isValid) {
+            addBtn.disabled = false;
+            addBtn.style.background = 'var(--success)';
+            addBtn.style.cursor = 'pointer';
+        } else {
+            addBtn.disabled = true;
+            addBtn.style.background = 'var(--gray)';
+            addBtn.style.cursor = 'not-allowed';
+        }
+    }
+
+    document.getElementById('modalItemType').addEventListener('change', validateModalForm);
+    document.getElementById('modalItemDetails').addEventListener('change', validateModalForm);
+    document.getElementById('modalQuantity').addEventListener('input', function() {
+        const error = document.getElementById('modalQuantity-error');
+        if (this.value && parseInt(this.value) > 0) {
+            this.classList.remove('error');
+            error.classList.remove('show');
+        } else {
+            this.classList.add('error');
+            error.classList.add('show');
+        }
+        validateModalForm();
+    });
+
+    document.getElementById('addServiceForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const quantity = document.getElementById('modalQuantity').value;
+        const itemType = document.getElementById('modalItemType').value;
+        const itemDetails = document.getElementById('modalItemDetails').value;
+        const unitPrice = document.getElementById('modalUnitPrice').value || 0;
+        const description = document.getElementById('modalDescription').value;
+
+        if (!quantity || quantity <= 0) {
+            document.getElementById('modalQuantity').classList.add('error');
+            document.getElementById('modalQuantity-error').classList.add('show');
+            return;
+        }
+
+        if (!itemType && !itemDetails) {
+            showNotification('Please select either Item Type or Item Details', 'error');
+            return;
+        }
+
+        addServiceRowFromModal({
+            serviceType: itemType || 'Other',
+            itemDetails: itemDetails || description || 'N/A',
+            unitPrice: parseFloat(unitPrice) || 0,
+            quantity: parseInt(quantity) || 1,
+            amountClaimed: (parseFloat(unitPrice) || 0) * (parseInt(quantity) || 1),
+            description: description
         });
 
-        // Validate modal form - enable/disable Add button
-        function validateModalForm() {
-            const itemType = document.getElementById('modalItemType').value;
-            const quantity = document.getElementById('modalQuantity').value;
-            const itemDetails = document.getElementById('modalItemDetails').value;
-            const addBtn = document.getElementById('modalAddBtn');
-            
-            // Check required fields: Quantity (always required), and either Item Type or Item Details
-            const isValid = quantity && quantity > 0 && (itemType || itemDetails);
-            
-            if (isValid) {
-                addBtn.disabled = false;
-                addBtn.style.background = 'var(--success)';
-                addBtn.style.cursor = 'pointer';
-            } else {
-                addBtn.disabled = true;
-                addBtn.style.background = 'var(--gray)';
-                addBtn.style.cursor = 'not-allowed';
-            }
-        }
+        closeAddServiceModal();
+        showNotification('Service added successfully!', 'success');
+    });
 
-        // Validate individual fields
-        document.getElementById('modalItemType').addEventListener('change', validateModalForm);
-        document.getElementById('modalItemDetails').addEventListener('change', validateModalForm);
-        document.getElementById('modalQuantity').addEventListener('input', function() {
-            const error = document.getElementById('modalQuantity-error');
-            if (this.value && parseInt(this.value) > 0) {
-                this.classList.remove('error');
-                error.classList.remove('show');
-            } else {
-                this.classList.add('error');
-                error.classList.add('show');
-            }
-            validateModalForm();
-        });
+    // ========================================
+    // SERVICE TABLE FUNCTIONS (READ-ONLY)
+    // ========================================
 
-        // Handle form submission
-        document.getElementById('addServiceForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate again
-            const quantity = document.getElementById('modalQuantity').value;
-            const itemType = document.getElementById('modalItemType').value;
-            const itemDetails = document.getElementById('modalItemDetails').value;
-            const unitPrice = document.getElementById('modalUnitPrice').value || 0;
-            const description = document.getElementById('modalDescription').value;
-            
-            if (!quantity || quantity <= 0) {
-                document.getElementById('modalQuantity').classList.add('error');
-                document.getElementById('modalQuantity-error').classList.add('show');
-                return;
-            }
-            
-            if (!itemType && !itemDetails) {
-                showNotification('Please select either Item Type or Item Details', 'error');
-                return;
-            }
-            
-            // Add the service row to the table
-            addServiceRowFromModal({
-                serviceType: itemType || 'Other',
-                itemDetails: itemDetails || description || 'N/A',
-                unitPrice: parseFloat(unitPrice) || 0,
-                quantity: parseInt(quantity) || 1,
-                amountClaimed: (parseFloat(unitPrice) || 0) * (parseInt(quantity) || 1),
-                description: description
-            });
-            
-            // Close modal
-            closeAddServiceModal();
-            showNotification('Service added successfully!', 'success');
-        });
+    function addServiceRow() {
+        openAddServiceModal();
+    }
 
-        // Add service row from modal data
-        function addServiceRowFromModal(data) {
-            const tbody = document.getElementById('servicesTableBody');
-            
-            // Remove empty state if present
-            const emptyRow = tbody.querySelector('.empty-row');
-            if (emptyRow) emptyRow.remove();
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <select class="service-type">
-                        <option value="${data.serviceType}" selected>${data.serviceType}</option>
-                        <option value="Consultation">Consultation</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Radiology">Radiology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Therapy">Therapy</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </td>
-                <td><input type="text" class="item-details" value="${data.itemDetails}" placeholder="Enter item details"></td>
-                <td><input type="number" class="unit-price" value="${data.unitPrice}" placeholder="0.00" step="0.01" oninput="calculateAmount(this)"></td>
-                <td><input type="number" class="quantity" value="${data.quantity}" placeholder="1" min="1" oninput="calculateAmount(this)"></td>
-                <td><input type="text" class="amount-claimed" value="${data.amountClaimed.toFixed(2)}" readonly placeholder="0.00"></td>
-                <td class="action-icons">
-                    <i class="fas fa-trash" title="Remove" onclick="removeServiceRow(this)"></i>
-                </td>
-            `;
-            tbody.appendChild(row);
-            
-            updateItemsCount();
-        }
+    function addServiceRowFromModal(data) {
+        const tbody = document.getElementById('servicesTableBody');
 
-        // Add button click handler
-        function addServiceRow() {
-            openAddServiceModal();
-        }
-        // ========================================
-        // SERVICE TABLE FUNCTIONS
-        // ========================================
+        const emptyRow = tbody.querySelector('.empty-row');
+        if (emptyRow) emptyRow.remove();
 
-        function addServiceRow() {
-            openAddServiceModal();
-        }
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${data.serviceType || 'N/A'}</strong></td>
+            <td>${data.itemDetails || 'N/A'}</td>
+            <td style="text-align: left; font-weight: 600; color: var(--success);">${formatCurrency(data.unitPrice)}</td>
+            <td style="text-align: center; font-weight: 600;">${data.quantity}</td>
+            <td style="text-align:left; font-weight: 600; color: var(--success);">${formatCurrency(data.amountClaimed)}</td>
+            <td class="action-icons" style="text-align: center;">
+                <i class="fas fa-trash" title="Remove" onclick="removeServiceRow(this)"></i>
+            </td>
+        `;
+        tbody.appendChild(row);
 
-        function calculateAmount(element) {
-            const row = element.closest('tr');
-            const unitPrice = parseFloat(row.querySelector('.unit-price').value) || 0;
-            const quantity = parseInt(row.querySelector('.quantity').value) || 0;
-            const amountClaimed = row.querySelector('.amount-claimed');
+        updateItemsCount();
+    }
 
-            if (unitPrice && quantity) {
-                amountClaimed.value = (unitPrice * quantity).toFixed(2);
-            } else {
-                amountClaimed.value = '';
-            }
-        }
+    function removeServiceRow(element) {
+        const row = element.closest('tr');
+        const tbody = document.getElementById('servicesTableBody');
 
-        function removeServiceRow(element) {
-            const row = element.closest('tr');
-            const tbody = document.getElementById('servicesTableBody');
-
-            if (tbody.querySelectorAll('tr:not(.empty-row)').length <= 1) {
-                tbody.innerHTML = `
-                    <tr class="empty-row">
-                        <td colspan="6">No services added. Click "Add" to add a service.</td>
-                    </tr>
-                `;
-                updateItemsCount();
-                return;
-            }
-
-            row.remove();
-            updateItemsCount();
-        }
-
-        function updateItemsCount() {
-            const rows = document.querySelectorAll('#servicesTableBody tr:not(.empty-row)');
-            const total = rows.length;
-            const itemsCount = document.getElementById('itemsCount');
-            if (itemsCount) {
-                itemsCount.textContent = `${total} of ${total}`;
-            }
-        }
-
-        function addServiceRowFromModal(data) {
-            const tbody = document.getElementById('servicesTableBody');
-            
-            const emptyRow = tbody.querySelector('.empty-row');
-            if (emptyRow) emptyRow.remove();
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <select class="service-type">
-                        <option value="${data.serviceType}" selected>${data.serviceType}</option>
-                        <option value="Consultation">Consultation</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Radiology">Radiology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Therapy">Therapy</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </td>
-                <td><input type="text" class="item-details" value="${data.itemDetails}" placeholder="Enter item details"></td>
-                <td><input type="number" class="unit-price" value="${data.unitPrice}" placeholder="0.00" step="0.01" oninput="calculateAmount(this)"></td>
-                <td><input type="number" class="quantity" value="${data.quantity}" placeholder="1" min="1" oninput="calculateAmount(this)"></td>
-                <td><input type="text" class="amount-claimed" value="${data.amountClaimed.toFixed(2)}" readonly placeholder="0.00"></td>
-                <td class="action-icons">
-                    <i class="fas fa-trash" title="Remove" onclick="removeServiceRow(this)"></i>
-                </td>
-            `;
-            tbody.appendChild(row);
-            
-            updateItemsCount();
-        }
-
-        // Format currency helper (if not already defined)
-        function formatCurrency(amount) {
-            if (amount == null || isNaN(amount)) return 'N/A';
-            return new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-
-        // ========================================
-        // TAB 1: REQUEST APPROVAL
-        // ========================================
-
-        async function searchAuthorization() {
-            const authNo = document.getElementById('authSearchInput').value.trim();
-            const resultDiv = document.getElementById('requestResult');
-            const patientDetails = document.getElementById('patientDetails');
-
-            if (!authNo) {
-                showNotification('Please enter an Authorization Number', 'error');
-                return;
-            }
-
-            resultDiv.innerHTML = '<div class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
-            resultDiv.style.display = 'block';
-            patientDetails.style.display = 'none';
-
-            if (Object.keys(mockAuthorizations).length === 0) {
-                await loadAuthorizations();
-            }
-
-            const authData = mockAuthorizations[authNo];
-
-            if (authData) {
-                document.getElementById('cardNo').value = authData.cardNo || authNo;
-                document.getElementById('authorizationNo').value = authNo;
-                document.getElementById('firstName').value = authData.firstName || authData.memberName || 'John';
-                document.getElementById('lastName').value = authData.lastName || '';
-                document.getElementById('gender').value = authData.gender || 'Male';
-                document.getElementById('dob').value = authData.dob || '1985-06-15';
-                document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('serviceDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('patientTel').value = authData.phone || '';
-                document.getElementById('patientFileNo').value = authData.fileNo || '';
-                document.getElementById('practitioner').value = authData.practitioner || '';
-                document.getElementById('diagnosisCode').value = authData.diagnosis || '';
-
-                resultDiv.style.display = 'none';
-                patientDetails.style.display = 'block';
-
-                showNotification(`Authorization ${authNo} found!`, 'success');
-            } else {
-                resultDiv.innerHTML = `
-                    <div class="empty-state-small">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>No authorization found for: ${authNo}</p>
-                    </div>
-                `;
-                resultDiv.style.display = 'block';
-                patientDetails.style.display = 'none';
-                showNotification('Authorization not found', 'error');
-            }
-        }
-
-        function submitApprovalRequest(authNo) {
-            showNotification(`Approval request submitted for ${authNo}!`, 'success');
-        }
-
-        
-        // ========================================
-        // SUPPORTING DOCUMENTS
-        // ========================================
-        document.getElementById('fileInput').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            document.getElementById('fileName').textContent = fileName;
-        });
-
-        function addDocument() {
-            const docType = document.getElementById('docType').value;
-            const docDescription = document.getElementById('docDescription').value.trim();
-            const fileInput = document.getElementById('fileInput');
-            const fileName = fileInput.files[0] ? fileInput.files[0].name : '';
-            const fileType = fileInput.files[0] ? fileInput.files[0].type : '';
-
-            if (!docType) {
-                showNotification('Please select a document type', 'error');
-                return;
-            }
-            if (!docDescription) {
-                showNotification('Please enter a document description', 'error');
-                return;
-            }
-            if (!fileName) {
-                showNotification('Please choose a file', 'error');
-                return;
-            }
-
-            const tbody = document.getElementById('documentsTableBody');
-            const emptyRow = tbody.querySelector('.empty-row');
-            if (emptyRow) emptyRow.remove();
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${docType}</td>
-                <td>${docDescription}</td>
-                <td>${fileType || 'Unknown'}</td>
-                <td class="action-icons">
-                    <i class="fas fa-trash" title="Remove" onclick="removeDocumentRow(this)"></i>
-                </td>
-            `;
-            tbody.appendChild(row);
-
-            document.getElementById('docType').value = '';
-            document.getElementById('docDescription').value = '';
-            document.getElementById('fileInput').value = '';
-            document.getElementById('fileName').textContent = 'No file chosen';
-
-            showNotification('Document added successfully!', 'success');
-        }
-
-        function removeDocumentRow(element) {
-            const row = element.closest('tr');
-            const tbody = document.getElementById('documentsTableBody');
-
-            if (tbody.querySelectorAll('tr:not(.empty-row)').length <= 1) {
-                tbody.innerHTML = `
-                    <tr class="empty-row">
-                        <td colspan="4">No documents attached. Add a document above.</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            row.remove();
-            showNotification('Document removed', 'info');
-        }
-
-        // ========================================
-        // SUBMIT & CLEAR
-        // ========================================
-        function submitApprovalRequest() {
-            const services = document.querySelectorAll('#servicesTableBody tr:not(.empty-row)');
-            const documents = document.querySelectorAll('#documentsTableBody tr:not(.empty-row)');
-
-            if (services.length === 0) {
-                showNotification('Please add at least one service before submitting', 'error');
-                return;
-            }
-
-            const serviceData = [];
-            services.forEach(row => {
-                serviceData.push({
-                    serviceType: row.querySelector('.service-type').value,
-                    itemDetails: row.querySelector('.item-details').value,
-                    unitPrice: row.querySelector('.unit-price').value,
-                    quantity: row.querySelector('.quantity').value,
-                    amountClaimed: row.querySelector('.amount-claimed').value
-                });
-            });
-
-            const docData = [];
-            documents.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                docData.push({
-                    docType: cells[0].textContent,
-                    description: cells[1].textContent,
-                    fileType: cells[2].textContent
-                });
-            });
-
-            console.log('Submitting approval request:', {
-                authorizationNo: document.getElementById('authorizationNo').value,
-                patient: {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    cardNo: document.getElementById('cardNo').value
-                },
-                services: serviceData,
-                documents: docData,
-                clinicalNotes: document.getElementById('clinicalNotes').value
-            });
-
-            showNotification('Approval request submitted successfully!', 'success');
-        }
-
-        function clearForm() {
-            if (!confirm('Are you sure you want to clear all form data?')) return;
-
-            document.getElementById('cardNo').value = '';
-            document.getElementById('firstName').value = '';
-            document.getElementById('lastName').value = '';
-            document.getElementById('gender').value = '';
-            document.getElementById('dob').value = '';
-            document.getElementById('attendanceDate').value = '';
-            document.getElementById('authorizationNo').value = '';
-            document.getElementById('patientTel').value = '';
-            document.getElementById('patientFileNo').value = '';
-            document.getElementById('practitioner').value = '';
-            document.getElementById('serviceDate').value = '';
-            document.getElementById('diagnosisCode').value = '';
-            document.getElementById('clinicalNotes').value = '';
-
-            document.getElementById('servicesTableBody').innerHTML = `
+        if (tbody.querySelectorAll('tr:not(.empty-row)').length <= 1) {
+            tbody.innerHTML = `
                 <tr class="empty-row">
-                    <td colspan="6">No services added. Click "Add" to add a service.</td>
+                    <td colspan="6" style="text-align: center; padding: 30px; color: var(--gray); font-style: italic;">
+                        No services added. Click <strong>"Add"</strong> to add a service.
+                    </td>
                 </tr>
             `;
+            updateItemsCount();
+            return;
+        }
 
-            document.getElementById('documentsTableBody').innerHTML = `
+        row.remove();
+        updateItemsCount();
+    }
+
+    function updateItemsCount() {
+        const rows = document.querySelectorAll('#servicesTableBody tr:not(.empty-row)');
+        const total = rows.length;
+        const itemsCount = document.getElementById('itemsCount');
+        if (itemsCount) {
+            itemsCount.textContent = `${total} of ${total}`;
+        }
+    }
+
+    // ========================================
+    // SUPPORTING DOCUMENTS
+    // ========================================
+    document.getElementById('fileInput').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+        document.getElementById('fileName').textContent = fileName;
+    });
+
+    function addDocument() {
+        const docType = document.getElementById('docType').value;
+        const docDescription = document.getElementById('docDescription').value.trim();
+        const fileInput = document.getElementById('fileInput');
+        const fileName = fileInput.files[0] ? fileInput.files[0].name : '';
+        const fileType = fileInput.files[0] ? fileInput.files[0].type : '';
+
+        if (!docType) {
+            showNotification('Please select a document type', 'error');
+            return;
+        }
+        if (!docDescription) {
+            showNotification('Please enter a document description', 'error');
+            return;
+        }
+        if (!fileName) {
+            showNotification('Please choose a file', 'error');
+            return;
+        }
+
+        const tbody = document.getElementById('documentsTableBody');
+        const emptyRow = tbody.querySelector('.empty-row');
+        if (emptyRow) emptyRow.remove();
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${docType}</td>
+            <td>${docDescription}</td>
+            <td>${fileType || 'Unknown'}</td>
+            <td class="action-icons">
+                <i class="fas fa-trash" title="Remove" onclick="removeDocumentRow(this)"></i>
+            </td>
+        `;
+        tbody.appendChild(row);
+
+        document.getElementById('docType').value = '';
+        document.getElementById('docDescription').value = '';
+        document.getElementById('fileInput').value = '';
+        document.getElementById('fileName').textContent = 'No file chosen';
+
+        showNotification('Document added successfully!', 'success');
+    }
+
+    function removeDocumentRow(element) {
+        const row = element.closest('tr');
+        const tbody = document.getElementById('documentsTableBody');
+
+        if (tbody.querySelectorAll('tr:not(.empty-row)').length <= 1) {
+            tbody.innerHTML = `
                 <tr class="empty-row">
                     <td colspan="4">No documents attached. Add a document above.</td>
                 </tr>
             `;
-
-            document.getElementById('docType').value = '';
-            document.getElementById('docDescription').value = '';
-            document.getElementById('fileInput').value = '';
-            document.getElementById('fileName').textContent = 'No file chosen';
-            document.getElementById('authSearchInput').value = '';
-            document.getElementById('requestResult').style.display = 'none';
-            document.getElementById('patientDetails').style.display = 'none';
-            document.getElementById('itemsCount').textContent = '0 of 0';
-
-            showNotification('Form cleared', 'info');
+            return;
         }
 
-        // ========================================
-        // TAB 2: SEARCH APPROVAL
-        // ========================================
+        row.remove();
+        showNotification('Document removed', 'info');
+    }
 
-        function setDefaultDates() {
-            const today = new Date().toISOString().split('T')[0];
-            const fromDateInputs = document.getElementsByClassName('fromDate');
-            const toDateInputs = document.getElementsByClassName('toDate');
+    // ========================================
+    // SUBMIT & CLEAR
+    // ========================================
+    function submitApprovalRequest() {
+        const services = document.querySelectorAll('#servicesTableBody tr:not(.empty-row)');
+        const documents = document.querySelectorAll('#documentsTableBody tr:not(.empty-row)');
 
-            for (let i = 0; i < fromDateInputs.length; i++) {
-                if (!fromDateInputs[i].value) fromDateInputs[i].value = today;
-            }
-            for (let i = 0; i < toDateInputs.length; i++) {
-                if (!toDateInputs[i].value) toDateInputs[i].value = today;
-            }
+        if (services.length === 0) {
+            showNotification('Please add at least one service before submitting', 'error');
+            return;
         }
 
-        function displayApprovals(approvals) {
-            const tbody = document.getElementById('approvalTableBody');
-            if (!approvals || approvals.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="empty-state-small">No approvals found</td></tr>';
-                return;
+        const serviceData = [];
+        services.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            serviceData.push({
+                serviceType: cells[0].textContent.trim(),
+                itemDetails: cells[1].textContent.trim(),
+                unitPrice: parseFloat(cells[2].textContent.replace(/,/g, '')) || 0,
+                quantity: parseInt(cells[3].textContent) || 1,
+                amountClaimed: parseFloat(cells[4].textContent.replace(/,/g, '')) || 0
+            });
+        });
+
+        const docData = [];
+        documents.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            docData.push({
+                docType: cells[0].textContent,
+                description: cells[1].textContent,
+                fileType: cells[2].textContent
+            });
+        });
+
+        console.log('Submitting approval request:', {
+            authorizationNo: document.getElementById('authorizationNo').value,
+            patient: {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                cardNo: document.getElementById('cardNo').value
+            },
+            services: serviceData,
+            documents: docData,
+            clinicalNotes: document.getElementById('clinicalNotes').value
+        });
+
+        showNotification('Approval request submitted successfully!', 'success');
+    }
+
+    function clearForm() {
+        if (!confirm('Are you sure you want to clear all form data?')) return;
+
+        document.getElementById('cardNo').value = '';
+        document.getElementById('firstName').value = '';
+        document.getElementById('lastName').value = '';
+        document.getElementById('gender').value = '';
+        document.getElementById('dob').value = '';
+        document.getElementById('attendanceDate').value = '';
+        document.getElementById('authorizationNo').value = '';
+        document.getElementById('patientTel').value = '';
+        document.getElementById('patientFileNo').value = '';
+        document.getElementById('practitioner').value = '';
+        document.getElementById('serviceDate').value = '';
+        selectedDiagnoses = [];
+        updateDiagnosisTags();
+        updateHiddenField();
+        document.getElementById('clinicalNotes').value = '';
+
+        document.getElementById('servicesTableBody').innerHTML = `
+            <tr class="empty-row">
+                <td colspan="6">No services added. Click "Add" to add a service.</td>
+            </tr>
+        `;
+
+        document.getElementById('documentsTableBody').innerHTML = `
+            <tr class="empty-row">
+                <td colspan="4">No documents attached. Add a document above.</td>
+            </tr>
+        `;
+
+        document.getElementById('docType').value = '';
+        document.getElementById('docDescription').value = '';
+        document.getElementById('fileInput').value = '';
+        document.getElementById('fileName').textContent = 'No file chosen';
+        document.getElementById('authSearchInput').value = '';
+        document.getElementById('requestResult').style.display = 'none';
+        document.getElementById('patientDetails').style.display = 'none';
+        document.getElementById('itemsCount').textContent = '0 of 0';
+
+        showNotification('Form cleared', 'info');
+    }
+
+    // ========================================
+    // TAB 1: REQUEST APPROVAL
+    // ========================================
+
+    async function searchAuthorization() {
+        const authNo = document.getElementById('authSearchInput').value.trim();
+        const resultDiv = document.getElementById('requestResult');
+        const patientDetails = document.getElementById('patientDetails');
+
+        if (!authNo) {
+            showNotification('Please enter an Authorization Number', 'error');
+            return;
+        }
+
+        resultDiv.innerHTML = '<div class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+        resultDiv.style.display = 'block';
+        patientDetails.style.display = 'none';
+
+        if (Object.keys(mockAuthorizations).length === 0) {
+            await loadAuthorizations();
+        }
+
+        const authData = mockAuthorizations[authNo];
+
+        if (authData) {
+            document.getElementById('cardNo').value = authData.cardNo || authNo;
+            document.getElementById('authorizationNo').value = authNo;
+            document.getElementById('firstName').value = authData.firstName || authData.memberName || 'John';
+            document.getElementById('lastName').value = authData.lastName || '';
+            document.getElementById('gender').value = authData.gender || 'Male';
+            document.getElementById('dob').value = authData.dob || '1985-06-15';
+            document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('serviceDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('patientTel').value = authData.phone || '';
+            document.getElementById('patientFileNo').value = authData.fileNo || '';
+            document.getElementById('practitioner').value = authData.practitioner || '';
+
+            if (authData.diagnosisCodes) {
+                setDiagnoses(authData.diagnosisCodes);
+            } else if (authData.diagnosis) {
+                setDiagnoses(authData.diagnosis);
+            } else {
+                setDiagnoses([]);
             }
-            tbody.innerHTML = approvals.map(approval => `
+
+            resultDiv.style.display = 'none';
+            patientDetails.style.display = 'block';
+
+            showNotification(`Authorization ${authNo} found!`, 'success');
+        } else {
+            resultDiv.innerHTML = `
+                <div class="empty-state-small">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>No authorization found for: ${authNo}</p>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+            patientDetails.style.display = 'none';
+            showNotification('Authorization not found', 'error');
+        }
+    }
+
+    function submitApprovalRequest(authNo) {
+        showNotification(`Approval request submitted for ${authNo}!`, 'success');
+    }
+
+    // ========================================
+    // TAB 2: SEARCH APPROVAL
+    // ========================================
+
+    function setDefaultDates() {
+        const today = new Date().toISOString().split('T')[0];
+        const fromDateInputs = document.getElementsByClassName('fromDate');
+        const toDateInputs = document.getElementsByClassName('toDate');
+
+        for (let i = 0; i < fromDateInputs.length; i++) {
+            if (!fromDateInputs[i].value) fromDateInputs[i].value = today;
+        }
+        for (let i = 0; i < toDateInputs.length; i++) {
+            if (!toDateInputs[i].value) toDateInputs[i].value = today;
+        }
+    }
+
+    function displayApprovals(approvals) {
+        const tbody = document.getElementById('approvalTableBody');
+        if (!approvals || approvals.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state-small">No approvals found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = approvals.map(approval => `
+            <tr>
+                <td>${getStatusBadge(approval.status)}</td>
+                <td>${approval.serviceType || 'N/A'}</td>
+                <td>${approval.item || 'N/A'}</td>
+                <td>${approval.approvalRef || approval.id || 'N/A'}</td>
+                <td>${approval.cardNo || 'N/A'}</td>
+                <td>${approval.fullName || approval.memberName || 'N/A'}</td>
+                <td>${approval.remarks || 'N/A'}</td>
+                <td class="action-icons">
+                    <i class="fas fa-edit" title="Edit" onclick="showNotification('Edit feature coming soon', 'info')"></i>
+                    <i class="fas fa-print" title="Print" onclick="showNotification('Print feature coming soon', 'info')"></i>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function searchApprovals() {
+        const searchTerm = document.getElementById('searchApprovalInput').value.toLowerCase().trim();
+        const fromDate = document.getElementsByClassName('fromDate')[0]?.value || '';
+        const toDate = document.getElementsByClassName('toDate')[0]?.value || '';
+
+        document.getElementById('approvalTableBody').innerHTML = '<tr><td colspan="8" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+
+        setTimeout(() => {
+            let filtered = [...mockApprovals];
+            if (searchTerm) {
+                filtered = filtered.filter(a =>
+                    (a.cardNo && a.cardNo.toLowerCase().includes(searchTerm)) ||
+                    (a.fullName && a.fullName.toLowerCase().includes(searchTerm)) ||
+                    (a.approvalRef && a.approvalRef.toLowerCase().includes(searchTerm)) ||
+                    (a.memberName && a.memberName.toLowerCase().includes(searchTerm))
+                );
+            }
+            displayApprovals(filtered);
+            showNotification(`Found ${filtered.length} approval(s)`, 'success');
+        }, 300);
+    }
+
+    function resetApprovalSearch() {
+        document.getElementById('searchApprovalInput').value = '';
+        loadApprovals();
+        showNotification('Filters reset', 'info');
+    }
+
+    // ========================================
+    // TAB 3: ISSUING SERVICE
+    // ========================================
+
+    function displayIssuingServices(services) {
+        const tbody = document.getElementById('issuingTableBody');
+        if (!services || services.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-state-small">No issuing services found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = services.map(service => {
+            const biometric = service.RequiresBiometricVerification || 'No';
+            const itemName = service.ItemName || 'N/A';
+            const approvedQty = service.ApprovedQuantitySession || 0;
+            const remainQty = service.RemainQuantitySession || 0;
+            const serviceRef = service.ServiceReferenceNo || 'N/A';
+
+            return `
                 <tr>
-                    <td>${getStatusBadge(approval.status)}</td>
-                    <td>${approval.serviceType || 'N/A'}</td>
-                    <td>${approval.item || 'N/A'}</td>
-                    <td>${approval.approvalRef || approval.id || 'N/A'}</td>
-                    <td>${approval.cardNo || 'N/A'}</td>
-                    <td>${approval.fullName || approval.memberName || 'N/A'}</td>
-                    <td>${approval.remarks || 'N/A'}</td>
-                    <td class="action-icons">
-                        <i class="fas fa-edit" title="Edit" onclick="showNotification('Edit feature coming soon', 'info')"></i>
-                        <i class="fas fa-print" title="Print" onclick="showNotification('Print feature coming soon', 'info')"></i>
-                    </td>
+                    <td>${biometric === 'Yes' ? '<i class="fas fa-fingerprint" style="color: var(--primary);"></i> Yes' : 'No'}</td>
+                    <td><strong>${itemName}</strong></td>
+                    <td style="text-align: center;">${approvedQty}</td>
+                    <td style="text-align: center; font-weight: bold; color: ${remainQty > 0 ? 'var(--success)' : 'var(--danger)'};">${remainQty}</td>
+                    <td><code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${serviceRef}</code></td>
                 </tr>
-            `).join('');
+            `;
+        }).join('');
+    }
+
+    function searchIssuingServices() {
+        const searchTerm = document.getElementById('issuingSearchInput').value.toLowerCase().trim();
+
+        if (!searchTerm) {
+            displayIssuingServices(mockIssuingServices);
+            showNotification('Showing all issuing services', 'info');
+            return;
         }
 
-        function searchApprovals() {
-            const searchTerm = document.getElementById('searchApprovalInput').value.toLowerCase().trim();
-            const fromDate = document.getElementsByClassName('fromDate')[0]?.value || '';
-            const toDate = document.getElementsByClassName('toDate')[0]?.value || '';
+        document.getElementById('issuingTableBody').innerHTML = '<tr><td colspan="5" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
 
-            document.getElementById('approvalTableBody').innerHTML = '<tr><td colspan="8" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+        setTimeout(() => {
+            const filtered = mockIssuingServices.filter(service => {
+                const itemName = (service.ItemName || '').toLowerCase();
+                const serviceRef = (service.ServiceReferenceNo || '').toLowerCase();
+                const biometric = (service.RequiresBiometricVerification || '').toLowerCase();
 
-            setTimeout(() => {
-                let filtered = [...mockApprovals];
-                if (searchTerm) {
-                    filtered = filtered.filter(a =>
-                        (a.cardNo && a.cardNo.toLowerCase().includes(searchTerm)) ||
-                        (a.fullName && a.fullName.toLowerCase().includes(searchTerm)) ||
-                        (a.approvalRef && a.approvalRef.toLowerCase().includes(searchTerm)) ||
-                        (a.memberName && a.memberName.toLowerCase().includes(searchTerm))
-                    );
-                }
-                displayApprovals(filtered);
-                showNotification(`Found ${filtered.length} approval(s)`, 'success');
-            }, 300);
-        }
-
-        function resetApprovalSearch() {
-            document.getElementById('searchApprovalInput').value = '';
-            loadApprovals();
-            showNotification('Filters reset', 'info');
-        }
-
-        // ========================================
-        // TAB 3: ISSUING SERVICE
-        // ========================================
-
-        function displayIssuingServices(services) {
-            const tbody = document.getElementById('issuingTableBody');
-            if (!services || services.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="empty-state-small">No issuing services found</td></tr>';
-                return;
-            }
-            tbody.innerHTML = services.map(service => {
-                const biometric = service.RequiresBiometricVerification || 'No';
-                const itemName = service.ItemName || 'N/A';
-                const approvedQty = service.ApprovedQuantitySession || 0;
-                const remainQty = service.RemainQuantitySession || 0;
-                const serviceRef = service.ServiceReferenceNo || 'N/A';
-
-                return `
-                    <tr>
-                        <td>${biometric === 'Yes' ? '<i class="fas fa-fingerprint" style="color: var(--primary);"></i> Yes' : 'No'}</td>
-                        <td><strong>${itemName}</strong></td>
-                        <td style="text-align: center;">${approvedQty}</td>
-                        <td style="text-align: center; font-weight: bold; color: ${remainQty > 0 ? 'var(--success)' : 'var(--danger)'};">${remainQty}</td>
-                        <td><code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${serviceRef}</code></td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function searchIssuingServices() {
-            const searchTerm = document.getElementById('issuingSearchInput').value.toLowerCase().trim();
-
-            if (!searchTerm) {
-                displayIssuingServices(mockIssuingServices);
-                showNotification('Showing all issuing services', 'info');
-                return;
-            }
-
-            document.getElementById('issuingTableBody').innerHTML = '<tr><td colspan="5" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
-
-            setTimeout(() => {
-                const filtered = mockIssuingServices.filter(service => {
-                    const itemName = (service.ItemName || '').toLowerCase();
-                    const serviceRef = (service.ServiceReferenceNo || '').toLowerCase();
-                    const biometric = (service.RequiresBiometricVerification || '').toLowerCase();
-
-                    return itemName.includes(searchTerm) ||
-                        serviceRef.includes(searchTerm) ||
-                        biometric.includes(searchTerm);
-                });
-
-                displayIssuingServices(filtered);
-                if (filtered.length === 0) {
-                    showNotification('No issuing services found', 'error');
-                } else {
-                    showNotification(`Found ${filtered.length} issuing service(s)`, 'success');
-                }
-            }, 300);
-        }
-
-        // ========================================
-        // TAB 4: ISSUED APPROVAL SERVICES
-        // ========================================
-
-        function displayIssuedServices(services) {
-            const tbody = document.getElementById('issuedTableBody');
-            if (!services || services.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="empty-state-small">No issued services found</td></tr>';
-                return;
-            }
-            tbody.innerHTML = services.map(service => `
-                <tr>
-                    <td>${service.CardNo || 'N/A'}</td>
-                    <td>${service.FullName || 'N/A'}</td>
-                    <td><strong>${service.ItemName || 'N/A'}</strong></td>
-                    <td><code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${service.ServiceReferenceNo || 'N/A'}</code></td>
-                    <td>${service.IssuedDate || 'N/A'}</td>
-                    <td class="amount-cell">${formatCurrency(service.UnitPrice)}</td>
-                    <td style="text-align: center; font-weight: bold;">${service.QuantitySession || 1}</td>
-                    <td class="amount-cell">${formatCurrency(service.AmountClaimed)}</td>
-                </tr>
-            `).join('');
-        }
-
-        function searchIssuedServices() {
-            const searchTerm = document.getElementById('issuedSearchInput').value.toLowerCase().trim();
-            const fromDate = document.getElementById('issuedFromDate').value;
-            const toDate = document.getElementById('issuedToDate').value;
-
-            document.getElementById('issuedTableBody').innerHTML = '<tr><td colspan="8" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
-
-            setTimeout(() => {
-                let filtered = [...mockIssuedServices];
-
-                if (searchTerm) {
-                    filtered = filtered.filter(s =>
-                        (s.ServiceReferenceNo && s.ServiceReferenceNo.toLowerCase().includes(searchTerm)) ||
-                        (s.ItemName && s.ItemName.toLowerCase().includes(searchTerm)) ||
-                        (s.FullName && s.FullName.toLowerCase().includes(searchTerm)) ||
-                        (s.CardNo && s.CardNo.toLowerCase().includes(searchTerm))
-                    );
-                }
-
-                if (fromDate) {
-                    filtered = filtered.filter(s => s.IssuedDate && s.IssuedDate >= fromDate);
-                }
-                if (toDate) {
-                    filtered = filtered.filter(s => s.IssuedDate && s.IssuedDate <= toDate);
-                }
-
-                displayIssuedServices(filtered);
-                showNotification(`Found ${filtered.length} issued service(s)`, 'success');
-            }, 300);
-        }
-
-        function resetIssuedFilters() {
-            document.getElementById('issuedSearchInput').value = '';
-            document.getElementById('issuedFromDate').value = '';
-            document.getElementById('issuedToDate').value = '';
-            loadIssuedServices();
-            showNotification('Filters reset', 'info');
-        }
-
-        // ========================================
-        // COMPONENT LOADING
-        // ========================================
-
-        async function loadComponents() {
-            try {
-                const sidebarResponse = await fetch('../../components/sidebar.html');
-                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
-
-                const headerResponse = await fetch('../../components/header.html');
-                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
-
-                const footerResponse = await fetch('../../components/footer.html');
-                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
-
-                const modalsResponse = await fetch('../../components/modals.html');
-                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
-
-                initPageComponents();
-            } catch (error) {
-                console.error('Error loading components:', error);
-                showNotification('Error loading page components', 'error');
-            }
-        }
-
-        function initPageComponents() {
-            if (typeof initUserDropdown === 'function') initUserDropdown();
-
-            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-            const userAvatar = document.getElementById('userAvatar');
-            const userNameSpan = document.getElementById('userName');
-            const jobTitleSpan = document.getElementById('jobTitle');
-
-            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-            if (userNameSpan) userNameSpan.textContent = userName;
-            if (userAvatar) {
-                const initials = userName.split(' ').map(n => n[0]).join('');
-                userAvatar.textContent = initials;
-            }
-
-            const menuToggle = document.getElementById('menuToggle');
-            if (menuToggle) {
-                menuToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (typeof toggleSidebar === 'function') toggleSidebar();
-                });
-            }
-
-            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-            if (closeSidebarBtn) {
-                closeSidebarBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (typeof closeSidebar === 'function') closeSidebar();
-                });
-            }
-
-            if (typeof initSidebarState === 'function') initSidebarState();
-
-            window.addEventListener('resize', function() {
-                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+                return itemName.includes(searchTerm) ||
+                    serviceRef.includes(searchTerm) ||
+                    biometric.includes(searchTerm);
             });
 
-            setDefaultDates();
-            loadApprovals();
-            loadIssuingServices();
-            loadAuthorizations();
-            loadIssuedServices();
+            displayIssuingServices(filtered);
+            if (filtered.length === 0) {
+                showNotification('No issuing services found', 'error');
+            } else {
+                showNotification(`Found ${filtered.length} issuing service(s)`, 'success');
+            }
+        }, 300);
+    }
+
+    // ========================================
+    // TAB 4: ISSUED APPROVAL SERVICES
+    // ========================================
+
+    function displayIssuedServices(services) {
+        const tbody = document.getElementById('issuedTableBody');
+        if (!services || services.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state-small">No issued services found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = services.map(service => `
+            <tr>
+                <td>${service.CardNo || 'N/A'}</td>
+                <td>${service.FullName || 'N/A'}</td>
+                <td><strong>${service.ItemName || 'N/A'}</strong></td>
+                <td><code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${service.ServiceReferenceNo || 'N/A'}</code></td>
+                <td>${service.IssuedDate || 'N/A'}</td>
+                <td class="amount-cell">${formatCurrency(service.UnitPrice)}</td>
+                <td style="text-align: center; font-weight: bold;">${service.QuantitySession || 1}</td>
+                <td class="amount-cell">${formatCurrency(service.AmountClaimed)}</td>
+            </tr>
+        `).join('');
+    }
+
+    function searchIssuedServices() {
+        const searchTerm = document.getElementById('issuedSearchInput').value.toLowerCase().trim();
+        const fromDate = document.getElementById('issuedFromDate').value;
+        const toDate = document.getElementById('issuedToDate').value;
+
+        document.getElementById('issuedTableBody').innerHTML = '<tr><td colspan="8" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+
+        setTimeout(() => {
+            let filtered = [...mockIssuedServices];
+
+            if (searchTerm) {
+                filtered = filtered.filter(s =>
+                    (s.ServiceReferenceNo && s.ServiceReferenceNo.toLowerCase().includes(searchTerm)) ||
+                    (s.ItemName && s.ItemName.toLowerCase().includes(searchTerm)) ||
+                    (s.FullName && s.FullName.toLowerCase().includes(searchTerm)) ||
+                    (s.CardNo && s.CardNo.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            if (fromDate) {
+                filtered = filtered.filter(s => s.IssuedDate && s.IssuedDate >= fromDate);
+            }
+            if (toDate) {
+                filtered = filtered.filter(s => s.IssuedDate && s.IssuedDate <= toDate);
+            }
+
+            displayIssuedServices(filtered);
+            showNotification(`Found ${filtered.length} issued service(s)`, 'success');
+        }, 300);
+    }
+
+    function resetIssuedFilters() {
+        document.getElementById('issuedSearchInput').value = '';
+        document.getElementById('issuedFromDate').value = '';
+        document.getElementById('issuedToDate').value = '';
+        loadIssuedServices();
+        showNotification('Filters reset', 'info');
+    }
+
+    // ========================================
+    // COMPONENT LOADING
+    // ========================================
+
+    async function loadComponents() {
+        try {
+            const sidebarResponse = await fetch('../../components/sidebar.html');
+            if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+            const headerResponse = await fetch('../../components/header.html');
+            if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+            const footerResponse = await fetch('../../components/footer.html');
+            if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+            const modalsResponse = await fetch('../../components/modals.html');
+            if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+            initPageComponents();
+        } catch (error) {
+            console.error('Error loading components:', error);
+            showNotification('Error loading page components', 'error');
+        }
+    }
+
+    function initPageComponents() {
+        if (typeof initUserDropdown === 'function') initUserDropdown();
+
+        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+        const userAvatar = document.getElementById('userAvatar');
+        const userNameSpan = document.getElementById('userName');
+        const jobTitleSpan = document.getElementById('jobTitle');
+
+        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+        if (userNameSpan) userNameSpan.textContent = userName;
+        if (userAvatar) {
+            const initials = userName.split(' ').map(n => n[0]).join('');
+            userAvatar.textContent = initials;
         }
 
-        document.addEventListener('DOMContentLoaded', loadComponents);
+        const menuToggle = document.getElementById('menuToggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (typeof toggleSidebar === 'function') toggleSidebar();
+            });
+        }
 
-        // ========================================
-        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
-        // ========================================
-        window.searchAuthorization = searchAuthorization;
-        window.searchApprovals = searchApprovals;
-        window.resetApprovalSearch = resetApprovalSearch;
-        window.searchIssuingServices = searchIssuingServices;
-        window.searchIssuedServices = searchIssuedServices;
-        window.resetIssuedFilters = resetIssuedFilters;
-        window.showNotification = showNotification;
-        window.submitApprovalRequest = submitApprovalRequest;
-        window.addServiceRow = addServiceRow;
-        window.removeServiceRow = removeServiceRow;
-        window.calculateAmount = calculateAmount;
-        window.addDocument = addDocument;
-        window.removeDocumentRow = removeDocumentRow;
-        window.clearForm = clearForm;
-    </script>
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (typeof closeSidebar === 'function') closeSidebar();
+            });
+        }
+
+        if (typeof initSidebarState === 'function') initSidebarState();
+
+        window.addEventListener('resize', function() {
+            if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+        });
+
+        setDefaultDates();
+        loadApprovals();
+        loadIssuingServices();
+        loadAuthorizations();
+        loadIssuedServices();
+
+        // Initialize diagnosis multi-select
+        initDiagnosisMultiSelect();
+    }
+
+    document.addEventListener('DOMContentLoaded', loadComponents);
+
+    // ========================================
+    // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+    // ========================================
+    window.searchAuthorization = searchAuthorization;
+    window.searchApprovals = searchApprovals;
+    window.resetApprovalSearch = resetApprovalSearch;
+    window.searchIssuingServices = searchIssuingServices;
+    window.searchIssuedServices = searchIssuedServices;
+    window.resetIssuedFilters = resetIssuedFilters;
+    window.showNotification = showNotification;
+    window.submitApprovalRequest = submitApprovalRequest;
+    window.addServiceRow = addServiceRow;
+    window.removeServiceRow = removeServiceRow;
+    window.addDocument = addDocument;
+    window.removeDocumentRow = removeDocumentRow;
+    window.clearForm = clearForm;
+    window.toggleDiagnosis = toggleDiagnosis;
+    window.setDiagnoses = setDiagnoses;
+</script>
 </body>
 </html>
