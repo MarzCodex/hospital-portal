@@ -476,6 +476,30 @@ async toggleUserStatus(id) {
         return users[index];
     }
     return null;
+},
+async getAdmissions() {
+    // Try localStorage first for persistence
+    const localData = localStorage.getItem('admissions');
+    if (localData) {
+        return JSON.parse(localData);
+    }
+    // Fallback to fetch from file
+    return this.fetchData('admissions.json');
+},
+async getAdmissions() {
+    // Try localStorage first for persistence
+    const localData = localStorage.getItem('admissions');
+    if (localData) {
+        return JSON.parse(localData);
+    }
+    return this.fetchData('admissions.json');
+},
+async getReferrals() {
+    const localData = localStorage.getItem('referrals');
+    if (localData) {
+        return JSON.parse(localData);
+    }
+    return this.fetchData('referrals.json');
 }
 };
 

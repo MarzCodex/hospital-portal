@@ -7,247 +7,885 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
+        /* ===== Page Specific Styles ===== */
         .page-container {
             padding: 20px;
             margin: 20px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 100%;
         }
-        
-        .coming-soon {
-            text-align: center;
-            padding: 60px;
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-        
-        .coming-soon i {
-            font-size: 64px;
+
+        .page-header h2 {
+            color: var(--secondary);
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .page-header h2 i {
             color: var(--primary);
+            margin-right: 10px;
+        }
+
+        /* ===== Search Bar ===== */
+        .search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 20px;
-        }
-        
-        .coming-soon h2 {
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-        
-        .coming-soon p {
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-        
-        .referral-form {
-            max-width: 60em;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--secondary);
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
+            padding: 15px;
+            background: #f8f9fa;
             border: 1px solid var(--border);
             border-radius: 8px;
+        }
+
+        .search-bar .search-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-bar .search-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            white-space: nowrap;
+        }
+
+        .search-bar .search-group input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
             font-size: 14px;
+            background: white;
+            min-width: 150px;
         }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
+
+        .search-bar .search-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
-        
-        .form-row {
+
+        .search-bar .search-group input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .search-bar .search-btn {
+            margin-top: 0;
+            padding: 8px 20px;
+        }
+
+        /* ===== Two-Column Layout ===== */
+        .details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+            margin-top: 15px;
+        }
+
+        .details-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .details-section h4 {
+            color: var(--secondary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .details-section h4 i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .detail-row label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .detail-row label .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .detail-row input,
+        .detail-row select {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            width: 100%;
+        }
+
+        .detail-row input:focus,
+        .detail-row select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .detail-row input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .detail-row input.error,
+        .detail-row select.error {
+            border-color: var(--danger);
+        }
+
+        .detail-row .error-text {
+            font-size: 11px;
+            color: var(--danger);
+            margin-top: 2px;
+            display: none;
+        }
+
+        .detail-row .error-text.show {
+            display: block;
+        }
+
+        /* ===== Reasons for Referral ===== */
+        .reason-section {
+            margin-top: 20px;
+        }
+
+        .reason-section label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .reason-section label .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .reason-section textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .reason-section textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .reason-section textarea.error {
+            border-color: var(--danger);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .char-counter .warning {
+            color: var(--warning);
+        }
+
+        .char-counter .danger {
+            color: var(--danger);
+        }
+
+        /* ===== Form Actions ===== */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-submit {
+            padding: 10px 30px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== Notification ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+
+        .notification.success { background-color: var(--success); }
+        .notification.error { background-color: var(--danger); }
+        .notification.info { background-color: var(--primary); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ===== Loading Spinner ===== */
+        .spinner-sm {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== Hidden state ===== */
+        #referralFormContainer {
+            display: none;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 992px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-bar .search-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-bar .search-group input {
+                min-width: unset;
+            }
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            .detail-row label {
+                font-size: 12px;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
-    
+
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <!-- Header Container -->
         <div id="header-container"></div>
-        
+
         <!-- Page Content -->
         <div id="page-content">
             <div class="page-container">
-                <div class="referral-form">
-                    <h3 class="page-header"><i class="fas fa-exchange-alt"></i> Referral Request Form</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Patient Name <span class="required">*</span></label>
-                            <input type="text" placeholder="Enter patient full name">
-                        </div>
-                        <div class="form-group">
-                            <label>Member ID / Card Number <span class="required">*</span></label>
-                            <input type="text" placeholder="Enter member ID or card number">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Sponsor <span class="required">*</span></label>
-                            <select>
-                                <option value="">Select Sponsor</option>
-                                <option value="NHIF">NHIF</option>
-                                <option value="ZHSF">ZHSF</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Referring Facility <span class="required">*</span></label>
-                            <input type="text" placeholder="Enter referring facility name">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Referred To <span class="required">*</span></label>
-                            <input type="text" placeholder="Enter receiving facility name">
-                        </div>
-                        <div class="form-group">
-                            <label>Referral Date <span class="required">*</span></label>
-                            <input type="date">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Reason for Referral <span class="required">*</span></label>
-                        <textarea placeholder="Provide detailed reason for referral..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Diagnosis / Condition</label>
-                        <textarea placeholder="Enter diagnosis or medical condition..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Attending Physician <span class="required">*</span></label>
-                        <input type="text" placeholder="Enter physician name">
-                    </div>
-                    
-                    <div style="display: flex; gap: 15px; margin-top: 20px;">
-                        <button class="search-btn" onclick="submitReferralRequest()">
-                            <i class="fas fa-paper-plane"></i> Submit Referral
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h2>
+                        <i class="fas fa-exchange-alt"></i>
+                        Referral Request
+                    </h2>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <div class="search-group">
+                        <label>Authorization No.:</label>
+                        <input type="text" id="authSearchInput" placeholder="Enter Authorization Number">
+                        <button class="search-btn" onclick="searchAuthorization()">
+                            <i class="fas fa-search"></i> Search
                         </button>
-                        <button class="search-btn" onclick="window.location.href='../../index.html'" style="background: #6c757d;">
-                            <i class="fas fa-times"></i> Cancel
+                    </div>
+                    <div class="search-group">
+                        <label>Referral No.:</label>
+                        <input type="text" id="referralNo" disabled>
+                    </div>
+                </div>
+
+                <!-- Referral Form (hidden until patient found) -->
+                <div id="referralFormContainer">
+                    <div class="details-grid">
+                        <!-- LEFT COLUMN: Patient Identification -->
+                        <div class="details-section">
+                            <h4><i class="fas fa-id-card"></i> Patient Identification</h4>
+                            <div class="detail-row">
+                                <label>Card No.:</label>
+                                <input type="text" id="cardNo" disabled>
+                            </div>
+                            <div class="detail-row">
+                                <label>Full Name <span class="required">*</span></label>
+                                <input type="text" id="fullName">
+                                <div class="error-text" id="fullName-error">Please enter full name</div>
+                            </div>
+                            <div class="detail-row">
+                                <label>Gender:</label>
+                                <select id="gender">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Referral Type:</label>
+                                <select id="referralType">
+                                    <option value="Referral Visit">Referral Visit</option>
+                                    <option value="Vifurushi Follow Up Visit">Vifurushi Follow Up Visit</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN: Clinical Tracking -->
+                        <div class="details-section">
+                            <h4><i class="fas fa-notes-medical"></i> Clinical Tracking</h4>
+                            <div class="detail-row">
+                                <label>Authorization No.:</label>
+                                <input type="text" id="authorizationNo" disabled>
+                            </div>
+                            <div class="detail-row">
+                                <label>Practitioner Name:</label>
+                                <select id="practitioner">
+                                    <option value="">Select Practitioner</option>
+                                    <option value="Dr. Sarah Johnson">Dr. Sarah Johnson</option>
+                                    <option value="Dr. Michael Brown">Dr. Michael Brown</option>
+                                    <option value="Dr. Emily Davis">Dr. Emily Davis</option>
+                                    <option value="Dr. James Wilson">Dr. James Wilson</option>
+                                    <option value="Dr. Robert Chen">Dr. Robert Chen</option>
+                                    <option value="Dr. Maria Santos">Dr. Maria Santos</option>
+                                    <option value="Dr. David Kim">Dr. David Kim</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Service Issuing Facility:</label>
+                                <select id="serviceIssuingFacility">
+                                    <option value="">Select Facility</option>
+                                    <option value="City Medical Center">City Medical Center</option>
+                                    <option value="Regional Hospital">Regional Hospital</option>
+                                    <option value="Specialist Hospital">Specialist Hospital</option>
+                                    <option value="University Hospital">University Hospital</option>
+                                    <option value="Community Health Center">Community Health Center</option>
+                                    <option value="Wellness Clinic">Wellness Clinic</option>
+                                    <option value="Central Medical">Central Medical</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Referring Diagnosis:</label>
+                                <select id="referringDiagnosis">
+                                    <option value="">Select Diagnosis</option>
+                                    <option value="A09">A09 - Infectious gastroenteritis</option>
+                                    <option value="J06">J06 - Acute upper respiratory infections</option>
+                                    <option value="E11">E11 - Type 2 diabetes mellitus</option>
+                                    <option value="I10">I10 - Essential hypertension</option>
+                                    <option value="M54">M54 - Back pain</option>
+                                    <option value="N39">N39 - Urinary tract infection</option>
+                                    <option value="R51">R51 - Headache</option>
+                                    <option value="J45">J45 - Asthma</option>
+                                    <option value="K21">K21 - GERD</option>
+                                    <option value="N18">N18 - Chronic kidney disease</option>
+                                    <option value="F32">F32 - Depression</option>
+                                    <option value="G40">G40 - Epilepsy</option>
+                                    <option value="I50">I50 - Heart failure</option>
+                                    <option value="J44">J44 - COPD</option>
+                                    <option value="K35">K35 - Appendicitis</option>
+                                    <option value="M17">M17 - Osteoarthritis</option>
+                                    <option value="N20">N20 - Kidney stone</option>
+                                    <option value="R10">R10 - Abdominal pain</option>
+                                    <option value="S06">S06 - Concussion</option>
+                                    <option value="Z23">Z23 - Immunization</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reasons for Referral -->
+                    <div class="reason-section">
+                        <label>Reasons for Referral <span class="required">*</span></label>
+                        <textarea id="reasonsForReferral" placeholder="Enter reasons for referral..." maxlength="500"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> / 500 characters
+                        </div>
+                        <div class="error-text" id="reasons-error" style="color: var(--danger); font-size: 12px; display: none;">Please enter reasons for referral</div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button class="btn-submit" id="submitBtn" onclick="submitReferral()">
+                            <i class="fas fa-paper-plane"></i> Submit Referral
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Footer Container -->
         <div id="footer-container"></div>
     </div>
-    
+
     <!-- Modals Container -->
     <div id="modals-container"></div>
-    
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
     <script src="../../assets/js/common.js"></script>
-     <script>
-    // ========================================
-    // COMPONENT LOADING
-    // ========================================
-    
-    async function loadComponents() {
-        try {
-            // Load sidebar
-            const sidebarRes = await fetch('../../components/sidebar.html');
-            if (sidebarRes.ok) {
-                document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
+    <script>
+        // ========================================
+        // DATA STORES
+        // ========================================
+        let mockAuthorizations = {};
+        let currentAuthData = null;
+
+        // ========================================
+        // LOAD AUTHORIZATIONS
+        // ========================================
+        async function loadAuthorizations() {
+            try {
+                const authorizations = await DataService.getAuthorizations();
+                if (authorizations && Array.isArray(authorizations)) {
+                    mockAuthorizations = {};
+                    authorizations.forEach(auth => {
+                        mockAuthorizations[auth.authNumber] = auth;
+                    });
+                } else {
+                    console.warn('No authorizations data found');
+                    mockAuthorizations = {};
+                }
+            } catch (error) {
+                console.error('Failed to load authorizations:', error);
+                mockAuthorizations = {};
             }
-            
-            // Load header
-            const headerRes = await fetch('../../components/header.html');
-            if (headerRes.ok) {
-                document.getElementById('header-container').innerHTML = await headerRes.text();
-            }
-            
-            // Load footer
-            const footerRes = await fetch('../../components/footer.html');
-            if (footerRes.ok) {
-                document.getElementById('footer-container').innerHTML = await footerRes.text();
-            }
-            
-            // Load modals
-            const modalsRes = await fetch('../../components/modals.html');
-            if (modalsRes.ok) {
-                document.getElementById('modals-container').innerHTML = await modalsRes.text();
-            }
-            
-            // Initialize after components loaded
-            initPageComponents();
-            
-        } catch (error) {
-            console.error('Error loading components:', error);
-        }
-    }
-    
-    function initPageComponents() {
-        // Initialize user dropdown
-        if (typeof initUserDropdown === 'function') {
-            initUserDropdown();
-        }
-        
-        // Set user info from sessionStorage
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        
-        const userNameSpan = document.getElementById('userName');
-        const jobTitleSpan = document.getElementById('jobTitle');
-        const userAvatar = document.getElementById('userAvatar');
-        
-        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-        if (userNameSpan) userNameSpan.textContent = userName;
-        if (userAvatar) {
-            const initials = userName.split(' ').map(n => n[0]).join('');
-            userAvatar.textContent = initials;
-        }
-        
-        // Sidebar toggle (hamburger menu)
-        const menuToggle = document.getElementById('menuToggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSidebar();
-            });
         }
 
-        // Close sidebar button (X button)
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeSidebar();
-            });
+        // ========================================
+        // SEARCH AUTHORIZATION
+        // ========================================
+        async function searchAuthorization() {
+            const authNo = document.getElementById('authSearchInput').value.trim();
+            const formContainer = document.getElementById('referralFormContainer');
+
+            if (!authNo) {
+                showNotification('Please enter an Authorization Number', 'error');
+                return;
+            }
+
+            // Show loading state on button
+            const btn = document.querySelector('.search-bar .search-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+            btn.disabled = true;
+
+            if (Object.keys(mockAuthorizations).length === 0) {
+                await loadAuthorizations();
+            }
+
+            const authData = mockAuthorizations[authNo];
+
+            // Reset button
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            if (authData) {
+                currentAuthData = authData;
+
+                // Populate Patient Identification
+                document.getElementById('cardNo').value = authData.cardNo || authNo;
+                document.getElementById('fullName').value = authData.fullName || authData.memberName || '';
+                document.getElementById('gender').value = authData.gender || 'Male';
+                document.getElementById('authorizationNo').value = authNo;
+
+                // Clear referral number
+                document.getElementById('referralNo').value = '';
+
+                // Show form
+                formContainer.style.display = 'block';
+
+                showNotification(`Authorization ${authNo} found! Patient: ${authData.fullName || authData.memberName || 'Patient'}`, 'success');
+            } else {
+                formContainer.style.display = 'none';
+                showNotification('No authorization found for: ' + authNo, 'error');
+            }
         }
 
-        // Initialize sidebar state
-        initSidebarState();
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            handleResponsiveSidebar();
+        // ========================================
+        // CHARACTER COUNTER
+        // ========================================
+        document.getElementById('reasonsForReferral').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('charCount').textContent = count;
+            
+            const charCounter = document.querySelector('.char-counter');
+            if (count > 400) {
+                charCounter.classList.add('warning');
+            } else {
+                charCounter.classList.remove('warning');
+            }
+            if (count === 500) {
+                charCounter.classList.add('danger');
+            } else {
+                charCounter.classList.remove('danger');
+            }
         });
-    }
-    document.addEventListener('DOMContentLoaded', loadComponents);
-</script>
+
+        // ========================================
+        // GENERATE REFERRAL NUMBER
+        // ========================================
+        function generateReferralNumber() {
+            const year = new Date().getFullYear();
+            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            return `REF-${year}-${random}`;
+        }
+
+        // ========================================
+        // VALIDATION
+        // ========================================
+        function validateForm() {
+            let isValid = true;
+
+            // Full Name
+            const fullName = document.getElementById('fullName').value.trim();
+            if (!fullName) {
+                document.getElementById('fullName').classList.add('error');
+                document.getElementById('fullName-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('fullName').classList.remove('error');
+                document.getElementById('fullName-error').classList.remove('show');
+            }
+
+            // Reasons for Referral
+            const reasons = document.getElementById('reasonsForReferral').value.trim();
+            if (!reasons) {
+                document.getElementById('reasonsForReferral').classList.add('error');
+                document.getElementById('reasons-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reasonsForReferral').classList.remove('error');
+                document.getElementById('reasons-error').style.display = 'none';
+            }
+
+            return isValid;
+        }
+
+        // Clear errors on focus
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.classList.remove('error');
+                const errorId = this.id + '-error';
+                const error = document.getElementById(errorId);
+                if (error) error.classList.remove('show');
+                if (this.id === 'reasonsForReferral') {
+                    document.getElementById('reasons-error').style.display = 'none';
+                }
+            });
+        });
+
+        // ========================================
+        // SUBMIT REFERRAL
+        // ========================================
+        async function submitReferral() {
+            if (!currentAuthData) {
+                showNotification('Please search for an authorization first', 'error');
+                return;
+            }
+
+            if (!validateForm()) {
+                showNotification('Please fix all errors before submitting', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-sm"></span> Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                // Generate referral number
+                const referralNo = generateReferralNumber();
+                document.getElementById('referralNo').value = referralNo;
+
+                const referralData = {
+                    id: Date.now(),
+                    referralNo: referralNo,
+                    authNumber: document.getElementById('authorizationNo').value,
+                    cardNo: document.getElementById('cardNo').value,
+                    fullName: document.getElementById('fullName').value.trim(),
+                    gender: document.getElementById('gender').value,
+                    referralType: document.getElementById('referralType').value,
+                    practitioner: document.getElementById('practitioner').value,
+                    serviceIssuingFacility: document.getElementById('serviceIssuingFacility').value,
+                    referringDiagnosis: document.getElementById('referringDiagnosis').value,
+                    reasonsForReferral: document.getElementById('reasonsForReferral').value.trim(),
+                    status: 'Pending',
+                    submittedBy: getCurrentUser() || 'System',
+                    submittedDate: new Date().toISOString()
+                };
+
+                // Load existing referrals and add new
+                let referrals = await DataService.getReferrals() || [];
+                const localData = localStorage.getItem('referrals');
+                if (!referrals || referrals.length === 0) {
+                    if (localData) {
+                        referrals = JSON.parse(localData);
+                    } else {
+                        referrals = [];
+                    }
+                }
+                
+                referrals.push(referralData);
+                
+                // Save to localStorage for persistence
+                localStorage.setItem('referrals', JSON.stringify(referrals));
+
+                showNotification(`Referral ${referralNo} submitted successfully!`, 'success');
+                
+                // Reset form after delay
+                setTimeout(() => {
+                    resetForm();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error submitting referral:', error);
+                showNotification('Failed to submit referral. Please try again.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ========================================
+        // RESET FORM
+        // ========================================
+        function resetForm() {
+            document.getElementById('authSearchInput').value = '';
+            document.getElementById('referralFormContainer').style.display = 'none';
+            document.getElementById('reasonsForReferral').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('referralNo').value = '';
+            document.getElementById('fullName').value = '';
+            document.getElementById('practitioner').value = '';
+            document.getElementById('serviceIssuingFacility').value = '';
+            document.getElementById('referringDiagnosis').value = '';
+            document.getElementById('referralType').value = 'Referral Visit';
+            currentAuthData = null;
+
+            // Clear errors
+            document.querySelectorAll('.error-text').forEach(el => {
+                el.classList.remove('show');
+            });
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                el.classList.remove('error');
+            });
+            document.getElementById('reasons-error').style.display = 'none';
+
+            showNotification('Form reset', 'info');
+        }
+
+        // ========================================
+        // GET CURRENT USER
+        // ========================================
+        function getCurrentUser() {
+            const userNameSpan = document.getElementById('userName');
+            return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
+        }
+
+        // ========================================
+        // SHOW NOTIFICATION
+        // ========================================
+        function showNotification(msg, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = msg;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') initSidebarState();
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Enter key support for search
+            document.getElementById('authSearchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchAuthorization();
+                }
+            });
+
+            // Pre-load authorizations
+            loadAuthorizations();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // ADD getReferrals() to DataService in common.js
+        // ========================================
+        // Note: You need to add this method to DataService in common.js:
+        // async getReferrals() {
+        //     const localData = localStorage.getItem('referrals');
+        //     if (localData) {
+        //         return JSON.parse(localData);
+        //     }
+        //     return this.fetchData('referrals.json');
+        // },
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.searchAuthorization = searchAuthorization;
+        window.submitReferral = submitReferral;
+        window.resetForm = resetForm;
+        window.showNotification = showNotification;
+    </script>
 </body>
 </html>

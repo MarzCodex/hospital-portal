@@ -7,146 +7,1233 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
-        .page-container {
-            padding: 20px;
-            margin: 20px;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .coming-soon {
-            text-align: center;
-            padding: 60px;
-        }
-        
-        .coming-soon i {
-            font-size: 64px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .coming-soon h2 {
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-        
-        .coming-soon p {
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
+        /* ===== Page Specific Styles ===== */
+.page-container {
+    padding: 20px;
+    margin: 20px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    max-width: 100%;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.page-header h2 {
+    color: var(--secondary);
+    font-size: 24px;
+    margin: 0;
+}
+
+.page-header h2 i {
+    color: var(--primary);
+    margin-right: 10px;
+}
+
+/* ======================================== */
+/* BOOK CONTAINER                          */
+/* ======================================== */
+.book-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 1500px;
+}
+
+.book-wrapper {
+    width: 100%;
+    position: relative;
+    min-height: 600px;
+}
+
+/* ======================================== */
+/* BOOK - A4 PROPORTIONS (1:√2 ≈ 1:1.414)  */
+/* ======================================== */
+.book {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    position: relative;
+    aspect-ratio: 1 / 1.414; /* A4 proportion */
+    min-height: 500px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.book-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: #fefcf3;
+    border-radius: 4px 12px 12px 4px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(0, 0, 0, 0.02);
+    padding: 45px 55px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transform-origin: left center;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.book-page::-webkit-scrollbar {
+    width: 6px;
+}
+
+.book-page::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.book-page::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.book-page::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    background: linear-gradient(to right, rgba(0,0,0,0.05), transparent);
+    pointer-events: none;
+}
+
+/* Book spine shadow */
+.book-spine {
+    position: absolute;
+    left: -4px;
+    top: 0;
+    height: 100%;
+    width: 8px;
+    background: linear-gradient(to right, rgba(0,0,0,0.2), transparent);
+    border-radius: 2px 0 0 2px;
+    pointer-events: none;
+}
+
+/* ======================================== */
+/* PAGE STATES                              */
+/* ======================================== */
+.book-page.current {
+    transform: rotateY(0deg);
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.02);
+}
+
+.book-page.flipped {
+    transform: rotateY(-180deg);
+    z-index: 1;
+}
+
+.book-page.hidden {
+    display: none;
+}
+
+.book-page .page-number {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: var(--gray);
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* ======================================== */
+/* COVER PAGE                              */
+/* ======================================== */
+.cover-page {
+    background: linear-gradient(145deg, #1a252f 0%, #2c3e50 50%, #1a252f 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px;
+    border-radius: 4px 12px 12px 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.cover-page::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 80%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(52, 152, 219, 0.08), transparent 70%);
+    pointer-events: none;
+}
+
+.cover-page::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--success), var(--primary));
+}
+
+.cover-page .book-icon {
+    font-size: 80px;
+    margin-bottom: 25px;
+    color: var(--primary);
+    text-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);
+    animation: floatBook 3s ease-in-out infinite;
+}
+
+@keyframes floatBook {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.cover-page h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff 60%, var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cover-page .subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 35px;
+    font-weight: 300;
+    letter-spacing: 3px;
+}
+
+.cover-page .version-badge {
+    display: inline-block;
+    background: rgba(52, 152, 219, 0.2);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    padding: 8px 28px;
+    border-radius: 20px;
+    font-size: 15px;
+    color: var(--primary);
+    margin-bottom: 35px;
+}
+
+.cover-page .divider-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 15px auto;
+}
+
+.cover-page .author {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 10px;
+}
+
+.cover-page .author strong {
+    color: white;
+    font-weight: 600;
+}
+
+.cover-page .year {
+    font-size: 15px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 5px;
+}
+
+.cover-page .flip-hint {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    animation: pulseHint 2s ease-in-out infinite;
+    letter-spacing: 1px;
+}
+
+@keyframes pulseHint {
+    0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.8; transform: translateX(-50%) scale(1.05); }
+}
+
+/* ======================================== */
+/* CONTENT PAGES                           */
+/* ======================================== */
+.content-page {
+    background: #fefcf3;
+    padding: 45px 55px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-page .page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.content-page .page-title i {
+    color: var(--primary);
+    font-size: 24px;
+}
+
+.content-page .content-body {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.9;
+    color: #444;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.content-page .content-body h4 {
+    color: var(--secondary);
+    font-size: 17px;
+    margin: 18px 0 10px;
+}
+
+.content-page .content-body p {
+    margin-bottom: 8px;
+}
+
+.content-page .content-body ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0;
+}
+
+.content-page .content-body ul li {
+    padding: 5px 0 5px 28px;
+    position: relative;
+}
+
+.content-page .content-body ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.content-page .content-body .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.content-page .content-body .feature-item {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border-left: 3px solid var(--primary);
+    font-size: 14px;
+}
+
+.content-page .content-body .feature-item i {
+    color: var(--primary);
+    margin-right: 8px;
+}
+
+/* TOC Page */
+.toc-page .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.toc-page .toc-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.toc-page .toc-list li:hover {
+    background: #f1f8ff;
+    padding-left: 24px;
+}
+
+.toc-page .toc-list li .page-num {
+    color: var(--gray);
+    font-size: 13px;
+}
+
+.toc-page .toc-list li i {
+    color: var(--primary);
+    margin-right: 14px;
+    width: 20px;
+}
+
+/* ======================================== */
+/* NAVIGATION CONTROLS                    */
+/* ======================================== */
+.book-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 25px;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 600px;
+}
+
+.book-controls .nav-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    background: var(--secondary);
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.book-controls .nav-btn:hover:not(:disabled) {
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.book-controls .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.book-controls .page-indicator {
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* ======================================== */
+/* RESPONSIVE                              */
+/* ======================================== */
+@media (max-width: 768px) {
+    .book {
+        aspect-ratio: auto;
+        min-height: 500px;
+    }
+
+    .book-page {
+        padding: 25px 30px;
+        min-height: 500px;
+    }
+
+    .cover-page {
+        padding: 35px;
+        min-height: 500px;
+    }
+
+    .cover-page h1 {
+        font-size: 30px;
+    }
+
+    .cover-page .book-icon {
+        font-size: 52px;
+    }
+
+    .cover-page .subtitle {
+        font-size: 15px;
+    }
+
+    .content-page {
+        padding: 25px 30px;
+        min-height: 500px;
+    }
+
+    .content-page .page-title {
+        font-size: 20px;
+    }
+
+    .content-page .content-body {
+        font-size: 14px;
+    }
+
+    .content-page .content-body .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .toc-page .toc-list li {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .book-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px 15px;
+    }
+
+    .book-controls .nav-btn {
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+
+    .book-controls .page-indicator {
+        min-width: 80px;
+        font-size: 12px;
+        order: -1;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-page {
+        padding: 18px 20px;
+        min-height: 400px;
+    }
+
+    .cover-page {
+        padding: 25px;
+        min-height: 400px;
+    }
+
+    .cover-page h1 {
+        font-size: 22px;
+    }
+
+    .cover-page .book-icon {
+        font-size: 40px;
+    }
+
+    .content-page {
+        padding: 18px 20px;
+        min-height: 400px;
+    }
+
+    .content-page .page-title {
+        font-size: 17px;
+    }
+
+    .content-page .content-body {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .content-page .content-body .feature-item {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .toc-page .toc-list li {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+}
     </style>
 </head>
 <body>
+    <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
-    
+
+    <!-- Main Content -->
     <div class="main-content" id="mainContent">
+        <!-- Header Container -->
         <div id="header-container"></div>
-        
+
+        <!-- Page Content -->
         <div id="page-content">
-            <div class="page-container coming-soon">
-                <i class="fas fa-book"></i>
-                <h2>System Guide</h2>
-                <p>This feature is currently under development and will be available soon.</p>
-                <button class="search-btn" onclick="window.location.href='../../index.html'">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </button>
+            <div class="page-container">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h2>
+                        <i class="fas fa-book"></i>
+                        System Guide
+                    </h2>
+                </div>
+
+                <!-- Book Container -->
+                <div class="book-container">
+                    <div class="book-wrapper">
+                        <div class="book" id="book">
+                            <!-- Book spine shadow -->
+                            <div class="book-spine"></div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 0: COVER                             -->
+                            <!-- ========================================== -->
+                            <div class="book-page cover-page current" data-page="0">
+                                <div class="book-icon">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <h1>Hospital Service Portal</h1>
+                                <div class="subtitle">System Guide</div>
+                                <div class="version-badge">
+                                    <i class="fas fa-tag"></i> Version 4.0
+                                </div>
+                                <div class="divider-line"></div>
+                                <div class="author">
+                                    Author: <strong>Phillip Z.P</strong>
+                                </div>
+                                <div class="year">
+                                    <i class="far fa-calendar-alt"></i> © 2026
+                                </div>
+                                <div class="flip-hint">
+                                    <i class="fas fa-chevron-right"></i> Click or drag to flip <i class="fas fa-chevron-left"></i>
+                                </div>
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 1: TABLE OF CONTENTS                  -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page toc-page" data-page="1">
+                                <div class="page-title">
+                                    <i class="fas fa-list"></i> Table of Contents
+                                </div>
+                                <div class="content-body">
+                                    <ul class="toc-list">
+                                        <li onclick="goToPage(2)">
+                                            <span><i class="fas fa-info-circle"></i> 1. Introduction</span>
+                                            <span class="page-num">Page 3</span>
+                                        </li>
+                                        <li onclick="goToPage(3)">
+                                            <span><i class="fas fa-rocket"></i> 2. Getting Started</span>
+                                            <span class="page-num">Page 4</span>
+                                        </li>
+                                        <li onclick="goToPage(4)">
+                                            <span><i class="fas fa-users"></i> 3. User Management</span>
+                                            <span class="page-num">Page 5</span>
+                                        </li>
+                                        <li onclick="goToPage(5)">
+                                            <span><i class="fas fa-user-md"></i> 4. Outpatient Services</span>
+                                            <span class="page-num">Page 6</span>
+                                        </li>
+                                        <li onclick="goToPage(6)">
+                                            <span><i class="fas fa-procedures"></i> 5. Inpatient Services</span>
+                                            <span class="page-num">Page 7</span>
+                                        </li>
+                                        <li onclick="goToPage(7)">
+                                            <span><i class="fas fa-exchange-alt"></i> 6. Referrals Management</span>
+                                            <span class="page-num">Page 8</span>
+                                        </li>
+                                        <li onclick="goToPage(8)">
+                                            <span><i class="fas fa-file-invoice-dollar"></i> 7. Claims Management</span>
+                                            <span class="page-num">Page 9</span>
+                                        </li>
+                                        <li onclick="goToPage(9)">
+                                            <span><i class="fas fa-tags"></i> 8. Service Guide</span>
+                                            <span class="page-num">Page 10</span>
+                                        </li>
+                                        <li onclick="goToPage(10)">
+                                            <span><i class="fas fa-cogs"></i> 9. System Configuration</span>
+                                            <span class="page-num">Page 11</span>
+                                        </li>
+                                        <li onclick="goToPage(11)">
+                                            <span><i class="fas fa-question-circle"></i> 10. FAQs & Troubleshooting</span>
+                                            <span class="page-num">Page 12</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                2 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 2: INTRODUCTION                       -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="2">
+                                <div class="page-title">
+                                    <i class="fas fa-info-circle"></i> 1. Introduction
+                                </div>
+                                <div class="content-body">
+                                    <h4>Welcome to the Hospital Service Portal</h4>
+                                    <p>The Hospital Service Portal is a comprehensive healthcare management system designed to streamline patient care, insurance verification, and administrative processes. Built with modern web technologies, it provides a unified platform for managing all aspects of hospital operations.</p>
+                                    <h4>Key Features</h4>
+                                    <div class="feature-grid">
+                                        <div class="feature-item"><i class="fas fa-check-circle"></i> Member Verification</div>
+                                        <div class="feature-item"><i class="fas fa-check-circle"></i> Service Approvals</div>
+                                        <div class="feature-item"><i class="fas fa-check-circle"></i> Inpatient Management</div>
+                                        <div class="feature-item"><i class="fas fa-check-circle"></i> Referral Processing</div>
+                                        <div class="feature-item"><i class="fas fa-check-circle"></i> Claims Management</div>
+                                        <div class="feature-item"><i class="fas fa-check-circle"></i> User & Role Management</div>
+                                    </div>
+                                    <h4>System Overview</h4>
+                                    <p>The system is built with a modular architecture, allowing healthcare facilities to manage:</p>
+                                    <ul>
+                                        <li>Patient registration and verification</li>
+                                        <li>Insurance and benefit management</li>
+                                        <li>Inpatient and outpatient services</li>
+                                        <li>Referral and claims processing</li>
+                                        <li>User access control and permissions</li>
+                                    </ul>
+                                </div>
+                                3 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 3: GETTING STARTED                    -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="3">
+                                <div class="page-title">
+                                    <i class="fas fa-rocket"></i> 2. Getting Started
+                                </div>
+                                <div class="content-body">
+                                    <h4>Logging In</h4>
+                                    <p>To access the Hospital Service Portal, users must have valid credentials provided by the system administrator.</p>
+                                    <ul>
+                                        <li>Navigate to the login page</li>
+                                        <li>Enter your username or hospital number</li>
+                                        <li>Enter your password</li>
+                                        <li>Click the <strong>Login</strong> button</li>
+                                    </ul>
+                                    <h4>Default Credentials</h4>
+                                    <ul>
+                                        <li><strong>Username:</strong> admin</li>
+                                        <li><strong>Password:</strong> admin123</li>
+                                    </ul>
+                                    <p style="color: var(--danger); font-style: italic; margin-top: 10px;">⚠️ Change default passwords immediately after first login.</p>
+                                    <h4>Dashboard Overview</h4>
+                                    <p>After logging in, you will be directed to the Dashboard, which provides quick access to all system modules through interactive cards.</p>
+                                </div>
+                                4 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 4: USER MANAGEMENT                     -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="4">
+                                <div class="page-title">
+                                    <i class="fas fa-users"></i> 3. User Management
+                                </div>
+                                <div class="content-body">
+                                    <h4>Overview</h4>
+                                    <p>The User Management module allows administrators to create, edit, and manage system users.</p>
+                                    <h4>Key Functions</h4>
+                                    <ul>
+                                        <li><strong>Add User:</strong> Create new user accounts with unique usernames and roles</li>
+                                        <li><strong>Edit User:</strong> Update user information and permissions</li>
+                                        <li><strong>Reset Password:</strong> Reset user passwords to default (HPU-2026)</li>
+                                        <li><strong>Toggle Status:</strong> Activate or deactivate user accounts</li>
+                                        <li><strong>Delete User:</strong> Permanently remove users from the system</li>
+                                    </ul>
+                                    <h4>User Roles</h4>
+                                    <ul>
+                                        <li><strong>System Administrator:</strong> Full system access</li>
+                                        <li><strong>Doctor:</strong> Clinical access to patient records</li>
+                                        <li><strong>Front Desk:</strong> Patient registration and verification</li>
+                                        <li><strong>Data Clerk:</strong> Data entry and reporting</li>
+                                    </ul>
+                                </div>
+                                5 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 5: OUTPATIENT SERVICES                 -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="5">
+                                <div class="page-title">
+                                    <i class="fas fa-user-md"></i> 4. Outpatient Services
+                                </div>
+                                <div class="content-body">
+                                    <h4>Member Verification</h4>
+                                    <p>Verify patient eligibility and coverage by searching for their authorization number.</p>
+                                    <ul>
+                                        <li>Enter the authorization number</li>
+                                        <li>View patient profile and benefit details</li>
+                                        <li>Authorize services for the patient</li>
+                                    </ul>
+                                    <h4>Service Approvals</h4>
+                                    <p>Manage service approval requests through four tabs:</p>
+                                    <ul>
+                                        <li><strong>Request Approval:</strong> Submit new approval requests</li>
+                                        <li><strong>Requested Approval:</strong> View pending approvals</li>
+                                        <li><strong>Issuing Service:</strong> Issue approved services</li>
+                                        <li><strong>Issued Approval Services:</strong> View completed issuances</li>
+                                    </ul>
+                                </div>
+                                6 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 6: INPATIENT SERVICES                  -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="6">
+                                <div class="page-title">
+                                    <i class="fas fa-procedures"></i> 5. Inpatient Services
+                                </div>
+                                <div class="content-body">
+                                    <h4>Patient Admission</h4>
+                                    <p>Admit patients to the hospital by searching for their authorization number.</p>
+                                    <ul>
+                                        <li>Search by authorization number</li>
+                                        <li>Auto-populate patient information</li>
+                                        <li>Select ward type and room type</li>
+                                        <li>Enter admission details and reason</li>
+                                    </ul>
+                                    <h4>Discharge & Transfer</h4>
+                                    <p>Manage patient discharge with a complete form.</p>
+                                    <ul>
+                                        <li>View admitted patients list</li>
+                                        <li>Click discharge to open the discharge form</li>
+                                        <li>Enter discharge details, diagnosis, and remarks</li>
+                                        <li>Confirm and complete the discharge</li>
+                                    </ul>
+                                    <h4>Admitted Patients List</h4>
+                                    <p>View all admitted and discharged patients with status filters and export capabilities.</p>
+                                </div>
+                                7 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 7: REFERRALS MANAGEMENT                -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="7">
+                                <div class="page-title">
+                                    <i class="fas fa-exchange-alt"></i> 6. Referrals Management
+                                </div>
+                                <div class="content-body">
+                                    <h4>Referral Request</h4>
+                                    <p>Create new referral requests for patients.</p>
+                                    <ul>
+                                        <li>Search by authorization number</li>
+                                        <li>Auto-populate patient information</li>
+                                        <li>Select referral type and practitioner</li>
+                                        <li>Enter reasons for referral</li>
+                                        <li>Submit to generate referral number</li>
+                                    </ul>
+                                    <h4>Referred Patients List</h4>
+                                    <p>View and manage all referral records.</p>
+                                    <ul>
+                                        <li>Filter by month and year</li>
+                                        <li>Edit existing referrals</li>
+                                        <li>Export referral data to CSV</li>
+                                        <li>Track referral status</li>
+                                    </ul>
+                                    <h4>ZHSF Referral</h4>
+                                    <p>Specialized referral process for Zanzibar Health Insurance Fund (ZHSF) members.</p>
+                                </div>
+                                8 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 8: CLAIMS MANAGEMENT                   -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="8">
+                                <div class="page-title">
+                                    <i class="fas fa-file-invoice-dollar"></i> 7. Claims Management
+                                </div>
+                                <div class="content-body">
+                                    <h4>Bill Summary</h4>
+                                    <p>View and manage patient billing summaries.</p>
+                                    <h4>Total Claims Submitted</h4>
+                                    <p>Track all submitted insurance claims.</p>
+                                    <h4>Previous Claims</h4>
+                                    <p>Access historical claims data for reporting and auditing.</p>
+                                    <h4>Claim Reconciliation</h4>
+                                    <p>Reconcile claims with payments and resolve discrepancies.</p>
+                                    <br>
+                                    <p style="color: var(--gray); font-style: italic;">📌 Claims Management module is currently under development.</p>
+                                </div>
+                                9 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 9: SERVICE GUIDE                       -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="9">
+                                <div class="page-title">
+                                    <i class="fas fa-tags"></i> 8. Service Guide
+                                </div>
+                                <div class="content-body">
+                                    <h4>Price List</h4>
+                                    <p>View the comprehensive NHIF/ZHSF price list for all covered services.</p>
+                                    <ul>
+                                        <li>Search by item code or name</li>
+                                        <li>Filter by benefit scheme</li>
+                                        <li>Export to CSV or PDF</li>
+                                        <li>View item details</li>
+                                    </ul>
+                                    <h4>Visit Types Guide</h4>
+                                    <p>Understand different visit types and their requirements.</p>
+                                    <ul>
+                                        <li><strong>Normal Visit:</strong> Standard consultation</li>
+                                        <li><strong>Emergency Visit:</strong> Emergency care</li>
+                                        <li><strong>Referral Visit:</strong> Referred from another facility</li>
+                                        <li><strong>Follow-Up Visit:</strong> Post-treatment follow-up</li>
+                                    </ul>
+                                    <p>Each visit type has specific documentation requirements and consultation charges.</p>
+                                </div>
+                                10 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 10: SYSTEM CONFIGURATION               -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="10">
+                                <div class="page-title">
+                                    <i class="fas fa-cogs"></i> 9. System Configuration
+                                </div>
+                                <div class="content-body">
+                                    <h4>System Settings</h4>
+                                    <p>Configure system-wide settings and parameters.</p>
+                                    <h4>Button Configuration</h4>
+                                    <p>Customize button layouts and functionality across the system.</p>
+                                    <h4>Other Configurations</h4>
+                                    <p>Manage additional system configurations and preferences.</p>
+                                    <h4>System Guide</h4>
+                                    <p>This guide provides comprehensive documentation for all system features.</p>
+                                    <br>
+                                    <p style="color: var(--gray); font-style: italic;">📌 This section is currently under development.</p>
+                                </div>
+                                11 
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- PAGE 11: FAQ & TROUBLESHOOTING              -->
+                            <!-- ========================================== -->
+                            <div class="book-page content-page" data-page="11">
+                                <div class="page-title">
+                                    <i class="fas fa-question-circle"></i> 10. FAQs & Troubleshooting
+                                </div>
+                                <div class="content-body">
+                                    <h4>Frequently Asked Questions</h4>
+                                    <p><strong>Q: How do I reset my password?</strong></p>
+                                    <p>A: Click on your user avatar, select "Change Password," and follow the prompts.</p>
+                                    <br>
+                                    <p><strong>Q: How do I verify a patient?</strong></p>
+                                    <p>A: Go to Outpatient Services → Member Verification, enter the authorization number, and click Search.</p>
+                                    <br>
+                                    <p><strong>Q: How do I discharge a patient?</strong></p>
+                                    <p>A: Go to Inpatient Services → Discharge/Transfer, find the patient, and click the "Discharge" button.</p>
+                                    <br>
+                                    <h4>Common Issues</h4>
+                                    <ul>
+                                        <li><strong>Login Failed:</strong> Check username/password, ensure account is active</li>
+                                        <li><strong>Patient Not Found:</strong> Verify the authorization number is correct</li>
+                                        <li><strong>Permissions Error:</strong> Contact your system administrator</li>
+                                    </ul>
+                                    <br>
+                                    <p style="color: var(--gray); font-style: italic;">📌 For additional support, contact the ICT-UNIT.</p>
+                                </div>
+                                12 
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="book-controls">
+                        <button class="nav-btn" id="prevPageBtn" onclick="prevPage()">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <span class="page-indicator" id="pageIndicator">Page 1 of 12</span>
+                        <button class="nav-btn" id="nextPageBtn" onclick="nextPage()">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
+        <!-- Footer Container -->
         <div id="footer-container"></div>
     </div>
-    
+
+    <!-- Modals Container -->
     <div id="modals-container"></div>
-    
+
     <script src="../../assets/js/common.js"></script>
-     <script>
-    // ========================================
-    // COMPONENT LOADING
-    // ========================================
-    
-    async function loadComponents() {
-        try {
-            // Load sidebar
-            const sidebarRes = await fetch('../../components/sidebar.html');
-            if (sidebarRes.ok) {
-                document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
-            }
-            
-            // Load header
-            const headerRes = await fetch('../../components/header.html');
-            if (headerRes.ok) {
-                document.getElementById('header-container').innerHTML = await headerRes.text();
-            }
-            
-            // Load footer
-            const footerRes = await fetch('../../components/footer.html');
-            if (footerRes.ok) {
-                document.getElementById('footer-container').innerHTML = await footerRes.text();
-            }
-            
-            // Load modals
-            const modalsRes = await fetch('../../components/modals.html');
-            if (modalsRes.ok) {
-                document.getElementById('modals-container').innerHTML = await modalsRes.text();
-            }
-            
-            // Initialize after components loaded
-            initPageComponents();
-            
-        } catch (error) {
-            console.error('Error loading components:', error);
-        }
-    }
-    
-    function initPageComponents() {
-        // Initialize user dropdown
-        if (typeof initUserDropdown === 'function') {
-            initUserDropdown();
-        }
-        
-        // Set user info from sessionStorage
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        
-        const userNameSpan = document.getElementById('userName');
-        const jobTitleSpan = document.getElementById('jobTitle');
-        const userAvatar = document.getElementById('userAvatar');
-        
-        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-        if (userNameSpan) userNameSpan.textContent = userName;
-        if (userAvatar) {
-            const initials = userName.split(' ').map(n => n[0]).join('');
-            userAvatar.textContent = initials;
-        }
-        
-        // Sidebar toggle (hamburger menu)
-        const menuToggle = document.getElementById('menuToggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSidebar();
+    <script>
+        // ========================================
+        // BOOK CONTROLS
+        // ========================================
+        let currentPage = 0;
+        const totalPages = 12; // 0 = cover, 1-11 = content pages
+
+        const book = document.getElementById('book');
+
+        function goToPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+
+            // Hide all pages
+            document.querySelectorAll('.book-page').forEach((page, index) => {
+                if (index === pageIndex) {
+                    page.classList.add('current');
+                    page.classList.remove('flipped');
+                    page.classList.remove('hidden');
+                } else if (index < pageIndex) {
+                    // Pages before current are flipped (behind)
+                    page.classList.add('flipped');
+                    page.classList.remove('current');
+                    page.classList.remove('hidden');
+                } else {
+                    // Pages after current are hidden
+                    page.classList.add('hidden');
+                    page.classList.remove('current');
+                    page.classList.remove('flipped');
+                }
             });
+
+            currentPage = pageIndex;
+            updateControls();
         }
 
-        // Close sidebar button (X button)
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeSidebar();
-            });
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                goToPage(currentPage + 1);
+            }
         }
 
-        // Initialize sidebar state
-        initSidebarState();
+        function prevPage() {
+            if (currentPage > 0) {
+                goToPage(currentPage - 1);
+            }
+        }
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            handleResponsiveSidebar();
+        function updateControls() {
+            document.getElementById('pageIndicator').textContent = `Page ${currentPage + 1} of ${totalPages}`;
+            document.getElementById('prevPageBtn').disabled = currentPage === 0;
+            document.getElementById('nextPageBtn').disabled = currentPage === totalPages - 1;
+        }
+
+        // ========================================
+        // KEYBOARD SUPPORT
+        // ========================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                prevPage();
+            }
         });
-    }
-    document.addEventListener('DOMContentLoaded', loadComponents);
-</script>
+
+        // ========================================
+        // CLICK TO FLIP
+        // ========================================
+        book.addEventListener('click', function(e) {
+            // Don't flip if clicking on TOC items
+            if (e.target.closest('.toc-list li')) return;
+
+            const rect = this.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+
+            if (clickX > width / 2) {
+                nextPage();
+            } else {
+                prevPage();
+            }
+        });
+
+        // ========================================
+        // MOUSE DRAG TO FLIP
+        // ========================================
+        let isDragging = false;
+        let startX = 0;
+        let dragPage = false;
+
+        book.addEventListener('mousedown', function(e) {
+            // Don't drag if clicking on TOC items
+            if (e.target.closest('.toc-list li')) return;
+
+            isDragging = true;
+            startX = e.clientX;
+            this.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+
+            const diff = e.clientX - startX;
+            const threshold = 80;
+
+            if (Math.abs(diff) > threshold) {
+                dragPage = true;
+                if (diff > 0 && currentPage > 0) {
+                    // Dragging right = previous page
+                    // But we only trigger on release
+                } else if (diff < 0 && currentPage < totalPages - 1) {
+                    // Dragging left = next page
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', function(e) {
+            if (!isDragging) return;
+
+            isDragging = false;
+            book.style.cursor = 'pointer';
+
+            if (dragPage) {
+                const diff = e.clientX - startX;
+                const threshold = 50;
+
+                if (diff > threshold && currentPage > 0) {
+                    prevPage();
+                } else if (diff < -threshold && currentPage < totalPages - 1) {
+                    nextPage();
+                }
+                dragPage = false;
+            }
+        });
+
+        // ========================================
+        // MOUSE WHEEL SUPPORT
+        // ========================================
+        let wheelTimeout = false;
+
+        document.getElementById('book').addEventListener('wheel', function(e) {
+            if (wheelTimeout) return;
+            wheelTimeout = true;
+
+            if (e.deltaY > 0) {
+                nextPage();
+            } else if (e.deltaY < 0) {
+                prevPage();
+            }
+
+            setTimeout(() => {
+                wheelTimeout = false;
+            }, 500);
+        }, { passive: true });
+
+        // ========================================
+        // TOUCH SUPPORT (Mobile)
+        // ========================================
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        book.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        book.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+
+            // Swipe threshold
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextPage();
+                } else {
+                    prevPage();
+                }
+            }
+        });
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') initSidebarState();
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Initialize book
+            goToPage(0);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.goToPage = goToPage;
+        window.nextPage = nextPage;
+        window.prevPage = prevPage;
+    </script>
 </body>
 </html>

@@ -7,150 +7,915 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
+        /* ===== Page Specific Styles ===== */
         .page-container {
             padding: 20px;
             margin: 20px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 100%;
         }
-        
+
         .page-header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
             border-bottom: 2px solid var(--primary);
-            display: inline-block;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-        
-        .coming-soon {
-            text-align: center;
-            padding: 60px;
-        }
-        
-        .coming-soon i {
-            font-size: 64px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .coming-soon h2 {
+
+        .page-header h2 {
             color: var(--secondary);
-            margin-bottom: 15px;
+            font-size: 24px;
+            margin: 0;
         }
-        
-        .coming-soon p {
+
+        .page-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        /* ===== Search Bar ===== */
+        .search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .search-bar input {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            flex: 1;
+            max-width: 50%;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-bar .search-btn {
+            margin-top: 0;
+            padding: 8px 20px;
+        }
+
+        /* ===== Patient & Admission Details ===== */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .details-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .details-section h4 {
+            color: var(--secondary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .details-section h4 i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .detail-row label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .detail-row label .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .detail-row input,
+        .detail-row select {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            width: 100%;
+        }
+
+        .detail-row input:focus,
+        .detail-row select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .detail-row input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .detail-row input.error,
+        .detail-row select.error {
+            border-color: var(--danger);
+        }
+
+        .detail-row .error-text {
+            font-size: 11px;
+            color: var(--danger);
+            margin-top: 2px;
+            display: none;
+        }
+
+        .detail-row .error-text.show {
+            display: block;
+        }
+
+        /* ===== Reason for Admission ===== */
+        .reason-section {
+            margin-top: 20px;
+        }
+
+        .reason-section label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .reason-section label .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .reason-section textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .reason-section textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .reason-section textarea.error {
+            border-color: var(--danger);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
             color: var(--gray);
-            margin-bottom: 30px;
+            margin-top: 4px;
+        }
+
+        .char-counter .warning {
+            color: var(--warning);
+        }
+
+        .char-counter .danger {
+            color: var(--danger);
+        }
+
+        /* ===== Form Actions ===== */
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            justify-content: flex-end;
+        }
+
+        .btn-admit {
+            padding: 10px 30px;
+            background: linear-gradient(135deg, var(--success), #219653);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-admit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-admit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-cancel {
+            padding: 10px 30px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* ===== Notification ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+
+        .notification.success { background-color: var(--success); }
+        .notification.error { background-color: var(--danger); }
+        .notification.info { background-color: var(--primary); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ===== Loading Spinner ===== */
+        .spinner-sm {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 992px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            .detail-row label {
+                font-size: 12px;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .btn-admit,
+            .form-actions .btn-cancel {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ===== Hidden state ===== */
+        #admissionFormContainer {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
-    
+
+    <!-- Main Content -->
     <div class="main-content" id="mainContent">
+        <!-- Header Container -->
         <div id="header-container"></div>
-        
+
+        <!-- Page Content -->
         <div id="page-content">
-            <div class="page-container coming-soon">
-                <i class="fas fa-procedures"></i>
-                <h2>Patient Admission</h2>
-                <p>This feature is currently under development and will be available soon.</p>
-                <button class="search-btn" onclick="window.location.href='../../index.html'">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </button>
+            <div class="page-container">
+                <!-- Page Header (No Back button) -->
+                <div class="page-header">
+                    <h2>
+                        <i class="fas fa-bed"></i>
+                        Patient Admission
+                    </h2>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <input type="text" id="authSearchInput" placeholder="Enter Authorization Number to search...">
+                    <button class="search-btn" onclick="searchAuthorization()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <!-- Admission Form (hidden until patient found) -->
+                <div id="admissionFormContainer">
+                    <div class="details-grid">
+                        <!-- LEFT COLUMN: Patient Information -->
+                        <div class="details-section">
+                            <h4><i class="fas fa-user"></i> Patient Information</h4>
+                            <div class="detail-row">
+                                <label>Card No.:</label>
+                                <input type="text" id="cardNo" disabled>
+                            </div>
+                            <div class="detail-row">
+                                <label>Full Name:</label>
+                                <input type="text" id="fullName">
+                            </div>
+                            <div class="detail-row">
+                                <label>Gender:</label>
+                                <select id="gender">
+                                    <option value="Male">Male</option>
+                                    <option value="Female" selected>Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Date of Birth:</label>
+                                <input type="date" id="dob">
+                            </div>
+                            <div class="detail-row">
+                                <label>Attendance Date:</label>
+                                <input type="date" id="attendanceDate">
+                            </div>
+                            <div class="detail-row">
+                                <label>Ward Type:</label>
+                                <select id="wardType">
+                                    <option value="Normal">Normal</option>
+                                    <option value="ICU">ICU</option>
+                                    <option value="HDU">HDU</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Charges Per Day <span class="required">*</span></label>
+                                <input type="number" id="chargesPerDay" placeholder="0.00" step="0.01" min="0">
+                                <div class="error-text" id="chargesPerDay-error">Please enter charges per day</div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN: Admission Details -->
+                        <div class="details-section">
+                            <h4><i class="fas fa-file-invoice"></i> Admission Details</h4>
+                            <div class="detail-row">
+                                <label>Authorization No.:</label>
+                                <input type="text" id="authorizationNo" disabled>
+                            </div>
+                            <div class="detail-row">
+                                <label>Admission Type <span class="required">*</span></label>
+                                <select id="admissionType">
+                                    <option value="">Select Admission Type...</option>
+                                    <option value="Accomodation VVIP">Accomodation VVIP</option>
+                                    <option value="Admission charges for Private Wards">Admission charges for Private Wards</option>
+                                    <option value="Accomodation for supplemenary">Accomodation for supplemenary</option>
+                                    <option value="ICU for RRH and District Hospital">ICU for RRH and District Hospital</option>
+                                    <option value="Admission Fee for Ordinary Wards">Admission Fee for Ordinary Wards</option>
+                                    <option value="Intensive Care Unit (ICU)">Intensive Care Unit (ICU)</option>
+                                    <option value="Admission charges for premium wards">Admission charges for premium wards</option>
+                                    <option value="Admission Charges for Private Wards - VIP">Admission Charges for Private Wards - VIP</option>
+                                    <option value="Neonatal ICU">Neonatal ICU</option>
+                                    <option value="Private ICU Top up">Private ICU Top up</option>
+                                    <option value="Icu Private">Icu Private</option>
+                                    <option value="High Dependency Unit (HDU)">High Dependency Unit (HDU)</option>
+                                    <option value="Admission charges for corporate beneficiaries">Admission charges for corporate beneficiaries</option>
+                                    <option value="High-intensity focused Ultrasound(HIFU)">High-intensity focused Ultrasound(HIFU)</option>
+                                    <option value="Accomodation Private">Accomodation Private</option>
+                                    <option value="Admission Charges for Private Wards - Single Bed">Admission Charges for Private Wards - Single Bed</option>
+                                    <option value="Admission Charges for Private Wards - Executive">Admission Charges for Private Wards - Executive</option>
+                                    <option value="Accomodation VIP">Accomodation VIP</option>
+                                </select>
+                                <div class="error-text" id="admissionType-error">Please select admission type</div>
+                            </div>
+                            <div class="detail-row">
+                                <label>Admission Date <span class="required">*</span></label>
+                                <input type="date" id="admissionDate">
+                                <div class="error-text" id="admissionDate-error">Please select admission date</div>
+                            </div>
+                            <div class="detail-row">
+                                <label>Practitioner Name:</label>
+                                <select id="practitioner">
+                                    <option value="">Select Practitioner</option>
+                                    <option value="Dr. Sarah Johnson">Dr. Sarah Johnson</option>
+                                    <option value="Dr. Michael Brown">Dr. Michael Brown</option>
+                                    <option value="Dr. Emily Davis">Dr. Emily Davis</option>
+                                    <option value="Dr. James Wilson">Dr. James Wilson</option>
+                                    <option value="Dr. Robert Chen">Dr. Robert Chen</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Diagnosis at Admission:</label>
+                                <select id="diagnosis">
+                                    <option value="">Select Diagnosis</option>
+                                    <option value="A09">A09 - Infectious gastroenteritis</option>
+                                    <option value="J06">J06 - Acute upper respiratory infections</option>
+                                    <option value="E11">E11 - Type 2 diabetes mellitus</option>
+                                    <option value="I10">I10 - Essential hypertension</option>
+                                    <option value="M54">M54 - Back pain</option>
+                                    <option value="N39">N39 - Urinary tract infection</option>
+                                    <option value="R51">R51 - Headache</option>
+                                </select>
+                            </div>
+                            <div class="detail-row">
+                                <label>Room Type:</label>
+                                <select id="roomType">
+                                    <option value="General">General</option>
+                                    <option value="Private">Private</option>
+                                    <option value="VIP">VIP</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reason for Admission -->
+                    <div class="reason-section">
+                        <label>Reason for Admission <span class="required">*</span></label>
+                        <textarea id="reasonForAdmission" placeholder="Enter reason for admission..." maxlength="500"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> / 500 characters
+                        </div>
+                        <div class="error-text" id="reason-error" style="color: var(--danger); font-size: 12px; display: none;">Please enter reason for admission</div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button class="btn-cancel" onclick="resetForm()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button class="btn-admit" id="admitBtn" onclick="submitAdmission()">
+                            <i class="fas fa-user-plus"></i> Admit Patient
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
+        <!-- Footer Container -->
         <div id="footer-container"></div>
     </div>
-    
+
+    <!-- Modals Container -->
     <div id="modals-container"></div>
-    
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
     <script src="../../assets/js/common.js"></script>
-<script>
-     async function loadComponents() {
-        try {
-            // Load sidebar
-            const sidebarRes = await fetch('../../components/sidebar.html');
-            if (sidebarRes.ok) {
-                document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
+    <script>
+        // ========================================
+        // DATA STORES
+        // ========================================
+        let mockAuthorizations = {};
+        let currentAuthData = null;
+
+        // ========================================
+        // LOAD AUTHORIZATIONS
+        // ========================================
+        async function loadAuthorizations() {
+            try {
+                const authorizations = await DataService.getAuthorizations();
+                if (authorizations && Array.isArray(authorizations)) {
+                    mockAuthorizations = {};
+                    authorizations.forEach(auth => {
+                        mockAuthorizations[auth.authNumber] = auth;
+                    });
+                } else {
+                    console.warn('No authorizations data found');
+                    mockAuthorizations = {};
+                }
+            } catch (error) {
+                console.error('Failed to load authorizations:', error);
+                mockAuthorizations = {};
             }
-            
-            // Load header
-            const headerRes = await fetch('../../components/header.html');
-            if (headerRes.ok) {
-                document.getElementById('header-container').innerHTML = await headerRes.text();
-            }
-            
-            // Load footer
-            const footerRes = await fetch('../../components/footer.html');
-            if (footerRes.ok) {
-                document.getElementById('footer-container').innerHTML = await footerRes.text();
-            }
-            
-            // Load modals
-            const modalsRes = await fetch('../../components/modals.html');
-            if (modalsRes.ok) {
-                document.getElementById('modals-container').innerHTML = await modalsRes.text();
-            }
-            
-            // Initialize after components loaded
-            initPageComponents();
-            
-        } catch (error) {
-            console.error('Error loading components:', error);
-        }
-    }
-    
-    function initPageComponents() {
-        // Initialize user dropdown
-        if (typeof initUserDropdown === 'function') {
-            initUserDropdown();
-        }
-        
-        // Set user info from sessionStorage
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        
-        const userNameSpan = document.getElementById('userName');
-        const jobTitleSpan = document.getElementById('jobTitle');
-        const userAvatar = document.getElementById('userAvatar');
-        
-        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-        if (userNameSpan) userNameSpan.textContent = userName;
-        if (userAvatar) {
-            const initials = userName.split(' ').map(n => n[0]).join('');
-            userAvatar.textContent = initials;
-        }
-        
-        // Sidebar toggle (hamburger menu)
-        const menuToggle = document.getElementById('menuToggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSidebar();
-            });
         }
 
-        // Close sidebar button (X button)
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeSidebar();
-            });
+        // ========================================
+        // SEARCH AUTHORIZATION
+        // ========================================
+        async function searchAuthorization() {
+            const authNo = document.getElementById('authSearchInput').value.trim();
+            const formContainer = document.getElementById('admissionFormContainer');
+
+            if (!authNo) {
+                showNotification('Please enter an Authorization Number', 'error');
+                return;
+            }
+
+            // Show loading state on button
+            const btn = document.querySelector('.search-bar .search-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+            btn.disabled = true;
+
+            if (Object.keys(mockAuthorizations).length === 0) {
+                await loadAuthorizations();
+            }
+
+            const authData = mockAuthorizations[authNo];
+
+            // Reset button
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            if (authData) {
+                currentAuthData = authData;
+
+                // Populate Patient Information
+                document.getElementById('cardNo').value = authData.cardNo || authNo;
+                document.getElementById('fullName').value = authData.fullName || authData.memberName || 'Patient Name';
+                document.getElementById('gender').value = authData.gender || 'Male';
+                document.getElementById('dob').value = authData.dob || '';
+                document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('authorizationNo').value = authNo;
+
+                // Set default admission date to today
+                document.getElementById('admissionDate').value = new Date().toISOString().split('T')[0];
+
+                // Auto-set charges based on room type
+                updateCharges();
+
+                // Show form
+                formContainer.style.display = 'block';
+
+                showNotification(`Authorization ${authNo} found! Patient: ${authData.fullName || authData.memberName || 'Patient'}`, 'success');
+            } else {
+                formContainer.style.display = 'none';
+                showNotification('No authorization found for: ' + authNo, 'error');
+            }
         }
 
-        // Initialize sidebar state
-        initSidebarState();
+        // ========================================
+        // UPDATE CHARGES BASED ON ROOM TYPE
+        // ========================================
+        function updateCharges() {
+            const roomType = document.getElementById('roomType').value;
+            const chargesInput = document.getElementById('chargesPerDay');
+            
+            const charges = {
+                'General': 50000,
+                'Private': 150000,
+                'VIP': 350000
+            };
+            
+            chargesInput.value = charges[roomType] || 0;
+        }
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            handleResponsiveSidebar();
+        // ========================================
+        // CHARACTER COUNTER
+        // ========================================
+        document.getElementById('reasonForAdmission').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('charCount').textContent = count;
+            
+            const charCounter = document.querySelector('.char-counter');
+            if (count > 400) {
+                charCounter.classList.add('warning');
+            } else {
+                charCounter.classList.remove('warning');
+            }
+            if (count === 500) {
+                charCounter.classList.add('danger');
+            } else {
+                charCounter.classList.remove('danger');
+            }
         });
-    }
-    
-    document.addEventListener('DOMContentLoaded', loadComponents);
-</script>
+
+        // ========================================
+        // ROOM TYPE CHANGE - UPDATE CHARGES
+        // ========================================
+        document.getElementById('roomType').addEventListener('change', updateCharges);
+
+        // ========================================
+        // VALIDATION
+        // ========================================
+        function validateForm() {
+            let isValid = true;
+
+            // Charges Per Day
+            const charges = document.getElementById('chargesPerDay').value.trim();
+            if (!charges || parseFloat(charges) <= 0) {
+                document.getElementById('chargesPerDay').classList.add('error');
+                document.getElementById('chargesPerDay-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('chargesPerDay').classList.remove('error');
+                document.getElementById('chargesPerDay-error').classList.remove('show');
+            }
+
+            // Admission Type
+            const admissionType = document.getElementById('admissionType').value;
+            if (!admissionType) {
+                document.getElementById('admissionType').classList.add('error');
+                document.getElementById('admissionType-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('admissionType').classList.remove('error');
+                document.getElementById('admissionType-error').classList.remove('show');
+            }
+
+            // Admission Date
+            const admissionDate = document.getElementById('admissionDate').value;
+            if (!admissionDate) {
+                document.getElementById('admissionDate').classList.add('error');
+                document.getElementById('admissionDate-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('admissionDate').classList.remove('error');
+                document.getElementById('admissionDate-error').classList.remove('show');
+            }
+
+            // Reason for Admission
+            const reason = document.getElementById('reasonForAdmission').value.trim();
+            if (!reason) {
+                document.getElementById('reasonForAdmission').classList.add('error');
+                document.getElementById('reason-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reasonForAdmission').classList.remove('error');
+                document.getElementById('reason-error').style.display = 'none';
+            }
+
+            return isValid;
+        }
+
+        // Clear errors on focus
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.classList.remove('error');
+                const errorId = this.id + '-error';
+                const error = document.getElementById(errorId);
+                if (error) error.classList.remove('show');
+                if (this.id === 'reasonForAdmission') {
+                    document.getElementById('reason-error').style.display = 'none';
+                }
+            });
+        });
+
+        // ========================================
+        // SUBMIT ADMISSION
+        // ========================================
+        async function submitAdmission() {
+            if (!validateForm()) {
+                showNotification('Please fix all errors before submitting', 'error');
+                return;
+            }
+
+            const admitBtn = document.getElementById('admitBtn');
+            const originalText = admitBtn.innerHTML;
+            admitBtn.innerHTML = '<span class="spinner-sm"></span> Admitting...';
+            admitBtn.disabled = true;
+
+            try {
+                const admissionData = {
+                    id: Date.now(),
+                    authNumber: document.getElementById('authorizationNo').value,
+                    cardNo: document.getElementById('cardNo').value,
+                    fullName: document.getElementById('fullName').value,
+                    gender: document.getElementById('gender').value,
+                    dob: document.getElementById('dob').value,
+                    attendanceDate: document.getElementById('attendanceDate').value,
+                    wardType: document.getElementById('wardType').value,
+                    chargesPerDay: parseFloat(document.getElementById('chargesPerDay').value),
+                    admissionType: document.getElementById('admissionType').value,
+                    admissionDate: document.getElementById('admissionDate').value,
+                    practitioner: document.getElementById('practitioner').value,
+                    diagnosis: document.getElementById('diagnosis').value,
+                    roomType: document.getElementById('roomType').value,
+                    reason: document.getElementById('reasonForAdmission').value.trim(),
+                    status: 'Admitted',
+                    admittedBy: getCurrentUser() || 'System',
+                    admittedDate: new Date().toISOString()
+                };
+
+                // Load existing admissions and add new
+                let admissions = await DataService.getAdmissions() || [];
+                admissions.push(admissionData);
+                
+                // Save to localStorage for persistence
+                localStorage.setItem('admissions', JSON.stringify(admissions));
+
+                showNotification(`Patient ${admissionData.fullName} admitted successfully!`, 'success');
+                
+                // Reset form after delay
+                setTimeout(() => {
+                    resetForm();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error admitting patient:', error);
+                showNotification('Failed to admit patient. Please try again.', 'error');
+            } finally {
+                admitBtn.innerHTML = originalText;
+                admitBtn.disabled = false;
+            }
+        }
+
+        // ========================================
+        // RESET FORM
+        // ========================================
+        function resetForm() {
+            if (!confirm('Are you sure you want to reset the form? All entered data will be lost.')) return;
+
+            document.getElementById('authSearchInput').value = '';
+            document.getElementById('admissionFormContainer').style.display = 'none';
+            document.getElementById('reasonForAdmission').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('chargesPerDay').value = '';
+            document.getElementById('admissionType').value = '';
+            document.getElementById('admissionDate').value = '';
+            document.getElementById('practitioner').value = '';
+            document.getElementById('diagnosis').value = '';
+            document.getElementById('roomType').value = 'General';
+            document.getElementById('wardType').value = 'Normal';
+            currentAuthData = null;
+
+            // Clear errors
+            document.querySelectorAll('.error-text').forEach(el => {
+                el.classList.remove('show');
+            });
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                el.classList.remove('error');
+            });
+
+            showNotification('Form reset', 'info');
+        }
+
+        // ========================================
+        // GET CURRENT USER
+        // ========================================
+        function getCurrentUser() {
+            const userNameSpan = document.getElementById('userName');
+            return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
+        }
+
+        // ========================================
+        // SHOW NOTIFICATION
+        // ========================================
+        function showNotification(msg, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = msg;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') initSidebarState();
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Pre-load authorizations
+            loadAuthorizations();
+        }
+
+        // ========================================
+        // ADD getAdmissions() to DataService in common.js
+        // ========================================
+        // Note: You need to add this method to DataService in common.js:
+        // async getAdmissions() {
+        //     return this.fetchData('admissions.json');
+        // },
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.searchAuthorization = searchAuthorization;
+        window.submitAdmission = submitAdmission;
+        window.resetForm = resetForm;
+        window.updateCharges = updateCharges;
+        window.showNotification = showNotification;
+    </script>
 </body>
 </html>
