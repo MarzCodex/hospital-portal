@@ -500,7 +500,10 @@ async getReferrals() {
         return JSON.parse(localData);
     }
     return this.fetchData('referrals.json');
-}
+},
+async getDepartments() {
+    return this.fetchData('departments.json');
+},
 };
 
 

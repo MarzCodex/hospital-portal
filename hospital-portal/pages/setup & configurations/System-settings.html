@@ -7,146 +7,1480 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
+        /* ===== Page Specific Styles ===== */
         .page-container {
             padding: 20px;
             margin: 20px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 100%;
         }
-        
-        .coming-soon {
-            text-align: center;
-            padding: 60px;
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-        
-        .coming-soon i {
-            font-size: 64px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .coming-soon h2 {
+
+        .page-header h2 {
             color: var(--secondary);
-            margin-bottom: 15px;
+            font-size: 24px;
+            margin: 0;
         }
-        
-        .coming-soon p {
+
+        .page-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .page-header .last-updated {
+            font-size: 13px;
             color: var(--gray);
-            margin-bottom: 30px;
+        }
+
+        /* ===== Settings Grid Layout ===== */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .settings-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .settings-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .settings-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .settings-card .card-header i {
+            font-size: 20px;
+            color: var(--primary);
+            width: 32px;
+            text-align: center;
+        }
+
+        .settings-card .card-header h3 {
+            font-size: 16px;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .settings-card .card-header .badge-count {
+            margin-left: auto;
+            font-size: 11px;
+            background: var(--primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        /* ===== Form Controls ===== */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-group label .help-text {
+            font-weight: 400;
+            color: var(--gray);
+            font-size: 11px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger);
+        }
+
+        .form-group .error-text {
+            font-size: 11px;
+            color: var(--danger);
+            margin-top: 3px;
+            display: none;
+        }
+
+        .form-group .error-text.show {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* ===== Toggle Switch ===== */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: var(--success);
+        }
+
+        .toggle-switch .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 22px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--secondary);
+            min-width: 60px;
+        }
+
+        .toggle-description {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        /* ===== Module Toggles Grid ===== */
+        .module-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .module-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .module-item .module-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-item .module-info i {
+            font-size: 16px;
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        .module-item .module-info span {
+            font-size: 13px;
+            color: var(--secondary);
+        }
+
+        /* ===== IP Whitelist ===== */
+        .ip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .ip-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .ip-tag .remove-ip {
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .ip-tag .remove-ip:hover {
+            opacity: 1;
+        }
+
+        .ip-input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .ip-input-group input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+        }
+
+        .ip-input-group button {
+            padding: 6px 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .ip-input-group button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== Form Actions ===== */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .btn-save {
+            padding: 10px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-reset {
+            padding: 10px 30px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+        }
+
+        .btn-export {
+            padding: 10px 30px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-export:hover {
+            background: #219653;
+            transform: translateY(-2px);
+        }
+
+        .btn-import {
+            padding: 10px 30px;
+            background: var(--warning);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-import:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* ======================================== */
+        /* IMPORT MODAL                            */
+        /* ======================================== */
+        .import-modal .modal-content {
+            max-width: 500px;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .import-modal .modal-header {
+            background: linear-gradient(135deg, var(--warning) 0%, #e67e22 100%);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .import-modal .modal-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .import-modal .modal-header h3 i {
+            margin-right: 10px;
+        }
+
+        .import-modal .modal-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .import-modal .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .import-modal .modal-body {
+            padding: 20px;
+        }
+
+        .import-modal .modal-body .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .import-modal .modal-body .drop-zone:hover {
+            border-color: var(--primary);
+            background: #f8f9fa;
+        }
+
+        .import-modal .modal-body .drop-zone.dragover {
+            border-color: var(--primary);
+            background: #e8f4fc;
+        }
+
+        .import-modal .modal-body .drop-zone i {
+            font-size: 48px;
+            color: var(--gray);
+        }
+
+        .import-modal .modal-body .drop-zone p {
+            margin-top: 10px;
+            color: var(--gray);
+        }
+
+        .import-modal .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ======================================== */
+        /* RESPONSIVE                              */
+        /* ======================================== */
+        @media (max-width: 1200px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+            .ip-input-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
-    
+
+    <!-- Main Content -->
     <div class="main-content" id="mainContent">
+        <!-- Header Container -->
         <div id="header-container"></div>
-        
+
+        <!-- Page Content -->
         <div id="page-content">
-            <div class="page-container coming-soon">
-                <i class="fas fa-cogs"></i>
-                <h2>System Settings</h2>
-                <p>This feature is currently under development and will be available soon.</p>
-                <button class="search-btn" onclick="window.location.href='../../index.html'">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+            <div class="page-container">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div>
+                        <h2>
+                            <i class="fas fa-cogs"></i>
+                            System Settings
+                        </h2>
+                        <span class="last-updated" id="lastUpdated">Last updated: Never</span>
+                    </div>
+                    <button class="btn-export" onclick="exportSettings()" style="background: var(--primary);">
+                        <i class="fas fa-file-export"></i> Export Settings
+                    </button>
+                </div>
+
+                <!-- Settings Grid -->
+                <div class="settings-grid">
+
+                    <!-- ======================================== -->
+                    <!-- 1. GENERAL SETTINGS                      -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-globe"></i>
+                            <h3>General Settings</h3>
+                            <span class="badge-count">4</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>System Name</label>
+                            <input type="text" id="systemName" value="Hospital Service Portal">
+                        </div>
+
+                        <div class="form-group">
+                            <label>System Short Name</label>
+                            <input type="text" id="systemShortName" value="HSP" maxlength="10">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Default Language</label>
+                                <select id="defaultLanguage">
+                                    <option value="en">English</option>
+                                    <option value="sw">Swahili</option>
+                                    <option value="fr">French</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Time Zone</label>
+                                <select id="timezone">
+                                    <option value="Africa/Dar_es_Salaam" selected>Africa/Dar_es_Salaam</option>
+                                    <option value="Africa/Nairobi">Africa/Nairobi</option>
+                                    <option value="Africa/Kampala">Africa/Kampala</option>
+                                    <option value="UTC">UTC</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Date Format</label>
+                            <select id="dateFormat">
+                                <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- 2. SECURITY SETTINGS                     -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Security Settings</h3>
+                            <span class="badge-count">5</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Session Timeout <span class="help-text">(minutes)</span></label>
+                                <input type="number" id="sessionTimeout" value="30" min="5" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label>Max Login Attempts</label>
+                                <input type="number" id="maxLoginAttempts" value="5" min="1" max="10">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Min Password Length</label>
+                                <input type="number" id="minPasswordLength" value="8" min="6" max="20">
+                            </div>
+                            <div class="form-group">
+                                <label>Password Expiry <span class="help-text">(days)</span></label>
+                                <input type="number" id="passwordExpiryDays" value="90" min="0" max="365">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Require Special Characters</label>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="requireSpecialChars" onclick="toggleSwitch('requireSpecialChars')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="toggle-label" id="requireSpecialChars-label">Enabled</span>
+                            </div>
+                            <div class="toggle-description">Require at least one special character in passwords</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Two-Factor Authentication (2FA)</label>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch" id="enable2FA" onclick="toggleSwitch('enable2FA')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="toggle-label" id="enable2FA-label">Disabled</span>
+                            </div>
+                            <div class="toggle-description">Require 2FA for all administrative users</div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- 3. MODULE TOGGLES                       -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-puzzle-piece"></i>
+                            <h3>Module Toggles</h3>
+                            <span class="badge-count">5</span>
+                        </div>
+
+                        <div class="module-grid">
+                            <div class="module-item">
+                                <div class="module-info">
+                                    <i class="fas fa-user-md"></i>
+                                    <span>Outpatient</span>
+                                </div>
+                                <div class="toggle-wrapper">
+                                    <div class="toggle-switch active" id="moduleOutpatient" onclick="toggleSwitch('moduleOutpatient')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-item">
+                                <div class="module-info">
+                                    <i class="fas fa-procedures"></i>
+                                    <span>Inpatient</span>
+                                </div>
+                                <div class="toggle-wrapper">
+                                    <div class="toggle-switch active" id="moduleInpatient" onclick="toggleSwitch('moduleInpatient')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-item">
+                                <div class="module-info">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>Referrals</span>
+                                </div>
+                                <div class="toggle-wrapper">
+                                    <div class="toggle-switch active" id="moduleReferrals" onclick="toggleSwitch('moduleReferrals')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-item">
+                                <div class="module-info">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <span>Claims</span>
+                                </div>
+                                <div class="toggle-wrapper">
+                                    <div class="toggle-switch active" id="moduleClaims" onclick="toggleSwitch('moduleClaims')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-item" style="grid-column: 1 / -1;">
+                                <div class="module-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>User Management</span>
+                                </div>
+                                <div class="toggle-wrapper">
+                                    <div class="toggle-switch active" id="moduleUserManagement" onclick="toggleSwitch('moduleUserManagement')">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- 4. IP WHITELIST                         -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-network-wired"></i>
+                            <h3>IP Whitelist</h3>
+                            <span class="badge-count" id="ipCount">0</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Allowed IP Addresses</label>
+                            <div class="ip-list" id="ipList">
+                                <!-- IP tags will be rendered here -->
+                            </div>
+                            <div class="ip-input-group">
+                                <input type="text" id="ipInput" placeholder="e.g., 192.168.1.100 or 192.168.1.0/24">
+                                <button onclick="addIpAddress()">Add IP</button>
+                            </div>
+                            <div class="toggle-description">Leave empty to allow all IPs. Use CIDR notation for ranges.</div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- 5. NOTIFICATION SETTINGS                -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-bell"></i>
+                            <h3>Notification Settings</h3>
+                            <span class="badge-count">4</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email Server (SMTP)</label>
+                            <input type="text" id="smtpServer" placeholder="smtp.hospital.com">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>SMTP Port</label>
+                                <input type="number" id="smtpPort" value="587" min="1" max="65535">
+                            </div>
+                            <div class="form-group">
+                                <label>Sender Email</label>
+                                <input type="email" id="senderEmail" placeholder="noreply@hospital.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>System Alerts</label>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="systemAlerts" onclick="toggleSwitch('systemAlerts')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="toggle-label" id="systemAlerts-label">Enabled</span>
+                            </div>
+                            <div class="toggle-description">Send system notifications to administrators</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Error Reporting</label>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="errorReporting" onclick="toggleSwitch('errorReporting')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="toggle-label" id="errorReporting-label">Enabled</span>
+                            </div>
+                            <div class="toggle-description">Send error reports to system administrators</div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- 6. DATA & STORAGE                       -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-database"></i>
+                            <h3>Data & Storage</h3>
+                            <span class="badge-count">3</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Data Retention <span class="help-text">(days)</span></label>
+                            <input type="number" id="dataRetentionDays" value="730" min="30" max="3650">
+                            <div class="toggle-description">How long to keep patient data before archiving (0 = forever)</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Backup Schedule</label>
+                            <select id="backupSchedule">
+                                <option value="daily">Daily</option>
+                                <option value="weekly" selected>Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Storage Path</label>
+                            <input type="text" id="storagePath" value="/var/hospital/data/">
+                            <div class="toggle-description">Directory where system files are stored</div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- 7. AUDIT & LOGS                         -->
+                    <!-- ======================================== -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h3>Audit & Logs</h3>
+                            <span class="badge-count">3</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Enable Audit Trail</label>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="auditTrail" onclick="toggleSwitch('auditTrail')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="toggle-label" id="auditTrail-label">Enabled</span>
+                            </div>
+                            <div class="toggle-description">Log all user actions for compliance</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Log Retention <span class="help-text">(days)</span></label>
+                            <input type="number" id="logRetentionDays" value="365" min="30" max="730">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Log Level</label>
+                            <select id="logLevel">
+                                <option value="debug">Debug</option>
+                                <option value="info" selected>Info</option>
+                                <option value="warning">Warning</option>
+                                <option value="error">Error</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ======================================== -->
+                <!-- FORM ACTIONS                            -->
+                <!-- ======================================== -->
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveAllSettings()">
+                        <i class="fas fa-save"></i> Save All Settings
+                    </button>
+                    <button class="btn-reset" onclick="resetDefaults()">
+                        <i class="fas fa-undo-alt"></i> Reset Defaults
+                    </button>
+                    <button class="btn-export" onclick="exportSettings()" style="background: var(--success);">
+                        <i class="fas fa-file-export"></i> Export Settings
+                    </button>
+                    <button class="btn-import" onclick="openImportModal()">
+                        <i class="fas fa-file-import"></i> Import Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- ======================================== -->
+    <!-- IMPORT SETTINGS MODAL                   -->
+    <!-- ======================================== -->
+    <div id="importModal" class="modal import-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-import"></i> Import Settings</h3>
+                <button class="modal-close-btn" onclick="closeImportModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p><strong>Click or Drag & Drop</strong><br>JSON settings file</p>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                </div>
+                <div id="importStatus" style="margin-top: 15px; display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel-modal" onclick="closeImportModal()">Cancel</button>
+                <button class="btn-submit-modal" id="importConfirmBtn" onclick="confirmImport()" style="display: none;">
+                    <i class="fas fa-check"></i> Import
                 </button>
             </div>
         </div>
-        
-        <div id="footer-container"></div>
     </div>
-    
-    <div id="modals-container"></div>
-    
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
     <script src="../../assets/js/common.js"></script>
-     <script>
-    // ========================================
-    // COMPONENT LOADING
-    // ========================================
-    
-    async function loadComponents() {
-        try {
-            // Load sidebar
-            const sidebarRes = await fetch('../../components/sidebar.html');
-            if (sidebarRes.ok) {
-                document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
+    <script>
+        // ========================================
+        // DATA STORE
+        // ========================================
+        let systemSettings = {};
+        let importedData = null;
+        let ipAddresses = [
+            '192.168.1.100',
+            '10.0.0.0/24'
+        ];
+
+        // ========================================
+        // TOGGLE SWITCH
+        // ========================================
+        function toggleSwitch(id) {
+            const toggle = document.getElementById(id);
+            if (!toggle) return;
+            toggle.classList.toggle('active');
+
+            // Update label
+            const label = document.getElementById(id + '-label');
+            if (label) {
+                label.textContent = toggle.classList.contains('active') ? 'Enabled' : 'Disabled';
             }
-            
-            // Load header
-            const headerRes = await fetch('../../components/header.html');
-            if (headerRes.ok) {
-                document.getElementById('header-container').innerHTML = await headerRes.text();
-            }
-            
-            // Load footer
-            const footerRes = await fetch('../../components/footer.html');
-            if (footerRes.ok) {
-                document.getElementById('footer-container').innerHTML = await footerRes.text();
-            }
-            
-            // Load modals
-            const modalsRes = await fetch('../../components/modals.html');
-            if (modalsRes.ok) {
-                document.getElementById('modals-container').innerHTML = await modalsRes.text();
-            }
-            
-            // Initialize after components loaded
-            initPageComponents();
-            
-        } catch (error) {
-            console.error('Error loading components:', error);
-        }
-    }
-    
-    function initPageComponents() {
-        // Initialize user dropdown
-        if (typeof initUserDropdown === 'function') {
-            initUserDropdown();
-        }
-        
-        // Set user info from sessionStorage
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        
-        const userNameSpan = document.getElementById('userName');
-        const jobTitleSpan = document.getElementById('jobTitle');
-        const userAvatar = document.getElementById('userAvatar');
-        
-        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-        if (userNameSpan) userNameSpan.textContent = userName;
-        if (userAvatar) {
-            const initials = userName.split(' ').map(n => n[0]).join('');
-            userAvatar.textContent = initials;
-        }
-        
-        // Sidebar toggle (hamburger menu)
-        const menuToggle = document.getElementById('menuToggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSidebar();
-            });
         }
 
-        // Close sidebar button (X button)
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeSidebar();
-            });
+        // ========================================
+        // IP WHITELIST
+        // ========================================
+        function renderIpList() {
+            const container = document.getElementById('ipList');
+            const count = document.getElementById('ipCount');
+
+            if (ipAddresses.length === 0) {
+                container.innerHTML = '<span style="color: var(--gray); font-size: 13px;">No IP addresses whitelisted. All IPs allowed.</span>';
+                count.textContent = '0';
+                return;
+            }
+
+            container.innerHTML = ipAddresses.map(ip => `
+                <span class="ip-tag">
+                    ${ip}
+                    <span class="remove-ip" onclick="removeIp('${ip}')">&times;</span>
+                </span>
+            `).join('');
+
+            count.textContent = ipAddresses.length;
         }
 
-        // Initialize sidebar state
-        initSidebarState();
+        function addIpAddress() {
+            const input = document.getElementById('ipInput');
+            const ip = input.value.trim();
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            handleResponsiveSidebar();
+            if (!ip) {
+                showNotification('Please enter an IP address or range', 'error');
+                return;
+            }
+
+            // Simple validation
+            const ipPattern = /^(\d{1,3}\.){3}\d{1,3}(\/\d{1,2})?$/;
+            if (!ipPattern.test(ip)) {
+                showNotification('Invalid IP format. Use: 192.168.1.100 or 192.168.1.0/24', 'error');
+                return;
+            }
+
+            if (ipAddresses.includes(ip)) {
+                showNotification('IP already in whitelist', 'info');
+                return;
+            }
+
+            ipAddresses.push(ip);
+            renderIpList();
+            input.value = '';
+            showNotification('IP added successfully', 'success');
+        }
+
+        function removeIp(ip) {
+            ipAddresses = ipAddresses.filter(i => i !== ip);
+            renderIpList();
+            showNotification('IP removed from whitelist', 'info');
+        }
+
+        // Enter key for IP input
+        document.getElementById('ipInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addIpAddress();
+            }
         });
-    }
-    document.addEventListener('DOMContentLoaded', loadComponents);
-</script>
+
+        // ========================================
+        // LOAD SETTINGS FROM LOCALSTORAGE
+        // ========================================
+        function loadSettings() {
+            try {
+                const saved = localStorage.getItem('systemSettings');
+                if (!saved) return;
+
+                const settings = JSON.parse(saved);
+
+                // General Settings
+                if (settings.systemName) document.getElementById('systemName').value = settings.systemName;
+                if (settings.systemShortName) document.getElementById('systemShortName').value = settings.systemShortName;
+                if (settings.defaultLanguage) document.getElementById('defaultLanguage').value = settings.defaultLanguage;
+                if (settings.timezone) document.getElementById('timezone').value = settings.timezone;
+                if (settings.dateFormat) document.getElementById('dateFormat').value = settings.dateFormat;
+
+                // Security Settings
+                if (settings.sessionTimeout) document.getElementById('sessionTimeout').value = settings.sessionTimeout;
+                if (settings.maxLoginAttempts) document.getElementById('maxLoginAttempts').value = settings.maxLoginAttempts;
+                if (settings.minPasswordLength) document.getElementById('minPasswordLength').value = settings.minPasswordLength;
+                if (settings.passwordExpiryDays) document.getElementById('passwordExpiryDays').value = settings.passwordExpiryDays;
+
+                setToggleState('requireSpecialChars', settings.requireSpecialChars);
+                setToggleState('enable2FA', settings.enable2FA);
+
+                // Module Toggles
+                setToggleState('moduleOutpatient', settings.moduleOutpatient);
+                setToggleState('moduleInpatient', settings.moduleInpatient);
+                setToggleState('moduleReferrals', settings.moduleReferrals);
+                setToggleState('moduleClaims', settings.moduleClaims);
+                setToggleState('moduleUserManagement', settings.moduleUserManagement);
+
+                // IP Whitelist
+                if (settings.ipAddresses && settings.ipAddresses.length > 0) {
+                    ipAddresses = settings.ipAddresses;
+                    renderIpList();
+                }
+
+                // Notification Settings
+                if (settings.smtpServer) document.getElementById('smtpServer').value = settings.smtpServer;
+                if (settings.smtpPort) document.getElementById('smtpPort').value = settings.smtpPort;
+                if (settings.senderEmail) document.getElementById('senderEmail').value = settings.senderEmail;
+                setToggleState('systemAlerts', settings.systemAlerts);
+                setToggleState('errorReporting', settings.errorReporting);
+
+                // Data & Storage
+                if (settings.dataRetentionDays) document.getElementById('dataRetentionDays').value = settings.dataRetentionDays;
+                if (settings.backupSchedule) document.getElementById('backupSchedule').value = settings.backupSchedule;
+                if (settings.storagePath) document.getElementById('storagePath').value = settings.storagePath;
+
+                // Audit & Logs
+                setToggleState('auditTrail', settings.auditTrail);
+                if (settings.logRetentionDays) document.getElementById('logRetentionDays').value = settings.logRetentionDays;
+                if (settings.logLevel) document.getElementById('logLevel').value = settings.logLevel;
+
+                // Update last updated
+                if (settings.lastUpdated) {
+                    document.getElementById('lastUpdated').textContent = `Last updated: ${new Date(settings.lastUpdated).toLocaleString()}`;
+                }
+
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        function setToggleState(id, value) {
+            const toggle = document.getElementById(id);
+            if (!toggle) return;
+
+            if (value === true || value === 'true') {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+
+            const label = document.getElementById(id + '-label');
+            if (label) {
+                label.textContent = toggle.classList.contains('active') ? 'Enabled' : 'Disabled';
+            }
+        }
+
+        // ========================================
+        // SAVE ALL SETTINGS
+        // ========================================
+        function saveAllSettings() {
+            const btn = document.querySelector('.btn-save');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-sm"></span> Saving...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                try {
+                    const settings = {
+                        // General Settings
+                        systemName: document.getElementById('systemName').value.trim(),
+                        systemShortName: document.getElementById('systemShortName').value.trim().toUpperCase(),
+                        defaultLanguage: document.getElementById('defaultLanguage').value,
+                        timezone: document.getElementById('timezone').value,
+                        dateFormat: document.getElementById('dateFormat').value,
+
+                        // Security Settings
+                        sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                        maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
+                        minPasswordLength: parseInt(document.getElementById('minPasswordLength').value) || 8,
+                        passwordExpiryDays: parseInt(document.getElementById('passwordExpiryDays').value) || 90,
+                        requireSpecialChars: document.getElementById('requireSpecialChars').classList.contains('active'),
+                        enable2FA: document.getElementById('enable2FA').classList.contains('active'),
+
+                        // Module Toggles
+                        moduleOutpatient: document.getElementById('moduleOutpatient').classList.contains('active'),
+                        moduleInpatient: document.getElementById('moduleInpatient').classList.contains('active'),
+                        moduleReferrals: document.getElementById('moduleReferrals').classList.contains('active'),
+                        moduleClaims: document.getElementById('moduleClaims').classList.contains('active'),
+                        moduleUserManagement: document.getElementById('moduleUserManagement').classList.contains('active'),
+
+                        // IP Whitelist
+                        ipAddresses: ipAddresses,
+
+                        // Notification Settings
+                        smtpServer: document.getElementById('smtpServer').value.trim(),
+                        smtpPort: parseInt(document.getElementById('smtpPort').value) || 587,
+                        senderEmail: document.getElementById('senderEmail').value.trim(),
+                        systemAlerts: document.getElementById('systemAlerts').classList.contains('active'),
+                        errorReporting: document.getElementById('errorReporting').classList.contains('active'),
+
+                        // Data & Storage
+                        dataRetentionDays: parseInt(document.getElementById('dataRetentionDays').value) || 730,
+                        backupSchedule: document.getElementById('backupSchedule').value,
+                        storagePath: document.getElementById('storagePath').value.trim(),
+
+                        // Audit & Logs
+                        auditTrail: document.getElementById('auditTrail').classList.contains('active'),
+                        logRetentionDays: parseInt(document.getElementById('logRetentionDays').value) || 365,
+                        logLevel: document.getElementById('logLevel').value,
+
+                        // Metadata
+                        lastUpdated: new Date().toISOString()
+                    };
+
+                    localStorage.setItem('systemSettings', JSON.stringify(settings));
+
+                    document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+
+                    btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }, 2000);
+
+                    showNotification('All settings saved successfully!', 'success');
+
+                } catch (error) {
+                    console.error('Error saving settings:', error);
+                    showNotification('Failed to save settings', 'error');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            }, 800);
+        }
+
+        // ========================================
+        // RESET DEFAULTS
+        // ========================================
+        function resetDefaults() {
+            if (!confirm('Are you sure you want to reset all settings to default values?')) return;
+
+            // Reset dropdowns
+            document.getElementById('systemName').value = 'Hospital Service Portal';
+            document.getElementById('systemShortName').value = 'HSP';
+            document.getElementById('defaultLanguage').value = 'en';
+            document.getElementById('timezone').value = 'Africa/Dar_es_Salaam';
+            document.getElementById('dateFormat').value = 'DD/MM/YYYY';
+
+            // Reset security
+            document.getElementById('sessionTimeout').value = '30';
+            document.getElementById('maxLoginAttempts').value = '5';
+            document.getElementById('minPasswordLength').value = '8';
+            document.getElementById('passwordExpiryDays').value = '90';
+
+            // Reset toggles
+            const defaultActive = ['requireSpecialChars', 'moduleOutpatient', 'moduleInpatient', 'moduleReferrals', 'moduleClaims', 'moduleUserManagement', 'systemAlerts', 'errorReporting', 'auditTrail'];
+            const allToggles = ['requireSpecialChars', 'enable2FA', 'moduleOutpatient', 'moduleInpatient', 'moduleReferrals', 'moduleClaims', 'moduleUserManagement', 'systemAlerts', 'errorReporting', 'auditTrail'];
+
+            allToggles.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (!toggle) return;
+                if (defaultActive.includes(id)) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
+                const label = document.getElementById(id + '-label');
+                if (label) {
+                    label.textContent = toggle.classList.contains('active') ? 'Enabled' : 'Disabled';
+                }
+            });
+
+            // Reset IP list
+            ipAddresses = ['192.168.1.100', '10.0.0.0/24'];
+            renderIpList();
+
+            // Reset notifications
+            document.getElementById('smtpServer').value = '';
+            document.getElementById('smtpPort').value = '587';
+            document.getElementById('senderEmail').value = '';
+
+            // Reset data
+            document.getElementById('dataRetentionDays').value = '730';
+            document.getElementById('backupSchedule').value = 'weekly';
+            document.getElementById('storagePath').value = '/var/hospital/data/';
+
+            // Reset audit
+            document.getElementById('logRetentionDays').value = '365';
+            document.getElementById('logLevel').value = 'info';
+
+            showNotification('All settings reset to defaults', 'info');
+        }
+
+        // ========================================
+        // EXPORT SETTINGS
+        // ========================================
+        function exportSettings() {
+            try {
+                const saved = localStorage.getItem('systemSettings');
+                if (!saved) {
+                    showNotification('No settings to export. Save settings first.', 'error');
+                    return;
+                }
+
+                const settings = JSON.parse(saved);
+                const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                a.download = `system_settings_${timestamp}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showNotification('Settings exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting settings:', error);
+                showNotification('Failed to export settings', 'error');
+            }
+        }
+
+        // ========================================
+        // IMPORT SETTINGS
+        // ========================================
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('active');
+            document.getElementById('importStatus').style.display = 'none';
+            document.getElementById('importConfirmBtn').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+            importedData = null;
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+            importedData = null;
+        }
+
+        // File input handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    importedData = data;
+
+                    const statusDiv = document.getElementById('importStatus');
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `
+                        <div style="background: #d4edda; padding: 12px; border-radius: 6px; color: #155724;">
+                            <i class="fas fa-check-circle"></i> File loaded successfully!
+                            <br><small>${Object.keys(data).length} settings found</small>
+                        </div>
+                    `;
+                    document.getElementById('importConfirmBtn').style.display = 'inline-flex';
+                    showNotification('File loaded successfully!', 'success');
+                } catch (error) {
+                    const statusDiv = document.getElementById('importStatus');
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `
+                        <div style="background: #f8d7da; padding: 12px; border-radius: 6px; color: #721c24;">
+                            <i class="fas fa-exclamation-triangle"></i> Invalid JSON file
+                        </div>
+                    `;
+                    showNotification('Invalid JSON file', 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Drag and drop
+        const dropZone = document.getElementById('dropZone');
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+
+            const file = e.dataTransfer.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    importedData = data;
+
+                    const statusDiv = document.getElementById('importStatus');
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `
+                        <div style="background: #d4edda; padding: 12px; border-radius: 6px; color: #155724;">
+                            <i class="fas fa-check-circle"></i> File loaded successfully!
+                            <br><small>${Object.keys(data).length} settings found</small>
+                        </div>
+                    `;
+                    document.getElementById('importConfirmBtn').style.display = 'inline-flex';
+                    showNotification('File loaded successfully!', 'success');
+                } catch (error) {
+                    const statusDiv = document.getElementById('importStatus');
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `
+                        <div style="background: #f8d7da; padding: 12px; border-radius: 6px; color: #721c24;">
+                            <i class="fas fa-exclamation-triangle"></i> Invalid JSON file
+                        </div>
+                    `;
+                    showNotification('Invalid JSON file', 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function confirmImport() {
+            if (!importedData) {
+                showNotification('No data to import', 'error');
+                return;
+            }
+
+            try {
+                // Save imported data
+                localStorage.setItem('systemSettings', JSON.stringify(importedData));
+
+                // Reload settings
+                loadSettings();
+
+                // Reload IP list
+                if (importedData.ipAddresses && importedData.ipAddresses.length > 0) {
+                    ipAddresses = importedData.ipAddresses;
+                    renderIpList();
+                }
+
+                closeImportModal();
+                showNotification('Settings imported successfully!', 'success');
+            } catch (error) {
+                console.error('Error importing settings:', error);
+                showNotification('Failed to import settings', 'error');
+            }
+        }
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.toggle('hidden');
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('hidden');
+                });
+            }
+
+            // Load saved settings
+            loadSettings();
+            renderIpList();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.toggleSwitch = toggleSwitch;
+        window.saveAllSettings = saveAllSettings;
+        window.resetDefaults = resetDefaults;
+        window.exportSettings = exportSettings;
+        window.openImportModal = openImportModal;
+        window.closeImportModal = closeImportModal;
+        window.confirmImport = confirmImport;
+        window.addIpAddress = addIpAddress;
+        window.removeIp = removeIp;
+        window.showNotification = showNotification;
+    </script>
 </body>
 </html>

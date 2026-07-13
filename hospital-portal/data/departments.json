@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "code": "ICT",
+        "name": "ICT Department",
+        "head": "Phillip Z.P",
+        "status": "Active",
+        "description": "Information and Communication Technology"
+    },
+    {
+        "id": 2,
+        "code": "MED",
+        "name": "Medical Department",
+        "head": "Dr. Sarah Johnson",
+        "status": "Active",
+        "description": "Medical services and patient care"
+    },
+    {
+        "id": 3,
+        "code": "NRS",
+        "name": "Nursing Department",
+        "head": "Jane Smith",
+        "status": "Active",
+        "description": "Nursing services and patient care"
+    },
+    {
+        "id": 4,
+        "code": "PHM",
+        "name": "Pharmacy Department",
+        "head": "Dr. James Wilson",
+        "status": "Active",
+        "description": "Pharmacy and medication management"
+    },
+    {
+        "id": 5,
+        "code": "LAB",
+        "name": "Laboratory Department",
+        "head": "Dr. Robert Chen",
+        "status": "Inactive",
+        "description": "Laboratory and diagnostic services"
+    }
+]

@@ -3,150 +3,1309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Service Portal | Other Configuration</title>
+    <title>Hospital Service Portal | Other Configurations</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
+        /* ===== Page Specific Styles ===== */
         .page-container {
             padding: 20px;
             margin: 20px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 100%;
         }
-        
-        .coming-soon {
-            text-align: center;
-            padding: 60px;
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-        
-        .coming-soon i {
-            font-size: 64px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .coming-soon h2 {
+
+        .page-header h2 {
             color: var(--secondary);
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .page-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        /* ===== Section Styles ===== */
+        .config-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .config-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
             margin-bottom: 15px;
         }
-        
-        .coming-soon p {
+
+        .config-section .section-header h3 {
+            font-size: 18px;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .config-section .section-header h3 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        /* ===== Department Table ===== */
+        .dept-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .dept-table th,
+        .dept-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dept-table th {
+            background: var(--secondary);
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dept-table tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        .dept-table .status-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .dept-table .action-icons i {
+            margin: 0 4px;
+            cursor: pointer;
             color: var(--gray);
-            margin-bottom: 30px;
+            transition: color 0.2s;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .dept-table .action-icons i:hover {
+            color: var(--primary);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .dept-table .action-icons .fa-trash:hover {
+            color: var(--danger);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        .dept-table .empty-row td {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        /* ===== Add Department Button ===== */
+        .btn-add {
+            padding: 8px 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            background: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        /* ===== Form Controls ===== */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger);
+        }
+
+        .form-group .error-text {
+            font-size: 11px;
+            color: var(--danger);
+            margin-top: 3px;
+            display: none;
+        }
+
+        .form-group .error-text.show {
+            display: block;
+        }
+
+        /* ===== Toggle Switch ===== */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: var(--success);
+        }
+
+        .toggle-switch .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 22px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--secondary);
+            min-width: 60px;
+        }
+
+        /* ===== User Preferences Grid ===== */
+        .prefs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* ===== Notification Toggles ===== */
+        .notif-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .notif-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .notif-item .notif-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notif-item .notif-info i {
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .notif-item .notif-info span {
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        /* ===== Backup Section ===== */
+        .backup-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .backup-row .form-group {
+            margin-bottom: 0;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-backup {
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-backup:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ===== Form Actions ===== */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .btn-save {
+            padding: 10px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-reset {
+            padding: 10px 30px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+        }
+
+        /* ======================================== */
+        /* ADD/EDIT DEPARTMENT MODAL               */
+        /* ======================================== */
+        .dept-modal .modal-content {
+            max-width: 550px;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .dept-modal .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dept-modal .modal-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .dept-modal .modal-header h3 i {
+            margin-right: 10px;
+        }
+
+        .dept-modal .modal-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dept-modal .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .dept-modal .modal-body {
+            padding: 20px;
+        }
+
+        .dept-modal .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-cancel-modal {
+            padding: 8px 24px;
+            background: transparent;
+            color: var(--gray);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel-modal:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-submit-modal {
+            padding: 8px 24px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-submit-modal:hover {
+            background: #219653;
+            transform: translateY(-2px);
+        }
+
+        /* ======================================== */
+        /* NOTIFICATION                             */
+        /* ======================================== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+
+        .notification.success { background-color: var(--success); }
+        .notification.error { background-color: var(--danger); }
+        .notification.info { background-color: var(--primary); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ======================================== */
+        /* SPINNER                                 */
+        /* ======================================== */
+        .spinner-sm {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ======================================== */
+        /* RESPONSIVE                              */
+        /* ======================================== */
+        @media (max-width: 992px) {
+            .prefs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .notif-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .config-section .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .prefs-grid {
+                grid-template-columns: 1fr;
+            }
+            .backup-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .btn-save,
+            .form-actions .btn-reset {
+                width: 100%;
+                justify-content: center;
+            }
+            .dept-table {
+                font-size: 13px;
+            }
+            .dept-table th,
+            .dept-table td {
+                padding: 8px 10px;
+            }
+            .dept-modal .modal-content {
+                max-width: 95% !important;
+                margin: 10px;
+            }
+            .notif-item {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar Container -->
     <div id="sidebar-container"></div>
-    
+
+    <!-- Main Content -->
     <div class="main-content" id="mainContent">
+        <!-- Header Container -->
         <div id="header-container"></div>
-        
+
+        <!-- Page Content -->
         <div id="page-content">
-            <div class="page-container coming-soon">
-                <i class="fas fa-wrench"></i>
-                <h2>Other Configuration</h2>
-                <p>This feature is currently under development and will be available soon.</p>
-                <button class="search-btn" onclick="window.location.href='../../index.html'">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+            <div class="page-container">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h2>
+                        <i class="fas fa-cogs"></i>
+                        Other Configurations
+                    </h2>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- DEPARTMENT CONFIGURATION                  -->
+                <!-- ======================================== -->
+                <div class="config-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-building"></i> Department Configuration</h3>
+                        <button class="btn-add" onclick="openAddDepartmentModal()">
+                            <i class="fas fa-plus"></i> Add Department
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="dept-table" id="deptTable">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Department Name</th>
+                                    <th>Head of Department</th>
+                                    <th>Status</th>
+                                    <th style="text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deptTableBody">
+                                <tr class="empty-row">
+                                    <td colspan="5">Loading departments...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- USER PREFERENCES                         -->
+                <!-- ======================================== -->
+                <div class="config-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user-cog"></i> User Preferences</h3>
+                    </div>
+                    <div class="prefs-grid">
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <select id="theme">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Language</label>
+                            <select id="language">
+                                <option value="en">English</option>
+                                <option value="sw">Swahili</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Font Size</label>
+                            <select id="fontSize">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- NOTIFICATIONS                            -->
+                <!-- ======================================== -->
+                <div class="config-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    </div>
+                    <div class="notif-grid">
+                        <div class="notif-item">
+                            <div class="notif-info">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Alerts</span>
+                            </div>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="emailToggle" onclick="toggleSwitch('emailToggle')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-info">
+                                <i class="fas fa-sms"></i>
+                                <span>SMS Alerts</span>
+                            </div>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch" id="smsToggle" onclick="toggleSwitch('smsToggle')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-info">
+                                <i class="fas fa-clock"></i>
+                                <span>Reminders</span>
+                            </div>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="reminderToggle" onclick="toggleSwitch('reminderToggle')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-info">
+                                <i class="fas fa-user-shield"></i>
+                                <span>Security Alerts</span>
+                            </div>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="securityToggle" onclick="toggleSwitch('securityToggle')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- BACKUP                                  -->
+                <!-- ======================================== -->
+                <div class="config-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-database"></i> Backup</h3>
+                    </div>
+                    <div class="backup-row">
+                        <div class="form-group" style="min-width: 120px;">
+                            <label>Auto-backup</label>
+                            <div class="toggle-wrapper">
+                                <div class="toggle-switch active" id="backupToggle" onclick="toggleSwitch('backupToggle')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Frequency</label>
+                            <select id="backupFrequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly" selected>Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        <button class="btn-backup" onclick="backupNow()">
+                            <i class="fas fa-download"></i> Backup Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- FORM ACTIONS                            -->
+                <!-- ======================================== -->
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveAllSettings()">
+                        <i class="fas fa-save"></i> Save All Settings
+                    </button>
+                    <button class="btn-reset" onclick="resetDefaults()">
+                        <i class="fas fa-undo-alt"></i> Reset Defaults
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- ======================================== -->
+    <!-- ADD/EDIT DEPARTMENT MODAL                -->
+    <!-- ======================================== -->
+    <div id="deptModal" class="modal dept-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="deptModalTitle"><i class="fas fa-plus-circle"></i> Add Department</h3>
+                <button class="modal-close-btn" onclick="closeDeptModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deptForm" novalidate>
+                    <input type="hidden" id="deptEditId" value="">
+
+                    <div class="form-group">
+                        <label>Department Name <span class="required">*</span></label>
+                        <input type="text" id="deptName" placeholder="e.g., ICT Department">
+                        <div class="error-text" id="deptName-error">Please enter department name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Department Code <span class="required">*</span></label>
+                        <input type="text" id="deptCode" placeholder="e.g., ICT" maxlength="10">
+                        <div class="error-text" id="deptCode-error">Please enter department code</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Head of Department</label>
+                        <select id="deptHead">
+                            <option value="">Select Staff</option>
+                            <option value="Phillip Z.P">Phillip Z.P</option>
+                            <option value="Dr. Sarah Johnson">Dr. Sarah Johnson</option>
+                            <option value="Jane Smith">Jane Smith</option>
+                            <option value="Dr. Michael Brown">Dr. Michael Brown</option>
+                            <option value="Dr. Emily Davis">Dr. Emily Davis</option>
+                            <option value="Dr. James Wilson">Dr. James Wilson</option>
+                            <option value="Dr. Robert Chen">Dr. Robert Chen</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="toggle-wrapper">
+                            <div class="toggle-switch active" id="deptStatusToggle" onclick="toggleSwitch('deptStatusToggle')">
+                                <div class="toggle-slider"></div>
+                            </div>
+                            <span class="toggle-label" id="deptStatusLabel">Active</span>
+                        </div>
+                        <input type="hidden" id="deptStatus" value="Active">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="deptDescription" placeholder="Brief description of the department..." rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel-modal" onclick="closeDeptModal()">Cancel</button>
+                <button class="btn-submit-modal" id="deptSubmitBtn" onclick="saveDepartment()">
+                    <i class="fas fa-save"></i> <span id="deptSubmitText">Add Department</span>
                 </button>
             </div>
         </div>
-        
-        <div id="footer-container"></div>
     </div>
-    
-    <div id="modals-container"></div>
-    
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
     <script src="../../assets/js/common.js"></script>
     <script>
-    // ========================================
-    // COMPONENT LOADING
-    // ========================================
-    
-    async function loadComponents() {
-        try {
-            // Load sidebar
-            const sidebarRes = await fetch('../../components/sidebar.html');
-            if (sidebarRes.ok) {
-                document.getElementById('sidebar-container').innerHTML = await sidebarRes.text();
-            }
-            
-            // Load header
-            const headerRes = await fetch('../../components/header.html');
-            if (headerRes.ok) {
-                document.getElementById('header-container').innerHTML = await headerRes.text();
-            }
-            
-            // Load footer
-            const footerRes = await fetch('../../components/footer.html');
-            if (footerRes.ok) {
-                document.getElementById('footer-container').innerHTML = await footerRes.text();
-            }
-            
-            // Load modals
-            const modalsRes = await fetch('../../components/modals.html');
-            if (modalsRes.ok) {
-                document.getElementById('modals-container').innerHTML = await modalsRes.text();
-            }
-            
-            // Initialize after components loaded
-            initPageComponents();
-            
-        } catch (error) {
-            console.error('Error loading components:', error);
+        // ========================================
+        // DATA STORE
+        // ========================================
+        let departments = [];
+
+        // ========================================
+        // LOAD DEPARTMENTS
+        // ========================================
+        async function loadDepartments() {
+    try {
+        let data = null;
+        
+        // Check if DataService.getDepartments exists
+        if (typeof DataService.getDepartments === 'function') {
+            data = await DataService.getDepartments();
         }
+        
+        if (!data || data.length === 0) {
+            // Fallback to localStorage
+            const localData = localStorage.getItem('departments');
+            if (localData) {
+                data = JSON.parse(localData);
+            } else {
+                // Default data
+                data = [
+                    { id: 1, code: 'ICT', name: 'ICT Department', head: 'Phillip Z.P', status: 'Active', description: 'Information and Communication Technology' },
+                    { id: 2, code: 'MED', name: 'Medical Department', head: 'Dr. Sarah Johnson', status: 'Active', description: 'Medical services and patient care' },
+                    { id: 3, code: 'NRS', name: 'Nursing Department', head: 'Jane Smith', status: 'Active', description: 'Nursing services and patient care' },
+                    { id: 4, code: 'PHM', name: 'Pharmacy Department', head: 'Dr. James Wilson', status: 'Active', description: 'Pharmacy and medication management' },
+                    { id: 5, code: 'LAB', name: 'Laboratory Department', head: 'Dr. Robert Chen', status: 'Inactive', description: 'Laboratory and diagnostic services' }
+                ];
+            }
+        }
+        departments = data;
+        renderDepartments();
+    } catch (error) {
+        console.error('Failed to load departments:', error);
+        showNotification('Failed to load departments', 'error');
     }
-    
-    function initPageComponents() {
-        // Initialize user dropdown
-        if (typeof initUserDropdown === 'function') {
-            initUserDropdown();
+}
+        // ========================================
+        // RENDER DEPARTMENTS
+        // ========================================
+        function renderDepartments() {
+            const tbody = document.getElementById('deptTableBody');
+
+            if (departments.length === 0) {
+                tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No departments found. Click "Add Department" to create one.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = departments.map(dept => `
+                <tr>
+                    <td><strong>${dept.code || 'N/A'}</strong></td>
+                    <td>${dept.name || 'N/A'}</td>
+                    <td>${dept.head || 'Not Assigned'}</td>
+                    <td><span class="status-badge ${dept.status === 'Active' ? 'status-active' : 'status-inactive'}">${dept.status || 'Active'}</span></td>
+                    <td class="action-icons" style="text-align: center;">
+                        <i class="fas fa-edit" title="Edit" onclick="editDepartment(${dept.id})"></i>
+                        <i class="fas fa-trash" title="Delete" onclick="deleteDepartment(${dept.id})"></i>
+                    </td>
+                </tr>
+            `).join('');
         }
-        
-        // Set user info from sessionStorage
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        
-        const userNameSpan = document.getElementById('userName');
-        const jobTitleSpan = document.getElementById('jobTitle');
-        const userAvatar = document.getElementById('userAvatar');
-        
-        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
-        if (userNameSpan) userNameSpan.textContent = userName;
-        if (userAvatar) {
-            const initials = userName.split(' ').map(n => n[0]).join('');
-            userAvatar.textContent = initials;
+
+        // ========================================
+        // DEPARTMENT CRUD
+        // ========================================
+
+        // Open Add Modal
+        function openAddDepartmentModal() {
+            document.getElementById('deptModalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add Department';
+            document.getElementById('deptSubmitText').textContent = 'Add Department';
+            document.getElementById('deptEditId').value = '';
+            document.getElementById('deptName').value = '';
+            document.getElementById('deptCode').value = '';
+            document.getElementById('deptHead').value = '';
+            document.getElementById('deptDescription').value = '';
+            document.getElementById('deptStatusToggle').classList.add('active');
+            document.getElementById('deptStatusLabel').textContent = 'Active';
+            document.getElementById('deptStatus').value = 'Active';
+
+            // Clear errors
+            document.querySelectorAll('#deptModal .error-text').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('#deptModal input, #deptModal select, #deptModal textarea').forEach(el => el.classList.remove('error'));
+
+            document.getElementById('deptModal').classList.add('active');
+            document.getElementById('deptName').focus();
         }
-        
-        // Sidebar toggle (hamburger menu)
-        const menuToggle = document.getElementById('menuToggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSidebar();
+
+        // Edit Department
+        function editDepartment(id) {
+            const dept = departments.find(d => d.id === id);
+            if (!dept) {
+                showNotification('Department not found', 'error');
+                return;
+            }
+
+            document.getElementById('deptModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Department';
+            document.getElementById('deptSubmitText').textContent = 'Update Department';
+            document.getElementById('deptEditId').value = dept.id;
+            document.getElementById('deptName').value = dept.name || '';
+            document.getElementById('deptCode').value = dept.code || '';
+            document.getElementById('deptHead').value = dept.head || '';
+            document.getElementById('deptDescription').value = dept.description || '';
+
+            if (dept.status === 'Active') {
+                document.getElementById('deptStatusToggle').classList.add('active');
+                document.getElementById('deptStatusLabel').textContent = 'Active';
+                document.getElementById('deptStatus').value = 'Active';
+            } else {
+                document.getElementById('deptStatusToggle').classList.remove('active');
+                document.getElementById('deptStatusLabel').textContent = 'Inactive';
+                document.getElementById('deptStatus').value = 'Inactive';
+            }
+
+            // Clear errors
+            document.querySelectorAll('#deptModal .error-text').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('#deptModal input, #deptModal select, #deptModal textarea').forEach(el => el.classList.remove('error'));
+
+            document.getElementById('deptModal').classList.add('active');
+            document.getElementById('deptName').focus();
+        }
+
+        // Close Modal
+        function closeDeptModal() {
+            document.getElementById('deptModal').classList.remove('active');
+        }
+
+        // Validate Department Form
+        function validateDeptForm() {
+            let isValid = true;
+
+            const name = document.getElementById('deptName').value.trim();
+            if (!name) {
+                document.getElementById('deptName').classList.add('error');
+                document.getElementById('deptName-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('deptName').classList.remove('error');
+                document.getElementById('deptName-error').classList.remove('show');
+            }
+
+            const code = document.getElementById('deptCode').value.trim();
+            if (!code) {
+                document.getElementById('deptCode').classList.add('error');
+                document.getElementById('deptCode-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('deptCode').classList.remove('error');
+                document.getElementById('deptCode-error').classList.remove('show');
+            }
+
+            return isValid;
+        }
+
+        // Save Department
+        async function saveDepartment() {
+            if (!validateDeptForm()) {
+                showNotification('Please fix all errors before saving', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('deptSubmitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-sm"></span> Saving...';
+            submitBtn.disabled = true;
+
+            try {
+                const editId = document.getElementById('deptEditId').value;
+                const deptData = {
+                    name: document.getElementById('deptName').value.trim(),
+                    code: document.getElementById('deptCode').value.trim().toUpperCase(),
+                    head: document.getElementById('deptHead').value,
+                    status: document.getElementById('deptStatus').value,
+                    description: document.getElementById('deptDescription').value.trim()
+                };
+
+                if (editId) {
+                    // Update existing
+                    const index = departments.findIndex(d => d.id === parseInt(editId));
+                    if (index !== -1) {
+                        departments[index] = { ...departments[index], ...deptData };
+                    }
+                } else {
+                    // Add new
+                    const newId = departments.length > 0 ? Math.max(...departments.map(d => d.id)) + 1 : 1;
+                    departments.push({ id: newId, ...deptData });
+                }
+
+                // Save to localStorage
+                localStorage.setItem('departments', JSON.stringify(departments));
+
+                renderDepartments();
+                closeDeptModal();
+                showNotification(editId ? 'Department updated successfully!' : 'Department added successfully!', 'success');
+
+            } catch (error) {
+                console.error('Error saving department:', error);
+                showNotification('Failed to save department', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Delete Department
+        function deleteDepartment(id) {
+            const dept = departments.find(d => d.id === id);
+            if (!dept) return;
+
+            if (!confirm(`Are you sure you want to delete "${dept.name}"? This action cannot be undone.`)) return;
+
+            departments = departments.filter(d => d.id !== id);
+            localStorage.setItem('departments', JSON.stringify(departments));
+            renderDepartments();
+            showNotification('Department deleted successfully!', 'success');
+        }
+
+        // ========================================
+        // TOGGLE SWITCH
+        // ========================================
+        function toggleSwitch(id) {
+            const toggle = document.getElementById(id);
+            if (!toggle) return;
+            toggle.classList.toggle('active');
+
+            // Update hidden status field if it's the department status toggle
+            if (id === 'deptStatusToggle') {
+                const isActive = toggle.classList.contains('active');
+                document.getElementById('deptStatusLabel').textContent = isActive ? 'Active' : 'Inactive';
+                document.getElementById('deptStatus').value = isActive ? 'Active' : 'Inactive';
+            }
+        }
+
+        // ========================================
+        // BACKUP FUNCTION
+        // ========================================
+        function backupNow() {
+            const btn = document.querySelector('.btn-backup');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-sm"></span> Backing up...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Create backup data
+                const backupData = {
+                    timestamp: new Date().toISOString(),
+                    departments: departments,
+                    settings: {
+                        theme: document.getElementById('theme').value,
+                        language: document.getElementById('language').value,
+                        fontSize: document.getElementById('fontSize').value,
+                        backupFrequency: document.getElementById('backupFrequency').value,
+                        notifications: {
+                            email: document.getElementById('emailToggle').classList.contains('active'),
+                            sms: document.getElementById('smsToggle').classList.contains('active'),
+                            reminders: document.getElementById('reminderToggle').classList.contains('active'),
+                            security: document.getElementById('securityToggle').classList.contains('active'),
+                            autoBackup: document.getElementById('backupToggle').classList.contains('active')
+                        }
+                    }
+                };
+
+                // Download as JSON
+                const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                a.download = `config_backup_${timestamp}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                btn.innerHTML = '<i class="fas fa-check"></i> Backed Up!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+
+                showNotification('Backup completed successfully!', 'success');
+            }, 1000);
+        }
+
+        // ========================================
+        // SAVE ALL SETTINGS
+        // ========================================
+        function saveAllSettings() {
+            const btn = document.querySelector('.btn-save');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-sm"></span> Saving...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const settings = {
+                    theme: document.getElementById('theme').value,
+                    language: document.getElementById('language').value,
+                    fontSize: document.getElementById('fontSize').value,
+                    backupFrequency: document.getElementById('backupFrequency').value,
+                    notifications: {
+                        email: document.getElementById('emailToggle').classList.contains('active'),
+                        sms: document.getElementById('smsToggle').classList.contains('active'),
+                        reminders: document.getElementById('reminderToggle').classList.contains('active'),
+                        security: document.getElementById('securityToggle').classList.contains('active'),
+                        autoBackup: document.getElementById('backupToggle').classList.contains('active')
+                    }
+                };
+
+                localStorage.setItem('userSettings', JSON.stringify(settings));
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+
+                showNotification('All settings saved successfully!', 'success');
+            }, 800);
+        }
+
+        // ========================================
+        // RESET DEFAULTS
+        // ========================================
+        function resetDefaults() {
+            if (!confirm('Are you sure you want to reset all settings to default values?')) return;
+
+            // Reset dropdowns
+            document.getElementById('theme').value = 'light';
+            document.getElementById('language').value = 'en';
+            document.getElementById('fontSize').value = 'medium';
+            document.getElementById('backupFrequency').value = 'weekly';
+
+            // Reset toggles
+            const toggleIds = ['emailToggle', 'smsToggle', 'reminderToggle', 'securityToggle', 'backupToggle'];
+            const defaultActive = ['emailToggle', 'reminderToggle', 'securityToggle', 'backupToggle'];
+            toggleIds.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (!toggle) return;
+                if (defaultActive.includes(id)) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
             });
+
+            showNotification('All settings reset to defaults', 'info');
         }
 
-        // Close sidebar button (X button)
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeSidebar();
-            });
+        // ========================================
+        // LOAD SAVED SETTINGS ON PAGE LOAD
+        // ========================================
+        function loadSavedSettings() {
+            try {
+                const saved = localStorage.getItem('userSettings');
+                if (!saved) return;
+
+                const settings = JSON.parse(saved);
+                if (settings.theme) document.getElementById('theme').value = settings.theme;
+                if (settings.language) document.getElementById('language').value = settings.language;
+                if (settings.fontSize) document.getElementById('fontSize').value = settings.fontSize;
+                if (settings.backupFrequency) document.getElementById('backupFrequency').value = settings.backupFrequency;
+
+                if (settings.notifications) {
+                    const toggleMap = {
+                        email: 'emailToggle',
+                        sms: 'smsToggle',
+                        reminders: 'reminderToggle',
+                        security: 'securityToggle',
+                        autoBackup: 'backupToggle'
+                    };
+                    Object.keys(settings.notifications).forEach(key => {
+                        const toggleId = toggleMap[key];
+                        if (toggleId) {
+                            const toggle = document.getElementById(toggleId);
+                            if (toggle && settings.notifications[key]) {
+                                toggle.classList.add('active');
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading saved settings:', error);
+            }
         }
 
-        // Initialize sidebar state
-        initSidebarState();
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+                
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+                
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+                
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+                
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            handleResponsiveSidebar();
-        });
-    }
-    document.addEventListener('DOMContentLoaded', loadComponents);
-</script>
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+            
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+            
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+            
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('hidden');
+                });
+            }
+
+            // Load departments
+            loadDepartments();
+            
+            // Load saved settings
+            loadSavedSettings();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
 </body>
 </html>
