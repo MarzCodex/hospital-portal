@@ -11,7 +11,7 @@
            CSS VARIABLES
            ============================================================ */
         :root {
-            --blue: #0756ba;
+            --blue: #0759bc;
             --blue-deep: #073b8d;
             --teal: #12b7bf;
             --teal-pale: #e7f9fa;
@@ -309,7 +309,6 @@
            MAIN CONTENT
            ============================================================ */
         .app-main {
-            max-width: 1280px;
             margin: 0 auto;
             padding: 28px 32px;
             min-height: calc(100vh - var(--header-height) - var(--footer-height));
@@ -328,7 +327,7 @@
             background: var(--surface);
             border: 1px solid var(--line);
             border-radius: var(--radius);
-            padding: 28px 20px 24px;
+            padding: 15px 15px 10px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
@@ -338,13 +337,14 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            min-height: 160px;
+            min-height: 120px;
         }
 
         .module-card:hover {
             transform: translateY(-4px);
             border-color: var(--blue);
             box-shadow: var(--shadow-lg);
+            background: #a8caffdb;
         }
 
         .module-card:active {
@@ -710,7 +710,7 @@
     <div class="dropdown-overlay" id="dropdownOverlay"></div>
 
     <!-- ============================================================
-    FIXED HEADER
+    FIXED TOP HEADER
     ============================================================ -->
     <header class="app-header" id="appHeader">
         <!-- Left: Logo + System Name -->
@@ -719,31 +719,39 @@
                 <i class="fas fa-tooth"></i>
             </div>
             <div class="header-brand">
-                <span class="system-name">Choice Dental Care</span>
-                <span class="system-version">v2.4.1</span>
+                <span class="system-name">Choice Dental Care <i class="system-version">v2.4.1</i></span>  
             </div>
-        </div>
-
-        <!-- Center: Current Date -->
-        <div class="header-center">
             <span class="header-date" id="currentDate">
-                <span class="day-name" id="dayName">Wednesday</span>,
-                <span id="fullDate">July 29, 2026</span>
+                <span class="user-divider"></span>
+                <span class="day-name" id="dayName"></span>,
+                <span id="fullDate"></span>
             </span>
         </div>
 
-        <!-- Right: User Info + Avatar -->
-        <div class="header-right">
-            <div class="header-user">
-                <span class="user-title" id="userTitle">Doctor</span>
-                <span class="user-divider">|</span>
-                <span class="user-name" id="userName">Sarah Johnson</span>
-            </div>
-            <div class="avatar-wrapper" id="avatarWrapper">
-                <div class="avatar" id="avatarBtn">
-                    SJ
-                    <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+       <!-- Right: User Info + Avatar -->
+            <div class="header-right">
+                <div class="header-user">
+                    <span class="user-title" id="role"></span>
+                    <span class="user-divider">|</span>
+                    <span class="user-name" id="displayName"></span>
                 </div>
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <div class="avatar" id="avatarBtn">
+                        <!-- Initials will be inserted here by JavaScript -->
+                        <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="dropdown-item" onclick="handleChangePassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
                 <!-- Dropdown Menu -->
                 <div class="dropdown-menu" id="dropdownMenu">
                     <button class="dropdown-item" onclick="handleChangePassword()">
@@ -763,7 +771,72 @@
     ============================================================ -->
     <main class="app-main">
         <div class="modules-grid" id="modulesGrid">
-            <!-- Modules will be rendered by JavaScript -->
+            <!-- 1. Reception Works -->
+            <button class="module-card icon-cyan" data-module="reception" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-hospital"></i></div>
+                <div class="module-title">Reception Works</div>
+            </button>
+            <!-- 2. Revenue Works -->
+            <button class="module-card icon-amber" data-module="revenue" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-coins"></i></div>
+                <div class="module-title">Revenue Works</div>
+            </button>
+            <!-- 3. Nurse Station Works -->
+            <button class="module-card icon-pink" data-module="nurse" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-stethoscope"></i></div>
+                <div class="module-title">Nurse Station Works</div>
+            </button>
+            <!-- 4. Doctors Page Works -->
+            <button class="module-card icon-blue" data-module="doctors" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-user-md"></i></div>
+                <div class="module-title">Doctors Page Works</div>
+            </button>
+            <!-- 5. Patient Records -->
+            <button class="module-card icon-green" data-module="patients" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-notes-medical"></i></div>
+                <div class="module-title">Patient Records</div>
+            </button>
+            <!-- 6. Pharmacy Works -->
+            <button class="module-card icon-purple" data-module="pharmacy" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-prescription-bottle"></i></div>
+                <div class="module-title">Pharmacy Works</div>
+            </button>
+            <!-- 7. Radiology Works -->
+            <button class="module-card icon-violet" data-module="radiology" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-x-ray"></i></div>
+                <div class="module-title">Radiology Works</div>
+            </button>
+            <!-- 8. Procedure Works -->
+            <button class="module-card icon-red" data-module="procedure" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-syringe"></i></div>
+                <div class="module-title">Procedure Works</div>
+            </button>
+            <!-- 9. Storage & Supply Works -->
+            <button class="module-card icon-emerald" data-module="storage" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-boxes"></i></div>
+                <div class="module-title">Storage And Supply Works</div>
+            </button>
+            <!-- 10. Management Works -->
+            <button class="module-card icon-orange" data-module="management" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="module-title">Management Works</div>
+            </button>
+            <!-- 11. General Ledger Works -->
+            <button class="module-card icon-rose" data-module="ledger" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-book"></i></div>
+                <div class="module-title">General Ledger Works</div>
+            </button>
+            <!-- 12. User Management -->
+            <button class="module-card icon-indigo" data-module="users" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-users-cog"></i></div>
+                <div class="module-title">User Management</div>
+            </button>
+            <!-- 13. Setup & Configuration -->
+            <button class="module-card icon-teal" data-module="setup" role="button" tabindex="0">
+                <div class="module-icon"><i class="fas fa-gear"></i></div>
+                <div class="module-title">Setup & Configuration</div>
+            </button>
+        
         </div>
     </main>
 
@@ -772,11 +845,11 @@
     ============================================================ -->
     <footer class="app-footer">
         <div class="footer-left">
-            <span>&copy; 2026 Choice Dental Care</span>
+            <span>&copy; Powered By Philip Z.P</span>
             <span class="footer-divider">•</span>
             <span>v2.4.1</span>
             <span class="footer-divider">•</span>
-            <span>Support: <a href="tel:+255753682610" style="color:var(--muted);text-decoration:none;">+255 753 682 610</a></span>
+            <span>Support: <a href="" style="color:var(--muted);text-decoration:none;">+255 753 682 610</button></span>
         </div>
         <div class="footer-right">
             <a href="#">Privacy Policy</a>
@@ -785,97 +858,138 @@
         </div>
     </footer>
 
+ <script src="../../assets/js/common.js"></script>
     <script>
         // ============================================================
-        // 1. MODULE DATA
+        //  MODULE NAMES (for toast notifications)
         // ============================================================
-        const modules = [
-            { id: 'doctors', title: 'Doctors', subtitle: 'Page Works', icon: 'fa-user-md', color: 'blue' },
-            { id: 'setup', title: 'Setup &', subtitle: 'Config', icon: 'fa-gear', color: 'teal' },
-            { id: 'patients', title: 'Patient', subtitle: 'Records', icon: 'fa-notes-medical', color: 'green' },
-            { id: 'pharmacy', title: 'Pharmacy', subtitle: 'Works', icon: 'fa-prescription-bottle', color: 'purple' },
-            { id: 'revenue', title: 'Revenue', subtitle: 'Works', icon: 'fa-coins', color: 'amber' },
-            { id: 'reception', title: 'Reception', subtitle: 'Works', icon: 'fa-hospital', color: 'cyan' },
-            { id: 'users', title: 'User', subtitle: 'Management', icon: 'fa-users-cog', color: 'indigo' },
-            { id: 'management', title: 'Management', subtitle: 'Works', icon: 'fa-chart-bar', color: 'orange' },
-            { id: 'storage', title: 'Storage &', subtitle: 'Supply Works', icon: 'fa-boxes', color: 'emerald' },
-            { id: 'nurse', title: 'Nurse', subtitle: 'Station Works', icon: 'fa-stethoscope', color: 'pink' },
-            { id: 'radiology', title: 'Radiology', subtitle: 'Works', icon: 'fa-x-ray', color: 'violet' },
-            { id: 'ledger', title: 'General', subtitle: 'Ledger Works', icon: 'fa-book', color: 'rose' },
-            { id: 'procedure', title: 'Procedure', subtitle: 'Works', icon: 'fa-syringe', color: 'red' }
-        ];
-
+        const moduleNames = {
+            doctors: 'Doctors Page Works',
+            setup: 'Setup & Configuration',
+            patients: 'Patient Records',
+            pharmacy: 'Pharmacy Works',
+            revenue: 'Revenue Works',
+            reception: 'Reception Works',
+            users: 'User Management',
+            management: 'Management Works',
+            storage: 'Storage & Supply Works',
+            nurse: 'Nurse Station Works',
+            radiology: 'Radiology Works',
+            ledger: 'General Ledger Works',
+            procedure: 'Procedure Works'
+        };
         // ============================================================
-        // 2. RENDER MODULES
+        // MODULE ROUTES (Folder Structure Mapping)
         // ============================================================
-        function renderModules() {
-            const grid = document.getElementById('modulesGrid');
-            grid.innerHTML = '';
-
-            modules.forEach((mod, index) => {
-                const card = document.createElement('a');
-                card.href = '#';
-                card.className = `module-card icon-${mod.color}`;
-                card.setAttribute('data-module', mod.id);
-                card.setAttribute('role', 'button');
-                card.setAttribute('tabindex', '0');
-
-                // Keyboard accessibility
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleModuleClick(mod.id);
-                    }
-                });
-
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    handleModuleClick(mod.id);
-                });
-
-                card.innerHTML = `
-                    <div class="module-icon"><i class="fas ${mod.icon}"></i></div>
-                    <div class="module-title">${mod.title}</div>
-                    <div class="module-subtitle">${mod.subtitle}</div>
-                `;
-
-                grid.appendChild(card);
-            });
+        const moduleRoutes = {
+            doctors: {
+                path: '../doctors page works/doctors-works-dashboard.html'
+            },
+            setup: {
+                path: '../setup & configurations/item-management.html'
+            },
+            patients: {
+                path: '../reception works/all-patients.html'
+            },
+            pharmacy: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            revenue: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            reception: {
+                path: '../reception works/reception-dashboard.html'
+            },
+            users: {
+                path: '../user management/user-management.html'
+            },
+            management: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            storage: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            nurse: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            radiology: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            ledger: {
+                path: '#'  // Placeholder - page not created yet
+            },
+            procedure: {
+                path: '#'  // Placeholder - page not created yet
+            }
+        };
+        // ============================================================
+        //  HANDLE MODULE CLICK
+        // ============================================================
+             function handleModuleClick(moduleId) {
+        // Get the route for this module
+        const route = moduleRoutes[moduleId];
+        
+        // Check if module exists in routes
+        if (!route) {
+            showToast(`⚠️ Module "${moduleId}" not configured.`, 'warning');
+            console.warn(`⚠️ Module "${moduleId}" not found in routes.`);
+            return;
         }
-
-        // ============================================================
-        // 3. MODULE CLICK HANDLER
-        // ============================================================
-        function handleModuleClick(moduleId) {
-            // Show a notification or navigate to the module page
-            const moduleNames = {
-                doctors: 'Doctors Page Works',
-                setup: 'Setup & Configuration',
-                patients: 'Patient Records',
-                pharmacy: 'Pharmacy Works',
-                revenue: 'Revenue Works',
-                reception: 'Reception Works',
-                users: 'User Management',
-                management: 'Management Works',
-                storage: 'Storage & Supply Works',
-                nurse: 'Nurse Station Works',
-                radiology: 'Radiology Works',
-                ledger: 'General Ledger Works',
-                procedure: 'Procedure Works'
-            };
-
-            const name = moduleNames[moduleId] || moduleId;
-            console.log(`🔗 Navigating to: ${name}`);
-            
-            // Show a toast notification
-            showToast(`📂 Opening ${name}...`, 'info');
-
-            // In a real implementation, you would redirect:
-            // window.location.href = `${moduleId}.html`;
+        
+        // Get the name for toast message
+        const name = moduleNames[moduleId] || moduleId;
+        const path = route.path;
+        
+        console.log(`🔗 Navigating to: ${name} -> ${path}`);
+        showToast(`📂 Opening ${name}...`, 'info');
+        
+        // Check if page exists (not placeholder)
+        if (path === '#') {
+            showToast(`🚧 ${name} is under construction.`, 'warning');
+            return;
         }
+        
+        // Redirect to the page
+        window.location.href = path;
+    }
+     // ============================================================
+    //  MODULE CLICK HANDLER (Event Delegation)
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const grid = document.getElementById('modulesGrid');
+
+        // Click handler
+        grid.addEventListener('click', function(e) {
+            const card = e.target.closest('.module-card');
+            if (!card) return;
+            e.preventDefault();
+            const moduleId = card.dataset.module;
+            handleModuleClick(moduleId);
+        });
+
+        // Keyboard handler (Enter/Space)
+        grid.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const card = e.target.closest('.module-card');
+                if (!card) return;
+                e.preventDefault();
+                const moduleId = card.dataset.module;
+                handleModuleClick(moduleId);
+            }
+        });
+
+        console.log('🦷 Choice Dental Care Dashboard loaded successfully!');
+        console.log(`📦 ${Object.keys(moduleNames).length} modules available`);
+
+        setTimeout(() => {
+                const user = getUserSession();
+                const greeting = user ? `👋 Welcome back, ${user.displayName}!` : '👋 Welcome';
+            showToast(greeting, 'success', 3000);
+        }, 500);
+    });
 
         // ============================================================
-        // 4. DROPDOWN CONTROLS
+        //  DROPDOWN CONTROLS
         // ============================================================
         const avatarBtn = document.getElementById('avatarBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
@@ -894,16 +1008,13 @@
             avatarBtn.setAttribute('aria-expanded', 'false');
         }
 
-        // Click avatar to toggle
         avatarBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             toggleDropdown();
         });
 
-        // Click overlay to close
         dropdownOverlay.addEventListener('click', closeDropdown);
 
-        // Click outside to close
         document.addEventListener('click', (e) => {
             const wrapper = document.querySelector('.avatar-wrapper');
             if (!wrapper.contains(e.target)) {
@@ -911,7 +1022,6 @@
             }
         });
 
-        // Keyboard: Escape to close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeDropdown();
@@ -919,57 +1029,43 @@
         });
 
         // ============================================================
-        // 5. DROPDOWN ACTIONS
+        // DROPDOWN ACTIONS
         // ============================================================
         function handleChangePassword() {
             closeDropdown();
             showToast('🔑 Redirecting to Change Password...', 'info');
             console.log('🔑 Change Password clicked');
-            // window.location.href = 'change-password.html';
         }
 
         function handleLogout() {
             closeDropdown();
-            if (confirm('Are you sure you want to logout?')) {
-                showToast('👋 Logging out...', 'warning');
-                console.log('🚪 Logout clicked');
-                // window.location.href = 'login.html';
-                setTimeout(() => {
-                    // Redirect to login page
-                    // window.location.href = 'login.html';
-                }, 1000);
-            }
+            logoutUser();
         }
 
         // ============================================================
-        // 6. DATE DISPLAY
+        //  DATE DISPLAY
         // ============================================================
         function updateDate() {
             const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             };
             const fullDateStr = now.toLocaleDateString('en-US', options);
             const parts = fullDateStr.split(',');
-            const dayName = parts[0];
-            const rest = parts.slice(1).join(',').trim();
-
-            document.getElementById('dayName').textContent = dayName;
-            document.getElementById('fullDate').textContent = rest;
+            document.getElementById('dayName').textContent = parts[0];
+            document.getElementById('fullDate').textContent = parts.slice(1).join(',').trim();
         }
 
-        // Update date immediately and then every minute
         updateDate();
         setInterval(updateDate, 60000);
 
         // ============================================================
-        // 7. TOAST NOTIFICATIONS
+        //  TOAST NOTIFICATIONS
         // ============================================================
         function showToast(message, type = 'info', duration = 3000) {
-            // Remove existing toast
             const existing = document.querySelector('.toast-notification');
             if (existing) existing.remove();
 
@@ -1016,7 +1112,6 @@
                 <span>${message}</span>
             `;
 
-            // Add animation keyframes if not already present
             if (!document.getElementById('toastStyles')) {
                 const style = document.createElement('style');
                 style.id = 'toastStyles';
@@ -1035,7 +1130,6 @@
 
             document.body.appendChild(toast);
 
-            // Auto dismiss
             setTimeout(() => {
                 toast.style.animation = 'toastOut 0.3s ease-in forwards';
                 setTimeout(() => toast.remove(), 300);
@@ -1043,32 +1137,36 @@
         }
 
         // ============================================================
-        // 8. KEYBOARD SHORTCUTS
+        //  KEYBOARD SHORTCUTS
         // ============================================================
         document.addEventListener('keydown', (e) => {
-            // Ctrl + Shift + L = Logout
             if (e.ctrlKey && e.shiftKey && e.key === 'L') {
                 e.preventDefault();
                 handleLogout();
             }
         });
-
         // ============================================================
-        // 9. INITIALIZATION
+        //  INITIALIZATION
         // ============================================================
-        function init() {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!requireAuth()) {
+                return;
+            }
+            
+            // Update header with user data
+            updateHeaderWithUser();
+            
             renderModules();
             console.log('🦷 Choice Dental Care Dashboard loaded successfully!');
-            console.log(`📦 ${modules.length} modules available`);
+            console.log(`📦 ${Object.keys(moduleNames).length} modules available`);
             
-            // Show welcome toast after a short delay
+            const user = getUserSession();
+            const greeting = user ? `👋 Welcome back, ${user.displayName}!` : '👋 Welcome back!';
             setTimeout(() => {
-                showToast('👋 Welcome back, Dr. Johnson!', 'success', 3000);
+                showToast(greeting, 'success', 3000);
             }, 500);
-        }
-
-        // Run on load
-        document.addEventListener('DOMContentLoaded', init);
+        });
     </script>
 
 </body>

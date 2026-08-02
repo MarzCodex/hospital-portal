@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctors Page Works | Choice Dental Care</title>
+    
+    <!-- Font Awesome (local) -->
+    <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!-- Chart.js -->
+    <script src="../../assets/js/chart.umd.min.js"></script>   
+    <script src="../../assets/js/common.js"></script>
+    
+    <style>
+        /* ============================================================
+           CSS VARIABLES
+           ============================================================ */
+        :root {
+            --blue: #0756ba;
+            --blue-deep: #073b8d;
+            --teal: #12b7bf;
+            --teal-pale: #e7f9fa;
+            --ink: #14355f;
+            --muted: #62728b;
+            --line: #d8e2ed;
+            --surface: #ffffff;
+            --bg: #f4f9fc;
+            --success: #0a8a5a;
+            --success-bg: #e6f7f0;
+            --danger: #c0392b;
+            --danger-bg: #fde8e5;
+            --warning: #e67e22;
+            --warning-bg: #fef5e7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --font: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            --transition: all 0.25s ease;
+            --header-height: 64px;
+            --secondary-header-height: 44px;
+            --footer-height: 50px;
+            --sidebar-width: 260px;
+            --sidebar-collapsed: 0px;
+            --sidebar-bg: #0a1e2e;
+            --sidebar-hover: #132f3f;
+            --sidebar-active: #1a3f52;
+            --sidebar-text: rgba(255, 255, 255, 0.7);
+            --sidebar-active-text: #ffffff;
+        }
+
+        /* ============================================================
+           RESET
+           ============================================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            padding-top: calc(var(--header-height) + var(--secondary-header-height));
+            padding-bottom: var(--footer-height);
+            padding-left: var(--sidebar-width);
+            transition: padding-left 0.3s ease;
+        }
+
+        body.sidebar-collapsed {
+            padding-left: 0;
+        }
+
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted);
+        }
+
+        /* ============================================================
+           FIXED TOP HEADER
+           ============================================================ */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            background: var(--surface);
+            border-bottom: 1px solid var(--line);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .header-logo {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-brand .system-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+        }
+
+        .header-brand .system-version {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .header-date {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 8px;
+            padding-left: 12px;
+            border-left: 1px solid var(--line);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .header-date .day-name {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .header-date .user-divider {
+            color: var(--line);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-user .role {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .header-user .displayName {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .header-user .user-divider {
+            color: var(--line);
+            font-weight: 300;
+            margin: 0 2px;
+        }
+
+        /* Avatar */
+        .avatar-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .avatar {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(7, 86, 186, 0.25);
+        }
+
+        .avatar .dropdown-arrow {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            font-size: 10px;
+            background: var(--surface);
+            border-radius: 50%;
+            padding: 2px;
+            color: var(--muted);
+            border: 1px solid var(--line);
+        }
+
+        /* ============================================================
+           DROPDOWN MENU
+           ============================================================ */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 200px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            padding: 6px 0;
+            z-index: 1001;
+            animation: dropdownIn 0.2s ease-out;
+        }
+
+        .dropdown-menu.open {
+            display: block;
+        }
+
+        @keyframes dropdownIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .dropdown-menu .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            color: var(--ink);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font);
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background: var(--teal-pale);
+            color: var(--blue);
+        }
+
+        .dropdown-menu .dropdown-item i {
+            width: 18px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .dropdown-menu .dropdown-divider {
+            height: 1px;
+            background: var(--line);
+            margin: 4px 12px;
+        }
+
+        .dropdown-menu .dropdown-item.danger {
+            color: var(--danger);
+        }
+
+        .dropdown-menu .dropdown-item.danger:hover {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        /* ============================================================
+           FIXED SECONDARY HEADER
+           ============================================================ */
+        .app-secondary-header {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            z-index: 999;
+            height: var(--secondary-header-height);
+            background: var(--surface);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            padding: 0 32px;
+            gap: 16px;
+        }
+
+        .app-secondary-header .sec-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .app-secondary-header .sec-btn:hover {
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        .app-secondary-header .sec-btn.active {
+            background: var(--teal-pale);
+            color: var(--teal);
+        }
+
+        .app-secondary-header .sec-btn i {
+            font-size: 14px;
+        }
+
+        .app-secondary-header .sec-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--line);
+        }
+
+        /* ============================================================
+           BREADCRUMB
+           ============================================================ */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--muted);
+            margin-left: auto;
+        }
+
+        .breadcrumb a {
+            color: var(--blue);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb .separator {
+            color: var(--line);
+        }
+
+        .breadcrumb .current {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           SIDE NAVIGATION
+           ============================================================ */
+        .side-nav {
+            position: fixed;
+            top: calc(var(--header-height) + var(--secondary-header-height));
+            left: 0;
+            bottom: var(--footer-height);
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 998;
+            transition: transform 0.3s ease;
+            padding: 12px 0 20px;
+        }
+
+        body.sidebar-collapsed .side-nav {
+            transform: translateX(-100%);
+        }
+
+        .side-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+        .side-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .side-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        .side-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .side-nav .nav-item:hover {
+            background: var(--sidebar-hover);
+            color: var(--sidebar-active-text);
+        }
+
+        .side-nav .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--sidebar-active-text);
+            border-left-color: var(--teal);
+        }
+
+        .side-nav .nav-item i {
+            width: 20px;
+            font-size: 15px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .side-nav .nav-item .nav-label {
+            flex: 1;
+        }
+
+        .side-nav .nav-item .nav-arrow {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            transition: transform 0.25s ease;
+        }
+
+        .side-nav .nav-item.open .nav-arrow {
+            transform: rotate(90deg);
+        }
+
+        .side-nav .nav-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .side-nav .nav-submenu.open {
+            max-height: 200px;
+        }
+
+        .side-nav .nav-submenu .sub-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 20px 8px 52px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .side-nav .nav-submenu .sub-item:hover {
+            color: var(--sidebar-active-text);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .side-nav .nav-submenu .sub-item.active {
+            color: var(--teal);
+        }
+
+        .side-nav .nav-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            margin: 8px 16px;
+        }
+
+        /* ============================================================
+           OVERLAY
+           ============================================================ */
+        .dropdown-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+        }
+
+        .dropdown-overlay.active {
+            display: block;
+        }
+
+        /* ============================================================
+           MAIN CONTENT
+           ============================================================ */
+        .app-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px;
+            min-height: calc(100vh - var(--header-height) - var(--secondary-header-height) - var(--footer-height));
+        }
+
+        /* ============================================================
+           CHART SECTION
+           ============================================================ */
+           .chart-section .chart-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .chart-section .chart-title .refresh-btn {
+            padding: 4px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chart-section .chart-title .refresh-btn:hover {
+            background: var(--bg);
+            color: var(--ink);
+            border-color: var(--blue);
+        }
+
+        .chart-section .chart-title .refresh-btn:active {
+            transform: scale(0.95);
+        }
+
+        .chart-section .chart-title .refresh-btn .spinning {
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        .chart-section {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px 24px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            margin-bottom: 0px;
+        }
+
+        .chart-section .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chart-section .chart-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .chart-section .chart-title small {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--muted);
+            margin-left: 8px;
+        }
+
+        .chart-section .chart-date-range {
+            font-size: 13px;
+            color: var(--muted);
+            background: var(--bg);
+            padding: 4px 14px;
+            border-radius: 40px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 30em;
+        }
+
+
+        /* ============================================================
+           FIXED FOOTER
+           ============================================================ */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            height: var(--footer-height);
+            background: var(--surface);
+            border-top: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .app-footer .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .app-footer .footer-left .footer-divider {
+            color: var(--line);
+        }
+
+        .app-footer .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .app-footer .footer-right a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .app-footer .footer-right a:hover {
+            color: var(--blue);
+            text-decoration: underline;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1200px) {
+            .summary-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .app-header {
+                padding: 0 20px;
+            }
+            .app-secondary-header {
+                padding: 0 20px;
+            }
+            .app-main {
+                padding: 20px;
+            }
+            .app-footer {
+                padding: 0 20px;
+            }
+
+            .header-date {
+                display: none;
+            }
+            .header-user .role {
+                display: none;
+            }
+
+            .breadcrumb {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .side-nav {
+                transform: translateX(-100%);
+            }
+            body.sidebar-collapsed .side-nav {
+                transform: translateX(0);
+            }
+            body {
+                padding-left: 0;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .app-header {
+                padding: 0 16px;
+                height: 56px;
+            }
+            .app-secondary-header {
+                padding: 0 16px;
+                height: 40px;
+                top: 56px;
+            }
+            .app-main {
+                padding: 16px;
+            }
+            .app-footer {
+                padding: 0 16px;
+                height: 44px;
+                font-size: 11px;
+                flex-wrap: wrap;
+            }
+
+            :root {
+                --header-height: 56px;
+                --secondary-header-height: 40px;
+                --footer-height: 44px;
+                --sidebar-width: 280px;
+            }
+
+            .header-brand .system-version {
+                display: none;
+            }
+            .header-user .displayName {
+                font-size: 13px;
+            }
+            .header-user .user-divider {
+                display: none;
+            }
+            .header-logo {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .avatar {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+            }
+
+            .app-secondary-header .sec-btn span {
+                display: none;
+            }
+
+            .chart-wrapper {
+                height: 260px;
+            }
+
+            .app-footer .footer-left .footer-divider:not(:first-of-type) {
+                display: none;
+            }
+            .app-footer .footer-right {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .app-header {
+                padding: 0 12px;
+            }
+            .app-secondary-header {
+                padding: 0 12px;
+            }
+            .app-main {
+                padding: 12px;
+            }
+            .app-footer {
+                padding: 0 12px;
+                font-size: 10px;
+                flex-direction: column;
+                justify-content: center;
+                gap: 2px;
+                height: 52px;
+            }
+
+            :root {
+                --footer-height: 52px;
+            }
+
+            .header-brand .system-name {
+                font-size: 14px;
+            }
+            .header-user .displayName {
+                font-size: 12px;
+            }
+            .dropdown-menu {
+                min-width: 170px;
+                right: -10px;
+            }
+
+            .chart-section {
+                padding: 16px;
+            }
+            .chart-wrapper {
+                height: 220px;
+            }
+
+            .summary-card {
+                padding: 12px 10px;
+            }
+            .summary-card .card-value {
+                font-size: 18px;
+            }
+            .summary-card .card-icon {
+                font-size: 18px;
+            }
+        }
+
+        /* ============================================================
+           TOAST NOTIFICATIONS
+           ============================================================ */
+        .toast-notification {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastIn 0.3s ease-out;
+            max-width: 90%;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    DROPDOWN OVERLAY
+    ============================================================ -->
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <!-- ============================================================
+    FIXED TOP HEADER
+    ============================================================ -->
+    <header class="app-header" id="appHeader">
+        <!-- Left: Logo + System Name -->
+        <div class="header-left">
+            <div class="header-logo">
+                <i class="fas fa-tooth"></i>
+            </div>
+            <div class="header-brand">
+                <span class="system-name">Choice Dental Care <i class="system-version">v2.4.1</i></span>  
+            </div>
+            <span class="header-date" id="currentDate">
+                <span class="user-divider"></span>
+                <span class="day-name" id="dayName"></span>,
+                <span id="fullDate"></span>
+            </span>
+        </div>
+
+       <!-- Right: User Info + Avatar -->
+            <div class="header-right">
+                <div class="header-user">
+                    <span class="role" id="role"></span>
+                    <span class="user-divider">|</span>
+                    <span class="displayName" id="displayName"></span>
+                </div>
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <div class="avatar" id="avatarBtn">
+                        <!-- Initials will be inserted here by JavaScript -->
+                        <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="dropdown-item" onclick="handleChangePassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+    </header>
+
+    <!-- ============================================================
+    FIXED SECONDARY HEADER
+    ============================================================ -->
+    <header class="app-secondary-header">
+        <button class="sec-btn" id="toggleSidebar" title="Toggle Menu">
+            <i class="fas fa-bars"></i>
+            <span>Toggle Menu View</span>
+        </button>
+        <div class="sec-divider"></div>
+        <button class="sec-btn" onclick="showToast('📖 Help documentation is being loaded...', 'info')">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </button>
+        <button class="sec-btn active" onclick="goToDashboard()">
+            <i class="fas fa-th-large"></i>
+            <span>Dashboard</span>
+        </button>
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="../dashboard/index.html">Home</a>
+            <span class="separator">/</span>
+            <a href="../dashboard/index.html">Dashboard</a>
+            <span class="separator">/</span>
+            <span class="current">Doctors Works</span>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    SIDE NAVIGATION
+    ============================================================ -->
+    <nav class="side-nav" id="sideNav">
+        <a href="#" class="nav-item" data-page="outpatient" onclick="handleNavClick('Outpatient Works', this)">
+            <i class="fas fa-clipboard-list"></i>
+            <span class="nav-label">Outpatient Works</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="inpatient" onclick="handleNavClick('Inpatient Works', this)">
+            <i class="fas fa-hospital-user"></i>
+            <span class="nav-label">Inpatient Works</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="appointments" onclick="handleNavClick('My Appointments', this)">
+            <i class="fas fa-calendar-check"></i>
+            <span class="nav-label">My Appointments</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="surgery-appointments" onclick="handleNavClick('Surgery Appointments', this)">
+            <i class="fas fa-scalpel"></i>
+            <span class="nav-label">Surgery Appointments</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="rdtc" onclick="handleNavClick('RDTC Patch Test Setup', this)">
+            <i class="fas fa-flask"></i>
+            <span class="nav-label">RDTC Patch Test Setup</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="clinical-notes" onclick="handleNavClick('Clinical Notes Review', this)">
+            <i class="fas fa-notes-medical"></i>
+            <span class="nav-label">Clinical Notes Review</span>
+        </a>
+
+        <div class="nav-item" onclick="toggleSubmenu(this)">
+            <i class="fas fa-chart-pie"></i>
+            <span class="nav-label">Reports</span>
+            <span class="nav-arrow"><i class="fas fa-chevron-right"></i></span>
+        </div>
+        <div class="nav-submenu" id="reportsSubmenu">
+            <a href="doctor-performance.html" class="sub-item" data-page="performance">
+                <i class="fas fa-file-alt"></i> My Work Performance Report
+            </a>
+        </div>
+
+        <a href="#" class="nav-item" data-page="claimed" onclick="handleNavClick('Claimed Dead body', this)">
+            <i class="fas fa-skull"></i>
+            <span class="nav-label">Claimed Dead body</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="queue" onclick="handleNavClick('Queue Location Setup', this)">
+            <i class="fas fa-location-dot"></i>
+            <span class="nav-label">Queue Location Setup</span>
+        </a>
+    </nav>
+
+    <!-- ============================================================
+    MAIN CONTENT
+    ============================================================ -->
+    <main class="app-main">
+        <!-- ===== CHART SECTION ===== -->
+        <section class="chart-section">
+            <div class="chart-header">
+                <div class="chart-title">
+                    Clinical Activity Overview
+                    <small>Last 7 Days</small>
+                    <button class="refresh-btn" id="refreshBtn" onclick="refreshChartData()">
+                        <i class="fas fa-sync-alt" id="refreshIcon"></i> Refresh
+                    </button>
+                </div>
+                <span class="chart-date-range" id="dateRangeDisplay">
+                    <i class="far fa-calendar-alt"></i>
+                    Loading...
+                </span>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="activityChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+    FIXED FOOTER
+    ============================================================ -->
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span>&copy; Powered By Philip Z.P</span>
+            <span class="footer-divider">•</span>
+            <span>v2.4.1</span>
+            <span class="footer-divider">•</span>
+            <span>Support: <a href="tel:+255753682610" style="color:var(--muted);text-decoration:none;">+255 753 682 610</a></span>
+        </div>
+        <div class="footer-right">
+            <a href="#">Privacy Policy</a>
+            <span class="footer-divider">•</span>
+            <a href="#">Terms of Service</a>
+        </div>
+    </footer>
+ <script>
+    // ============================================================
+// 1. NAVIGATION FUNCTIONS
+// ============================================================
+function goToDashboard() {
+    window.location.href = '../dashboard/index.html';
+}
+
+function goToLogin() {
+    window.location.href = '../../auth/login.html';
+}
+
+function handleNavClick(pageName, element) {
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active');
+    });
+    element.classList.add('active');
+    showToast(`📋 ${pageName} page is being loaded...`, 'info');
+    console.log(`🔗 Navigating to: ${pageName}`);
+}
+
+function toggleSubmenu(element) {
+    const submenu = element.nextElementSibling;
+    element.classList.toggle('open');
+    if (submenu) {
+        submenu.classList.toggle('open');
+    }
+}
+
+// ============================================================
+// 2. DATE UTILITIES
+// ============================================================
+function getLast7Days() {
+    const dates = [];
+    const today = new Date();
+    
+    for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        dates.push(date);
+    }
+    return dates;
+}
+
+function formatDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function formatDateDisplay(date) {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+function getDayOnly(date) {
+    return String(date.getDate()).padStart(2, '0');
+}
+
+// ============================================================
+// 3. DATA - FETCH FROM JSON FILE
+// ============================================================
+let chartData = null;
+let chartInstance = null;
+let isLoading = false;
+
+async function loadData(showLoadingToast = true) {
+    const refreshIcon = document.getElementById('refreshIcon');
+    
+    try {
+        if (showLoadingToast) {
+            showToast('📊 Loading chart data...', 'info');
+        }
+        
+        if (refreshIcon) {
+            refreshIcon.classList.add('spinning');
+        }
+
+        const response = await fetch('../../data/doctors-graph.json');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const rawData = await response.json();
+        
+        // Get last 7 days dynamically
+        const last7Days = getLast7Days();
+        const dateKeys = last7Days.map(d => formatDateKey(d));
+        const dayLabels = last7Days.map(d => getDayOnly(d));
+        
+        // Build chart data from JSON
+        const datasets = rawData.services.map(service => {
+            const dataValues = dateKeys.map(dateKey => {
+                // Get value from JSON data, default to null if not found
+                const value = service.data[dateKey];
+                // If value is null or undefined, keep as null (no bar)
+                return value !== undefined ? value : null;
+            });
+            
+            return {
+                label: service.name,
+                data: dataValues,
+                backgroundColor: service.color + 'b3',
+                borderColor: service.color,
+                borderWidth: 2,
+                borderRadius: 4,
+                barPercentage: 0.6,
+                categoryPercentage: 0.8,
+            };
+        });
+        
+        chartData = {
+            labels: dayLabels,
+            fullDates: dateKeys,
+            datasets: datasets
+        };
+        
+        // Update date range display
+        const startDate = last7Days[0];
+        const endDate = last7Days[6];
+        document.getElementById('dateRangeDisplay').innerHTML = `
+            <i class="far fa-calendar-alt"></i>
+            ${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}
+        `;
+        
+        // Render chart
+        initChart();
+        
+        console.log('📊 Data loaded successfully from JSON');
+        console.log(`📈 ${datasets.length} services loaded for ${dateKeys.length} days`);
+        
+        if (showLoadingToast) {
+            showToast('✅ Chart data updated successfully!', 'success', 1500);
+        }
+        
+    } catch (error) {
+        console.error('❌ Failed to load data:', error);
+        showToast('⚠️ Failed to load chart data. Please check the data file.', 'warning');
+        showEmptyChart();
+    } finally {
+        if (refreshIcon) {
+            refreshIcon.classList.remove('spinning');
+        }
+        isLoading = false;
+    }
+}
+
+// ============================================================
+// 4. EMPTY CHART STATE
+// ============================================================
+function showEmptyChart() {
+    const ctx = document.getElementById('activityChart');
+    if (!ctx) return;
+    
+    const context = ctx.getContext('2d');
+    
+    if (chartInstance) {
+        chartInstance.destroy();
+        chartInstance = null;
+    }
+    
+    chartInstance = new Chart(context, {
+        type: 'bar',
+        data: {
+            labels: ['No Data Available'],
+            datasets: [{
+                label: 'No Data',
+                data: [0],
+                backgroundColor: 'rgba(200, 200, 200, 0.3)',
+                borderColor: '#ccc',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        font: { size: 14, weight: '600' },
+                        color: '#62728b'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { display: false },
+                    ticks: { display: false }
+                }
+            }
+        }
+    });
+}
+
+// ============================================================
+// 5. CHART.JS INITIALIZATION
+// ============================================================
+function initChart() {
+    const ctx = document.getElementById('activityChart');
+    
+    if (!ctx) {
+        console.error('❌ Chart canvas not found');
+        return;
+    }
+    
+    // Remove any empty chart message
+    const parent = ctx.parentElement;
+    const existingMsg = parent.querySelector('.empty-chart-msg');
+    if (existingMsg) existingMsg.remove();
+    
+    const context = ctx.getContext('2d');
+
+    if (chartInstance) {
+        chartInstance.destroy();
+        chartInstance = null;
+    }
+
+    if (!chartData || !chartData.datasets || chartData.datasets.length === 0) {
+        console.warn('⚠️ No chart data available');
+        showEmptyChart();
+        return;
+    }
+
+    chartInstance = new Chart(context, {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 800,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: {
+                            family: "'Segoe UI', system-ui, sans-serif",
+                            size: 11,
+                            weight: '500'
+                        },
+                        boxWidth: 12,
+                        boxHeight: 12,
+                        borderRadius: 3,
+                        usePointStyle: true,
+                        padding: 12,
+                        color: '#14355f'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(20, 53, 95, 0.92)',
+                    titleFont: { 
+                        family: "'Segoe UI', system-ui, sans-serif", 
+                        weight: '600',
+                        size: 13
+                    },
+                    bodyFont: { 
+                        family: "'Segoe UI', system-ui, sans-serif", 
+                        size: 12 
+                    },
+                    padding: 14,
+                    cornerRadius: 8,
+                    titleColor: '#ffffff',
+                    bodyColor: '#e7f9fa',
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y;
+                            if (value === null || value === undefined) {
+                                return `${context.dataset.label}: No Data`;
+                            }
+                            return `${context.dataset.label}: ${value.toLocaleString()}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: "'Segoe UI', system-ui, sans-serif",
+                            size: 12,
+                            weight: '500'
+                        },
+                        color: '#62728b'
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(216, 226, 237, 0.4)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        font: {
+                            family: "'Segoe UI', system-ui, sans-serif",
+                            size: 11
+                        },
+                        color: '#62728b',
+                        stepSize: 200,
+                        callback: function(value) {
+                            return value >= 1000 ? `${value/1000}k` : value;
+                        }
+                    },
+                    beginAtZero: true
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+
+    console.log('📊 Chart initialized successfully');
+}
+
+// ============================================================
+// 6. REFRESH FUNCTION
+// ============================================================
+async function refreshChartData() {
+    if (isLoading) return;
+    isLoading = true;
+    await loadData(true);
+}
+
+// ============================================================
+// 7. SIDEBAR TOGGLE
+// ============================================================
+document.getElementById('toggleSidebar').addEventListener('click', function() {
+    document.body.classList.toggle('sidebar-collapsed');
+    const icon = this.querySelector('i');
+    if (document.body.classList.contains('sidebar-collapsed')) {
+        icon.className = 'fas fa-chevron-right';
+    } else {
+        icon.className = 'fas fa-bars';
+    }
+    localStorage.setItem('sidebarCollapsed', document.body.classList.contains('sidebar-collapsed'));
+});
+
+if (localStorage.getItem('sidebarCollapsed') === 'true') {
+    document.body.classList.add('sidebar-collapsed');
+    document.querySelector('#toggleSidebar i').className = 'fas fa-chevron-right';
+}
+
+// ============================================================
+// 8. DROPDOWN CONTROLS
+// ============================================================
+const avatarBtn = document.getElementById('avatarBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const dropdownOverlay = document.getElementById('dropdownOverlay');
+
+function toggleDropdown() {
+    const isOpen = dropdownMenu.classList.contains('open');
+    dropdownMenu.classList.toggle('open');
+    dropdownOverlay.classList.toggle('active');
+    avatarBtn.setAttribute('aria-expanded', !isOpen);
+}
+
+function closeDropdown() {
+    dropdownMenu.classList.remove('open');
+    dropdownOverlay.classList.remove('active');
+    avatarBtn.setAttribute('aria-expanded', 'false');
+}
+
+avatarBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleDropdown();
+});
+
+dropdownOverlay.addEventListener('click', closeDropdown);
+
+document.addEventListener('click', (e) => {
+    const wrapper = document.querySelector('.avatar-wrapper');
+    if (!wrapper.contains(e.target)) {
+        closeDropdown();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeDropdown();
+    }
+});
+
+// ============================================================
+// 9. DROPDOWN ACTIONS
+// ============================================================
+function handleChangePassword() {
+    closeDropdown();
+    showToast('🔑 Redirecting to Change Password...', 'info');
+    console.log('🔑 Change Password clicked');
+}
+
+function handleLogout() {
+    closeDropdown();
+    logoutUser();
+}
+
+// ============================================================
+// 10. DATE DISPLAY
+// ============================================================
+function updateDate() {
+    const now = new Date();
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    const fullDateStr = now.toLocaleDateString('en-US', options);
+    const parts = fullDateStr.split(',');
+    document.getElementById('dayName').textContent = parts[0];
+    document.getElementById('fullDate').textContent = parts.slice(1).join(',').trim();
+}
+
+updateDate();
+setInterval(updateDate, 60000);
+
+// ============================================================
+// 11. TOAST NOTIFICATIONS
+// ============================================================
+function showToast(message, type = 'info', duration = 3000) {
+    const existing = document.querySelector('.toast-notification');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-times-circle',
+        info: 'fa-info-circle',
+        warning: 'fa-exclamation-triangle'
+    };
+
+    const colors = {
+        success: '#0a8a5a',
+        error: '#c0392b',
+        info: '#0756ba',
+        warning: '#e67e22'
+    };
+
+    toast.style.cssText = `
+        background: ${colors[type] || colors.info};
+        color: #fff;
+    `;
+
+    toast.innerHTML = `
+        <i class="fas ${icons[type] || icons.info}"></i>
+        <span>${message}</span>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease-in forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+// ============================================================
+// 12. KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        e.preventDefault();
+        handleLogout();
+    }
+    if (e.altKey && e.key === 's') {
+        e.preventDefault();
+        document.getElementById('toggleSidebar').click();
+    }
+    if (e.ctrlKey && e.key === 'r') {
+        e.preventDefault();
+        refreshChartData();
+    }
+});
+
+// ============================================================
+// 13. INITIALIZATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', async function() {
+    if (!requireAuth()) {
+        return;
+    }
+    
+    updateHeaderWithUser();
+    await loadData(false);
+    
+    console.log('🦷 Doctors Works Dashboard loaded successfully!');
+    console.log('📊 Chart shows last 7 days from today');
+
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (chartInstance) {
+                chartInstance.resize();
+            }
+        }, 250);
+    });
+});
+ </script>
+</body>
+</html>

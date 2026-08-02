@@ -173,6 +173,24 @@
         .security { margin-top: 35px; }
       }
       @media (max-width: 390px) { .form-row { gap: 10px; align-items: flex-start; } h2 { font-size: 29px; } }
+      /* Add to your existing styles */
+.notice.error {
+    background: #fde8e5 !important;
+    color: #c0392b !important;
+    border: 1px solid #f5c6cb;
+}
+
+.notice.success {
+    background: #e6f7f0 !important;
+    color: #0a8a5a !important;
+    border: 1px solid #c3e6cb;
+}
+
+.notice.info {
+    background: #e7f9fa !important;
+    color: #096f77 !important;
+    border: 1px solid #b8e2e8;
+}
     </style>
   </head>
   <body>
@@ -217,14 +235,15 @@
       </section>
     </main>
 
-    <!-- ===== ADMIN LINK (opens showcase manager) ===== -->
+    <!-- ===== ADMIN LINK (opens showcase manager) ===== 
     <a href="showcase-manager.html" class="admin-link" title="Manage showcase slides">
       <i class="fas fa-cog" style="margin-right:4px;"></i> Manage Showcase
-    </a>
+    </a>-->
 
     <!-- Font Awesome for admin link icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
+<script src="../../assets/js/common.js"></script>
     <script>
       // ============================================================
       // 1. DATA LAYER (reads from localStorage)
@@ -494,29 +513,233 @@
           }, 150);
         }
       });
-
       // ============================================================
-      // 5. LOGIN FORM HANDLER
-      // ============================================================
-      const password = document.querySelector('#password');
-      const toggle = document.querySelector('.password-toggle');
-      toggle.addEventListener('click', () => {
-        const shown = password.type === 'text';
-        password.type = shown ? 'password' : 'text';
-        toggle.setAttribute('aria-label', shown ? 'Show password' : 'Hide password');
-        toggle.setAttribute('aria-pressed', String(!shown));
-      });
+// 5. LOGIN FORM HANDLER
+// ============================================================
+const password = document.querySelector('#password');
+const toggle = document.querySelector('.password-toggle');
+const loginForm = document.querySelector('#login-form');
+const notice = document.querySelector('#notice');
 
-      document.querySelector('#login-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        document.querySelector('#notice').style.display = 'block';
-        document.querySelector('#notice').textContent = '✅ Sign-in successful! Redirecting to dashboard...';
-        setTimeout(() => {
-          // Redirect to dashboard (or stay on page)
-          // window.location.href = 'dashboard.html';
-          document.querySelector('#notice').textContent = '🔐 Dashboard coming soon.';
-        }, 1500);
-      });
+// Password Toggle
+toggle.addEventListener('click', () => {
+    const shown = password.type === 'text';
+    password.type = shown ? 'password' : 'text';
+    toggle.setAttribute('aria-label', shown ? 'Show password' : 'Hide password');
+    toggle.setAttribute('aria-pressed', String(!shown));
+});
+
+// ============================================================
+// LOGIN CREDENTIALS
+// ============================================================
+const VALID_USERS = [
+    {
+        username: 'admin',
+        password: 'Admin123',
+        displayName: 'System Administrator',
+        role: 'System Administrator'
+    },
+    {
+        username: 'phill',
+        password: 'Phill980',
+        displayName: 'Phillip Z.P',
+        role: 'System Administrator'
+    },
+    {
+        username: 'reception',
+        password: 'Reception123',
+        displayName: 'Jane Doe',
+        role: 'Reception Personnel'
+    }
+];
+
+// ============================================================
+// VALIDATION FUNCTIONS
+// ============================================================
+function validatePassword(password) {
+    const errors = [];
+    
+    // Check length
+    if (password.length < 6) {
+        errors.push('Password must be at least 6 characters long');
+    }
+    
+    // Check for uppercase letter
+    if (!/[A-Z]/.test(password)) {
+        errors.push('Password must contain at least one uppercase letter');
+    }
+    
+    // Check for lowercase letter
+    if (!/[a-z]/.test(password)) {
+        errors.push('Password must contain at least one lowercase letter');
+    }
+    
+    // Check for number
+    if (!/\d/.test(password)) {
+        errors.push('Password must contain at least one number');
+    }
+    
+    return errors;
+}
+
+function showError(message) {
+    notice.style.display = 'block';
+    notice.className = 'notice error';
+    notice.innerHTML = `❌ ${message}`;
+    notice.style.background = '#fde8e5';
+    notice.style.color = '#c0392b';
+}
+
+function showSuccess(message) {
+    notice.style.display = 'block';
+    notice.className = 'notice success';
+    notice.innerHTML = `✅ ${message}`;
+    notice.style.background = '#e6f7f0';
+    notice.style.color = '#0a8a5a';
+}
+
+function showInfo(message) {
+    notice.style.display = 'block';
+    notice.className = 'notice info';
+    notice.innerHTML = `ℹ️ ${message}`;
+    notice.style.background = '#e7f9fa';
+    notice.style.color = '#096f77';
+}
+
+// ============================================================
+// LOGIN FORM SUBMIT
+// ============================================================
+loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    
+    // Get input values
+    const usernameInput = document.querySelector('input[type="text"]');
+    const passwordInput = document.querySelector('#password');
+    
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    
+    // Validate fields are not empty
+    if (!username || !password) {
+        showError('Please enter both username and password.');
+        return;
+    }
+    
+    // Validate password strength
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+        showError(passwordErrors[0]);
+        return;
+    }
+    
+    // Find user
+    const user = VALID_USERS.find(u => 
+        u.username.toLowerCase() === username.toLowerCase()
+    );
+    
+    // Check if user exists
+    if (!user) {
+        showError('Invalid username. Please try again.');
+        return;
+    }
+    
+    // Check password (case sensitive)
+    if (user.password !== password) {
+        showError('Invalid password. Please try again.');
+        return;
+    }
+    
+    // --- LOGIN SUCCESSFUL ---
+    showSuccess(`Welcome back, ${user.displayName}! Redirecting...`);
+    
+    // Store user session
+    sessionStorage.setItem('user', JSON.stringify({
+        username: user.username,
+        displayName: user.displayName,
+        role: user.role,
+        loginTime: new Date().toISOString()
+    }));
+    
+    console.log(`✅ Login successful: ${user.username} (${user.role})`);
+    
+    // Redirect to dashboard
+    setTimeout(() => {
+        window.location.href = '../dashboard/index.html';
+    }, 1500);
+});
+
+// ============================================================
+// REAL-TIME PASSWORD STRENGTH INDICATOR (Optional)
+// ============================================================
+password.addEventListener('input', function() {
+    const pwd = this.value;
+    const strengthIndicator = document.querySelector('.password-strength');
+    
+    if (!strengthIndicator) {
+        // Create strength indicator if it doesn't exist
+        const container = this.closest('.field');
+        const indicator = document.createElement('div');
+        indicator.className = 'password-strength';
+        indicator.style.cssText = `
+            margin-top: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        `;
+        indicator.innerHTML = `
+            <span class="strength-bar" style="flex:1;height:3px;background:#e8ecf0;border-radius:2px;overflow:hidden;display:flex;gap:2px;">
+                <span style="flex:1;height:100%;background:#e8ecf0;border-radius:1px;" data-seg="0"></span>
+                <span style="flex:1;height:100%;background:#e8ecf0;border-radius:1px;" data-seg="1"></span>
+                <span style="flex:1;height:100%;background:#e8ecf0;border-radius:1px;" data-seg="2"></span>
+                <span style="flex:1;height:100%;background:#e8ecf0;border-radius:1px;" data-seg="3"></span>
+            </span>
+            <span class="strength-label" style="min-width:60px;color:#62728b;">Weak</span>
+        `;
+        container.appendChild(indicator);
+    }
+    
+    // Update strength
+    const segments = document.querySelectorAll('[data-seg]');
+    const label = document.querySelector('.strength-label');
+    const strength = calculatePasswordStrength(pwd);
+    
+    segments.forEach((seg, index) => {
+        if (index < strength.score) {
+            seg.style.background = strength.color;
+        } else {
+            seg.style.background = '#e8ecf0';
+        }
+    });
+    
+    if (label) {
+        label.textContent = strength.label;
+        label.style.color = strength.color;
+    }
+});
+
+function calculatePasswordStrength(password) {
+    let score = 0;
+    if (password.length >= 6) score += 1;
+    if (password.length >= 10) score += 1;
+    if (/[A-Z]/.test(password)) score += 1;
+    if (/[a-z]/.test(password)) score += 1;
+    if (/\d/.test(password)) score += 1;
+    if (/[^a-zA-Z0-9]/.test(password)) score += 1;
+    
+    score = Math.min(score, 4);
+    
+    const levels = [
+        { label: 'Weak', color: '#c0392b' },
+        { label: 'Fair', color: '#e67e22' },
+        { label: 'Good', color: '#f39c12' },
+        { label: 'Strong', color: '#0a8a5a' }
+    ];
+    
+    const level = levels[score - 1] || levels[0];
+    return { score, label: level.label, color: level.color };
+}
 
       // ============================================================
       // 6. INITIALIZATION
