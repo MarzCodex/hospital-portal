@@ -1,0 +1,366 @@
+/* ============================================================
+   PASSWORD CHANGE MODAL
+   ============================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-container {
+    background: var(--surface);
+    border-radius: var(--radius);
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.3s ease-out;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--line);
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-header h3 i {
+    color: var(--blue);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+    line-height: 1;
+    padding: 0 4px;
+}
+
+.modal-close:hover {
+    color: var(--danger);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-body .form-group {
+    margin-bottom: 18px;
+}
+
+.modal-body .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 5px;
+}
+
+.modal-body .form-group label .required {
+    color: var(--danger);
+    margin-left: 2px;
+}
+
+.modal-body .input-wrapper {
+    position: relative;
+}
+
+.modal-body .input-wrapper .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    z-index: 2;
+    font-size: 14px;
+}
+
+.modal-body .input-wrapper input {
+    width: 100%;
+    padding: 12px 44px 12px 44px;
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: var(--font);
+    background: var(--bg);
+    transition: var(--transition);
+    color: var(--ink);
+    outline: none;
+}
+
+.modal-body .input-wrapper input:focus {
+    border-color: var(--blue);
+    background: var(--surface);
+    box-shadow: 0 0 0 4px rgba(7, 86, 186, 0.08);
+}
+
+.modal-body .input-wrapper input.error {
+    border-color: var(--danger);
+}
+
+.modal-body .input-wrapper input.success {
+    border-color: var(--success);
+}
+
+.modal-body .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.modal-body .toggle-password:hover {
+    color: var(--blue);
+}
+
+/* Password Strength */
+.password-strength {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.password-strength .strength-bar {
+    flex: 1;
+    height: 4px;
+    background: #e8ecf0;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    gap: 2px;
+}
+
+.password-strength .strength-bar .segment {
+    flex: 1;
+    height: 100%;
+    background: #e8ecf0;
+    transition: var(--transition);
+    border-radius: 1px;
+}
+
+.password-strength .strength-bar .segment.filled.weak {
+    background: var(--danger);
+}
+.password-strength .strength-bar .segment.filled.medium {
+    background: var(--warning);
+}
+.password-strength .strength-bar .segment.filled.strong {
+    background: var(--success);
+}
+
+.password-strength .strength-label {
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 65px;
+    color: var(--muted);
+}
+
+.password-strength .strength-label.weak { color: var(--danger); }
+.password-strength .strength-label.medium { color: var(--warning); }
+.password-strength .strength-label.strong { color: var(--success); }
+
+/* Password Requirements */
+.password-requirements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+    margin-top: 8px;
+}
+
+.password-requirements small {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.password-requirements small i {
+    font-size: 6px;
+    color: var(--muted);
+}
+
+.password-requirements small.valid i {
+    color: var(--success);
+}
+
+.password-requirements small.invalid i {
+    color: var(--danger);
+}
+
+/* Match Status */
+.match-status {
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 4px;
+    display: none;
+}
+
+.match-status.show {
+    display: block;
+}
+
+.match-status.match {
+    color: var(--success);
+}
+
+.match-status.unmatch {
+    color: var(--danger);
+}
+
+/* Modal Message */
+.modal-message {
+    display: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.modal-message.error {
+    display: block;
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #f5c6cb;
+}
+
+.modal-message.success {
+    display: block;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #c3e6cb;
+}
+
+/* Modal Actions */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.modal-actions .btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.modal-actions .btn-secondary {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+}
+
+.modal-actions .btn-secondary:hover {
+    background: var(--line);
+    color: var(--ink);
+}
+
+.modal-actions .btn-primary {
+    background: var(--blue);
+    color: #fff;
+}
+
+.modal-actions .btn-primary:hover {
+    background: var(--blue-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(7, 86, 186, 0.25);
+}
+
+.modal-actions .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Spinner in button */
+.modal-actions .btn-primary .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .modal-container {
+        margin: 10px;
+        border-radius: 16px;
+    }
+    
+    .modal-body {
+        padding: 16px;
+    }
+    
+    .modal-header {
+        padding: 14px 16px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .password-requirements {
+        grid-template-columns: 1fr;
+    }
+}
