@@ -1059,88 +1059,7 @@
         </section>
 
     </main>
-<!-- ============================================================
-PASSWORD CHANGE MODAL
-============================================================ -->
-<div class="modal-overlay" id="passwordModal">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3><i class="fas fa-key"></i> Change Password</h3>
-            <button class="modal-close" onclick="closePasswordModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="passwordForm" onsubmit="handlePasswordChange(event)">
-                <!-- Current Password -->
-                <div class="form-group">
-                    <label>Current Password <span class="required">*</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="currentPassword" placeholder="Enter current password" required />
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
 
-                <!-- New Password -->
-                <div class="form-group">
-                    <label>New Password <span class="required">*</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-key input-icon"></i>
-                        <input type="password" id="newPassword" placeholder="Enter new password" required 
-                               minlength="6" oninput="validateNewPassword(this.value)" />
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                    <!-- Password Strength Indicator -->
-                    <div class="password-strength" id="passwordStrength">
-                        <div class="strength-bar">
-                            <div class="segment" data-index="0"></div>
-                            <div class="segment" data-index="1"></div>
-                            <div class="segment" data-index="2"></div>
-                            <div class="segment" data-index="3"></div>
-                        </div>
-                        <span class="strength-label">Weak</span>
-                    </div>
-                    <div class="password-requirements">
-                        <small><i class="fas fa-circle" id="reqLength"></i> At least 6 characters</small>
-                        <small><i class="fas fa-circle" id="reqUppercase"></i> At least 1 uppercase letter</small>
-                        <small><i class="fas fa-circle" id="reqLowercase"></i> At least 1 lowercase letter</small>
-                        <small><i class="fas fa-circle" id="reqNumber"></i> At least 1 number</small>
-                    </div>
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="form-group">
-                    <label>Confirm New Password <span class="required">*</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-check-circle input-icon"></i>
-                        <input type="password" id="confirmPassword" placeholder="Confirm new password" required 
-                               oninput="checkPasswordMatch()" />
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="match-status" id="matchStatus">
-                        <i class="fas"></i> <span id="matchText"></span>
-                    </div>
-                </div>
-
-                <!-- Error/Success Message -->
-                <div class="modal-message" id="passwordModalMessage"></div>
-
-                <!-- Form Actions -->
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="changePasswordBtn">
-                        <i class="fas fa-save"></i> Update Password
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
     <!-- ============================================================
     FIXED FOOTER
     ============================================================ -->
@@ -1158,518 +1077,579 @@ PASSWORD CHANGE MODAL
             <a href="#">Terms of Service</a>
         </div>
     </footer>
- <script>
+
+    <script>
     // ============================================================
-// 1. NAVIGATION FUNCTIONS
-// ============================================================
-function goToDashboard() {
-    window.location.href = '../dashboard/index.html';
-}
-
-function goToLogin() {
-    window.location.href = '../../auth/login.html';
-}
-
-function handleNavClick(pageName, element) {
-    document.querySelectorAll('.nav-item').forEach(el => {
-        el.classList.remove('active');
-    });
-    element.classList.add('active');
-    showToast(`📋 ${pageName} page is being loaded...`, 'info');
-    console.log(`🔗 Navigating to: ${pageName}`);
-}
-
-function toggleSubmenu(element) {
-    const submenu = element.nextElementSibling;
-    element.classList.toggle('open');
-    if (submenu) {
-        submenu.classList.toggle('open');
+    // 1. NAVIGATION FUNCTIONS
+    // ============================================================
+    function goToDashboard() {
+        window.location.href = '../dashboard/index.html';
     }
-}
 
-// ============================================================
-// 2. DATE UTILITIES
-// ============================================================
-function getLast7Days() {
-    const dates = [];
-    const today = new Date();
-    
-    for (let i = 6; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        dates.push(date);
+    function goToLogin() {
+        window.location.href = '../../auth/login.html';
     }
-    return dates;
-}
 
-function formatDateKey(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
+    function handleNavClick(pageName, element) {
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.remove('active');
+        });
+        element.classList.add('active');
+        showToast(`📋 ${pageName} page is being loaded...`, 'info');
+        console.log(`🔗 Navigating to: ${pageName}`);
+    }
 
-function formatDateDisplay(date) {
-    const options = { month: 'long', day: 'numeric', year: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-}
-
-function getDayOnly(date) {
-    return String(date.getDate()).padStart(2, '0');
-}
-
-// ============================================================
-// 3. DATA - FETCH FROM JSON FILE
-// ============================================================
-let chartData = null;
-let chartInstance = null;
-let isLoading = false;
-
-async function loadData(showLoadingToast = true) {
-    const refreshIcon = document.getElementById('refreshIcon');
-    
-    try {
-        if (showLoadingToast) {
-            showToast('📊 Loading chart data...', 'info');
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        element.classList.toggle('open');
+        if (submenu) {
+            submenu.classList.toggle('open');
         }
-        
-        if (refreshIcon) {
-            refreshIcon.classList.add('spinning');
-        }
+    }
 
-        const response = await fetch('../../data/doctors-graph.json');
+    // ============================================================
+    // 2. DATE UTILITIES
+    // ============================================================
+    function getLast7Days() {
+        const dates = [];
+        const today = new Date();
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            dates.push(date);
         }
+        return dates;
+    }
+
+    function formatDateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    function formatDateDisplay(date) {
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    function getDayOnly(date) {
+        return String(date.getDate()).padStart(2, '0');
+    }
+
+    // ============================================================
+    // 3. DATA - FETCH FROM JSON FILE
+    // ============================================================
+    let chartData = null;
+    let chartInstance = null;
+    let isLoading = false;
+
+    async function loadData(showLoadingToast = true) {
+        const refreshIcon = document.getElementById('refreshIcon');
         
-        const rawData = await response.json();
-        
-        // Get last 7 days dynamically
-        const last7Days = getLast7Days();
-        const dateKeys = last7Days.map(d => formatDateKey(d));
-        const dayLabels = last7Days.map(d => getDayOnly(d));
-        
-        // Build chart data from JSON
-        const datasets = rawData.services.map(service => {
-            const dataValues = dateKeys.map(dateKey => {
-                // Get value from JSON data, default to null if not found
-                const value = service.data[dateKey];
-                // If value is null or undefined, keep as null (no bar)
-                return value !== undefined ? value : null;
+        try {
+            if (showLoadingToast) {
+                showToast('📊 Loading chart data...', 'info');
+            }
+            
+            if (refreshIcon) {
+                refreshIcon.classList.add('spinning');
+            }
+
+            const response = await fetch('../../data/doctors-graph.json');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const rawData = await response.json();
+            
+            // Get last 7 days dynamically
+            const last7Days = getLast7Days();
+            const dateKeys = last7Days.map(d => formatDateKey(d));
+            const dayLabels = last7Days.map(d => getDayOnly(d));
+            
+            // Build chart data from JSON
+            const datasets = rawData.services.map(service => {
+                const dataValues = dateKeys.map(dateKey => {
+                    const value = service.data[dateKey];
+                    return value !== undefined ? value : null;
+                });
+                
+                return {
+                    label: service.name,
+                    data: dataValues,
+                    backgroundColor: service.color + 'b3',
+                    borderColor: service.color,
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.8,
+                };
             });
             
-            return {
-                label: service.name,
-                data: dataValues,
-                backgroundColor: service.color + 'b3',
-                borderColor: service.color,
-                borderWidth: 2,
-                borderRadius: 4,
-                barPercentage: 0.6,
-                categoryPercentage: 0.8,
+            chartData = {
+                labels: dayLabels,
+                fullDates: dateKeys,
+                datasets: datasets
             };
+            
+            // Update date range display
+            const startDate = last7Days[0];
+            const endDate = last7Days[6];
+            const dateRangeDisplay = document.getElementById('dateRangeDisplay');
+            if (dateRangeDisplay) {
+                dateRangeDisplay.innerHTML = `
+                    <i class="far fa-calendar-alt"></i>
+                    ${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}
+                `;
+            }
+            
+            // Render chart
+            initChart();
+            
+            console.log('📊 Data loaded successfully from JSON');
+            console.log(`📈 ${datasets.length} services loaded for ${dateKeys.length} days`);
+            
+            if (showLoadingToast) {
+                showToast('✅ Chart data updated successfully!', 'success', 1500);
+            }
+            
+        } catch (error) {
+            console.error('❌ Failed to load data:', error);
+            showToast('⚠️ Failed to load chart data. Please check the data file.', 'warning');
+            showEmptyChart();
+        } finally {
+            if (refreshIcon) {
+                refreshIcon.classList.remove('spinning');
+            }
+            isLoading = false;
+        }
+    }
+
+    // ============================================================
+    // 4. EMPTY CHART STATE
+    // ============================================================
+    function showEmptyChart() {
+        const ctx = document.getElementById('activityChart');
+        if (!ctx) return;
+        
+        const context = ctx.getContext('2d');
+        
+        if (chartInstance) {
+            chartInstance.destroy();
+            chartInstance = null;
+        }
+        
+        chartInstance = new Chart(context, {
+            type: 'bar',
+            data: {
+                labels: ['No Data Available'],
+                datasets: [{
+                    label: 'No Data',
+                    data: [0],
+                    backgroundColor: 'rgba(200, 200, 200, 0.3)',
+                    borderColor: '#ccc',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 14, weight: '600' },
+                            color: '#62728b'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { display: false },
+                        ticks: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // ============================================================
+    // 5. CHART.JS INITIALIZATION
+    // ============================================================
+    function initChart() {
+        const ctx = document.getElementById('activityChart');
+        
+        if (!ctx) {
+            console.error('❌ Chart canvas not found');
+            return;
+        }
+        
+        const parent = ctx.parentElement;
+        const existingMsg = parent.querySelector('.empty-chart-msg');
+        if (existingMsg) existingMsg.remove();
+        
+        const context = ctx.getContext('2d');
+
+        if (chartInstance) {
+            chartInstance.destroy();
+            chartInstance = null;
+        }
+
+        if (!chartData || !chartData.datasets || chartData.datasets.length === 0) {
+            console.warn('⚠️ No chart data available');
+            showEmptyChart();
+            return;
+        }
+
+        chartInstance = new Chart(context, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 800,
+                    easing: 'easeInOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: "'Segoe UI', system-ui, sans-serif",
+                                size: 11,
+                                weight: '500'
+                            },
+                            boxWidth: 12,
+                            boxHeight: 12,
+                            borderRadius: 3,
+                            usePointStyle: true,
+                            padding: 12,
+                            color: '#14355f'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(20, 53, 95, 0.92)',
+                        titleFont: { 
+                            family: "'Segoe UI', system-ui, sans-serif", 
+                            weight: '600',
+                            size: 13
+                        },
+                        bodyFont: { 
+                            family: "'Segoe UI', system-ui, sans-serif", 
+                            size: 12 
+                        },
+                        padding: 14,
+                        cornerRadius: 8,
+                        titleColor: '#ffffff',
+                        bodyColor: '#e7f9fa',
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                if (value === null || value === undefined) {
+                                    return `${context.dataset.label}: No Data`;
+                                }
+                                return `${context.dataset.label}: ${value.toLocaleString()}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Segoe UI', system-ui, sans-serif",
+                                size: 12,
+                                weight: '500'
+                            },
+                            color: '#62728b'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(216, 226, 237, 0.4)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Segoe UI', system-ui, sans-serif",
+                                size: 11
+                            },
+                            color: '#62728b',
+                            stepSize: 200,
+                            callback: function(value) {
+                                return value >= 1000 ? `${value/1000}k` : value;
+                            }
+                        },
+                        beginAtZero: true
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+
+        console.log('📊 Chart initialized successfully');
+    }
+
+    // ============================================================
+    // 6. REFRESH FUNCTION
+    // ============================================================
+    async function refreshChartData() {
+        if (isLoading) return;
+        isLoading = true;
+        await loadData(true);
+    }
+
+    // ============================================================
+    // 7. TOAST NOTIFICATIONS
+    // ============================================================
+    function showToast(message, type = 'info', duration = 3000) {
+        const existing = document.querySelector('.toast-notification');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-times-circle',
+            info: 'fa-info-circle',
+            warning: 'fa-exclamation-triangle'
+        };
+
+        const colors = {
+            success: '#0a8a5a',
+            error: '#c0392b',
+            info: '#0756ba',
+            warning: '#e67e22'
+        };
+
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background: ${colors[type] || colors.info};
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastIn 0.3s ease-out;
+            max-width: 90%;
+        `;
+
+        toast.innerHTML = `
+            <i class="fas ${icons[type] || icons.info}"></i>
+            <span>${message}</span>
+        `;
+
+        if (!document.getElementById('toastStyles')) {
+            const style = document.createElement('style');
+            style.id = 'toastStyles';
+            style.textContent = `
+                @keyframes toastIn {
+                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+                @keyframes toastOut {
+                    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s ease-in forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+
+    // ============================================================
+    // 8. DROPDOWN CONTROLS & ACTIONS
+    // ============================================================
+    function handleChangePassword() {
+        closeDropdown();
+        openPasswordModal();  // ← Defined in common.js
+        console.log('🔑 Change Password clicked');
+    }
+
+    function handleLogout() {
+        closeDropdown();
+        logoutUser();  // ← Defined in common.js
+    }
+
+    // ============================================================
+    // 9. DATE DISPLAY
+    // ============================================================
+    function updateDate() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        const fullDateStr = now.toLocaleDateString('en-US', options);
+        const parts = fullDateStr.split(',');
+        const dayNameEl = document.getElementById('dayName');
+        const fullDateEl = document.getElementById('fullDate');
+        if (dayNameEl) dayNameEl.textContent = parts[0];
+        if (fullDateEl) fullDateEl.textContent = parts.slice(1).join(',').trim();
+    }
+
+    // ============================================================
+    // 10. KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+        // Ctrl + Shift + L = Logout
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            handleLogout();
+        }
+        // Alt + S = Toggle Sidebar
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            const toggleBtn = document.getElementById('toggleSidebar');
+            if (toggleBtn) toggleBtn.click();
+        }
+        // Ctrl + R = Refresh Chart
+        if (e.ctrlKey && e.key === 'r') {
+            e.preventDefault();
+            refreshChartData();
+        }
+        // Escape = Close dropdown
+        if (e.key === 'Escape') {
+            closeDropdown();
+        }
+    });
+
+    // ============================================================
+    // 11. INITIALIZATION - SINGLE DOMContentLoaded
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check authentication
+        if (!requireAuth()) {
+            return;
+        }
+        
+        // Update header with user data
+        updateHeaderWithUser();
+        
+        // Load modals (from common.js)
+        if (typeof loadModals === 'function') {
+            loadModals();
+        }
+        
+        // Update date
+        updateDate();
+        setInterval(updateDate, 60000);
+        
+        // Setup sidebar toggle
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        if (toggleSidebar) {
+            toggleSidebar.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-collapsed');
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('sidebar-collapsed')) {
+                    icon.className = 'fas fa-chevron-right';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+                localStorage.setItem('sidebarCollapsed', document.body.classList.contains('sidebar-collapsed'));
+            });
+
+            // Load sidebar preference
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                document.body.classList.add('sidebar-collapsed');
+                const icon = toggleSidebar.querySelector('i');
+                if (icon) icon.className = 'fas fa-chevron-right';
+            }
+        }
+        
+        // Setup dropdown controls
+        const avatarBtn = document.getElementById('avatarBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const dropdownOverlay = document.getElementById('dropdownOverlay');
+
+        if (avatarBtn) {
+            avatarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+        }
+
+        if (dropdownOverlay) {
+            dropdownOverlay.addEventListener('click', closeDropdown());
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrapper = document.querySelector('.avatar-wrapper');
+            if (!wrapper || !wrapper.contains(e.target)) {
+                closeDropdown();
+            }
         });
         
-        chartData = {
-            labels: dayLabels,
-            fullDates: dateKeys,
-            datasets: datasets
+        // Define toggleDropdown and closeDropdown after elements are found
+        window.toggleDropdown = function() {
+            if (!dropdownMenu) return;
+            const isOpen = dropdownMenu.classList.contains('open');
+            dropdownMenu.classList.toggle('open');
+            if (dropdownOverlay) dropdownOverlay.classList.toggle('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', !isOpen);
+        };
+
+        window.closeDropdown = function() {
+            if (!dropdownMenu) return;
+            dropdownMenu.classList.remove('open');
+            if (dropdownOverlay) dropdownOverlay.classList.remove('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', 'false');
         };
         
-        // Update date range display
-        const startDate = last7Days[0];
-        const endDate = last7Days[6];
-        document.getElementById('dateRangeDisplay').innerHTML = `
-            <i class="far fa-calendar-alt"></i>
-            ${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}
-        `;
+        // Load chart data
+        await loadData(false);
         
-        // Render chart
-        initChart();
-        
-        console.log('📊 Data loaded successfully from JSON');
-        console.log(`📈 ${datasets.length} services loaded for ${dateKeys.length} days`);
-        
-        if (showLoadingToast) {
-            showToast('✅ Chart data updated successfully!', 'success', 1500);
-        }
-        
-    } catch (error) {
-        console.error('❌ Failed to load data:', error);
-        showToast('⚠️ Failed to load chart data. Please check the data file.', 'warning');
-        showEmptyChart();
-    } finally {
-        if (refreshIcon) {
-            refreshIcon.classList.remove('spinning');
-        }
-        isLoading = false;
-    }
-}
-
-// ============================================================
-// 4. EMPTY CHART STATE
-// ============================================================
-function showEmptyChart() {
-    const ctx = document.getElementById('activityChart');
-    if (!ctx) return;
-    
-    const context = ctx.getContext('2d');
-    
-    if (chartInstance) {
-        chartInstance.destroy();
-        chartInstance = null;
-    }
-    
-    chartInstance = new Chart(context, {
-        type: 'bar',
-        data: {
-            labels: ['No Data Available'],
-            datasets: [{
-                label: 'No Data',
-                data: [0],
-                backgroundColor: 'rgba(200, 200, 200, 0.3)',
-                borderColor: '#ccc',
-                borderWidth: 1,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: { enabled: false }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: {
-                        font: { size: 14, weight: '600' },
-                        color: '#62728b'
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    grid: { display: false },
-                    ticks: { display: false }
+        // Handle window resize for chart
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (chartInstance) {
+                    chartInstance.resize();
                 }
-            }
+            }, 250);
+        });
+        
+        console.log('🦷 Doctors Works Dashboard loaded successfully!');
+        console.log('📊 Chart shows last 7 days from today');
+        
+        const user = getUserSession();
+        if (user) {
+            console.log(`👤 Logged in as: ${user.displayName} (${user.role})`);
         }
     });
-}
-
-// ============================================================
-// 5. CHART.JS INITIALIZATION
-// ============================================================
-function initChart() {
-    const ctx = document.getElementById('activityChart');
-    
-    if (!ctx) {
-        console.error('❌ Chart canvas not found');
-        return;
-    }
-    
-    // Remove any empty chart message
-    const parent = ctx.parentElement;
-    const existingMsg = parent.querySelector('.empty-chart-msg');
-    if (existingMsg) existingMsg.remove();
-    
-    const context = ctx.getContext('2d');
-
-    if (chartInstance) {
-        chartInstance.destroy();
-        chartInstance = null;
-    }
-
-    if (!chartData || !chartData.datasets || chartData.datasets.length === 0) {
-        console.warn('⚠️ No chart data available');
-        showEmptyChart();
-        return;
-    }
-
-    chartInstance = new Chart(context, {
-        type: 'bar',
-        data: chartData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 800,
-                easing: 'easeInOutQuart'
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: {
-                            family: "'Segoe UI', system-ui, sans-serif",
-                            size: 11,
-                            weight: '500'
-                        },
-                        boxWidth: 12,
-                        boxHeight: 12,
-                        borderRadius: 3,
-                        usePointStyle: true,
-                        padding: 12,
-                        color: '#14355f'
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(20, 53, 95, 0.92)',
-                    titleFont: { 
-                        family: "'Segoe UI', system-ui, sans-serif", 
-                        weight: '600',
-                        size: 13
-                    },
-                    bodyFont: { 
-                        family: "'Segoe UI', system-ui, sans-serif", 
-                        size: 12 
-                    },
-                    padding: 14,
-                    cornerRadius: 8,
-                    titleColor: '#ffffff',
-                    bodyColor: '#e7f9fa',
-                    callbacks: {
-                        label: function(context) {
-                            const value = context.parsed.y;
-                            if (value === null || value === undefined) {
-                                return `${context.dataset.label}: No Data`;
-                            }
-                            return `${context.dataset.label}: ${value.toLocaleString()}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        font: {
-                            family: "'Segoe UI', system-ui, sans-serif",
-                            size: 12,
-                            weight: '500'
-                        },
-                        color: '#62728b'
-                    }
-                },
-                y: {
-                    grid: {
-                        color: 'rgba(216, 226, 237, 0.4)',
-                        drawBorder: false
-                    },
-                    ticks: {
-                        font: {
-                            family: "'Segoe UI', system-ui, sans-serif",
-                            size: 11
-                        },
-                        color: '#62728b',
-                        stepSize: 200,
-                        callback: function(value) {
-                            return value >= 1000 ? `${value/1000}k` : value;
-                        }
-                    },
-                    beginAtZero: true
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            }
-        }
-    });
-
-    console.log('📊 Chart initialized successfully');
-}
-
-// ============================================================
-// 6. REFRESH FUNCTION
-// ============================================================
-async function refreshChartData() {
-    if (isLoading) return;
-    isLoading = true;
-    await loadData(true);
-}
-
-// ============================================================
-// 7. SIDEBAR TOGGLE
-// ============================================================
-document.getElementById('toggleSidebar').addEventListener('click', function() {
-    document.body.classList.toggle('sidebar-collapsed');
-    const icon = this.querySelector('i');
-    if (document.body.classList.contains('sidebar-collapsed')) {
-        icon.className = 'fas fa-chevron-right';
-    } else {
-        icon.className = 'fas fa-bars';
-    }
-    localStorage.setItem('sidebarCollapsed', document.body.classList.contains('sidebar-collapsed'));
-});
-
-if (localStorage.getItem('sidebarCollapsed') === 'true') {
-    document.body.classList.add('sidebar-collapsed');
-    document.querySelector('#toggleSidebar i').className = 'fas fa-chevron-right';
-}
-
-// ============================================================
-// 8. DROPDOWN CONTROLS
-// ============================================================
-const avatarBtn = document.getElementById('avatarBtn');
-const dropdownMenu = document.getElementById('dropdownMenu');
-const dropdownOverlay = document.getElementById('dropdownOverlay');
-
-function toggleDropdown() {
-    const isOpen = dropdownMenu.classList.contains('open');
-    dropdownMenu.classList.toggle('open');
-    dropdownOverlay.classList.toggle('active');
-    avatarBtn.setAttribute('aria-expanded', !isOpen);
-}
-
-function closeDropdown() {
-    dropdownMenu.classList.remove('open');
-    dropdownOverlay.classList.remove('active');
-    avatarBtn.setAttribute('aria-expanded', 'false');
-}
-
-avatarBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleDropdown();
-});
-
-dropdownOverlay.addEventListener('click', closeDropdown);
-
-document.addEventListener('click', (e) => {
-    const wrapper = document.querySelector('.avatar-wrapper');
-    if (!wrapper.contains(e.target)) {
-        closeDropdown();
-    }
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeDropdown();
-    }
-});
-
-// ============================================================
-// 9. DROPDOWN ACTIONS
-// ============================================================
-function handleChangePassword() {
-    closeDropdown();
-    openPasswordModal();
-    console.log('🔑 Change Password clicked');
-}
-
-function handleLogout() {
-    closeDropdown();
-    logoutUser();
-}
-
-// ============================================================
-// 10. DATE DISPLAY
-// ============================================================
-function updateDate() {
-    const now = new Date();
-    const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    };
-    const fullDateStr = now.toLocaleDateString('en-US', options);
-    const parts = fullDateStr.split(',');
-    document.getElementById('dayName').textContent = parts[0];
-    document.getElementById('fullDate').textContent = parts.slice(1).join(',').trim();
-}
-
-updateDate();
-setInterval(updateDate, 60000);
-
-// ============================================================
-// 11. TOAST NOTIFICATIONS
-// ============================================================
-function showToast(message, type = 'info', duration = 3000) {
-    const existing = document.querySelector('.toast-notification');
-    if (existing) existing.remove();
-
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-
-    const icons = {
-        success: 'fa-check-circle',
-        error: 'fa-times-circle',
-        info: 'fa-info-circle',
-        warning: 'fa-exclamation-triangle'
-    };
-
-    const colors = {
-        success: '#0a8a5a',
-        error: '#c0392b',
-        info: '#0756ba',
-        warning: '#e67e22'
-    };
-
-    toast.style.cssText = `
-        background: ${colors[type] || colors.info};
-        color: #fff;
-    `;
-
-    toast.innerHTML = `
-        <i class="fas ${icons[type] || icons.info}"></i>
-        <span>${message}</span>
-    `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.animation = 'toastOut 0.3s ease-in forwards';
-        setTimeout(() => toast.remove(), 300);
-    }, duration);
-}
-
-// ============================================================
-// 12. KEYBOARD SHORTCUTS
-// ============================================================
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
-        e.preventDefault();
-        handleLogout();
-    }
-    if (e.altKey && e.key === 's') {
-        e.preventDefault();
-        document.getElementById('toggleSidebar').click();
-    }
-    if (e.ctrlKey && e.key === 'r') {
-        e.preventDefault();
-        refreshChartData();
-    }
-});
-
-// ============================================================
-// 13. INITIALIZATION
-// ============================================================
-document.addEventListener('DOMContentLoaded', async function() {
-    if (!requireAuth()) {
-        return;
-    }
-    
-    updateHeaderWithUser();
-    await loadData(false);
-    
-    console.log('🦷 Doctors Works Dashboard loaded successfully!');
-    console.log('📊 Chart shows last 7 days from today');
-
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            if (chartInstance) {
-                chartInstance.resize();
-            }
-        }, 250);
-    });
-});
- </script>
+</script>
 </body>
 </html>

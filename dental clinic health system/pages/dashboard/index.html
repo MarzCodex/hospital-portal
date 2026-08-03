@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | Choice Dental Care</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="../../assets/css/common-styles.css" />
+    <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <style>
         /* ============================================================
@@ -163,7 +164,7 @@
             gap: 8px;
         }
 
-        .header-user .user-title {
+        .header-user .user-role {
             font-size: 12px;
             font-weight: 600;
             color: var(--muted);
@@ -171,7 +172,7 @@
             letter-spacing: 0.04em;
         }
 
-        .header-user .user-name {
+        .header-user .displayName {
             font-size: 14px;
             font-weight: 700;
             color: var(--ink);
@@ -482,7 +483,7 @@
                 font-size: 13px;
             }
 
-            .header-user .user-title {
+            .header-user .user-role {
                 display: none;
             }
         }
@@ -527,7 +528,7 @@
                 display: none;
             }
 
-            .header-user .user-name {
+            .header-user .displayName {
                 font-size: 13px;
             }
 
@@ -594,7 +595,7 @@
                 font-size: 16px;
             }
 
-            .header-user .user-name {
+            .header-user .displayName {
                 font-size: 12px;
             }
 
@@ -731,9 +732,9 @@
        <!-- Right: User Info + Avatar -->
             <div class="header-right">
                 <div class="header-user">
-                    <span class="user-title" id="role"></span>
+                    <span class="user-role" id="role"></span>
                     <span class="user-divider">|</span>
-                    <span class="user-name" id="displayName"></span>
+                    <span class="displayName" id="displayName"></span>
                 </div>
                 <div class="avatar-wrapper" id="avatarWrapper">
                     <div class="avatar" id="avatarBtn">
@@ -752,18 +753,6 @@
                     </div>
                 </div>
             </div>
-                <!-- Dropdown Menu -->
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <button class="dropdown-item" onclick="handleChangePassword()">
-                        <i class="fas fa-key"></i> Change Password
-                    </button>
-                    <div class="dropdown-divider"></div>
-                    <button class="dropdown-item danger" onclick="handleLogout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            </div>
-        </div>
     </header>
 
     <!-- ============================================================
@@ -859,155 +848,271 @@
     </footer>
 
  <script src="../../assets/js/common.js"></script>
-    <script>
-        // ============================================================
-        //  MODULE NAMES (for toast notifications)
-        // ============================================================
-        const moduleNames = {
-            doctors: 'Doctors Page Works',
-            setup: 'Setup & Configuration',
-            patients: 'Patient Records',
-            pharmacy: 'Pharmacy Works',
-            revenue: 'Revenue Works',
-            reception: 'Reception Works',
-            users: 'User Management',
-            management: 'Management Works',
-            storage: 'Storage & Supply Works',
-            nurse: 'Nurse Station Works',
-            radiology: 'Radiology Works',
-            ledger: 'General Ledger Works',
-            procedure: 'Procedure Works'
-        };
-        // ============================================================
-        // MODULE ROUTES (Folder Structure Mapping)
-        // ============================================================
-        const moduleRoutes = {
-            doctors: {
-                path: '../doctors page works/doctors-works-dashboard.html'
-            },
-            setup: {
-                path: '../setup & configurations/item-management.html'
-            },
-            patients: {
-                path: '../reception works/all-patients.html'
-            },
-            pharmacy: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            revenue: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            reception: {
-                path: '../reception works/reception-dashboard.html'
-            },
-            users: {
-                path: '../user management/user-management.html'
-            },
-            management: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            storage: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            nurse: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            radiology: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            ledger: {
-                path: '#'  // Placeholder - page not created yet
-            },
-            procedure: {
-                path: '#'  // Placeholder - page not created yet
-            }
-        };
-        // ============================================================
-        //  HANDLE MODULE CLICK
-        // ============================================================
-             function handleModuleClick(moduleId) {
-        // Get the route for this module
+<script>
+    // ============================================================
+    // 1. MODULE DATA
+    // ============================================================
+    const moduleNames = {
+        doctors: 'Doctors Page Works',
+        setup: 'Setup & Configuration',
+        patients: 'Patient Records',
+        pharmacy: 'Pharmacy Works',
+        revenue: 'Revenue Works',
+        reception: 'Reception Works',
+        users: 'User Management',
+        management: 'Management Works',
+        storage: 'Storage & Supply Works',
+        nurse: 'Nurse Station Works',
+        radiology: 'Radiology Works',
+        ledger: 'General Ledger Works',
+        procedure: 'Procedure Works'
+    };
+
+    // ============================================================
+    // 2. MODULE ROUTES (Folder Structure Mapping)
+    // ============================================================
+    const moduleRoutes = {
+        doctors: {
+            path: '../doctors page works/doctors-works-dashboard.html'
+        },
+        setup: {
+            path: '../setup & configurations/item-management.html'
+        },
+        patients: {
+            path: '../reception works/all-patients.html'
+        },
+        pharmacy: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        revenue: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        reception: {
+            path: '../reception works/reception-dashboard.html'
+        },
+        users: {
+            path: '../user management/user-management.html'
+        },
+        management: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        storage: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        nurse: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        radiology: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        ledger: {
+            path: '#'  // Placeholder - page not created yet
+        },
+        procedure: {
+            path: '#'  // Placeholder - page not created yet
+        }
+    };
+
+    // ============================================================
+    // 3. RENDER MODULES (Static HTML already in place)
+    // ============================================================
+    function renderModules() {
+        // Modules are already rendered in HTML
+        // This function is kept for compatibility
+        console.log('✅ Modules are statically rendered in HTML');
+    }
+
+    // ============================================================
+    // 4. HANDLE MODULE CLICK
+    // ============================================================
+    function handleModuleClick(moduleId) {
         const route = moduleRoutes[moduleId];
         
-        // Check if module exists in routes
         if (!route) {
             showToast(`⚠️ Module "${moduleId}" not configured.`, 'warning');
             console.warn(`⚠️ Module "${moduleId}" not found in routes.`);
             return;
         }
         
-        // Get the name for toast message
         const name = moduleNames[moduleId] || moduleId;
         const path = route.path;
         
         console.log(`🔗 Navigating to: ${name} -> ${path}`);
         showToast(`📂 Opening ${name}...`, 'info');
         
-        // Check if page exists (not placeholder)
         if (path === '#') {
             showToast(`🚧 ${name} is under construction.`, 'warning');
             return;
         }
         
-        // Redirect to the page
         window.location.href = path;
     }
-     // ============================================================
-    //  MODULE CLICK HANDLER (Event Delegation)
+
     // ============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const grid = document.getElementById('modulesGrid');
+    // 5. DROPDOWN CONTROLS
+    // ============================================================
+    const avatarBtn = document.getElementById('avatarBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const dropdownOverlay = document.getElementById('dropdownOverlay');
 
-        // Click handler
-        grid.addEventListener('click', function(e) {
-            const card = e.target.closest('.module-card');
-            if (!card) return;
-            e.preventDefault();
-            const moduleId = card.dataset.module;
-            handleModuleClick(moduleId);
-        });
+    function toggleDropdown() {
+        const isOpen = dropdownMenu.classList.contains('open');
+        dropdownMenu.classList.toggle('open');
+        dropdownOverlay.classList.toggle('active');
+        avatarBtn.setAttribute('aria-expanded', !isOpen);
+    }
 
-        // Keyboard handler (Enter/Space)
-        grid.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                const card = e.target.closest('.module-card');
-                if (!card) return;
-                e.preventDefault();
-                const moduleId = card.dataset.module;
-                handleModuleClick(moduleId);
-            }
-        });
+    function closeDropdown() {
+        dropdownMenu.classList.remove('open');
+        dropdownOverlay.classList.remove('active');
+        avatarBtn.setAttribute('aria-expanded', 'false');
+    }
 
-        console.log('🦷 Choice Dental Care Dashboard loaded successfully!');
-        console.log(`📦 ${Object.keys(moduleNames).length} modules available`);
+    // ============================================================
+    // 6. DROPDOWN ACTIONS
+    // ============================================================
+    function handleChangePassword() {
+        closeDropdown();
+        openPasswordModal();  // ← Defined in common.js
+        console.log('🔑 Change Password clicked');
+    }
+
+    function handleLogout() {
+        closeDropdown();
+        logoutUser();  // ← Defined in common.js
+    }
+
+    // ============================================================
+    // 7. DATE DISPLAY
+    // ============================================================
+    function updateDate() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        const fullDateStr = now.toLocaleDateString('en-US', options);
+        const parts = fullDateStr.split(',');
+        document.getElementById('dayName').textContent = parts[0];
+        document.getElementById('fullDate').textContent = parts.slice(1).join(',').trim();
+    }
+
+    // ============================================================
+    // 8. TOAST NOTIFICATIONS
+    // ============================================================
+    function showToast(message, type = 'info', duration = 3000) {
+        const existing = document.querySelector('.toast-notification');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-times-circle',
+            info: 'fa-info-circle',
+            warning: 'fa-exclamation-triangle'
+        };
+
+        const colors = {
+            success: '#0a8a5a',
+            error: '#c0392b',
+            info: '#0756ba',
+            warning: '#e67e22'
+        };
+
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background: ${colors[type] || colors.info};
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastIn 0.3s ease-out;
+            max-width: 90%;
+        `;
+
+        toast.innerHTML = `
+            <i class="fas ${icons[type] || icons.info}"></i>
+            <span>${message}</span>
+        `;
+
+        if (!document.getElementById('toastStyles')) {
+            const style = document.createElement('style');
+            style.id = 'toastStyles';
+            style.textContent = `
+                @keyframes toastIn {
+                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+                @keyframes toastOut {
+                    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(toast);
 
         setTimeout(() => {
-                const user = getUserSession();
-                const greeting = user ? `👋 Welcome back, ${user.displayName}!` : '👋 Welcome';
-            showToast(greeting, 'success', 3000);
-        }, 500);
+            toast.style.animation = 'toastOut 0.3s ease-in forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+
+    // ============================================================
+    // 9. KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+        // Ctrl + Shift + L = Logout
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            handleLogout();
+        }
+        // Escape = Close dropdown
+        if (e.key === 'Escape') {
+            closeDropdown();
+        }
     });
 
-        // ============================================================
-        //  DROPDOWN CONTROLS
-        // ============================================================
-        const avatarBtn = document.getElementById('avatarBtn');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        const dropdownOverlay = document.getElementById('dropdownOverlay');
-
-        function toggleDropdown() {
-            const isOpen = dropdownMenu.classList.contains('open');
-            dropdownMenu.classList.toggle('open');
-            dropdownOverlay.classList.toggle('active');
-            avatarBtn.setAttribute('aria-expanded', !isOpen);
+    // ============================================================
+    // 10. INITIALIZATION - SINGLE DOMContentLoaded
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check authentication
+        if (!requireAuth()) {
+            return;
         }
-
-        function closeDropdown() {
-            dropdownMenu.classList.remove('open');
-            dropdownOverlay.classList.remove('active');
-            avatarBtn.setAttribute('aria-expanded', 'false');
+        
+        // Update header with user data
+        updateHeaderWithUser();
+        
+        // Load modals (from common.js)
+        if (typeof loadModals === 'function') {
+            loadModals();
         }
-
+        
+        // Render modules (static HTML already there)
+        renderModules();
+        
+        // Update date
+        updateDate();
+        setInterval(updateDate, 60000);
+        
+        // Setup dropdown event listeners
         avatarBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             toggleDropdown();
@@ -1021,234 +1126,42 @@
                 closeDropdown();
             }
         });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeDropdown();
-            }
-        });
-
-        // ============================================================
-        // DROPDOWN ACTIONS
-        // ============================================================
-        function handleChangePassword() {
-            closeDropdown();
-            openPasswordModal();
-            console.log('🔑 Change Password clicked');
-        }
-
-        function handleLogout() {
-            closeDropdown();
-            logoutUser();
-        }
-
-        // ============================================================
-        //  DATE DISPLAY
-        // ============================================================
-        function updateDate() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            const fullDateStr = now.toLocaleDateString('en-US', options);
-            const parts = fullDateStr.split(',');
-            document.getElementById('dayName').textContent = parts[0];
-            document.getElementById('fullDate').textContent = parts.slice(1).join(',').trim();
-        }
-
-        updateDate();
-        setInterval(updateDate, 60000);
-
-        // ============================================================
-        //  TOAST NOTIFICATIONS
-        // ============================================================
-        function showToast(message, type = 'info', duration = 3000) {
-            const existing = document.querySelector('.toast-notification');
-            if (existing) existing.remove();
-
-            const toast = document.createElement('div');
-            toast.className = 'toast-notification';
-
-            const icons = {
-                success: 'fa-check-circle',
-                error: 'fa-times-circle',
-                info: 'fa-info-circle',
-                warning: 'fa-exclamation-triangle'
-            };
-
-            const colors = {
-                success: '#0a8a5a',
-                error: '#c0392b',
-                info: '#0756ba',
-                warning: '#e67e22'
-            };
-
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 80px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 9999;
-                background: ${colors[type] || colors.info};
-                color: #fff;
-                padding: 12px 24px;
-                border-radius: 10px;
-                font-family: var(--font);
-                font-size: 14px;
-                font-weight: 500;
-                box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                animation: toastIn 0.3s ease-out;
-                max-width: 90%;
-            `;
-
-            toast.innerHTML = `
-                <i class="fas ${icons[type] || icons.info}"></i>
-                <span>${message}</span>
-            `;
-
-            if (!document.getElementById('toastStyles')) {
-                const style = document.createElement('style');
-                style.id = 'toastStyles';
-                style.textContent = `
-                    @keyframes toastIn {
-                        from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                        to { opacity: 1; transform: translateX(-50%) translateY(0); }
-                    }
-                    @keyframes toastOut {
-                        from { opacity: 1; transform: translateX(-50%) translateY(0); }
-                        to { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.animation = 'toastOut 0.3s ease-in forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
-        }
-
-        // ============================================================
-        //  KEYBOARD SHORTCUTS
-        // ============================================================
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        
+        // Setup module grid event listeners
+        const grid = document.getElementById('modulesGrid');
+        if (grid) {
+            // Click handler
+            grid.addEventListener('click', function(e) {
+                const card = e.target.closest('.module-card');
+                if (!card) return;
                 e.preventDefault();
-                handleLogout();
-            }
-        });
-        // ============================================================
-        //  INITIALIZATION
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            if (!requireAuth()) {
-                return;
-            }
-            
-            // Update header with user data
-            updateHeaderWithUser();
-            
-            renderModules();
-            console.log('🦷 Choice Dental Care Dashboard loaded successfully!');
-            console.log(`📦 ${Object.keys(moduleNames).length} modules available`);
-            
-            const user = getUserSession();
-            const greeting = user ? `👋 Welcome back, ${user.displayName}!` : '👋 Welcome back!';
-            setTimeout(() => {
-                showToast(greeting, 'success', 3000);
-            }, 500);
-        });
-    </script>
-<!-- ============================================================
-PASSWORD CHANGE MODAL
-============================================================ -->
-<div class="modal-overlay" id="passwordModal">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3><i class="fas fa-key"></i> Change Password</h3>
-            <button class="modal-close" onclick="closePasswordModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="passwordForm" onsubmit="handlePasswordChange(event)">
-                <!-- Current Password -->
-                <div class="form-group">
-                    <label>Current Password <span class="required">*</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="currentPassword" placeholder="Enter current password" required />
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
+                const moduleId = card.dataset.module;
+                handleModuleClick(moduleId);
+            });
 
-                <!-- New Password -->
-                <div class="form-group">
-                    <label>New Password <span class="required">*</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-key input-icon"></i>
-                        <input type="password" id="newPassword" placeholder="Enter new password" required 
-                               minlength="6" oninput="validateNewPassword(this.value)" />
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                    <!-- Password Strength Indicator -->
-                    <div class="password-strength" id="passwordStrength">
-                        <div class="strength-bar">
-                            <div class="segment" data-index="0"></div>
-                            <div class="segment" data-index="1"></div>
-                            <div class="segment" data-index="2"></div>
-                            <div class="segment" data-index="3"></div>
-                        </div>
-                        <span class="strength-label">Weak</span>
-                    </div>
-                    <div class="password-requirements">
-                        <small><i class="fas fa-circle" id="reqLength"></i> At least 6 characters</small>
-                        <small><i class="fas fa-circle" id="reqUppercase"></i> At least 1 uppercase letter</small>
-                        <small><i class="fas fa-circle" id="reqLowercase"></i> At least 1 lowercase letter</small>
-                        <small><i class="fas fa-circle" id="reqNumber"></i> At least 1 number</small>
-                    </div>
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="form-group">
-                    <label>Confirm New Password <span class="required">*</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-check-circle input-icon"></i>
-                        <input type="password" id="confirmPassword" placeholder="Confirm new password" required 
-                               oninput="checkPasswordMatch()" />
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="match-status" id="matchStatus">
-                        <i class="fas"></i> <span id="matchText"></span>
-                    </div>
-                </div>
-
-                <!-- Error/Success Message -->
-                <div class="modal-message" id="passwordModalMessage"></div>
-
-                <!-- Form Actions -->
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="changePasswordBtn">
-                        <i class="fas fa-save"></i> Update Password
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            // Keyboard handler (Enter/Space)
+            grid.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = e.target.closest('.module-card');
+                    if (!card) return;
+                    e.preventDefault();
+                    const moduleId = card.dataset.module;
+                    handleModuleClick(moduleId);
+                }
+            });
+        }
+        
+        // Show welcome message
+        const user = getUserSession();
+        const greeting = user ? `👋 Welcome back, ${user.displayName}!` : '👋 Welcome to Choice Dental Care!';
+        setTimeout(() => {
+            showToast(greeting, 'success', 3000);
+        }, 500);
+        
+        console.log('🦷 Choice Dental Care Dashboard loaded successfully!');
+        console.log(`📦 ${Object.keys(moduleNames).length} modules available`);
+        console.log(`👤 Logged in as: ${user ? user.displayName : 'Guest'}`);
+    });
+</script>
 </body>
 </html>

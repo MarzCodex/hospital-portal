@@ -364,3 +364,77 @@
         grid-template-columns: 1fr;
     }
 }
+/* ============================================================
+   SIDE NAVIGATION - ACTIVE STATES
+   ============================================================ */
+
+/* Active state icon color */
+.side-nav .nav-item.active i {
+    color: var(--teal);
+}
+
+/* Active state - when a submenu is open */
+.side-nav .nav-item.open {
+    background: var(--sidebar-hover);
+}
+
+.side-nav .nav-item.open .nav-arrow {
+    transform: rotate(90deg);
+}
+
+/* ============================================================
+   SUBMENU ITEMS
+   ============================================================ */
+
+/* Submenu container */
+.side-nav .nav-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.side-nav .nav-submenu.open {
+    max-height: 200px;
+}
+
+/* Submenu items */
+.side-nav .nav-submenu .sub-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px 8px 52px;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: var(--transition);
+    border-left: 2px solid transparent;
+}
+
+/* Submenu hover */
+.side-nav .nav-submenu .sub-item:hover {
+    color: var(--sidebar-active-text);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Submenu active state */
+.side-nav .nav-submenu .sub-item.active {
+    color: var(--teal);
+    border-left-color: var(--teal);
+    background: rgba(18, 183, 191, 0.08);
+}
+
+/* Submenu active icon */
+.side-nav .nav-submenu .sub-item.active i {
+    color: var(--teal);
+}
+
+/* ============================================================
+   NAVIGATION DIVIDER
+   ============================================================ */
+.side-nav .nav-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 8px 16px;
+}

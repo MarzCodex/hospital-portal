@@ -96,5 +96,7 @@ dental clinic health System/
 │   └── js/
 │       ├── common.js
 │       └── chart.umd.min.js                                ✅ Downloaded
+├── components/
+│       └── modals.html                                     ✅ Built
 └── data/
     └── doctors-graph.json                                  ✅ Available

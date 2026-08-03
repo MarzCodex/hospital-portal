@@ -1,0 +1,82 @@
+<!-- ============================================================
+PASSWORD CHANGE MODAL
+============================================================ -->
+<div class="modal-overlay" id="passwordModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3><i class="fas fa-key"></i> Change Password</h3>
+            <button class="modal-close" onclick="closePasswordModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="passwordForm" onsubmit="handlePasswordChange(event)">
+                <!-- Current Password -->
+                <div class="form-group">
+                    <label>Current Password <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="currentPassword" placeholder="Enter current password" required />
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="form-group">
+                    <label>New Password <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key input-icon"></i>
+                        <input type="password" id="newPassword" placeholder="Enter new password" required 
+                               minlength="6" oninput="validateNewPassword(this.value)" />
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <!-- Password Strength Indicator -->
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar">
+                            <div class="segment" data-index="0"></div>
+                            <div class="segment" data-index="1"></div>
+                            <div class="segment" data-index="2"></div>
+                            <div class="segment" data-index="3"></div>
+                        </div>
+                        <span class="strength-label">Weak</span>
+                    </div>
+                    <div class="password-requirements">
+                        <small><i class="fas fa-circle" id="reqLength"></i> At least 6 characters</small>
+                        <small><i class="fas fa-circle" id="reqUppercase"></i> At least 1 uppercase letter</small>
+                        <small><i class="fas fa-circle" id="reqLowercase"></i> At least 1 lowercase letter</small>
+                        <small><i class="fas fa-circle" id="reqNumber"></i> At least 1 number</small>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label>Confirm New Password <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-check-circle input-icon"></i>
+                        <input type="password" id="confirmPassword" placeholder="Confirm new password" required 
+                               oninput="checkPasswordMatch()" />
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="match-status" id="matchStatus">
+                        <i class="fas"></i> <span id="matchText"></span>
+                    </div>
+                </div>
+
+                <!-- Error/Success Message -->
+                <div class="modal-message" id="passwordModalMessage"></div>
+
+                <!-- Form Actions -->
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="changePasswordBtn">
+                        <i class="fas fa-save"></i> Update Password
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
