@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Doctors Page Works | Choice Dental Care</title>
+    <title>Choice Dental Care</title>
     <!--bootstrap link-->
     <link rel="stylesheet" href="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../assets/css/common-styles.css" />
@@ -202,8 +202,6 @@
             <a href="../dashboard/index.html">Home</a>
             <span class="separator">»</span>
             <a href="../dashboard/index.html">Dashboard</a>
-            <span class="separator">»</span>
-            <span class="current">Doctors Works</span>
         </div>
     </header>
 
@@ -211,56 +209,57 @@
     SIDE NAVIGATION
     ============================================================ -->
     <nav class="side-nav" id="sideNav">
-        <a href="#" class="nav-item" data-page="outpatient" onclick="loadOutpatientCard()">
-            <i class="fas fa-clipboard-list"></i>
-            <span class="nav-label">Outpatient Works</span>
+        <a href="#" class="nav-item" data-page="">
+            <b>»</b>
+            <span class="nav-label"></span>
         </a>
 
-        <a href="inpatient-works.html" class="nav-item" data-page="inpatient">
-            <i class="fas fa-hospital-user"></i>
-            <span class="nav-label">Inpatient Works</span>
+        <a href="#" class="nav-item" data-page="">
+            <b>»</b>
+            <span class="nav-label"></span>
         </a>
 
-        <a href="my-appointments.html" class="nav-item" data-page="appointments">
-            <i class="fas fa-calendar-check"></i>
-            <span class="nav-label">My Appointments</span>
+        <a href="#" class="nav-item" data-page="">
+            <b>»</b>
+            <span class="nav-label"></span>
         </a>
 
-        <a href="surgery-appointments.html" class="nav-item" data-page="surgery-appointments">
-            <i class="fas fa-scalpel"></i>
-            <span class="nav-label">Surgery Appointments</span>
+        <a href="#" class="nav-item" data-page="">
+            <b>»</b>
+            <span class="nav-label"></span>
         </a>
 
-        <a href="rdtc.html" class="nav-item" data-page="rdtc">
-            <i class="fas fa-flask"></i>
-            <span class="nav-label">RDTC Patch Test Setup</span>
+        <a href="#" class="nav-item" data-page="">
+            <b>»</b>
+            <span class="nav-label"></span>
         </a>
 
-        <a href="clinical-notes-review.html" class="nav-item" data-page="clinical-notes">
-            <i class="fas fa-notes-medical"></i>
-            <span class="nav-label">Clinical Notes Review</span>
+        <a href="#" class="nav-item" data-page="">
+            <b>»</b>
+            <span class="nav-label"></span>
         </a>
 
         <div class="nav-item" onclick="toggleSubmenu(this)">
-            <i class="fas fa-chart-pie"></i>
+            <b>»</b>
+            <span class="nav-label"></span>
+            <span class="nav-arrow"><i class="fas fa-chevron-right"></i></span>
+        </div>
+        <div class="nav-submenu" id="">
+            <a href="" class="sub-item" data-page="">
+                <b>»</b>
+            </a>
+        </div>
+        
+        <div class="nav-item" onclick="toggleSubmenu(this)">
+            <b>»</b>
             <span class="nav-label">Reports</span>
             <span class="nav-arrow"><i class="fas fa-chevron-right"></i></span>
         </div>
         <div class="nav-submenu" id="reportsSubmenu">
-            <a href="doctor-performance.html" class="sub-item" data-page="performance">
-                <i class="fas fa-file-alt"></i> My Work Performance Report
+            <a href="" class="sub-item" data-page="">
+                <b>»</b>
             </a>
         </div>
-
-        <a href="claimed-dead-body.html" class="nav-item" data-page="claimed">
-            <i class="fas fa-skull"></i>
-            <span class="nav-label">Claimed Dead body</span>
-        </a>
-
-        <a href="#" class="nav-item" data-page="queue" onclick="handleNavClick('Queue Location Setup', this)">
-            <i class="fas fa-location-dot"></i>
-            <span class="nav-label">Queue Location Setup</span>
-        </a>
     </nav>
 
     <!-- ============================================================

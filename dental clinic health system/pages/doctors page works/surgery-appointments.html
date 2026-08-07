@@ -4,17 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctors Page Works | Choice Dental Care</title>
-    <!--bootstrap link-->
     <link rel="stylesheet" href="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />  
     <link rel="stylesheet" href="../../assets/css/common-styles.css" />
     <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <script src="../../assets/js/chart.umd.min.js"></script>   
     <script src="../../assets/js/common.js"></script>
-    
     <style>
-       
+      
         /* ============================================================
            RESET
            ============================================================ */
@@ -34,95 +30,6 @@
             margin: 0 auto;
             padding: 24px 32px;
             min-height: calc(100vh - var(--header-height) - var(--secondary-header-height) - var(--footer-height));
-        }
-
-        /* ============================================================
-           CHART SECTION
-           ============================================================ */
-           .chart-section .chart-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--ink);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .chart-section .chart-title .refresh-btn {
-            padding: 4px 12px;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            background: transparent;
-            color: var(--muted);
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .chart-section .chart-title .refresh-btn:hover {
-            background: var(--bg);
-            color: var(--ink);
-            border-color: var(--blue);
-        }
-
-        .chart-section .chart-title .refresh-btn:active {
-            transform: scale(0.95);
-        }
-
-        .chart-section .chart-title .refresh-btn .spinning {
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-        .chart-section {
-            background: var(--surface);
-            border-radius: var(--radius);
-            padding: 24px 24px 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--line);
-            margin-bottom: 0px;
-        }
-
-        .chart-section .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .chart-section .chart-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--ink);
-        }
-
-        .chart-section .chart-title small {
-            font-size: 13px;
-            font-weight: 400;
-            color: var(--muted);
-            margin-left: 8px;
-        }
-
-        .chart-section .chart-date-range {
-            font-size: 13px;
-            color: var(--muted);
-            background: var(--bg);
-            padding: 4px 14px;
-            border-radius: 40px;
-        }
-
-        .chart-wrapper {
-            position: relative;
-            height: 30em;
         }
 
     </style>
@@ -203,11 +110,10 @@
             <span class="separator">»</span>
             <a href="../dashboard/index.html">Dashboard</a>
             <span class="separator">»</span>
-            <span class="current">Doctors Works</span>
         </div>
     </header>
 
-    <!-- ============================================================
+    <!--========================================================
     SIDE NAVIGATION
     ============================================================ -->
     <nav class="side-nav" id="sideNav">
@@ -267,25 +173,6 @@
     MAIN CONTENT
     ============================================================ -->
     <main class="app-main" id="mainContent">
-        <!-- ===== CHART SECTION ===== -->
-        <section class="chart-section">
-            <div class="chart-header">
-                <div class="chart-title">
-                    Clinical Activity Overview
-                    <small>Last 7 Days</small>
-                    <button class="refresh-btn" id="refreshBtn" onclick="refreshChartData()">
-                        <i class="fas fa-sync-alt" id="refreshIcon"></i> Refresh
-                    </button>
-                </div>
-                <span class="chart-date-range" id="dateRangeDisplay">
-                    <i class="far fa-calendar-alt"></i>
-                    Loading...
-                </span>
-            </div>
-            <div class="chart-wrapper">
-                <canvas id="activityChart"></canvas>
-            </div>
-        </section>
 
     </main>
 
@@ -306,7 +193,9 @@
             <a href="#">Terms of Service</a>
         </div>
     </footer>
-
+    
+    <!-- Bootstrap JS (offline) -->
+    <script src="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
     <script>
     // ============================================================
     // 1. NAVIGATION FUNCTIONS
@@ -334,386 +223,6 @@
         if (submenu) {
             submenu.classList.toggle('open');
         }
-    }
-
-    // ============================================================
-    // 2. DATE UTILITIES
-    // ============================================================
-    function getLast7Days() {
-        const dates = [];
-        const today = new Date();
-        
-        for (let i = 6; i >= 0; i--) {
-            const date = new Date(today);
-            date.setDate(date.getDate() - i);
-            dates.push(date);
-        }
-        return dates;
-    }
-
-    function formatDateKey(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    function formatDateDisplay(date) {
-        const options = { month: 'long', day: 'numeric', year: 'numeric' };
-        return date.toLocaleDateString('en-US', options);
-    }
-
-    function getDayOnly(date) {
-        return String(date.getDate()).padStart(2, '0');
-    }
-
-    // ============================================================
-    // 3. DATA - FETCH FROM JSON FILE
-    // ============================================================
-    let chartData = null;
-    let chartInstance = null;
-    let isLoading = false;
-
-    async function loadData(showLoadingToast = true) {
-        const refreshIcon = document.getElementById('refreshIcon');
-        
-        try {
-            if (showLoadingToast) {
-                showToast('📊 Loading chart data...', 'info');
-            }
-            
-            if (refreshIcon) {
-                refreshIcon.classList.add('spinning');
-            }
-
-            const response = await fetch('../../data/doctors-graph.json');
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const rawData = await response.json();
-            
-            // Get last 7 days dynamically
-            const last7Days = getLast7Days();
-            const dateKeys = last7Days.map(d => formatDateKey(d));
-            const dayLabels = last7Days.map(d => getDayOnly(d));
-            
-            // Build chart data from JSON
-            const datasets = rawData.services.map(service => {
-                const dataValues = dateKeys.map(dateKey => {
-                    const value = service.data[dateKey];
-                    return value !== undefined ? value : null;
-                });
-                
-                return {
-                    label: service.name,
-                    data: dataValues,
-                    backgroundColor: service.color + 'b3',
-                    borderColor: service.color,
-                    borderWidth: 2,
-                    borderRadius: 4,
-                    barPercentage: 0.6,
-                    categoryPercentage: 0.8,
-                };
-            });
-            
-            chartData = {
-                labels: dayLabels,
-                fullDates: dateKeys,
-                datasets: datasets
-            };
-            
-            // Update date range display
-            const startDate = last7Days[0];
-            const endDate = last7Days[6];
-            const dateRangeDisplay = document.getElementById('dateRangeDisplay');
-            if (dateRangeDisplay) {
-                dateRangeDisplay.innerHTML = `
-                    <i class="far fa-calendar-alt"></i>
-                    ${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}
-                `;
-            }
-            
-            // Render chart
-            initChart();
-            
-            console.log('📊 Data loaded successfully from JSON');
-            console.log(`📈 ${datasets.length} services loaded for ${dateKeys.length} days`);
-            
-            if (showLoadingToast) {
-                showToast('✅ Chart data updated successfully!', 'success', 1500);
-            }
-            
-        } catch (error) {
-            console.error('❌ Failed to load data:', error);
-            showToast('⚠️ Failed to load chart data. Please check the data file.', 'warning');
-            showEmptyChart();
-        } finally {
-            if (refreshIcon) {
-                refreshIcon.classList.remove('spinning');
-            }
-            isLoading = false;
-        }
-    }
-
-    // ============================================================
-    // 4. EMPTY CHART STATE
-    // ============================================================
-    function showEmptyChart() {
-        const ctx = document.getElementById('activityChart');
-        if (!ctx) return;
-        
-        const context = ctx.getContext('2d');
-        
-        if (chartInstance) {
-            chartInstance.destroy();
-            chartInstance = null;
-        }
-        
-        chartInstance = new Chart(context, {
-            type: 'bar',
-            data: {
-                labels: ['No Data Available'],
-                datasets: [{
-                    label: 'No Data',
-                    data: [0],
-                    backgroundColor: 'rgba(200, 200, 200, 0.3)',
-                    borderColor: '#ccc',
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false }
-                },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: {
-                            font: { size: 14, weight: '600' },
-                            color: '#62728b'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: { display: false },
-                        ticks: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    // ============================================================
-    // 5. CHART.JS INITIALIZATION
-    // ============================================================
-    function initChart() {
-        const ctx = document.getElementById('activityChart');
-        
-        if (!ctx) {
-            console.error('❌ Chart canvas not found');
-            return;
-        }
-        
-        const parent = ctx.parentElement;
-        const existingMsg = parent.querySelector('.empty-chart-msg');
-        if (existingMsg) existingMsg.remove();
-        
-        const context = ctx.getContext('2d');
-
-        if (chartInstance) {
-            chartInstance.destroy();
-            chartInstance = null;
-        }
-
-        if (!chartData || !chartData.datasets || chartData.datasets.length === 0) {
-            console.warn('⚠️ No chart data available');
-            showEmptyChart();
-            return;
-        }
-
-        chartInstance = new Chart(context, {
-            type: 'bar',
-            data: chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 800,
-                    easing: 'easeInOutQuart'
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            font: {
-                                family: "'Segoe UI', system-ui, sans-serif",
-                                size: 11,
-                                weight: '500'
-                            },
-                            boxWidth: 12,
-                            boxHeight: 12,
-                            borderRadius: 3,
-                            usePointStyle: true,
-                            padding: 12,
-                            color: '#14355f'
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(20, 53, 95, 0.92)',
-                        titleFont: { 
-                            family: "'Segoe UI', system-ui, sans-serif", 
-                            weight: '600',
-                            size: 13
-                        },
-                        bodyFont: { 
-                            family: "'Segoe UI', system-ui, sans-serif", 
-                            size: 12 
-                        },
-                        padding: 14,
-                        cornerRadius: 8,
-                        titleColor: '#ffffff',
-                        bodyColor: '#e7f9fa',
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.parsed.y;
-                                if (value === null || value === undefined) {
-                                    return `${context.dataset.label}: No Data`;
-                                }
-                                return `${context.dataset.label}: ${value.toLocaleString()}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                family: "'Segoe UI', system-ui, sans-serif",
-                                size: 12,
-                                weight: '500'
-                            },
-                            color: '#62728b'
-                        }
-                    },
-                    y: {
-                        grid: {
-                            color: 'rgba(216, 226, 237, 0.4)',
-                            drawBorder: false
-                        },
-                        ticks: {
-                            font: {
-                                family: "'Segoe UI', system-ui, sans-serif",
-                                size: 11
-                            },
-                            color: '#62728b',
-                            stepSize: 200,
-                            callback: function(value) {
-                                return value >= 1000 ? `${value/1000}k` : value;
-                            }
-                        },
-                        beginAtZero: true
-                    }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                }
-            }
-        });
-
-        console.log('📊 Chart initialized successfully');
-    }
-
-    // ============================================================
-    // 6. REFRESH FUNCTION
-    // ============================================================
-    async function refreshChartData() {
-        if (isLoading) return;
-        isLoading = true;
-        await loadData(true);
-    }
-
-    // ============================================================
-    // 7. TOAST NOTIFICATIONS
-    // ============================================================
-    function showToast(message, type = 'info', duration = 3000) {
-        const existing = document.querySelector('.toast-notification');
-        if (existing) existing.remove();
-
-        const toast = document.createElement('div');
-        toast.className = 'toast-notification';
-
-        const icons = {
-            success: 'fa-check-circle',
-            error: 'fa-times-circle',
-            info: 'fa-info-circle',
-            warning: 'fa-exclamation-triangle'
-        };
-
-        const colors = {
-            success: '#0a8a5a',
-            error: '#c0392b',
-            info: '#0756ba',
-            warning: '#e67e22'
-        };
-
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            background: ${colors[type] || colors.info};
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-family: var(--font);
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: toastIn 0.3s ease-out;
-            max-width: 90%;
-        `;
-
-        toast.innerHTML = `
-            <i class="fas ${icons[type] || icons.info}"></i>
-            <span>${message}</span>
-        `;
-
-        if (!document.getElementById('toastStyles')) {
-            const style = document.createElement('style');
-            style.id = 'toastStyles';
-            style.textContent = `
-                @keyframes toastIn {
-                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-                }
-                @keyframes toastOut {
-                    from { opacity: 1; transform: translateX(-50%) translateY(0); }
-                    to { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.animation = 'toastOut 0.3s ease-in forwards';
-            setTimeout(() => toast.remove(), 300);
-        }, duration);
     }
 
     // ============================================================
@@ -834,29 +343,14 @@
             if (dropdownOverlay) dropdownOverlay.classList.remove('active');
             if (avatarBtn) avatarBtn.setAttribute('aria-expanded', 'false');
         };
+       });
         
-        // Load chart data
-        await loadData(false);
-        
-        // Handle window resize for chart
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (chartInstance) {
-                    chartInstance.resize();
-                }
-            }, 250);
-        });
-        
-        console.log('🦷 Doctors Works Dashboard loaded successfully!');
-        console.log('📊 Chart shows last 7 days from today');
+        console.log('🦷 Inpatient Works Dashboard loaded successfully!');
         
         const user = getUserSession();
         if (user) {
             console.log(`👤 Logged in as: ${user.displayName} (${user.role})`);
-        }
-    });
+        };
 
 // ============================================================
 // OUTPATIENT CARD - FETCH & INJECT
@@ -991,7 +485,7 @@ function updateActiveNavItem(pageId) {
     if (target) {
         target.classList.add('active');
     }
-}
+};
 </script>
 </body>
 </html>
