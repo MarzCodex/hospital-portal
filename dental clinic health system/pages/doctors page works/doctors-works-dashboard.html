@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../../assets/css/common-styles.css" />
     <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
     <!--bootstrap link-->
-    <link rel="">
+    <link rel=''>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <script src="../../assets/js/chart.umd.min.js"></script>   
@@ -20,10 +20,6 @@
            ============================================================ */
 
         body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--ink);
-            min-height: 100vh;
             padding-top: calc(var(--header-height) + var(--secondary-header-height));
             padding-bottom: var(--footer-height);
             padding-left: var(--sidebar-width);
@@ -187,7 +183,7 @@
     FIXED SECONDARY HEADER
     ============================================================ -->
     <header class="app-secondary-header">
-        <button class="sec-btn" id="toggleSidebar" title="Toggle Menu">
+        <button class="sec-btn" id="toggleSidebar" onclick="toggleSidebar()" title="Toggle Menu">
             <i class="fas fa-bars"></i>
             <span>Toggle Menu View</span>
         </button>
@@ -214,7 +210,7 @@
     SIDE NAVIGATION
     ============================================================ -->
     <nav class="side-nav" id="sideNav">
-        <a href="#" class="nav-item" data-page="outpatient" onclick="handleNavClick('Outpatient Works', this)">
+        <a href="#" class="nav-item" data-page="outpatient" onclick="loadOutpatientCard()">
             <i class="fas fa-clipboard-list"></i>
             <span class="nav-label">Outpatient Works</span>
         </a>
@@ -269,7 +265,7 @@
     <!-- ============================================================
     MAIN CONTENT
     ============================================================ -->
-    <main class="app-main">
+    <main class="app-main" id="mainContent">
         <!-- ===== CHART SECTION ===== -->
         <section class="chart-section">
             <div class="chart-header">
@@ -798,29 +794,7 @@
         // Update date
         updateDate();
         setInterval(updateDate, 60000);
-        
-        // Setup sidebar toggle
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', function() {
-                document.body.classList.toggle('sidebar-collapsed');
-                const icon = this.querySelector('i');
-                if (document.body.classList.contains('sidebar-collapsed')) {
-                    icon.className = 'fas fa-chevron-right';
-                } else {
-                    icon.className = 'fas fa-bars';
-                }
-                localStorage.setItem('sidebarCollapsed', document.body.classList.contains('sidebar-collapsed'));
-            });
-
-            // Load sidebar preference
-            if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                document.body.classList.add('sidebar-collapsed');
-                const icon = toggleSidebar.querySelector('i');
-                if (icon) icon.className = 'fas fa-chevron-right';
-            }
-        }
-        
+         
         // Setup dropdown controls
         const avatarBtn = document.getElementById('avatarBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
@@ -882,6 +856,141 @@
             console.log(`👤 Logged in as: ${user.displayName} (${user.role})`);
         }
     });
+
+// ============================================================
+// OUTPATIENT CARD - FETCH & INJECT
+// ============================================================
+
+// Load Outpatient Card
+async function loadOutpatientCard() {
+    try {
+        const response = await fetch('../../components/outpatient-card.html');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const cardHTML = await response.text();
+        
+        // Replace main content with the card
+        const mainContent = document.getElementById('mainContent');
+        mainContent.innerHTML = cardHTML;
+        
+        // Update side nav active state
+        updateActiveNavItem('outpatient');
+        
+        console.log('📍 Outpatient card loaded successfully');
+        
+        // ============================================================
+        // INITIALIZE THE CARD AFTER INJECTION
+        // ============================================================
+        initializeOutpatientCard();
+        
+    } catch (error) {
+        console.error('❌ Failed to load outpatient card:', error);
+        if (typeof showToast === 'function') {
+            showToast('⚠️ Failed to load outpatient card. Please try again.', 'error');
+        }
+    }
+}
+
+// ============================================================
+// INITIALIZE OUTPATIENT CARD (called after injection)
+// ============================================================
+function initializeOutpatientCard() {
+    console.log('🔍 Initializing outpatient card...');
+    
+    // Get DOM elements
+    const clinicSelect = document.getElementById('clinicSelect');
+    const locationSelect = document.getElementById('locationSelect');
+    const departmentSelect = document.getElementById('departmentSelect');
+    const openBtn = document.getElementById('openBtn');
+    
+    // If elements not found, log error and exit
+    if (!clinicSelect || !locationSelect || !departmentSelect || !openBtn) {
+        console.error('❌ Card elements not found!');
+        return;
+    }
+    
+    console.log('✅ All card elements found!');
+    
+    // ============================================================
+    // VALIDATE ALL SELECTIONS
+    // ============================================================
+    function validateSelections() {
+        const clinic = clinicSelect.value;
+        const location = locationSelect.value;
+        const department = departmentSelect.value;
+        
+        const allSelected = !!(clinic && location && department);
+        openBtn.disabled = !allSelected;
+        
+        console.log('🔍 Button disabled:', openBtn.disabled);
+    }
+
+    // ============================================================
+    // HANDLE OPEN BUTTON
+    // ============================================================
+    function handleOpen() {
+        if (openBtn.disabled) return;
+
+        const clinic = clinicSelect.options[clinicSelect.selectedIndex].text;
+        const location = locationSelect.options[locationSelect.selectedIndex].text;
+        const department = departmentSelect.options[departmentSelect.selectedIndex].text;
+
+        console.log('📍 Working Location Selected:', { 
+            clinic: clinicSelect.value, 
+            location: locationSelect.value, 
+            department: departmentSelect.value 
+        });
+
+        if (typeof showToast === 'function') {
+            showToast(`✅ Working at: ${clinic} | ${location} | ${department}`, 'success', 2000);
+        }
+
+        setTimeout(() => {
+            window.location.href = 'opd-patient-list.html';
+        }, 1000);
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    clinicSelect.addEventListener('change', validateSelections);
+    locationSelect.addEventListener('change', validateSelections);
+    departmentSelect.addEventListener('change', validateSelections);
+    openBtn.addEventListener('click', handleOpen);
+
+    // ============================================================
+    // KEYBOARD SHORTCUT: ENTER ON OPEN BUTTON
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.activeElement === openBtn) {
+            e.preventDefault();
+            handleOpen();
+        }
+    });
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    validateSelections();
+    console.log('📍 Outpatient card initialized successfully');
+}
+
+// ============================================================
+// UPDATE ACTIVE NAV ITEM
+// ============================================================
+function updateActiveNavItem(pageId) {
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    const target = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+    if (target) {
+        target.classList.add('active');
+    }
+}
 </script>
 </body>
 </html>

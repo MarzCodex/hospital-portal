@@ -1,6 +1,50 @@
 // ============================================================
 // COMMON.JS - Shared Functions for All Pages
 
+
+// ============================================================
+// SIDEBAR TOGGLE - WORKS ON ALL PAGES
+// ============================================================
+
+// Function to toggle sidebar
+function toggleSidebar() {
+    const body = document.body;
+    const icon = document.querySelector('#toggleSidebar i');
+    
+    body.classList.toggle('sidebar-collapsed');
+    
+    if (icon) {
+        icon.className = body.classList.contains('sidebar-collapsed') 
+            ? 'fas fa-chevron-right' 
+            : 'fas fa-bars';
+    }
+    
+    localStorage.setItem('sidebarCollapsed', body.classList.contains('sidebar-collapsed'));
+}
+
+// Function to restore sidebar state on page load
+function restoreSidebarState() {
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    const body = document.body;
+    const icon = document.querySelector('#toggleSidebar i');
+    
+    if (isCollapsed) {
+        body.classList.add('sidebar-collapsed');
+        if (icon) icon.className = 'fas fa-chevron-right';
+    } else {
+        body.classList.remove('sidebar-collapsed');
+        if (icon) icon.className = 'fas fa-bars';
+    }
+}
+
+// Run restore when page loads (only if the page has a sidebar)
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if sidebar exists on this page
+    if (document.getElementById('toggleSidebar')) {
+        restoreSidebarState();
+    }
+});
+
 // 1. USER SESSION MANAGEMENT
 // ============================================================
 function getUserSession() {

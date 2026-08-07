@@ -501,10 +501,16 @@ body {
         }
 
         
-
 /* ============================================================
-   10. SIDE NAVIGATION
+   SIDE NAVIGATION - FULL (Combined)
    ============================================================ */
+
+/* Body - when sidebar is collapsed */
+body.sidebar-collapsed {
+    padding-left: 0;
+}
+
+/* Side Navigation - base styles */
 .side-nav {
     position: fixed;
     top: calc(var(--header-height) + var(--secondary-header-height));
@@ -516,10 +522,16 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 998;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, width 0.3s ease;
     padding: 12px 0 20px;
 }
 
+/* Side Navigation - when collapsed (hidden) */
+body.sidebar-collapsed .side-nav {
+    transform: translateX(-100%);
+}
+
+/* Scrollbar styles */
 .side-nav::-webkit-scrollbar {
     width: 4px;
 }
@@ -531,6 +543,7 @@ body {
     border-radius: 10px;
 }
 
+/* Nav items */
 .side-nav .nav-item {
     display: flex;
     align-items: center;
@@ -586,6 +599,7 @@ body {
     background: var(--sidebar-hover);
 }
 
+/* Submenu */
 .side-nav .nav-submenu {
     max-height: 0;
     overflow: hidden;
@@ -629,6 +643,25 @@ body {
     height: 1px;
     background: rgba(255, 255, 255, 0.06);
     margin: 8px 16px;
+}
+
+/* RESPONSIVE - MOBILE SIDEBAR */
+
+@media (max-width: 992px) {
+    /* On mobile, sidebar is hidden by default */
+    .side-nav {
+        transform: translateX(-100%);
+    }
+    
+    /* Show sidebar when "collapsed" on mobile (toggle to show) */
+    body.sidebar-collapsed .side-nav {
+        transform: translateX(0);
+    }
+    
+    /* Body padding on mobile */
+    body {
+        padding-left: 0;
+    }
 }
 
 /* ============================================================
