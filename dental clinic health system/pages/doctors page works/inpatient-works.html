@@ -3,389 +3,35 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OPD Patient List | Choice Dental Care</title>
-    
-    <!-- Bootstrap 5 (offline) -->
+    <title>Doctors Page Works | Choice Dental Care</title>
     <link rel="stylesheet" href="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" />
-    
-    <!-- Common Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />  
     <link rel="stylesheet" href="../../assets/css/common-styles.css" />
     <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    
     <script src="../../assets/js/common.js"></script>
-    
     <style>
-         /* ============================================================
+      
+        /* ============================================================
            RESET
            ============================================================ */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
 
         body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--ink);
-            min-height: 100vh;
-            padding-top: 120px;
+            padding-top: calc(var(--header-height) + var(--secondary-header-height));
             padding-bottom: var(--footer-height);
-            padding-left: 270px;
+            padding-left: var(--sidebar-width);
             transition: padding-left 0.3s ease;
         }
 
-        body.sidebar-collapsed {
-            padding-left: 0;
-        }
         /* ============================================================
-           PAGE-SPECIFIC CSS ONLY
+           MAIN CONTENT
            ============================================================ */
-        
-        /* Location Info Bar */
-        .location-info {
-            background: var(--surface, #ffffff);
-            border-radius: var(--radius, 14px);
-            padding: 6px 24px;
-            margin-bottom: 6px;
-            border: 1px solid var(--line, #d8e2ed);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
+        .app-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px;
+            min-height: calc(100vh - var(--header-height) - var(--secondary-header-height) - var(--footer-height));
         }
 
-        .location-info .info-group {
-            display: flex;
-            align-items: center;
-            gap: 250px;
-            flex-wrap: wrap;
-        }
-
-        .location-info .info-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--ink, #14355f);
-        }
-
-        .location-info .info-item .label {
-            color: #000000;
-            font-weight: 800;
-        }
-
-        .location-info .info-item .value {
-            font-weight: 600;
-            color: var(--blue, #0756ba);
-        }
-
-        .location-info .btn-change {
-            padding: 6px 16px;
-            border: 1px solid var(--line, #d8e2ed);
-            border-radius: 6px;
-            background: transparent;
-            color: var(--muted, #62728b);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition, all 0.25s ease);
-            font-family: var(--font, 'Inter', sans-serif);
-        }
-
-        .location-info .btn-change:hover {
-            border-color: var(--blue, #0756ba);
-            color: var(--blue, #0756ba);
-            background: var(--teal-pale, #e7f9fa);
-        }
-
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 20px;
-            background: var(--surface, #ffffff);
-            border-radius: var(--radius, 14px);
-            padding: 6px;
-            border: 1px solid var(--line, #d8e2ed);
-            flex-wrap: wrap;
-        }
-
-        .nav-tabs .tab {
-            padding: 10px 20px;
-            border: none;
-            border-radius: var(--radius-sm, 8px);
-            background: transparent;
-            color: var(--muted, #62728b);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition, all 0.25s ease);
-            font-family: var(--font, 'Inter', sans-serif);
-            white-space: nowrap;
-        }
-
-        .nav-tabs .tab:hover {
-            background: var(--bg, #f4f9fc);
-            color: var(--ink, #14355f);
-        }
-
-        .nav-tabs .tab.active {
-            background: var(--blue, #0756ba);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(7, 86, 186, 0.2);
-        }
-
-        /* Filter Section - Medium size inputs in a row */
-        .filter-section {
-            background: var(--surface, #ffffff);
-            border-radius: var(--radius, 14px);
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--line, #d8e2ed);
-        }
-
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .filter-row .filter-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            width: 100%;
-        }
-
-        .filter-row input,
-        .filter-row select {
-            padding: 6px 12px;
-            border: 1.5px solid var(--line, #d8e2ed);
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: var(--font, 'Inter', sans-serif);
-            color: var(--ink, #14355f);
-            background: var(--surface, #ffffff);
-            transition: var(--transition, all 0.25s ease);
-            outline: none;
-            height: 38px;
-            min-width: 150px;
-            flex: 1;
-        }
-
-        .filter-row input:focus,
-        .filter-row select:focus {
-            border-color: var(--blue, #0756ba);
-            box-shadow: 0 0 0 3px rgba(7, 86, 186, 0.08);
-        }
-
-        .filter-row input::placeholder {
-            color: #b0b8c4;
-        }
-
-        /* Date inputs */
-        .filter-row input[type="datetime-local"] {
-            min-width: 180px;
-            flex: 0 1 auto;
-        }
-
-        /* Table Container */
-        .table-container {
-            background: var(--surface, #ffffff);
-            border-radius: var(--radius, 14px);
-            padding: 16px 20px;
-            border: 1px solid var(--line, #d8e2ed);
-            overflow-x: auto;
-        }
-
-        .table-container table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        th, td {
-            border: 1px solid rgb(159 159 159);
-        }
-
-        .table-container table thead th {
-            padding: 10px 10px;
-            text-align: left;
-            font-weight: 800;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: rgb(0, 0, 0);
-            border-bottom: 2px solid var(--line, #d8e2ed);
-            white-space: nowrap;
-        }
-
-        .table-container table tbody td {
-            padding: 10px 10px;
-            border-bottom: 1px solid var(--line, #d8e2ed);
-            color: rgb(0, 0, 0);
-            vertical-align: middle;
-        }
-
-        .table-container table tbody tr:hover {
-            background: var(--teal-pale, #e7f9fa);
-        }
-
-        .table-container table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .table-container .no-data {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--muted, #62728b);
-        }
-
-        .table-container .no-data i {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 12px;
-            opacity: 0.3;
-        }
-
-        /* Pagination */
-        .pagination-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--line, #d8e2ed);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .pagination-section .info {
-            font-size: 13px;
-            color: var(--muted, #62728b);
-        }
-
-        .pagination-section .info strong {
-            color: var(--ink, #14355f);
-        }
-
-        .pagination-section .pagination-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pagination-section .pagination-controls button {
-            padding: 6px 14px;
-            border: 1px solid var(--line, #d8e2ed);
-            border-radius: 6px;
-            background: transparent;
-            color: var(--muted, #62728b);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition, all 0.25s ease);
-            font-family: var(--font, 'Inter', sans-serif);
-        }
-
-        .pagination-section .pagination-controls button:hover:not(:disabled) {
-            border-color: var(--blue, #0756ba);
-            color: var(--blue, #0756ba);
-            background: var(--teal-pale, #e7f9fa);
-        }
-
-        .pagination-section .pagination-controls button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .pagination-section .pagination-controls button.active {
-            background: var(--blue, #0756ba);
-            color: #fff;
-            border-color: var(--blue, #0756ba);
-        }
-
-        .pagination-section .pagination-controls .page-numbers {
-            display: flex;
-            gap: 4px;
-        }
-
-        .pagination-section .pagination-controls .page-numbers button {
-            min-width: 36px;
-            text-align: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .filter-row input,
-            .filter-row select {
-                min-width: 120px;
-            }
-            .filter-row input[type="datetime-local"] {
-                min-width: 140px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .location-info {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 14px 16px;
-            }
-            .location-info .info-group {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-            .location-info .btn-change {
-                align-self: flex-start;
-            }
-            .filter-row {
-                flex-direction: column;
-            }
-            .filter-row input,
-            .filter-row select,
-            .filter-row input[type="datetime-local"] {
-                width: 100%;
-                min-width: unset;
-                flex: 1 1 100%;
-            }
-            .nav-tabs {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding: 4px;
-            }
-            .nav-tabs .tab {
-                font-size: 12px;
-                padding: 6px 12px;
-                white-space: nowrap;
-            }
-            .table-container {
-                padding: 10px;
-            }
-            .pagination-section {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .table-container table {
-                font-size: 11px;
-            }
-            .table-container table thead th,
-            .table-container table tbody td {
-                padding: 6px 6px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -399,12 +45,13 @@
     FIXED TOP HEADER
     ============================================================ -->
     <header class="app-header" id="appHeader">
+        <!-- Left: Logo + System Name -->
         <div class="header-left">
-            <div class="header-logo" onclick="goToDashboard()">
+            <div class="header-logo">
                 <i class="fas fa-tooth"></i>
             </div>
             <div class="header-brand">
-                <span class="system-name">Choice Dental Care <span class="system-version">v2.4.1</span></span>
+                <span class="system-name">Choice Dental Care <i class="system-version">v2.4.1</i></span>  
             </div>
             <span class="header-date" id="currentDate">
                 <span class="user-divider"></span>
@@ -413,28 +60,30 @@
             </span>
         </div>
 
-        <div class="header-right">
-            <div class="header-user">
-                <span class="role" id="role"></span>
-                <span class="user-divider">|</span>
-                <span class="displayName" id="displayName"></span>
-            </div>
-            <div class="avatar-wrapper" id="avatarWrapper">
-                <div class="avatar" id="avatarBtn">
-                    U
-                    <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+       <!-- Right: User Info + Avatar -->
+            <div class="header-right">
+                <div class="header-user">
+                    <span class="role" id="role"></span>
+                    <span class="user-divider">|</span>
+                    <span class="displayName" id="displayName"></span>
                 </div>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <button class="dropdown-item" onclick="handleChangePassword()">
-                        <i class="fas fa-key"></i> Change Password
-                    </button>
-                    <div class="dropdown-divider"></div>
-                    <button class="dropdown-item danger" onclick="handleLogout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <div class="avatar" id="avatarBtn">
+                        <!-- Initials will be inserted here by JavaScript -->
+                        <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="dropdown-item" onclick="handleChangePassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <!-- ============================================================
@@ -454,16 +103,17 @@
             <i class="fas fa-th-large"></i>
             <span>Dashboard</span>
         </button>
+        <!-- Breadcrumb -->
         <div class="breadcrumb">
+            <i class="fas fa-home"></i>
             <a href="../dashboard/index.html">Home</a>
-            <span class="separator">/</span>
+            <span class="separator">»</span>
             <a href="../dashboard/index.html">Dashboard</a>
-            <span class="separator">/</span>
-            <span class="current">OPD Patient List</span>
+            <span class="separator">»</span>
         </div>
     </header>
 
-    <!-- ============================================================
+    <!--========================================================
     SIDE NAVIGATION
     ============================================================ -->
     <nav class="side-nav" id="sideNav">
@@ -523,149 +173,8 @@
     MAIN CONTENT
     ============================================================ -->
     <main class="app-main" id="mainContent">
-        <!-- Location Info Bar -->
-        <div class="location-info">
-            <div class="info-group">
-                <div class="info-item">
-                    <span class="label">Clinic |</span>
-                    <span class="value" id="displayClinic">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">Clinic Location |</span>
-                    <span class="value" id="displayLocation">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">Department |</span>
-                    <span class="value" id="displayDepartment">-</span>
-                </div>
-            </div>
-            <button class="btn-change" onclick="goToOutpatientCard">
-                 Change
-            </button>
-        </div>
-        <!-- Filter Section -->
-        <div class="filter-section">
-            
-        </div>
-        <!-- Navigation Tabs -->
-        <div class="nav-tabs">
-            <button class="tab active" onclick="switchTab(this, 'opd')">OPD Patient List</button>
-            <button class="tab" onclick="switchTab(this, 'consulted')">Consulted Patient List</button>
-            <button class="tab" onclick="switchTab(this, 'my')">My Patient List</button>
-            <button class="tab" onclick="switchTab(this, 'emergency')">Emergency Patients</button>
-            <button class="tab" onclick="switchTab(this, 'consultation')">Consultation Requests</button>
-            <button class="tab" onclick="switchTab(this, 'allergy')">Allergy Patients</button>
-        </div>
-        <!-- Table & Filters Section -->
-        <div class="table-container">
-            <!--filter seection-->
-            <div class="filter-row">
-                <div class="filter-group">
-                    <!-- Date Range - Auto set to current date & time -->
-                    <input type="datetime-local" id="startDate" />
-                    <input type="datetime-local" id="endDate" />
-                    
-                    <!-- Clinic - Loaded from outpatient-card selection -->
-                    <select id="clinicFilter">
-                        <option value="">Select Clinic</option>
-                        <option value="dental">Dental Clinic</option>
-                        <option value="medical">Medical Clinic</option>
-                        <option value="eye">Eye Clinic</option>
-                        <option value="orthopedic">Orthopedic Clinic</option>
-                    </select>
-                    
-                    <!-- Sponsor -->
-                    <select id="sponsorFilter">
-                        <option value="">Select Sponsor</option>
-                        <option value="cash">Cash</option>
-                        <option value="insurance">Insurance</option>
-                        <option value="nhif">NHIF</option>
-                        <option value="corporate">Corporate</option>
-                    </select>
-                    
-                    <!-- Patient Name -->
-                    <input type="text" id="patientNameFilter" placeholder="Search by name..." />
-                    
-                    <!-- Patient Number -->
-                    <input type="text" id="patientNumberFilter" placeholder="Search by number..." />
-                    
-                    <!-- Phone Number -->
-                    <input type="text" id="phoneNumberFilter" placeholder="Search by phone..." />
-                </div>
-            </div>
-            <!--Table Section-->
-            <table>
-                <thead>
-                    <tr>
-                        <th>S/N</th>
-                        <th>Name</th>
-                        <th>Patient Number</th>
-                        <th>Sponsor</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Phone Number</th>
-                        <th>Member Number</th>
-                        <th>Transaction Date</th>
-                        <th>Elapsed Time</th>
-                        <th>Lab.</th>
-                        <th>Rad.</th>
-                        <th>Consultation Type (Price)</th>
-                    </tr>
-                </thead>
-                <tbody id="patientTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>001</td>
-                        <td>Cash</td>
-                        <td>10</td>
-                        <td>Male</td>
-                        <td>0700000000</td>
-                        <td></td>
-                        <td>2026-08-02</td>
-                        <td>10 minutes</td>
-                        <td>0/0</td>
-                        <td>2/2</td>
-                        <td>consultation fee(10000)</td>
-                    </tr> <tr>
-                        <td>2</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>002</td>
-                        <td>Cash</td>
-                        <td>10</td>
-                        <td>Female</td>
-                        <td>0700000000</td>
-                        <td></td>
-                        <td>2026-08-02</td>
-                        <td>150 minutes</td>
-                        <td>1/0</td>
-                        <td>2/2</td>
-                        <td>consultation fee(10000)</td>
-                    </tr>
-                </tbody>
-            </table>
 
-            <!-- Pagination -->
-            <div class="pagination-section">
-                <div class="info">
-                    Showing <strong>0</strong> to <strong>0</strong> of <strong>0</strong> entries
-                </div>
-                <div class="pagination-controls">
-                    <button onclick="prevPage()" disabled>
-                        <i class="fas fa-chevron-left"></i> Previous
-                    </button>
-                    <div class="page-numbers">
-                        <button class="active">1</button>
-                    </div>
-                    <button onclick="nextPage()" disabled>
-                        Next <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
     </main>
-
-
 
     <!-- ============================================================
     FIXED FOOTER
@@ -684,226 +193,299 @@
             <a href="#">Terms of Service</a>
         </div>
     </footer>
-
+    
     <!-- Bootstrap JS (offline) -->
     <script src="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
-    
     <script>
-        // ============================================================
-        // PAGE-SPECIFIC JAVASCRIPT ONLY
-        // ============================================================
+    // ============================================================
+    // 1. NAVIGATION FUNCTIONS
+    // ============================================================
+    function goToDashboard() {
+        window.location.href='../dashboard/index.html';
+    }
 
-        // ============================================================
-        // 1. LOAD SELECTIONS FROM OUTPATIENT CARD
-        // ============================================================
-        function loadWorkingLocation() {
-            try {
-                const saved = localStorage.getItem('workingLocation');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    
-                    // Display in location bar
-                    const clinicMap = {
-                        'dental': 'Dental Clinic',
-                        'medical': 'Medical Clinic',
-                        'eye': 'Eye Clinic',
-                        'orthopedic': 'Orthopedic Clinic'
-                    };
-                    const locationMap = {
-                        'majengo': 'Majengo',
-                        'sokoni': 'Sokoni',
-                        'city-center': 'City Center',
-                        'kariakoo': 'Kariakoo',
-                        'kimara': 'Kimara'
-                    };
-                    const deptMap = {
-                        'dental-dept': 'Dental Department',
-                        'medical-dept': 'Medical Department',
-                        'pharmacy-dept': 'Pharmacy Department',
-                        'lab-dept': 'Laboratory Department',
-                        'radiology-dept': 'Radiology Department'
-                    };
+    function goToLogin() {
+        window.location.href = '../../auth/login.html';
+    }
 
-                    document.getElementById('displayClinic').textContent = clinicMap[data.clinic] || data.clinic || '-';
-                    document.getElementById('displayLocation').textContent = locationMap[data.location] || data.location || '-';
-                    document.getElementById('displayDepartment').textContent = deptMap[data.department] || data.department || '-';
-                    
-                    // Also set clinic filter to match
-                    const clinicFilter = document.getElementById('clinicFilter');
-                    if (clinicFilter && data.clinic) {
-                        clinicFilter.value = data.clinic;
-                    }
-                    
-                    console.log('📍 Working location loaded:', data);
-                }
-            } catch (e) {
-                console.warn('Failed to load working location:', e);
-            }
-        }
-
-        // ============================================================
-        // 2. GO TO OUTPATIENT CARD (Change button)
-        // ============================================================
-        function goToOutpatientCard() {
-            // Redirect back to doctors-works-dashboard which loads the card
-            window.location.href = '../../components/outpatient-card.html';
-        }
-
-        // ============================================================
-        // 3. TAB SWITCHING
-        // ============================================================
-        function switchTab(element, tabName) {
-            document.querySelectorAll('.nav-tabs .tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            element.classList.add('active');
-            // Auto-filter on tab switch
-            applyFilters();
-            console.log(`🔀 Switched to tab: ${tabName}`);
-        }
-
-        // ============================================================
-        // 4. AUTO DATE PICKER - Current Date & Time
-        // ============================================================
-        function setDefaultDates() {
-            const now = new Date();
-            
-            // Start of day (00:00)
-            const startOfDay = new Date(now);
-            startOfDay.setHours(0, 0, 0, 0);
-            
-            // End of day (23:59)
-            const endOfDay = new Date(now);
-            endOfDay.setHours(23, 59, 0, 0);
-            
-            // Format for datetime-local input
-            const formatDate = (date) => {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                return `${year}-${month}-${day}T${hours}:${minutes}`;
-            };
-            
-            document.getElementById('startDate').value = formatDate(startOfDay);
-            document.getElementById('endDate').value = formatDate(endOfDay);
-        }
-
-        // ============================================================
-        // 5. AUTO-FILTER (filters as selections are made)
-        // ============================================================
-        function applyFilters() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            const clinic = document.getElementById('clinicFilter').value;
-            const sponsor = document.getElementById('sponsorFilter').value;
-            const patientName = document.getElementById('patientNameFilter').value;
-            const patientNumber = document.getElementById('patientNumberFilter').value;
-            const phoneNumber = document.getElementById('phoneNumberFilter').value;
-
-            console.log('🔍 Auto-filter applied:', {
-                startDate,
-                endDate,
-                clinic,
-                sponsor,
-                patientName,
-                patientNumber,
-                phoneNumber
-            });
-            
-            // Here you would filter the table data
-            // For now, just show a toast on first filter
-            if (startDate || endDate || clinic || sponsor || patientName || patientNumber || phoneNumber) {
-                // Only show toast once, not on every keystroke
-                if (!window._filterToastShown) {
-                    showToast('🔍 Filters applied', 'success', 1500);
-                    window._filterToastShown = true;
-                    setTimeout(() => { window._filterToastShown = false; }, 2000);
-                }
-            }
-        }
-
-        // ============================================================
-        // 6. RESET FILTERS
-        // ============================================================
-        function resetFilters() {
-            document.getElementById('clinicFilter').value = '';
-            document.getElementById('sponsorFilter').value = '';
-            document.getElementById('patientNameFilter').value = '';
-            document.getElementById('patientNumberFilter').value = '';
-            document.getElementById('phoneNumberFilter').value = '';
-            setDefaultDates();
-            
-            showToast('🔄 Filters reset!', 'info');
-            console.log('🔄 Filters reset');
-        }
-
-        // ============================================================
-        // 7. PAGINATION
-        // ============================================================
-        function prevPage() {
-            showToast('📄 Loading previous page...', 'info');
-            console.log('📄 Previous page clicked');
-        }
-
-        function nextPage() {
-            showToast('📄 Loading next page...', 'info');
-            console.log('📄 Next page clicked');
-        }
-
-        // ============================================================
-        // 8. ATTACH AUTO-FILTER EVENTS
-        // ============================================================
-        function attachFilterEvents() {
-            const filterElements = [
-                'startDate',
-                'endDate',
-                'clinicFilter',
-                'sponsorFilter',
-                'patientNameFilter',
-                'patientNumberFilter',
-                'phoneNumberFilter'
-            ];
-            
-            filterElements.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('change', applyFilters);
-                    el.addEventListener('input', applyFilters);
-                }
-            });
-        }
-
-        // ============================================================
-        // 9. INITIALIZATION
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            if (!requireAuth()) {
-                return;
-            }
-            
-            // Update header with user data
-            updateHeaderWithUser();
-            
-            // Load modals
-            if (typeof loadModals === 'function') {
-                loadModals();
-            }
-            
-            // Load working location from outpatient card
-            loadWorkingLocation();
-            
-            // Set default dates
-            setDefaultDates();
-            
-            // Attach auto-filter events
-            attachFilterEvents();
-            
-            
-            console.log('📋 OPD Patient List loaded successfully!');
+    function handleNavClick(pageName, element) {
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.remove('active');
         });
-    </script>
+        element.classList.add('active');
+        showToast(`📋 ${pageName} page is being loaded...`, 'info');
+        console.log(`🔗 Navigating to: ${pageName}`);
+    }
+
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        element.classList.toggle('open');
+        if (submenu) {
+            submenu.classList.toggle('open');
+        }
+    }
+
+    // ============================================================
+    // 8. DROPDOWN CONTROLS & ACTIONS
+    // ============================================================
+    function handleChangePassword() {
+        closeDropdown();
+        openPasswordModal();  // ← Defined in common.js
+        console.log('🔑 Change Password clicked');
+    }
+
+    function handleLogout() {
+        closeDropdown();
+        logoutUser();  // ← Defined in common.js
+    }
+
+    // ============================================================
+    // 9. DATE DISPLAY
+    // ============================================================
+    function updateDate() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        const fullDateStr = now.toLocaleDateString('en-US', options);
+        const parts = fullDateStr.split(',');
+        const dayNameEl = document.getElementById('dayName');
+        const fullDateEl = document.getElementById('fullDate');
+        if (dayNameEl) dayNameEl.textContent = parts[0];
+        if (fullDateEl) fullDateEl.textContent = parts.slice(1).join(',').trim();
+    }
+
+    // ============================================================
+    // 10. KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+        // Ctrl + Shift + L = Logout
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            handleLogout();
+        }
+        // Alt + S = Toggle Sidebar
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            const toggleBtn = document.getElementById('toggleSidebar');
+            if (toggleBtn) toggleBtn.click();
+        }
+        // Ctrl + R = Refresh Chart
+        if (e.ctrlKey && e.key === 'r') {
+            e.preventDefault();
+            refreshChartData();
+        }
+        // Escape = Close dropdown
+        if (e.key === 'Escape') {
+            closeDropdown();
+        }
+    });
+
+    // ============================================================
+    // 11. INITIALIZATION - SINGLE DOMContentLoaded
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check authentication
+        if (!requireAuth()) {
+            return;
+        }
+        
+        // Update header with user data
+        updateHeaderWithUser();
+        
+        // Load modals (from common.js)
+        if (typeof loadModals === 'function') {
+            loadModals();
+        }
+        
+        // Update date
+        updateDate();
+        setInterval(updateDate, 60000);
+         
+        // Setup dropdown controls
+        const avatarBtn = document.getElementById('avatarBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const dropdownOverlay = document.getElementById('dropdownOverlay');
+
+        if (avatarBtn) {
+            avatarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+        }
+
+        if (dropdownOverlay) {
+            dropdownOverlay.addEventListener('click', closeDropdown());
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrapper = document.querySelector('.avatar-wrapper');
+            if (!wrapper || !wrapper.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+        
+        // Define toggleDropdown and closeDropdown after elements are found
+        window.toggleDropdown = function() {
+            if (!dropdownMenu) return;
+            const isOpen = dropdownMenu.classList.contains('open');
+            dropdownMenu.classList.toggle('open');
+            if (dropdownOverlay) dropdownOverlay.classList.toggle('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', !isOpen);
+        };
+
+        window.closeDropdown = function() {
+            if (!dropdownMenu) return;
+            dropdownMenu.classList.remove('open');
+            if (dropdownOverlay) dropdownOverlay.classList.remove('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', 'false');
+        };
+       });
+        
+        console.log('🦷 Inpatient Works Dashboard loaded successfully!');
+        
+        const user = getUserSession();
+        if (user) {
+            console.log(`👤 Logged in as: ${user.displayName} (${user.role})`);
+        };
+
+// ============================================================
+// OUTPATIENT CARD - FETCH & INJECT
+// ============================================================
+
+// Load Outpatient Card
+async function loadOutpatientCard() {
+    try {
+        const response = await fetch('../../components/outpatient-card.html');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const cardHTML = await response.text();
+        
+        // Replace main content with the card
+        const mainContent = document.getElementById('mainContent');
+        mainContent.innerHTML = cardHTML;
+        
+        // Update side nav active state
+        updateActiveNavItem('outpatient');
+        
+        console.log('📍 Outpatient card loaded successfully');
+        
+        // ============================================================
+        // INITIALIZE THE CARD AFTER INJECTION
+        // ============================================================
+        initializeOutpatientCard();
+        
+    } catch (error) {
+        console.error('❌ Failed to load outpatient card:', error);
+        if (typeof showToast === 'function') {
+            showToast('⚠️ Failed to load outpatient card. Please try again.', 'error');
+        }
+    }
+}
+
+// ============================================================
+// INITIALIZE OUTPATIENT CARD (called after injection)
+// ============================================================
+function initializeOutpatientCard() {
+    console.log('🔍 Initializing outpatient card...');
+    
+    // Get DOM elements
+    const clinicSelect = document.getElementById('clinicSelect');
+    const locationSelect = document.getElementById('locationSelect');
+    const departmentSelect = document.getElementById('departmentSelect');
+    const openBtn = document.getElementById('openBtn');
+    
+    // If elements not found, log error and exit
+    if (!clinicSelect || !locationSelect || !departmentSelect || !openBtn) {
+        console.error('❌ Card elements not found!');
+        return;
+    }
+    
+    console.log('✅ All card elements found!');
+    
+    // ============================================================
+    // VALIDATE ALL SELECTIONS
+    // ============================================================
+    function validateSelections() {
+        const clinic = clinicSelect.value;
+        const location = locationSelect.value;
+        const department = departmentSelect.value;
+        
+        const allSelected = !!(clinic && location && department);
+        openBtn.disabled = !allSelected;
+        
+        console.log('🔍 Button disabled:', openBtn.disabled);
+    }
+
+    // ============================================================
+    // HANDLE OPEN BUTTON
+    // ============================================================
+    function handleOpen() {
+        if (openBtn.disabled) return;
+
+        const clinic = clinicSelect.options[clinicSelect.selectedIndex].text;
+        const location = locationSelect.options[locationSelect.selectedIndex].text;
+        const department = departmentSelect.options[departmentSelect.selectedIndex].text;
+
+        console.log('📍 Working Location Selected:', { 
+            clinic: clinicSelect.value, 
+            location: locationSelect.value, 
+            department: departmentSelect.value 
+        });
+
+        if (typeof showToast === 'function') {
+            showToast(`✅ Working at: ${clinic} | ${location} | ${department}`, 'success', 2000);
+        }
+
+        setTimeout(() => {
+            window.location.href = 'opd-patient-list.html';
+        }, 1000);
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    clinicSelect.addEventListener('change', validateSelections);
+    locationSelect.addEventListener('change', validateSelections);
+    departmentSelect.addEventListener('change', validateSelections);
+    openBtn.addEventListener('click', handleOpen);
+
+    // ============================================================
+    // KEYBOARD SHORTCUT: ENTER ON OPEN BUTTON
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.activeElement === openBtn) {
+            e.preventDefault();
+            handleOpen();
+        }
+    });
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    validateSelections();
+    console.log('📍 Outpatient card initialized successfully');
+}
+
+// ============================================================
+// UPDATE ACTIVE NAV ITEM
+// ============================================================
+function updateActiveNavItem(pageId) {
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    const target = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+    if (target) {
+        target.classList.add('active');
+    }
+};
+</script>
 </body>
 </html>
