@@ -423,8 +423,7 @@ body {
             position: fixed;
             top: var(--header-height);
             left: 0;
-            right: 0;
-            z-index: 1030; /* Aligned with Bootstrap 5 fixed-top z-index standard */
+            right: 0; /* Aligned with Bootstrap 5 fixed-top z-index standard */
             height: var(--secondary-header-height);
             background-color: var(--bs-body-bg, var(--surface));
             border-bottom: 1px solid var(--bs-border-color, var(--line));
