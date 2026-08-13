@@ -3,20 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OPD Patient List | Choice Dental Care</title>
-    
-    <!-- Bootstrap 5 (offline) -->
+    <title>Doctors Page Works | Choice Dental Care</title>
     <link rel="stylesheet" href="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" />
-    
-    <!-- Common Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />  
     <link rel="stylesheet" href="../../assets/css/common-styles.css" />
     <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    
     <script src="../../assets/js/common.js"></script>
-    
     <style>
          /* ============================================================
            RESET
@@ -399,12 +391,13 @@
     FIXED TOP HEADER
     ============================================================ -->
     <header class="app-header" id="appHeader">
+        <!-- Left: Logo + System Name -->
         <div class="header-left">
-            <div class="header-logo" onclick="goToDashboard()">
+            <div class="header-logo">
                 <i class="fas fa-tooth"></i>
             </div>
             <div class="header-brand">
-                <span class="system-name">Choice Dental Care <span class="system-version">v2.4.1</span></span>
+                <span class="system-name">Choice Dental Care <i class="system-version">v2.4.1</i></span>  
             </div>
             <span class="header-date" id="currentDate">
                 <span class="user-divider"></span>
@@ -413,28 +406,30 @@
             </span>
         </div>
 
-        <div class="header-right">
-            <div class="header-user">
-                <span class="role" id="role"></span>
-                <span class="user-divider">|</span>
-                <span class="displayName" id="displayName"></span>
-            </div>
-            <div class="avatar-wrapper" id="avatarWrapper">
-                <div class="avatar" id="avatarBtn">
-                    U
-                    <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+       <!-- Right: User Info + Avatar -->
+            <div class="header-right">
+                <div class="header-user">
+                    <span class="role" id="role"></span>
+                    <span class="user-divider">|</span>
+                    <span class="displayName" id="displayName"></span>
                 </div>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <button class="dropdown-item" onclick="handleChangePassword()">
-                        <i class="fas fa-key"></i> Change Password
-                    </button>
-                    <div class="dropdown-divider"></div>
-                    <button class="dropdown-item danger" onclick="handleLogout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <div class="avatar" id="avatarBtn">
+                        <!-- Initials will be inserted here by JavaScript -->
+                        <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="dropdown-item" onclick="handleChangePassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <!-- ============================================================
@@ -454,16 +449,17 @@
             <i class="fas fa-th-large"></i>
             <span>Dashboard</span>
         </button>
+        <!-- Breadcrumb -->
         <div class="breadcrumb">
+            <i class="fas fa-home"></i>
             <a href="../dashboard/index.html">Home</a>
-            <span class="separator">/</span>
+            <span class="separator">»</span>
             <a href="../dashboard/index.html">Dashboard</a>
-            <span class="separator">/</span>
-            <span class="current">OPD Patient List</span>
+            <span class="separator">»</span>
         </div>
     </header>
 
-    <!-- ============================================================
+    <!--========================================================
     SIDE NAVIGATION
     ============================================================ -->
     <nav class="side-nav" id="sideNav">
@@ -518,10 +514,11 @@
             <span class="nav-label">Queue Location Setup</span>
         </a>
     </nav>
+
     <!-- ============================================================
     MAIN CONTENT
     ============================================================ -->
-    <main class="app-main" id="mainContent">
+<main class="app-main" id="mainContent">
         <!-- Location Info Bar -->
         <div class="location-info">
             <div class="info-group">
@@ -665,7 +662,6 @@
     </main>
 
 
-
     <!-- ============================================================
     FIXED FOOTER
     ============================================================ -->
@@ -683,225 +679,299 @@
             <a href="#">Terms of Service</a>
         </div>
     </footer>
-
+    
     <!-- Bootstrap JS (offline) -->
     <script src="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
-    
     <script>
-        // ============================================================
-        // PAGE-SPECIFIC JAVASCRIPT ONLY
-        // ============================================================
+    // ============================================================
+    // 1. NAVIGATION FUNCTIONS
+    // ============================================================
+    function goToDashboard() {
+        window.location.href='../dashboard/index.html';
+    }
 
-        // ============================================================
-        // 1. LOAD SELECTIONS FROM OUTPATIENT CARD
-        // ============================================================
-        function loadWorkingLocation() {
-            try {
-                const saved = localStorage.getItem('workingLocation');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    
-                    // Display in location bar
-                    const clinicMap = {
-                        'dental': 'Dental Clinic',
-                        'medical': 'Medical Clinic',
-                        'eye': 'Eye Clinic',
-                        'orthopedic': 'Orthopedic Clinic'
-                    };
-                    const locationMap = {
-                        'majengo': 'Majengo',
-                        'sokoni': 'Sokoni',
-                        'city-center': 'City Center',
-                        'kariakoo': 'Kariakoo',
-                        'kimara': 'Kimara'
-                    };
-                    const deptMap = {
-                        'dental-dept': 'Dental Department',
-                        'medical-dept': 'Medical Department',
-                        'pharmacy-dept': 'Pharmacy Department',
-                        'lab-dept': 'Laboratory Department',
-                        'radiology-dept': 'Radiology Department'
-                    };
+    function goToLogin() {
+        window.location.href = '../../auth/login.html';
+    }
 
-                    document.getElementById('displayClinic').textContent = clinicMap[data.clinic] || data.clinic || '-';
-                    document.getElementById('displayLocation').textContent = locationMap[data.location] || data.location || '-';
-                    document.getElementById('displayDepartment').textContent = deptMap[data.department] || data.department || '-';
-                    
-                    // Also set clinic filter to match
-                    const clinicFilter = document.getElementById('clinicFilter');
-                    if (clinicFilter && data.clinic) {
-                        clinicFilter.value = data.clinic;
-                    }
-                    
-                    console.log('📍 Working location loaded:', data);
-                }
-            } catch (e) {
-                console.warn('Failed to load working location:', e);
-            }
-        }
-
-        // ============================================================
-        // 2. GO TO OUTPATIENT CARD (Change button)
-        // ============================================================
-        function goToOutpatientCard() {
-            // Redirect back to doctors-works-dashboard which loads the card
-            window.location.href = '../../components/outpatient-card.html';
-        }
-
-        // ============================================================
-        // 3. TAB SWITCHING
-        // ============================================================
-        function switchTab(element, tabName) {
-            document.querySelectorAll('.nav-tabs .tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            element.classList.add('active');
-            // Auto-filter on tab switch
-            applyFilters();
-            console.log(`🔀 Switched to tab: ${tabName}`);
-        }
-
-        // ============================================================
-        // 4. AUTO DATE PICKER - Current Date & Time
-        // ============================================================
-        function setDefaultDates() {
-            const now = new Date();
-            
-            // Start of day (00:00)
-            const startOfDay = new Date(now);
-            startOfDay.setHours(0, 0, 0, 0);
-            
-            // End of day (23:59)
-            const endOfDay = new Date(now);
-            endOfDay.setHours(23, 59, 0, 0);
-            
-            // Format for datetime-local input
-            const formatDate = (date) => {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                return `${year}-${month}-${day}T${hours}:${minutes}`;
-            };
-            
-            document.getElementById('startDate').value = formatDate(startOfDay);
-            document.getElementById('endDate').value = formatDate(endOfDay);
-        }
-
-        // ============================================================
-        // 5. AUTO-FILTER (filters as selections are made)
-        // ============================================================
-        function applyFilters() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            const clinic = document.getElementById('clinicFilter').value;
-            const sponsor = document.getElementById('sponsorFilter').value;
-            const patientName = document.getElementById('patientNameFilter').value;
-            const patientNumber = document.getElementById('patientNumberFilter').value;
-            const phoneNumber = document.getElementById('phoneNumberFilter').value;
-
-            console.log('🔍 Auto-filter applied:', {
-                startDate,
-                endDate,
-                clinic,
-                sponsor,
-                patientName,
-                patientNumber,
-                phoneNumber
-            });
-            
-            // Here you would filter the table data
-            // For now, just show a toast on first filter
-            if (startDate || endDate || clinic || sponsor || patientName || patientNumber || phoneNumber) {
-                // Only show toast once, not on every keystroke
-                if (!window._filterToastShown) {
-                    showToast('🔍 Filters applied', 'success', 1500);
-                    window._filterToastShown = true;
-                    setTimeout(() => { window._filterToastShown = false; }, 2000);
-                }
-            }
-        }
-
-        // ============================================================
-        // 6. RESET FILTERS
-        // ============================================================
-        function resetFilters() {
-            document.getElementById('clinicFilter').value = '';
-            document.getElementById('sponsorFilter').value = '';
-            document.getElementById('patientNameFilter').value = '';
-            document.getElementById('patientNumberFilter').value = '';
-            document.getElementById('phoneNumberFilter').value = '';
-            setDefaultDates();
-            
-            showToast('🔄 Filters reset!', 'info');
-            console.log('🔄 Filters reset');
-        }
-
-        // ============================================================
-        // 7. PAGINATION
-        // ============================================================
-        function prevPage() {
-            showToast('📄 Loading previous page...', 'info');
-            console.log('📄 Previous page clicked');
-        }
-
-        function nextPage() {
-            showToast('📄 Loading next page...', 'info');
-            console.log('📄 Next page clicked');
-        }
-
-        // ============================================================
-        // 8. ATTACH AUTO-FILTER EVENTS
-        // ============================================================
-        function attachFilterEvents() {
-            const filterElements = [
-                'startDate',
-                'endDate',
-                'clinicFilter',
-                'sponsorFilter',
-                'patientNameFilter',
-                'patientNumberFilter',
-                'phoneNumberFilter'
-            ];
-            
-            filterElements.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('change', applyFilters);
-                    el.addEventListener('input', applyFilters);
-                }
-            });
-        }
-
-        // ============================================================
-        // 9. INITIALIZATION
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            if (!requireAuth()) {
-                return;
-            }
-            
-            // Update header with user data
-            updateHeaderWithUser();
-            
-            // Load modals
-            if (typeof loadModals === 'function') {
-                loadModals();
-            }
-            
-            // Load working location from outpatient card
-            loadWorkingLocation();
-            
-            // Set default dates
-            setDefaultDates();
-            
-            // Attach auto-filter events
-            attachFilterEvents();
-            
-            console.log('📋 OPD Patient List loaded successfully!');
+    function handleNavClick(pageName, element) {
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.remove('active');
         });
-    </script>
+        element.classList.add('active');
+        showToast(`📋 ${pageName} page is being loaded...`, 'info');
+        console.log(`🔗 Navigating to: ${pageName}`);
+    }
+
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        element.classList.toggle('open');
+        if (submenu) {
+            submenu.classList.toggle('open');
+        }
+    }
+
+    // ============================================================
+    // 8. DROPDOWN CONTROLS & ACTIONS
+    // ============================================================
+    function handleChangePassword() {
+        closeDropdown();
+        openPasswordModal();  // ← Defined in common.js
+        console.log('🔑 Change Password clicked');
+    }
+
+    function handleLogout() {
+        closeDropdown();
+        logoutUser();  // ← Defined in common.js
+    }
+
+    // ============================================================
+    // 9. DATE DISPLAY
+    // ============================================================
+    function updateDate() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        const fullDateStr = now.toLocaleDateString('en-US', options);
+        const parts = fullDateStr.split(',');
+        const dayNameEl = document.getElementById('dayName');
+        const fullDateEl = document.getElementById('fullDate');
+        if (dayNameEl) dayNameEl.textContent = parts[0];
+        if (fullDateEl) fullDateEl.textContent = parts.slice(1).join(',').trim();
+    }
+
+    // ============================================================
+    // 10. KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+        // Ctrl + Shift + L = Logout
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            handleLogout();
+        }
+        // Alt + S = Toggle Sidebar
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            const toggleBtn = document.getElementById('toggleSidebar');
+            if (toggleBtn) toggleBtn.click();
+        }
+        // Ctrl + R = Refresh Chart
+        if (e.ctrlKey && e.key === 'r') {
+            e.preventDefault();
+            refreshChartData();
+        }
+        // Escape = Close dropdown
+        if (e.key === 'Escape') {
+            closeDropdown();
+        }
+    });
+
+    // ============================================================
+    // 11. INITIALIZATION - SINGLE DOMContentLoaded
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check authentication
+        if (!requireAuth()) {
+            return;
+        }
+        
+        // Update header with user data
+        updateHeaderWithUser();
+        
+        // Load modals (from common.js)
+        if (typeof loadModals === 'function') {
+            loadModals();
+        }
+        
+        // Update date
+        updateDate();
+        setInterval(updateDate, 60000);
+         
+        // Setup dropdown controls
+        const avatarBtn = document.getElementById('avatarBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const dropdownOverlay = document.getElementById('dropdownOverlay');
+
+        if (avatarBtn) {
+            avatarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+        }
+
+        if (dropdownOverlay) {
+            dropdownOverlay.addEventListener('click', closeDropdown());
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrapper = document.querySelector('.avatar-wrapper');
+            if (!wrapper || !wrapper.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+        
+        // Define toggleDropdown and closeDropdown after elements are found
+        window.toggleDropdown = function() {
+            if (!dropdownMenu) return;
+            const isOpen = dropdownMenu.classList.contains('open');
+            dropdownMenu.classList.toggle('open');
+            if (dropdownOverlay) dropdownOverlay.classList.toggle('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', !isOpen);
+        };
+
+        window.closeDropdown = function() {
+            if (!dropdownMenu) return;
+            dropdownMenu.classList.remove('open');
+            if (dropdownOverlay) dropdownOverlay.classList.remove('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', 'false');
+        };
+       });
+        
+        console.log('🦷 Inpatient Works Dashboard loaded successfully!');
+        
+        const user = getUserSession();
+        if (user) {
+            console.log(`👤 Logged in as: ${user.displayName} (${user.role})`);
+        };
+
+// ============================================================
+// OUTPATIENT CARD - FETCH & INJECT
+// ============================================================
+
+// Load Outpatient Card
+async function loadOutpatientCard() {
+    try {
+        const response = await fetch('../../components/outpatient-card.html');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const cardHTML = await response.text();
+        
+        // Replace main content with the card
+        const mainContent = document.getElementById('mainContent');
+        mainContent.innerHTML = cardHTML;
+        
+        // Update side nav active state
+        updateActiveNavItem('outpatient');
+        
+        console.log('📍 Outpatient card loaded successfully');
+        
+        // ============================================================
+        // INITIALIZE THE CARD AFTER INJECTION
+        // ============================================================
+        initializeOutpatientCard();
+        
+    } catch (error) {
+        console.error('❌ Failed to load outpatient card:', error);
+        if (typeof showToast === 'function') {
+            showToast('⚠️ Failed to load outpatient card. Please try again.', 'error');
+        }
+    }
+}
+
+// ============================================================
+// INITIALIZE OUTPATIENT CARD (called after injection)
+// ============================================================
+function initializeOutpatientCard() {
+    console.log('🔍 Initializing outpatient card...');
+    
+    // Get DOM elements
+    const clinicSelect = document.getElementById('clinicSelect');
+    const locationSelect = document.getElementById('locationSelect');
+    const departmentSelect = document.getElementById('departmentSelect');
+    const openBtn = document.getElementById('openBtn');
+    
+    // If elements not found, log error and exit
+    if (!clinicSelect || !locationSelect || !departmentSelect || !openBtn) {
+        console.error('❌ Card elements not found!');
+        return;
+    }
+    
+    console.log('✅ All card elements found!');
+    
+    // ============================================================
+    // VALIDATE ALL SELECTIONS
+    // ============================================================
+    function validateSelections() {
+        const clinic = clinicSelect.value;
+        const location = locationSelect.value;
+        const department = departmentSelect.value;
+        
+        const allSelected = !!(clinic && location && department);
+        openBtn.disabled = !allSelected;
+        
+        console.log('🔍 Button disabled:', openBtn.disabled);
+    }
+
+    // ============================================================
+    // HANDLE OPEN BUTTON
+    // ============================================================
+    function handleOpen() {
+        if (openBtn.disabled) return;
+
+        const clinic = clinicSelect.options[clinicSelect.selectedIndex].text;
+        const location = locationSelect.options[locationSelect.selectedIndex].text;
+        const department = departmentSelect.options[departmentSelect.selectedIndex].text;
+
+        console.log('📍 Working Location Selected:', { 
+            clinic: clinicSelect.value, 
+            location: locationSelect.value, 
+            department: departmentSelect.value 
+        });
+
+        if (typeof showToast === 'function') {
+            showToast(`✅ Working at: ${clinic} | ${location} | ${department}`, 'success', 2000);
+        }
+
+        setTimeout(() => {
+            window.location.href = 'opd-patient-list.html';
+        }, 1000);
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    clinicSelect.addEventListener('change', validateSelections);
+    locationSelect.addEventListener('change', validateSelections);
+    departmentSelect.addEventListener('change', validateSelections);
+    openBtn.addEventListener('click', handleOpen);
+
+    // ============================================================
+    // KEYBOARD SHORTCUT: ENTER ON OPEN BUTTON
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.activeElement === openBtn) {
+            e.preventDefault();
+            handleOpen();
+        }
+    });
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    validateSelections();
+    console.log('📍 Outpatient card initialized successfully');
+}
+
+// ============================================================
+// UPDATE ACTIVE NAV ITEM
+// ============================================================
+function updateActiveNavItem(pageId) {
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    const target = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+    if (target) {
+        target.classList.add('active');
+    }
+};
+</script>
 </body>
 </html>
