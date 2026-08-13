@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctors Page Works | Choice Dental Care</title>
+    <link rel="stylesheet" href="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />  
+    <link rel="stylesheet" href="../../assets/css/common-styles.css" />
+    <link rel="stylesheet" href="../../assets/icons/css/all.min.css" />
+    <script src="../../assets/js/common.js"></script>
+    <style>
+      
+        /* ============================================================
+           RESET
+           ============================================================ */
+
+        body {
+            padding-top: calc(var(--header-height) + var(--secondary-header-height));
+            padding-bottom: var(--footer-height);
+            padding-left: var(--sidebar-width);
+            transition: padding-left 0.3s ease;
+        }
+
+        /* ============================================================
+           MAIN CONTENT
+           ============================================================ */
+        .app-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px;
+            min-height: calc(100vh - var(--header-height) - var(--secondary-header-height) - var(--footer-height));
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    DROPDOWN OVERLAY
+    ============================================================ -->
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <!-- ============================================================
+    FIXED TOP HEADER
+    ============================================================ -->
+    <header class="app-header" id="appHeader">
+        <!-- Left: Logo + System Name -->
+        <div class="header-left">
+            <div class="header-logo">
+                <i class="fas fa-tooth"></i>
+            </div>
+            <div class="header-brand">
+                <span class="system-name">Choice Dental Care <i class="system-version">v2.4.1</i></span>  
+            </div>
+            <span class="header-date" id="currentDate">
+                <span class="user-divider"></span>
+                <span class="day-name" id="dayName"></span>,
+                <span id="fullDate"></span>
+            </span>
+        </div>
+
+       <!-- Right: User Info + Avatar -->
+            <div class="header-right">
+                <div class="header-user">
+                    <span class="role" id="role"></span>
+                    <span class="user-divider">|</span>
+                    <span class="displayName" id="displayName"></span>
+                </div>
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <div class="avatar" id="avatarBtn">
+                        <!-- Initials will be inserted here by JavaScript -->
+                        <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="dropdown-item" onclick="handleChangePassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+    </header>
+
+    <!-- ============================================================
+    FIXED SECONDARY HEADER
+    ============================================================ -->
+    <header class="app-secondary-header">
+        <button class="sec-btn" id="toggleSidebar" onclick="toggleSidebar()" title="Toggle Menu">
+            <i class="fas fa-bars"></i>
+            <span>Toggle Menu View</span>
+        </button>
+        <div class="sec-divider"></div>
+        <button class="sec-btn" onclick="showToast('📖 Help documentation is being loaded...', 'info')">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </button>
+        <button class="sec-btn active" onclick="goToDashboard()">
+            <i class="fas fa-th-large"></i>
+            <span>Dashboard</span>
+        </button>
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <a href="../dashboard/index.html">Home</a>
+            <span class="separator">»</span>
+            <a href="../dashboard/index.html">Dashboard</a>
+            <span class="separator">»</span>
+            <a href="doctors-works-dashboard.html">Doctors Works</a>
+            <span class="separator">»</span>
+            <span class="current">Performance Report</span>
+        </div>
+    </header>
+
+    <!--========================================================
+    SIDE NAVIGATION
+    ============================================================ -->
+    <nav class="side-nav" id="sideNav">
+        <a href="#" class="nav-item" data-page="outpatient" onclick="loadOutpatientCard()">
+            <i class="fas fa-clipboard-list"></i>
+            <span class="nav-label">Outpatient Works</span>
+        </a>
+
+        <a href="inpatient-works.html" class="nav-item" data-page="inpatient">
+            <i class="fas fa-hospital-user"></i>
+            <span class="nav-label">Inpatient Works</span>
+        </a>
+
+        <a href="my-appointments.html" class="nav-item" data-page="appointments">
+            <i class="fas fa-calendar-check"></i>
+            <span class="nav-label">My Appointments</span>
+        </a>
+
+        <a href="surgery-appointments.html" class="nav-item" data-page="surgery-appointments">
+            <i class="fas fa-scalpel"></i>
+            <span class="nav-label">Surgery Appointments</span>
+        </a>
+
+        <a href="rdtc.html" class="nav-item" data-page="rdtc">
+            <i class="fas fa-flask"></i>
+            <span class="nav-label">RDTC Patch Test Setup</span>
+        </a>
+
+        <a href="clinical-notes-review.html" class="nav-item" data-page="clinical-notes">
+            <i class="fas fa-notes-medical"></i>
+            <span class="nav-label">Clinical Notes Review</span>
+        </a>
+
+        <div class="nav-item" onclick="toggleSubmenu(this)">
+            <i class="fas fa-chart-pie"></i>
+            <span class="nav-label">Reports</span>
+            <span class="nav-arrow"><i class="fas fa-chevron-right"></i></span>
+        </div>
+        <div class="nav-submenu" id="reportsSubmenu">
+            <a href="doctor-performance.html" class="sub-item" data-page="performance">
+                <i class="fas fa-file-alt"></i> My Work Performance Report
+            </a>
+        </div>
+
+        <a href="claimed-dead-body.html" class="nav-item" data-page="claimed">
+            <i class="fas fa-skull"></i>
+            <span class="nav-label">Claimed Dead body</span>
+        </a>
+
+        <a href="#" class="nav-item" data-page="queue" onclick="handleNavClick('Queue Location Setup', this)">
+            <i class="fas fa-location-dot"></i>
+            <span class="nav-label">Queue Location Setup</span>
+        </a>
+    </nav>
+
+    <!-- ============================================================
+    MAIN CONTENT
+    ============================================================ -->
+    <main class="app-main" id="mainContent">
+
+    </main>
+
+    <!-- ============================================================
+    FIXED FOOTER
+    ============================================================ -->
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span>&copy; Powered By Philip Z.P</span>
+            <span class="footer-divider">•</span>
+            <span>v2.4.1</span>
+            <span class="footer-divider">•</span>
+            <span>Support: <a href="tel:+255753682610" style="color:var(--muted);text-decoration:none;">+255 753 682 610</a></span>
+        </div>
+        <div class="footer-right">
+            <a href="#">Privacy Policy</a>
+            <span class="footer-divider">•</span>
+            <a href="#">Terms of Service</a>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS (offline) -->
+    <script src="../../assets/bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
+    <script>
+    // ============================================================
+    // 1. NAVIGATION FUNCTIONS
+    // ============================================================
+    function goToDashboard() {
+        window.location.href='../dashboard/index.html';
+    }
+
+    function goToLogin() {
+        window.location.href = '../../auth/login.html';
+    }
+
+    function handleNavClick(pageName, element) {
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.remove('active');
+        });
+        element.classList.add('active');
+        showToast(`📋 ${pageName} page is being loaded...`, 'info');
+        console.log(`🔗 Navigating to: ${pageName}`);
+    }
+
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        element.classList.toggle('open');
+        if (submenu) {
+            submenu.classList.toggle('open');
+        }
+    }
+
+    // ============================================================
+    // 8. DROPDOWN CONTROLS & ACTIONS
+    // ============================================================
+    function handleChangePassword() {
+        closeDropdown();
+        openPasswordModal();  // ← Defined in common.js
+        console.log('🔑 Change Password clicked');
+    }
+
+    function handleLogout() {
+        closeDropdown();
+        logoutUser();  // ← Defined in common.js
+    }
+
+    // ============================================================
+    // 9. DATE DISPLAY
+    // ============================================================
+    function updateDate() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        const fullDateStr = now.toLocaleDateString('en-US', options);
+        const parts = fullDateStr.split(',');
+        const dayNameEl = document.getElementById('dayName');
+        const fullDateEl = document.getElementById('fullDate');
+        if (dayNameEl) dayNameEl.textContent = parts[0];
+        if (fullDateEl) fullDateEl.textContent = parts.slice(1).join(',').trim();
+    }
+
+    // ============================================================
+    // 10. KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+        // Ctrl + Shift + L = Logout
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            handleLogout();
+        }
+        // Alt + S = Toggle Sidebar
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            const toggleBtn = document.getElementById('toggleSidebar');
+            if (toggleBtn) toggleBtn.click();
+        }
+        // Ctrl + R = Refresh Chart
+        if (e.ctrlKey && e.key === 'r') {
+            e.preventDefault();
+            refreshChartData();
+        }
+        // Escape = Close dropdown
+        if (e.key === 'Escape') {
+            closeDropdown();
+        }
+    });
+
+    // ============================================================
+    // 11. INITIALIZATION - SINGLE DOMContentLoaded
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check authentication
+        if (!requireAuth()) {
+            return;
+        }
+        
+        // Update header with user data
+        updateHeaderWithUser();
+        
+        // Load modals (from common.js)
+        if (typeof loadModals === 'function') {
+            loadModals();
+        }
+        
+        // Update date
+        updateDate();
+        setInterval(updateDate, 60000);
+         
+        // Setup dropdown controls
+        const avatarBtn = document.getElementById('avatarBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const dropdownOverlay = document.getElementById('dropdownOverlay');
+
+        if (avatarBtn) {
+            avatarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+        }
+
+        if (dropdownOverlay) {
+            dropdownOverlay.addEventListener('click', closeDropdown());
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrapper = document.querySelector('.avatar-wrapper');
+            if (!wrapper || !wrapper.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+        
+        // Define toggleDropdown and closeDropdown after elements are found
+        window.toggleDropdown = function() {
+            if (!dropdownMenu) return;
+            const isOpen = dropdownMenu.classList.contains('open');
+            dropdownMenu.classList.toggle('open');
+            if (dropdownOverlay) dropdownOverlay.classList.toggle('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', !isOpen);
+        };
+
+        window.closeDropdown = function() {
+            if (!dropdownMenu) return;
+            dropdownMenu.classList.remove('open');
+            if (dropdownOverlay) dropdownOverlay.classList.remove('active');
+            if (avatarBtn) avatarBtn.setAttribute('aria-expanded', 'false');
+        };
+       });
+        
+        console.log('🦷 Inpatient Works Dashboard loaded successfully!');
+        
+        const user = getUserSession();
+        if (user) {
+            console.log(`👤 Logged in as: ${user.displayName} (${user.role})`);
+        };
+
+// ============================================================
+// OUTPATIENT CARD - FETCH & INJECT
+// ============================================================
+
+// Load Outpatient Card
+async function loadOutpatientCard() {
+    try {
+        const response = await fetch('../../components/outpatient-card.html');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const cardHTML = await response.text();
+        
+        // Replace main content with the card
+        const mainContent = document.getElementById('mainContent');
+        mainContent.innerHTML = cardHTML;
+        
+        // Update side nav active state
+        updateActiveNavItem('outpatient');
+        
+        console.log('📍 Outpatient card loaded successfully');
+        
+        // ============================================================
+        // INITIALIZE THE CARD AFTER INJECTION
+        // ============================================================
+        initializeOutpatientCard();
+        
+    } catch (error) {
+        console.error('❌ Failed to load outpatient card:', error);
+        if (typeof showToast === 'function') {
+            showToast('⚠️ Failed to load outpatient card. Please try again.', 'error');
+        }
+    }
+}
+
+// ============================================================
+// INITIALIZE OUTPATIENT CARD (called after injection)
+// ============================================================
+function initializeOutpatientCard() {
+    console.log('🔍 Initializing outpatient card...');
+    
+    // Get DOM elements
+    const clinicSelect = document.getElementById('clinicSelect');
+    const locationSelect = document.getElementById('locationSelect');
+    const departmentSelect = document.getElementById('departmentSelect');
+    const openBtn = document.getElementById('openBtn');
+    
+    // If elements not found, log error and exit
+    if (!clinicSelect || !locationSelect || !departmentSelect || !openBtn) {
+        console.error('❌ Card elements not found!');
+        return;
+    }
+    
+    console.log('✅ All card elements found!');
+    
+    // ============================================================
+    // VALIDATE ALL SELECTIONS
+    // ============================================================
+    function validateSelections() {
+        const clinic = clinicSelect.value;
+        const location = locationSelect.value;
+        const department = departmentSelect.value;
+        
+        const allSelected = !!(clinic && location && department);
+        openBtn.disabled = !allSelected;
+        
+        console.log('🔍 Button disabled:', openBtn.disabled);
+    }
+
+    // ============================================================
+    // HANDLE OPEN BUTTON
+    // ============================================================
+    function handleOpen() {
+        if (openBtn.disabled) return;
+
+        const clinic = clinicSelect.options[clinicSelect.selectedIndex].text;
+        const location = locationSelect.options[locationSelect.selectedIndex].text;
+        const department = departmentSelect.options[departmentSelect.selectedIndex].text;
+
+        console.log('📍 Working Location Selected:', { 
+            clinic: clinicSelect.value, 
+            location: locationSelect.value, 
+            department: departmentSelect.value 
+        });
+
+        if (typeof showToast === 'function') {
+            showToast(`✅ Working at: ${clinic} | ${location} | ${department}`, 'success', 2000);
+        }
+
+        setTimeout(() => {
+            window.location.href = 'opd-patient-list.html';
+        }, 1000);
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    clinicSelect.addEventListener('change', validateSelections);
+    locationSelect.addEventListener('change', validateSelections);
+    departmentSelect.addEventListener('change', validateSelections);
+    openBtn.addEventListener('click', handleOpen);
+
+    // ============================================================
+    // KEYBOARD SHORTCUT: ENTER ON OPEN BUTTON
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.activeElement === openBtn) {
+            e.preventDefault();
+            handleOpen();
+        }
+    });
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    validateSelections();
+    console.log('📍 Outpatient card initialized successfully');
+}
+
+// ============================================================
+// UPDATE ACTIVE NAV ITEM
+// ============================================================
+function updateActiveNavItem(pageId) {
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    const target = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+    if (target) {
+        target.classList.add('active');
+    }
+};
+</script>
+</body>
+</html>
