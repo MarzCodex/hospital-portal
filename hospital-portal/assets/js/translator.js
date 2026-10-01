@@ -1,6 +1,6 @@
 // ========== CONFIGURATION ==========
 const FILE_NAMES = {
-    price_package: '../../data/NHIF_ZHSF_price_list.json',
+    price_package: '../../data/NHIF_ZHSF_price_list (new).json',
     visit_types: '../../data/visit-types.json'
 };
 
@@ -47,7 +47,8 @@ const benefitSchemes = {
     7001: "CRDB Health Insurance Scheme",
     8001: "NMB Health Insurance Scheme",
     9001: "DCB Health Insurance Scheme",
-    10001: "WVT Health Insurance Scheme"
+    10001: "WVT Health Insurance Scheme",
+    10002: "PSSF Benefit Scheme"
 };
 
 const itemTypes = {
