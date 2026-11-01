@@ -8,12 +8,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Sarah Johnson",
-        "serviceIssuingFacility": "City Medical Center",
+        "toFacility": "City Medical Center",
         "referringDiagnosis": "J06",
         "reasonsForReferral": "Patient presents with persistent cough and fever for 2 weeks. Requires specialist respiratory consultation.",
         "status": "Pending",
         "submittedBy": "Phillip Z.P",
-        "submittedDate": "2025-07-07T10:30:00"
+        "date": "2025-07-07T10:30:00"
     },
     {
         "id": 2,
@@ -24,12 +24,12 @@
         "gender": "Female",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Michael Brown",
-        "serviceIssuingFacility": "Regional Hospital",
+        "toFacility": "Regional Hospital",
         "referringDiagnosis": "E11",
         "reasonsForReferral": "Diabetic patient with uncontrolled blood sugar levels. Referral for endocrinology assessment.",
         "status": "Pending",
         "submittedBy": "Dr. Michael Brown",
-        "submittedDate": "2025-07-07T11:15:00"
+        "date": "2025-07-07T11:15:00"
     },
     {
         "id": 3,
@@ -40,12 +40,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Emily Davis",
-        "serviceIssuingFacility": "Specialist Hospital",
+        "toFacility": "Specialist Hospital",
         "referringDiagnosis": "I10",
         "reasonsForReferral": "Patient with severe hypertension unresponsive to current medication. Needs cardiologist evaluation.",
         "status": "Approved",
         "submittedBy": "Dr. Emily Davis",
-        "submittedDate": "2025-07-06T09:45:00"
+        "date": "2025-07-06T09:45:00"
     },
     {
         "id": 4,
@@ -56,12 +56,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. James Wilson",
-        "serviceIssuingFacility": "University Hospital",
+        "toFacility": "University Hospital",
         "referringDiagnosis": "M54",
         "reasonsForReferral": "Chronic back pain with radiating leg pain. Referral to orthopedic specialist.",
         "status": "Pending",
         "submittedBy": "Dr. James Wilson",
-        "submittedDate": "2025-07-06T14:20:00"
+        "date": "2025-07-06T14:20:00"
     },
     {
         "id": 5,
@@ -72,12 +72,12 @@
         "gender": "Male",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Robert Chen",
-        "serviceIssuingFacility": "Community Health Center",
+        "toFacility": "Community Health Center",
         "referringDiagnosis": "N39",
         "reasonsForReferral": "Recurrent urinary tract infections requiring urology consultation.",
         "status": "Completed",
         "submittedBy": "Dr. Robert Chen",
-        "submittedDate": "2025-07-05T16:00:00"
+        "date": "2025-07-05T16:00:00"
     },
     {
         "id": 6,
@@ -88,12 +88,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Sarah Johnson",
-        "serviceIssuingFacility": "City Medical Center",
+        "toFacility": "City Medical Center",
         "referringDiagnosis": "R51",
         "reasonsForReferral": "Patient with severe migraines. Referral to neurology department.",
         "status": "Approved",
         "submittedBy": "Dr. Sarah Johnson",
-        "submittedDate": "2025-07-05T08:30:00"
+        "date": "2025-07-05T08:30:00"
     },
     {
         "id": 7,
@@ -104,12 +104,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Michael Brown",
-        "serviceIssuingFacility": "Regional Hospital",
+        "toFacility": "Regional Hospital",
         "referringDiagnosis": "J45",
         "reasonsForReferral": "Severe asthma with frequent exacerbations. Referral to pulmonology.",
         "status": "Pending",
         "submittedBy": "Dr. Michael Brown",
-        "submittedDate": "2025-07-04T13:45:00"
+        "date": "2025-07-04T13:45:00"
     },
     {
         "id": 8,
@@ -120,12 +120,12 @@
         "gender": "Female",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Emily Davis",
-        "serviceIssuingFacility": "Wellness Clinic",
+        "toFacility": "Wellness Clinic",
         "referringDiagnosis": "K21",
         "reasonsForReferral": "GERD with complications. Referral to gastroenterology.",
         "status": "Completed",
         "submittedBy": "Dr. Emily Davis",
-        "submittedDate": "2025-07-04T11:00:00"
+        "date": "2025-07-04T11:00:00"
     },
     {
         "id": 9,
@@ -136,12 +136,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. James Wilson",
-        "serviceIssuingFacility": "Specialist Hospital",
+        "toFacility": "Specialist Hospital",
         "referringDiagnosis": "N18",
         "reasonsForReferral": "Chronic kidney disease stage 3. Referral to nephrology.",
         "status": "Pending",
         "submittedBy": "Dr. James Wilson",
-        "submittedDate": "2025-07-04T09:15:00"
+        "date": "2025-07-04T09:15:00"
     },
     {
         "id": 10,
@@ -152,12 +152,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Robert Chen",
-        "serviceIssuingFacility": "Central Medical",
+        "toFacility": "Central Medical",
         "referringDiagnosis": "F32",
         "reasonsForReferral": "Patient with severe depression. Referral to psychiatry.",
         "status": "Approved",
         "submittedBy": "Dr. Robert Chen",
-        "submittedDate": "2025-07-03T15:30:00"
+        "date": "2025-07-03T15:30:00"
     },
     {
         "id": 11,
@@ -168,12 +168,12 @@
         "gender": "Male",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Sarah Johnson",
-        "serviceIssuingFacility": "City Medical Center",
+        "toFacility": "City Medical Center",
         "referringDiagnosis": "G40",
         "reasonsForReferral": "Epilepsy with breakthrough seizures. Referral to neurology.",
         "status": "Pending",
         "submittedBy": "Dr. Sarah Johnson",
-        "submittedDate": "2025-07-03T10:30:00"
+        "date": "2025-07-03T10:30:00"
     },
     {
         "id": 12,
@@ -184,12 +184,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Michael Brown",
-        "serviceIssuingFacility": "Regional Hospital",
+        "toFacility": "Regional Hospital",
         "referringDiagnosis": "I50",
         "reasonsForReferral": "Heart failure with reduced ejection fraction. Referral to cardiology.",
         "status": "Approved",
         "submittedBy": "Dr. Michael Brown",
-        "submittedDate": "2025-07-03T08:00:00"
+        "date": "2025-07-03T08:00:00"
     },
     {
         "id": 13,
@@ -200,12 +200,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Emily Davis",
-        "serviceIssuingFacility": "University Hospital",
+        "toFacility": "University Hospital",
         "referringDiagnosis": "J44",
         "reasonsForReferral": "COPD with severe symptoms. Referral to pulmonology.",
         "status": "Pending",
         "submittedBy": "Dr. Emily Davis",
-        "submittedDate": "2025-07-02T14:45:00"
+        "date": "2025-07-02T14:45:00"
     },
     {
         "id": 14,
@@ -216,12 +216,12 @@
         "gender": "Female",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. James Wilson",
-        "serviceIssuingFacility": "Community Health Center",
+        "toFacility": "Community Health Center",
         "referringDiagnosis": "K35",
         "reasonsForReferral": "Recurrent appendicitis. Referral to surgical team.",
         "status": "Completed",
         "submittedBy": "Dr. James Wilson",
-        "submittedDate": "2025-07-02T11:30:00"
+        "date": "2025-07-02T11:30:00"
     },
     {
         "id": 15,
@@ -232,12 +232,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Robert Chen",
-        "serviceIssuingFacility": "Specialist Hospital",
+        "toFacility": "Specialist Hospital",
         "referringDiagnosis": "M17",
         "reasonsForReferral": "Severe knee osteoarthritis. Referral to orthopedic surgery.",
         "status": "Pending",
         "submittedBy": "Dr. Robert Chen",
-        "submittedDate": "2025-07-02T09:00:00"
+        "date": "2025-07-02T09:00:00"
     },
     {
         "id": 16,
@@ -248,12 +248,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Sarah Johnson",
-        "serviceIssuingFacility": "City Medical Center",
+        "toFacility": "City Medical Center",
         "referringDiagnosis": "N20",
         "reasonsForReferral": "Kidney stones with severe pain. Referral to urology.",
         "status": "Approved",
         "submittedBy": "Dr. Sarah Johnson",
-        "submittedDate": "2025-07-01T16:00:00"
+        "date": "2025-07-01T16:00:00"
     },
     {
         "id": 17,
@@ -264,12 +264,12 @@
         "gender": "Male",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Michael Brown",
-        "serviceIssuingFacility": "Regional Hospital",
+        "toFacility": "Regional Hospital",
         "referringDiagnosis": "R10",
         "reasonsForReferral": "Chronic abdominal pain with no clear diagnosis. Referral to gastroenterology.",
         "status": "Pending",
         "submittedBy": "Dr. Michael Brown",
-        "submittedDate": "2025-07-01T13:00:00"
+        "date": "2025-07-01T13:00:00"
     },
     {
         "id": 18,
@@ -280,12 +280,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Emily Davis",
-        "serviceIssuingFacility": "Wellness Clinic",
+        "toFacility": "Wellness Clinic",
         "referringDiagnosis": "S06",
         "reasonsForReferral": "Post-concussion syndrome. Referral to neurology.",
         "status": "Completed",
         "submittedBy": "Dr. Emily Davis",
-        "submittedDate": "2025-07-01T10:30:00"
+        "date": "2025-07-01T10:30:00"
     },
     {
         "id": 19,
@@ -296,12 +296,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. James Wilson",
-        "serviceIssuingFacility": "Central Medical",
+        "toFacility": "Central Medical",
         "referringDiagnosis": "Z23",
         "reasonsForReferral": "Immunization follow-up and health check. Referral to internal medicine.",
         "status": "Approved",
         "submittedBy": "Dr. James Wilson",
-        "submittedDate": "2025-06-30T15:45:00"
+        "date": "2025-06-30T15:45:00"
     },
     {
         "id": 20,
@@ -312,12 +312,12 @@
         "gender": "Female",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Robert Chen",
-        "serviceIssuingFacility": "Community Health Center",
+        "toFacility": "Community Health Center",
         "referringDiagnosis": "E11",
         "reasonsForReferral": "Diabetic foot ulcer. Referral to wound care specialist.",
         "status": "Pending",
         "submittedBy": "Dr. Robert Chen",
-        "submittedDate": "2025-06-30T12:00:00"
+        "date": "2025-06-30T12:00:00"
     },
     {
         "id": 21,
@@ -328,12 +328,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Sarah Johnson",
-        "serviceIssuingFacility": "City Medical Center",
+        "toFacility": "City Medical Center",
         "referringDiagnosis": "I10",
         "reasonsForReferral": "Uncontrolled hypertension. Referral to cardiology.",
         "status": "Approved",
         "submittedBy": "Dr. Sarah Johnson",
-        "submittedDate": "2025-06-30T09:00:00"
+        "date": "2025-06-30T09:00:00"
     },
     {
         "id": 22,
@@ -344,12 +344,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Michael Brown",
-        "serviceIssuingFacility": "Specialist Hospital",
+        "toFacility": "Specialist Hospital",
         "referringDiagnosis": "M54",
         "reasonsForReferral": "Severe lower back pain with sciatica. Referral to orthopedics.",
         "status": "Pending",
         "submittedBy": "Dr. Michael Brown",
-        "submittedDate": "2025-06-29T14:30:00"
+        "date": "2025-06-29T14:30:00"
     },
     {
         "id": 23,
@@ -360,12 +360,12 @@
         "gender": "Male",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Emily Davis",
-        "serviceIssuingFacility": "Regional Hospital",
+        "toFacility": "Regional Hospital",
         "referringDiagnosis": "J06",
         "reasonsForReferral": "Recurrent respiratory infections. Referral to ENT.",
         "status": "Completed",
         "submittedBy": "Dr. Emily Davis",
-        "submittedDate": "2025-06-29T11:15:00"
+        "date": "2025-06-29T11:15:00"
     },
     {
         "id": 24,
@@ -376,12 +376,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. James Wilson",
-        "serviceIssuingFacility": "University Hospital",
+        "toFacility": "University Hospital",
         "referringDiagnosis": "N39",
         "reasonsForReferral": "Frequent UTIs with possible kidney involvement. Referral to urology.",
         "status": "Pending",
         "submittedBy": "Dr. James Wilson",
-        "submittedDate": "2025-06-29T08:30:00"
+        "date": "2025-06-29T08:30:00"
     },
     {
         "id": 25,
@@ -392,12 +392,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Robert Chen",
-        "serviceIssuingFacility": "Central Medical",
+        "toFacility": "Central Medical",
         "referringDiagnosis": "R51",
         "reasonsForReferral": "Chronic migraines with visual disturbances. Referral to neurology.",
         "status": "Approved",
         "submittedBy": "Dr. Robert Chen",
-        "submittedDate": "2025-06-28T16:00:00"
+        "date": "2025-06-28T16:00:00"
     },
     {
         "id": 26,
@@ -408,12 +408,12 @@
         "gender": "Female",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. Sarah Johnson",
-        "serviceIssuingFacility": "City Medical Center",
+        "toFacility": "City Medical Center",
         "referringDiagnosis": "E11",
         "reasonsForReferral": "Gestational diabetes management. Referral to endocrinology.",
         "status": "Pending",
         "submittedBy": "Dr. Sarah Johnson",
-        "submittedDate": "2025-06-28T13:00:00"
+        "date": "2025-06-28T13:00:00"
     },
     {
         "id": 27,
@@ -424,12 +424,12 @@
         "gender": "Male",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Michael Brown",
-        "serviceIssuingFacility": "Regional Hospital",
+        "toFacility": "Regional Hospital",
         "referringDiagnosis": "I50",
         "reasonsForReferral": "Heart failure management. Referral to cardiology.",
         "status": "Approved",
         "submittedBy": "Dr. Michael Brown",
-        "submittedDate": "2025-06-28T10:00:00"
+        "date": "2025-06-28T10:00:00"
     },
     {
         "id": 28,
@@ -440,12 +440,12 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Emily Davis",
-        "serviceIssuingFacility": "Wellness Clinic",
+        "toFacility": "Wellness Clinic",
         "referringDiagnosis": "F32",
         "reasonsForReferral": "Postpartum depression. Referral to psychiatry.",
         "status": "Pending",
         "submittedBy": "Dr. Emily Davis",
-        "submittedDate": "2025-06-27T15:30:00"
+        "date": "2025-06-27T15:30:00"
     },
     {
         "id": 29,
@@ -456,12 +456,12 @@
         "gender": "Male",
         "referralType": "Vifurushi Follow Up Visit",
         "practitioner": "Dr. James Wilson",
-        "serviceIssuingFacility": "Community Health Center",
+        "toFacility": "Community Health Center",
         "referringDiagnosis": "J45",
         "reasonsForReferral": "Asthma management with frequent exacerbations. Referral to pulmonology.",
         "status": "Completed",
         "submittedBy": "Dr. James Wilson",
-        "submittedDate": "2025-06-27T12:00:00"
+        "date": "2025-06-27T12:00:00"
     },
     {
         "id": 30,
@@ -472,11 +472,11 @@
         "gender": "Female",
         "referralType": "Referral Visit",
         "practitioner": "Dr. Robert Chen",
-        "serviceIssuingFacility": "Specialist Hospital",
+        "toFacility": "Specialist Hospital",
         "referringDiagnosis": "N18",
         "reasonsForReferral": "Chronic kidney disease progression. Referral to nephrology.",
         "status": "Pending",
         "submittedBy": "Dr. Robert Chen",
-        "submittedDate": "2025-06-27T09:00:00"
+        "date": "2025-06-27T09:00:00"
     }
 ]

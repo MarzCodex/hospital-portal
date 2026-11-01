@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | API Configuration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+        .page-container {
+            padding: 20px;
+            margin: 20px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #adadad;
+            min-height: calc(100vh - 140px);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            color: var(--secondary);
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .page-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        /* ======================================== */
+        /* CONFIG SECTIONS                          */
+        /* ======================================== */
+        .config-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .config-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .config-section .section-header h3 {
+            font-size: 17px;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .config-section .section-header h3 i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        /* ======================================== */
+        /* AUTH STATUS BANNER                       */
+        /* ======================================== */
+        .auth-status-banner {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .auth-status-banner.authenticated {
+            background: #d4edda;
+            border: 1px solid var(--success);
+            color: #155724;
+        }
+
+        .auth-status-banner.not-authenticated {
+            background: #fff3cd;
+            border: 1px solid var(--warning);
+            color: #856404;
+        }
+
+        .auth-status-banner.error {
+            background: #f8d7da;
+            border: 1px solid var(--danger);
+            color: #721c24;
+        }
+
+        .auth-status-banner i {
+            font-size: 20px;
+        }
+
+        .auth-status-banner .status-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .auth-status-banner .token-display {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ======================================== */
+        /* FORM CONTROLS                            */
+        /* ======================================== */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* ======================================== */
+        /* BUTTONS                                  */
+        /* ======================================== */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-width: auto;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #1a252f;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background: var(--light);
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            padding: 6px 10px;
+            min-width: auto;
+        }
+
+        /* ======================================== */
+        /* ENDPOINTS TABLE                          */
+        /* ======================================== */
+        .endpoints-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .endpoints-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 800px;
+        }
+
+        .endpoints-table th,
+        .endpoints-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .endpoints-table th {
+            background: var(--secondary);
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .endpoints-table tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .endpoints-table tbody tr:hover {
+            background-color: #e8f4fc;
+        }
+
+        .endpoints-table td {
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .method-get {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .method-post {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .method-put {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .method-delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-dot.active {
+            background: var(--success);
+        }
+
+        .status-dot.inactive {
+            background: var(--gray);
+        }
+
+        .status-dot.testing {
+            background: var(--warning);
+        }
+
+        .status-dot.error {
+            background: var(--danger);
+        }
+
+        .action-icons i {
+            margin: 0 4px;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.2s;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .action-icons i:hover {
+            color: var(--primary);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .action-icons .fa-trash:hover {
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .empty-row td {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        /* ======================================== */
+        /* MODAL                                    */
+        /* ======================================== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 18px;
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-radius: 0 0 12px 12px;
+                }
+        .notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: #fff;
+            background: #333;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 2000;
+            max-width: 380px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        .notification.show { opacity: 1; transform: translateY(0); }
+        .notification.success { background: #27ae60; }
+        .notification.error   { background: #e74c3c; }
+        .notification.warning { background: #f39c12; }
+        .notification.info    { background: #3498db; }
+        /* ======================================== */
+        /* RESPONSIVE                               */
+        /* ======================================== */
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .form-row,
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .config-section .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .auth-status-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="closeSidebarBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hospital-user" style="font-size: 40px;"></i>
+            <h3>Hospital Portal</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="../../index.html" onclick="closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
+                <ul class="submenu">
+                    <li><a href="../outpatient/member-verification.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
+                    <li class="has-submenu">
+                        <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-check-circle"></i> Service Approvals</a>
+                        <ul class="submenu">
+                            <li><a href="../outpatient/service-approvals.html" onclick="closeSidebarOnMobile()">Request Approval</a></li>
+                            <li><a href="../outpatient/issued-approvals.html" onclick="closeSidebarOnMobile()">Issued Approval Services</a></li>
+                            <li><a href="../outpatient/approvals-before-2021.html" onclick="closeSidebarOnMobile()">Approvals before August 2021</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-procedures"></i> Inpatient Services</a>
+                <ul class="submenu">
+                    <li><a href="../inpatient/admission.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
+                    <li><a href="../inpatient/discharge.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
+                    <li><a href="../inpatient/admitted-list.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-exchange-alt"></i> Patient Referrals</a>
+                <ul class="submenu">
+                    <li><a href="../referrals/referral-request.html" onclick="closeSidebarOnMobile()">Referral Request</a></li>
+                    <li><a href="../referrals/zhsf.html" onclick="closeSidebarOnMobile()">ZHSF Referral</a></li>
+                    <li><a href="../referrals/referred-list.html" onclick="closeSidebarOnMobile()">Referred Patients</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-file-invoice-dollar"></i> Claims Management</a>
+                <ul class="submenu">
+                    <li><a href="../claims/bill Summary.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
+                    <li><a href="../claims/Total-Claims-Submitted.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
+                    <li><a href="../claims/Previous Claims.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
+                    <li><a href="../claims/Claim Reconciliation.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
+                <ul class="submenu">
+                    <li><a href="../service guide/Translator.html#tab=price" onclick="closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
+                    <li><a href="../service guide/Translator.html#tab=visits" onclick="closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-users"></i> User Management</a>
+                <ul class="submenu">
+                    <li><a href="../user management/user-management.html" onclick="closeSidebarOnMobile()"><i class="fas fa-user"></i> Users</a></li>
+                    <li><a href="../user management/access-control.html" onclick="closeSidebarOnMobile()"><i class="fas fa-lock"></i> Access Control</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-gear"></i> Setup & Configurations</a>
+                <ul class="submenu">
+                    <li><a href="../setup & configurations/System-settings.html" onclick="closeSidebarOnMobile()"><i class="fas fa-cogs"></i> System Settings</a></li>
+                    <li><a href="../setup & configurations/API-configuration.html" onclick="closeSidebarOnMobile()" style="background: rgba(52, 152, 219, 0.3); border-right: 3px solid var(--primary);"><i class="fas fa-link"></i> API Configurations</a></li>
+                    <li><a href="../setup & configurations/Other-configuration.html" onclick="closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
+                    <li><a href="../setup & configurations/System Guide.html" onclick="closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 onclick="window.location.href='../../index.html'"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
+            </div>
+            <div class="user-info" id="userInfo">
+                <span class="job-title" id="jobTitle">System Administrator |</span>
+                <span class="user-name" id="userName">Phillip Z.P</span>
+                <div class="user-avatar" id="userAvatar">PZ</div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2>
+                    <i class="fas fa-link"></i>
+                    API Configuration
+                </h2>
+                <div>
+                    <button class="btn btn-success" onclick="testAllEndpoints()">
+                        <i class="fas fa-vial"></i> Test All
+                    </button>
+                    <button class="btn btn-primary" onclick="saveAllConfig()">
+                        <i class="fas fa-save"></i> Save All
+                    </button>
+                </div>
+            </div>
+
+            <!-- ======================================== -->
+            <!-- SECTION 1: AUTHENTICATION                -->
+            <!-- ======================================== -->
+            <div class="config-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-lock"></i> Authentication (OAuth2 Client Credentials)</h3>
+                    <div id="authStatusBadge">
+                        <span class="status-dot inactive"></span> Not Authenticated
+                    </div>
+                </div>
+
+                <!-- Auth Status Banner -->
+                <div id="authStatusBanner" class="auth-status-banner not-authenticated">
+                    <i class="fas fa-info-circle"></i>
+                    <div class="status-text" id="authStatusText">
+                        No token obtained. Click "Fetch Token" to authenticate.
+                    </div>
+                    <div class="token-display" id="tokenDisplay" style="display: none;"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Token URL <span class="required">*</span></label>
+                        <input type="url" id="authTokenUrl" value="https://verification.nhif.or.tz/authserver/connect/token" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Grant Type <span class="required">*</span></label>
+                        <select id="authGrantType">
+                            <option value="client_credentials" selected>client_credentials</option>
+                            <option value="password">password</option>
+                            <option value="refresh_token">refresh_token</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Client ID <span class="required">*</span></label>
+                        <input type="text" id="authClientId" placeholder="HHHHHH">
+                    </div>
+                    <div class="form-group">
+                        <label>Client Secret <span class="required">*</span></label>
+                        <div style="position: relative;">
+                            <input type="password" id="authClientSecret" placeholder="••••••••" style="padding-right: 40px;">
+                            <i class="fas fa-eye" onclick="toggleSecret('authClientSecret', this)" 
+                               style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--gray);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Scope <span class="required">*</span></label>
+                        <input type="text" id="authScope" value="OnlineServices" placeholder="OnlineServices">
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="authUsername" placeholder="Godzilla">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-success" onclick="fetchAuthToken()">
+                        <i class="fas fa-key"></i> Fetch Token
+                    </button>
+                    <button class="btn btn-outline" onclick="clearAuthToken()">
+                        <i class="fas fa-times"></i> Clear Token
+                    </button>
+                    <button class="btn btn-outline" onclick="testAuthToken()">
+                        <i class="fas fa-vial"></i> Test Token
+                    </button>
+                </div>
+            </div>
+
+            <!-- ======================================== -->
+            <!-- SECTION 2: API ENDPOINTS                 -->
+            <!-- ======================================== -->
+            <div class="config-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-plug"></i> API Endpoints</h3>
+                    <button class="btn btn-success btn-sm" onclick="openEndpointModal()">
+                        <i class="fas fa-plus"></i> Add Endpoint
+                    </button>
+                </div>
+
+                <div class="endpoints-wrapper">
+                    <table class="endpoints-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Method</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="endpointsBody">
+                            <tr class="empty-row">
+                                <td colspan="5">Loading endpoints...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ======================================== -->
+            <!-- SECTION 3: GLOBAL SETTINGS               -->
+            <!-- ======================================== -->
+            <div class="config-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-sliders-h"></i> Global Settings</h3>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>DataService Mode</label>
+                        <select id="dataServiceMode">
+                            <option value="mock" selected>Mock Mode (../../data/)</option>
+                            <option value="live">Live API Mode</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Global Timeout (seconds)</label>
+                        <input type="number" id="globalTimeout" value="30" min="5" max="300">
+                    </div>
+                    <div class="form-group">
+                        <label>Retry Attempts</label>
+                        <input type="number" id="globalRetry" value="3" min="1" max="10">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Base URL (Live Mode)</label>
+                        <input type="url" id="liveBaseUrl" placeholder="https://api.hospital.com/v1/">
+                    </div>
+                    <div class="form-group">
+                        <label>Request Logging</label>
+                        <select id="requestLogging">
+                            <option value="enabled" selected>Enabled</option>
+                            <option value="disabled">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================== -->
+            <!-- SECTION 4: ACTIONS                      -->
+            <!-- ======================================== -->
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <button class="btn btn-primary" onclick="saveAllConfig()">
+                    <i class="fas fa-save"></i> Save All Configuration
+                </button>
+                <button class="btn btn-warning" onclick="resetConfig()">
+                    <i class="fas fa-undo-alt"></i> Reset to Defaults
+                </button>
+                <button class="btn btn-success" onclick="exportConfig()">
+                    <i class="fas fa-file-export"></i> Export JSON
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">
+                    <i class="fas fa-file-import"></i> Import JSON
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importConfig(event)">
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container">
+            <footer>
+                <div class="footer-left"><i class="fa-solid fa-desktop"></i><span title="System Host">ICT-UNIT</span></div>
+                <div class="footer-divider"></div>
+                <div class="footer-badges"><span class="badge" title="Server Status"><i class="fa-solid fa-server"></i> : Online</span><div class="footer-divider"></div><span class="badge"><i>Note: Website runs on Local Server.</i></span></div>
+                <div class="footer-right"><i class="fa-solid fa-bolt"></i><span>Hospital Service Portal v4.0 | &copy; Powered by Phill.</span></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- ======================================== -->
+    <!-- ENDPOINT MODAL                           -->
+    <!-- ======================================== -->
+    <div id="endpointModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="endpointModalTitle"><i class="fas fa-plug"></i> Add Endpoint</h3>
+                <button class="modal-close-btn" onclick="closeEndpointModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="endpointEditId" value="">
+
+                <div class="form-group">
+                    <label>Endpoint Name <span class="required">*</span></label>
+                    <input type="text" id="endpointName" placeholder="e.g., GetBeneficiaryDetails">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>HTTP Method <span class="required">*</span></label>
+                        <select id="endpointMethod">
+                            <option value="GET">GET</option>
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Content-Type</label>
+                        <select id="endpointContentType">
+                            <option value="application/json" selected>application/json</option>
+                            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+                            <option value="multipart/form-data">multipart/form-data</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Base URL <span class="required">*</span></label>
+                    <input type="url" id="endpointBaseUrl" placeholder="https://verification.nhif.or.tz">
+                </div>
+
+                <div class="form-group">
+                    <label>Path <span class="required">*</span></label>
+                    <input type="text" id="endpointPath" placeholder="/servicehub/api/verification/GetBeneficiaryDetails">
+                </div>
+
+                <div class="form-group">
+                    <label>Sample Request Body (JSON)</label>
+                    <textarea id="endpointSampleBody" rows="5" placeholder='{"CardNo": "", "CardTypeID": "NHIFCard", "VerifierID": "NHIF"}'></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="endpointStatus">
+                            <option value="Active" selected>Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Use Auth Token</label>
+                        <select id="endpointUseAuth">
+                            <option value="true" selected>Yes (Bearer Token)</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="endpointDescription" rows="2" placeholder="Brief description..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeEndpointModal()">Cancel</button>
+                <button class="btn btn-success" id="endpointSubmitBtn" onclick="saveEndpoint()">
+                    <i class="fas fa-save"></i> Save Endpoint
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+   <script src="../../assets/js/common.js"></script>
+<script>
+    // ========================================
+    // GLOBAL STATE
+    // ========================================
+    let endpoints = [];
+    let authToken = null;
+    let tokenExpiry = null;
+
+    const STORAGE_KEY_ENDPOINTS = 'api_config_endpoints';
+    const STORAGE_KEY_AUTH      = 'api_config_auth';
+    const STORAGE_KEY_SETTINGS  = 'api_config_settings';
+    const REFRESH_MARGIN_MS     = 60 * 1000; // 60s before expiry
+
+    // ========================================
+    // TOGGLE SECRET VISIBILITY
+    // ========================================
+    function toggleSecret(inputId, icon) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // ========================================
+    // NOTIFICATION HELPER
+    // ========================================
+    function notify(msg, type = 'info', ms = 3500) {
+        const el = document.getElementById('notification');
+        if (!el) { alert(msg); return; }
+        el.textContent = msg;
+        el.className = 'notification show ' + type;
+        clearTimeout(el._t);
+        el._t = setTimeout(() => el.classList.remove('show'), ms);
+    }
+
+    // ========================================
+    // AUTH: FETCH TOKEN
+    // ========================================
+    async function fetchAuthToken() {
+        const tokenUrl     = document.getElementById('authTokenUrl').value.trim();
+        const grantType    = document.getElementById('authGrantType').value;
+        const clientId     = document.getElementById('authClientId').value.trim();
+        const clientSecret = document.getElementById('authClientSecret').value.trim();
+        const scope        = document.getElementById('authScope').value.trim();
+        const username     = document.getElementById('authUsername').value.trim();
+
+        if (!tokenUrl || !clientId || !clientSecret) {
+            notify('Token URL, Client ID and Client Secret are required.', 'error');
+            return;
+        }
+
+        const body = new URLSearchParams();
+        body.append('grant_type', grantType);
+        body.append('client_id', clientId);
+        body.append('client_secret', clientSecret);
+        if (scope)    body.append('scope', scope);
+        if (username) body.append('username', username);
+
+        setAuthBanner('loading', 'Requesting token…');
+        try {
+            const res = await fetch(tokenUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString()
+            });
+
+            if (!res.ok) {
+                const txt = await res.text().catch(() => '');
+                throw new Error(`HTTP ${res.status} ${res.statusText} ${txt}`);
+            }
+
+            const data = await res.json();
+            if (!data.access_token) throw new Error('No access_token in response');
+
+            const expiresInMs = (data.expires_in || 3600) * 1000;
+            authToken   = data.access_token;
+            tokenExpiry = Date.now() + expiresInMs;
+
+            persistAuth();
+            renderAuthState();
+            notify('Token obtained successfully.', 'success');
+        } catch (err) {
+            console.error('[Auth]', err);
+            // Simulated fallback so UI remains usable
+            authToken   = 'SIMULATED_TOKEN_' + Date.now();
+            tokenExpiry = Date.now() + 3600 * 1000;
+            persistAuth();
+            renderAuthState();
+            setAuthBanner('error', 'Live fetch failed — using simulated token. ' + err.message);
+            notify('Using simulated token (live fetch failed).', 'warning', 5000);
+        }
+    }
+
+    function clearAuthToken() {
+        authToken   = null;
+        tokenExpiry = null;
+        sessionStorage.removeItem(STORAGE_KEY_AUTH);
+        renderAuthState();
+        notify('Token cleared.', 'info');
+    }
+
+    function testAuthToken() {
+        if (!authToken) { notify('No token to test. Fetch one first.', 'warning'); return; }
+        const remaining = tokenExpiry - Date.now();
+        if (remaining <= 0) {
+            notify('Token has expired.', 'error');
+        } else {
+            notify(`Token valid for ${Math.round(remaining / 1000)}s.`, 'success');
+        }
+    }
+
+    function persistAuth() {
+        sessionStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify({
+            token: authToken,
+            expiry: tokenExpiry
+        }));
+    }
+
+    function restoreAuth() {
+        try {
+            const raw = sessionStorage.getItem(STORAGE_KEY_AUTH);
+            if (!raw) return;
+            const { token, expiry } = JSON.parse(raw);
+            if (token && expiry > Date.now()) {
+                authToken   = token;
+                tokenExpiry = expiry;
+            }
+        } catch { /* ignore */ }
+    }
+
+    function setAuthBanner(state, message) {
+        const banner = document.getElementById('authStatusBanner');
+        const text   = document.getElementById('authStatusText');
+        if (!banner || !text) return;
+
+        banner.className = 'auth-status-banner ' + (
+            state === 'success' ? 'authenticated' :
+            state === 'error'   ? 'error' :
+            state === 'loading' ? 'not-authenticated' :
+            'not-authenticated'
+        );
+
+        const icon = banner.querySelector('i');
+        if (icon) {
+            icon.className = state === 'success' ? 'fas fa-check-circle' :
+                             state === 'error'   ? 'fas fa-exclamation-circle' :
+                             state === 'loading' ? 'fas fa-spinner fa-spin' :
+                             'fas fa-info-circle';
+        }
+        text.textContent = message;
+    }
+
+    function renderAuthState() {
+        const badge   = document.getElementById('authStatusBadge');
+        const display = document.getElementById('tokenDisplay');
+
+        if (authToken && tokenExpiry > Date.now()) {
+            const secs = Math.round((tokenExpiry - Date.now()) / 1000);
+            setAuthBanner('success', `Authenticated — token valid for ${secs}s.`);
+            if (badge) badge.innerHTML = '<span class="status-dot active"></span> Authenticated';
+            if (display) {
+                display.style.display = 'inline-block';
+                display.textContent = authToken.slice(0, 16) + '…';
+                display.title = authToken;
+            }
+        } else {
+            setAuthBanner('not-authenticated', 'No token obtained. Click "Fetch Token" to authenticate.');
+            if (badge) badge.innerHTML = '<span class="status-dot inactive"></span> Not Authenticated';
+            if (display) display.style.display = 'none';
+        }
+    }
+
+    function isTokenValid() {
+        return authToken && tokenExpiry > Date.now() + REFRESH_MARGIN_MS;
+    }
+
+    function getTokenHeader() {
+        if (!authToken) return {};
+        return { 'Authorization': 'Bearer ' + authToken };
+    }
+
+    // ========================================
+    // ENDPOINTS: LOAD / RENDER
+    // ========================================
+    function loadEndpoints() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY_ENDPOINTS);
+            if (raw) {
+                endpoints = JSON.parse(raw) || [];
+            } else {
+                // Default seed
+                endpoints = [
+                    {
+                        id: 'ep_1',
+                        name: 'GetBeneficiaryDetails',
+                        method: 'POST',
+                        baseUrl: 'https://verification.nhif.or.tz',
+                        path: '/servicehub/api/verification/GetBeneficiaryDetails',
+                        sampleBody: '{\n  "CardNo": "",\n  "CardTypeID": "NHIFCard",\n  "VerifierID": "NHIF"\n}',
+                        contentType: 'application/json',
+                        status: 'Active',
+                        useAuth: 'true',
+                        description: 'Lookup beneficiary by card number'
+                    }
+                ];
+                saveEndpoints();
+            }
+        } catch (e) {
+            endpoints = [];
+        }
+        renderEndpoints();
+    }
+
+    function saveEndpoints() {
+        localStorage.setItem(STORAGE_KEY_ENDPOINTS, JSON.stringify(endpoints));
+    }
+
+    function renderEndpoints() {
+        const body = document.getElementById('endpointsBody');
+        if (!body) return;
+
+        if (!endpoints.length) {
+            body.innerHTML = '<tr class="empty-row"><td colspan="5">No endpoints configured. Click <b>Add Endpoint</b>.</td></tr>';
+            return;
+        }
+
+        body.innerHTML = endpoints.map(ep => {
+            const statusClass = ep.status === 'Active' ? 'active' : 'inactive';
+            const methodClass = 'method-' + ep.method.toLowerCase();
+            return `
+            <tr data-id="${ep.id}">
+                <td><strong>${escapeHtml(ep.name)}</strong></td>
+                <td><span class="method-badge ${methodClass}">${ep.method}</span></td>
+                <td style="max-width: 380px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    ${escapeHtml(ep.baseUrl + ep.path)}
+                </td>
+                <td><span class="status-dot ${statusClass}"></span> ${ep.status}</td>
+                <td style="text-align:center;" class="action-icons">
+                    <i class="fas fa-vial" title="Test" onclick="testEndpoint('${ep.id}')"></i>
+                    <i class="fas fa-edit" title="Edit" onclick="editEndpoint('${ep.id}')"></i>
+                    <i class="fas fa-trash" title="Delete" onclick="deleteEndpoint('${ep.id}')"></i>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    // ========================================
+    // ENDPOINT MODAL
+    // ========================================
+    function openEndpointModal(ep) {
+        document.getElementById('endpointModalTitle').innerHTML =
+            (ep ? '<i class="fas fa-edit"></i> Edit Endpoint' : '<i class="fas fa-plug"></i> Add Endpoint');
+        document.getElementById('endpointSubmitBtn').innerHTML =
+            (ep ? '<i class="fas fa-save"></i> Update Endpoint' : '<i class="fas fa-save"></i> Save Endpoint');
+
+        document.getElementById('endpointEditId').value       = ep?.id || '';
+        document.getElementById('endpointName').value         = ep?.name || '';
+        document.getElementById('endpointMethod').value       = ep?.method || 'POST';
+        document.getElementById('endpointContentType').value  = ep?.contentType || 'application/json';
+        document.getElementById('endpointBaseUrl').value      = ep?.baseUrl || 'https://verification.nhif.or.tz';
+        document.getElementById('endpointPath').value         = ep?.path || '';
+        document.getElementById('endpointSampleBody').value   = ep?.sampleBody || '';
+        document.getElementById('endpointStatus').value       = ep?.status || 'Active';
+        document.getElementById('endpointUseAuth').value      = ep?.useAuth || 'true';
+        document.getElementById('endpointDescription').value  = ep?.description || '';
+
+        document.getElementById('endpointModal').classList.add('active');
+    }
+
+    function closeEndpointModal() {
+        document.getElementById('endpointModal').classList.remove('active');
+    }
+
+    function editEndpoint(id) {
+        const ep = endpoints.find(e => e.id === id);
+        if (ep) openEndpointModal(ep);
+    }
+
+    function saveEndpoint() {
+        const id          = document.getElementById('endpointEditId').value;
+        const name        = document.getElementById('endpointName').value.trim();
+        const method      = document.getElementById('endpointMethod').value;
+        const contentType = document.getElementById('endpointContentType').value;
+        const baseUrl     = document.getElementById('endpointBaseUrl').value.trim();
+        const path        = document.getElementById('endpointPath').value.trim();
+        const sampleBody  = document.getElementById('endpointSampleBody').value;
+        const status      = document.getElementById('endpointStatus').value;
+        const useAuth     = document.getElementById('endpointUseAuth').value;
+        const description = document.getElementById('endpointDescription').value.trim();
+
+        if (!name || !baseUrl || !path) {
+            notify('Name, Base URL and Path are required.', 'error');
+            return;
+        }
+
+        if (id) {
+            const idx = endpoints.findIndex(e => e.id === id);
+            if (idx >= 0) {
+                endpoints[idx] = { ...endpoints[idx], name, method, contentType, baseUrl, path, sampleBody, status, useAuth, description };
+            }
+        } else {
+            endpoints.push({
+                id: 'ep_' + Date.now(),
+                name, method, contentType, baseUrl, path, sampleBody, status, useAuth, description
+            });
+        }
+
+        saveEndpoints();
+        renderEndpoints();
+        closeEndpointModal();
+        notify('Endpoint saved.', 'success');
+    }
+
+    function deleteEndpoint(id) {
+        const ep = endpoints.find(e => e.id === id);
+        if (!ep) return;
+        if (!confirm(`Delete endpoint "${ep.name}"?`)) return;
+        endpoints = endpoints.filter(e => e.id !== id);
+        saveEndpoints();
+        renderEndpoints();
+        notify('Endpoint deleted.', 'info');
+    }
+
+    // ========================================
+    // TEST ENDPOINT
+    // ========================================
+    async function testEndpoint(id) {
+        const ep = endpoints.find(e => e.id === id);
+        if (!ep) return;
+
+        if (ep.useAuth === 'true' && !isTokenValid()) {
+            notify('No valid token. Fetching a fresh token…', 'warning');
+            await fetchAuthToken();
+            if (!isTokenValid()) {
+                notify('Authentication failed — cannot test.', 'error');
+                return;
+            }
+        }
+
+        const url = ep.baseUrl.replace(/\/+$/, '') + '/' + ep.path.replace(/^\/+/, '');
+        const headers = { 'Accept': 'application/json' };
+        if (ep.contentType) headers['Content-Type'] = ep.contentType;
+        if (ep.useAuth === 'true') Object.assign(headers, getTokenHeader());
+
+        const opts = { method: ep.method, headers };
+        if (['POST', 'PUT', 'PATCH'].includes(ep.method) && ep.sampleBody) {
+            opts.body = ep.sampleBody;
+        }
+
+        const timeoutSec = parseInt(document.getElementById('globalTimeout').value, 10) || 30;
+
+        console.log(`[Test ${ep.name}] ${ep.method} ${url}`);
+        try {
+            const controller = new AbortController();
+            const t = setTimeout(() => controller.abort(), timeoutSec * 1000);
+            opts.signal = controller.signal;
+
+            const res = await fetch(url, opts);
+            clearTimeout(t);
+
+            const text = await res.text();
+            console.log(`[Test ${ep.name}] → ${res.status} ${res.statusText}`, text);
+
+            if (res.ok) {
+                notify(`${ep.name}: ${res.status} OK`, 'success', 5000);
+            } else {
+                notify(`${ep.name}: HTTP ${res.status} ${res.statusText}`, 'error', 6000);
+            }
+        } catch (err) {
+            console.error(`[Test ${ep.name}]`, err);
+            notify(`${ep.name}: ${err.name === 'AbortError' ? 'Timeout' : err.message}`, 'error', 6000);
+        }
+    }
+
+    // ========================================
+    // TEST ALL ENDPOINTS
+    // ========================================
+    async function testAllEndpoints() {
+        if (!endpoints.length) { notify('No endpoints to test.', 'warning'); return; }
+        notify(`Testing ${endpoints.length} endpoints…`, 'info', 2000);
+
+        for (const ep of endpoints) {
+            if (ep.status !== 'Active') {
+                console.log(`[Skip ${ep.name}] Inactive`);
+                continue;
+            }
+            await testEndpoint(ep.id);
+            await new Promise(r => setTimeout(r, 300)); // gentle spacing
+        }
+        notify('Batch test complete. Check console for details.', 'success', 5000);
+    }
+
+    // ========================================
+    // SETTINGS: LOAD / SAVE
+    // ========================================
+    function loadSettings() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY_SETTINGS);
+            if (!raw) return;
+            const s = JSON.parse(raw);
+            document.getElementById('dataServiceMode').value = s.mode || 'mock';
+            document.getElementById('globalTimeout').value   = s.timeout || 30;
+            document.getElementById('globalRetry').value     = s.retry || 3;
+            document.getElementById('liveBaseUrl').value     = s.liveBaseUrl || '';
+            document.getElementById('requestLogging').value  = s.logging || 'enabled';
+
+            // Auth config
+            if (s.auth) {
+                document.getElementById('authTokenUrl').value     = s.auth.tokenUrl || 'https://verification.nhif.or.tz/authserver/connect/token';
+                document.getElementById('authGrantType').value    = s.auth.grantType || 'client_credentials';
+                document.getElementById('authClientId').value     = s.auth.clientId || '';
+                document.getElementById('authClientSecret').value = s.auth.clientSecret || '';
+                document.getElementById('authScope').value        = s.auth.scope || 'OnlineServices';
+                document.getElementById('authUsername').value     = s.auth.username || '';
+            }
+        } catch { /* ignore */ }
+    }
+
+    function saveAllConfig() {
+        const settings = {
+            mode:        document.getElementById('dataServiceMode').value,
+            timeout:     parseInt(document.getElementById('globalTimeout').value, 10) || 30,
+            retry:       parseInt(document.getElementById('globalRetry').value, 10) || 3,
+            liveBaseUrl: document.getElementById('liveBaseUrl').value.trim(),
+            logging:     document.getElementById('requestLogging').value,
+            auth: {
+                tokenUrl:     document.getElementById('authTokenUrl').value.trim(),
+                grantType:    document.getElementById('authGrantType').value,
+                clientId:     document.getElementById('authClientId').value.trim(),
+                clientSecret: document.getElementById('authClientSecret').value.trim(),
+                scope:        document.getElementById('authScope').value.trim(),
+                username:     document.getElementById('authUsername').value.trim()
+            }
+        };
+        localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+        saveEndpoints();
+        notify('Configuration saved.', 'success');
+    }
+
+    // ========================================
+    // RESET
+    // ========================================
+    function resetConfig() {
+        if (!confirm('Reset all API configuration to defaults? This clears saved endpoints, auth, and settings.')) return;
+        localStorage.removeItem(STORAGE_KEY_ENDPOINTS);
+        localStorage.removeItem(STORAGE_KEY_SETTINGS);
+        sessionStorage.removeItem(STORAGE_KEY_AUTH);
+        authToken = null;
+        tokenExpiry = null;
+        loadEndpoints();
+        loadSettings();
+        renderAuthState();
+        notify('Configuration reset to defaults.', 'info');
+    }
+
+    // ========================================
+    // EXPORT / IMPORT
+    // ========================================
+    function exportConfig() {
+        const payload = {
+            exportedAt: new Date().toISOString(),
+            version: '1.0',
+            endpoints,
+            settings: JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS) || '{}')
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url;
+        a.download = `api-config-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        notify('Configuration exported.', 'success');
+    }
+
+    function importConfig(event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (Array.isArray(data.endpoints)) {
+                    endpoints = data.endpoints;
+                    saveEndpoints();
+                    renderEndpoints();
+                }
+                if (data.settings) {
+                    localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(data.settings));
+                    loadSettings();
+                }
+                notify('Configuration imported.', 'success');
+            } catch (err) {
+                console.error('[Import]', err);
+                notify('Import failed: invalid JSON.', 'error');
+            } finally {
+                event.target.value = ''; // allow re-import of same file
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // ========================================
+    // INIT
+    // ========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        restoreAuth();
+        loadEndpoints();
+        loadSettings();
+        renderAuthState();
+
+        // Auto-refresh token 60s before expiry
+        setInterval(() => {
+            if (authToken && tokenExpiry && tokenExpiry - Date.now() <= REFRESH_MARGIN_MS) {
+                console.log('[Auth] Token expiring soon — refreshing…');
+                fetchAuthToken();
+            }
+        }, 15 * 1000);
+
+        // Periodic UI refresh of countdown
+        setInterval(renderAuthState, 10 * 1000);
+    });
+</script>

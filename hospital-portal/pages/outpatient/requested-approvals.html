@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Requested Approvals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+
+        .page-container {
+            padding: 10px;
+            margin: 0;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Secondary Navigation Tabs (redirect-based) */
+        .approval-tabs {
+            background: white;
+            padding: 4px 10px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 5px;
+            background: #f0f2f5;
+            border: 1px solid #adadad;
+            border-radius: 8px;
+        }
+
+        .filters-bar input,
+        .filters-bar select {
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .filters-bar input[type="text"] {
+            width: 200px;
+        }
+
+        .filters-bar input[type="date"] {
+            width: 150px;
+        }
+
+        .filters-bar .search-btn {
+            margin-top: 0;
+            padding: 5px 10px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--light);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .data-table td {
+            font-size: 13px;
+            border-right: 1px solid var(--border);
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-issued {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Action Icons */
+        .action-icons i {
+            margin: 0 5px;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.2s;
+        }
+
+        .action-icons i:hover {
+            color: var(--primary);
+        }
+
+        /* Empty State */
+        .empty-state-small {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        /* Table Wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 6px 8px;
+                white-space: nowrap;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Secondary Navigation Tabs (Redirect-based) -->
+        <div class="approval-tabs">
+            <a href="request-approval.html" class="tab-btn">
+                <i class="fas fa-pen-alt"></i> Request Approval
+            </a>
+            <a href="requested-approvals.html" class="tab-btn active">
+                <i class="fas fa-list-check"></i> Requested Approval
+            </a>
+            <a href="issuing-service.html" class="tab-btn">
+                <i class="fas fa-truck"></i> Issuing Service
+            </a>
+            <a href="issued-approvals.html" class="tab-btn">
+                <i class="fas fa-check-double"></i> Issued Approval Services
+            </a>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="page-container">
+                <h3><i class="fas fa-list-check"></i> Requested Approvals</h3>
+
+                <!-- Filters Bar -->
+                <div class="filters-bar">
+                    <input type="text" id="searchApprovalInput" placeholder="Card No., Name, Reference...">
+                    <label>From:</label>
+                    <input type="date" id="fromDate" class="fromDate">
+                    <label>To:</label>
+                    <input type="date" id="toDate" class="toDate">
+                    <button class="search-btn" onclick="searchApprovals()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="search-btn" onclick="resetApprovalSearch()" style="background: #6c757d;">
+                        <i class="fas fa-undo-alt"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-wrapper">
+                    <table class="data-table" id="approvalTable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Service Type</th>
+                                <th>Item</th>
+                                <th>Approval Reference No</th>
+                                <th>Card No</th>
+                                <th>Full Name</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalTableBody">
+                            <tr><td colspan="8" class="empty-state-small">
+                                <i class="fas fa-spinner fa-spin"></i> Loading approvals...
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        // ========================================
+        // DATA STORES
+        // ========================================
+        let mockApprovals = [];
+
+        // ========================================
+        // HELPER FUNCTIONS
+        // ========================================
+        function showNotification(msg, type = 'info') {
+            const notification = document.getElementById('notification');
+            if (!notification) {
+                const n = document.createElement('div');
+                n.id = 'notification';
+                n.className = `notification ${type}`;
+                n.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+                document.body.appendChild(n);
+                n.style.display = 'block';
+                setTimeout(() => n.remove(), 3000);
+            } else {
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+                notification.style.display = 'block';
+                setTimeout(() => notification.style.display = 'none', 3000);
+            }
+        }
+
+        function getStatusBadge(status) {
+            const statusClass = status === 'Pending' ? 'status-pending' :
+                (status === 'Approved' ? 'status-approved' :
+                    (status === 'Issued' ? 'status-issued' : 'status-rejected'));
+            return `<span class="status-badge ${statusClass}">${status}</span>`;
+        }
+
+        // ========================================
+        // DATA LOADING
+        // ========================================
+        async function loadApprovals() {
+            try {
+                const approvals = await DataService.getApprovals();
+                if (approvals && Array.isArray(approvals)) {
+                    mockApprovals = approvals;
+                    displayApprovals(mockApprovals);
+                } else {
+                    console.warn('No approvals data found');
+                    mockApprovals = [];
+                    displayApprovals([]);
+                }
+            } catch (error) {
+                console.error('Failed to load approvals:', error);
+                mockApprovals = [];
+                displayApprovals([]);
+            }
+        }
+
+        // ========================================
+        // DISPLAY FUNCTIONS
+        // ========================================
+        function displayApprovals(approvals) {
+            const tbody = document.getElementById('approvalTableBody');
+            if (!tbody) return;
+
+            if (!approvals || approvals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state-small">No approvals found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = approvals.map(approval => `
+                <tr>
+                    <td>${getStatusBadge(approval.status || 'Pending')}</td>
+                    <td>${approval.serviceType || 'N/A'}</td>
+                    <td>${approval.item || 'N/A'}</td>
+                    <td>${approval.approvalRef || approval.id || 'N/A'}</td>
+                    <td>${approval.cardNo || 'N/A'}</td>
+                    <td>${approval.fullName || approval.memberName || 'N/A'}</td>
+                    <td>${approval.remarks || 'N/A'}</td>
+                    <td class="action-icons">
+                        <i class="fas fa-edit" title="Edit" onclick="showNotification('Edit feature coming soon', 'info')"></i>
+                        <i class="fas fa-print" title="Print" onclick="showNotification('Print feature coming soon', 'info')"></i>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========================================
+        // SEARCH & FILTER
+        // ========================================
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const fromDateInputs = document.getElementsByClassName('fromDate');
+            const toDateInputs = document.getElementsByClassName('toDate');
+
+            for (let i = 0; i < fromDateInputs.length; i++) {
+                if (!fromDateInputs[i].value) fromDateInputs[i].value = today;
+            }
+            for (let i = 0; i < toDateInputs.length; i++) {
+                if (!toDateInputs[i].value) toDateInputs[i].value = today;
+            }
+        }
+
+        function searchApprovals() {
+            const searchTerm = document.getElementById('searchApprovalInput').value.toLowerCase().trim();
+            const fromDate = document.getElementsByClassName('fromDate')[0]?.value || '';
+            const toDate = document.getElementsByClassName('toDate')[0]?.value || '';
+
+            document.getElementById('approvalTableBody').innerHTML =
+                '<tr><td colspan="8" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+
+            setTimeout(() => {
+                let filtered = [...mockApprovals];
+
+                if (searchTerm) {
+                    filtered = filtered.filter(a =>
+                        (a.cardNo && a.cardNo.toLowerCase().includes(searchTerm)) ||
+                        (a.fullName && a.fullName.toLowerCase().includes(searchTerm)) ||
+                        (a.memberName && a.memberName.toLowerCase().includes(searchTerm)) ||
+                        (a.approvalRef && a.approvalRef.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                if (fromDate && toDate) {
+                    showNotification(`Showing results for date range: ${fromDate} to ${toDate}`, 'info');
+                }
+
+                displayApprovals(filtered);
+                showNotification(`Found ${filtered.length} approval(s)`, 'success');
+            }, 300);
+        }
+
+        function resetApprovalSearch() {
+            document.getElementById('searchApprovalInput').value = '';
+            setDefaultDates();
+            loadApprovals();
+            showNotification('Filters reset', 'info');
+        }
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') initSidebarState();
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Initialize page data
+            setDefaultDates();
+            loadApprovals();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.searchApprovals = searchApprovals;
+        window.resetApprovalSearch = resetApprovalSearch;
+        window.showNotification = showNotification;
+    </script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Issuing Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+
+        .page-container {
+            padding: 10px;
+            margin: 0;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Secondary Navigation Tabs (redirect-based) */
+        .approval-tabs {
+            background: white;
+            padding: 4px 10px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 5px;
+            background: #f0f2f5;
+            border: 1px solid #adadad;
+            border-radius: 8px;
+        }
+
+        .filters-bar input,
+        .filters-bar select {
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .filters-bar input[type="text"] {
+            width: 220px;
+        }
+
+        .filters-bar input[type="date"] {
+            width: 150px;
+        }
+
+        .filters-bar .search-btn {
+            margin-top: 0;
+            padding: 5px 10px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--light);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .data-table td {
+            font-size: 13px;
+            border-right: 1px solid var(--border);
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        /* Empty state */
+        .empty-state-small {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        /* Table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* Biometric icon style */
+        .biometric-yes {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Service reference code */
+        .service-ref-code {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 6px 8px;
+                white-space: nowrap;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Secondary Navigation Tabs (Redirect-based) -->
+        <div class="approval-tabs">
+            <a href="request-approval.html" class="tab-btn">
+                <i class="fas fa-pen-alt"></i> Request Approval
+            </a>
+            <a href="requested-approvals.html" class="tab-btn">
+                <i class="fas fa-list-check"></i> Requested Approval
+            </a>
+            <a href="issuing-service.html" class="tab-btn active">
+                <i class="fas fa-truck"></i> Issuing Service
+            </a>
+            <a href="issued-approvals.html" class="tab-btn">
+                <i class="fas fa-check-double"></i> Issued Approval Services
+            </a>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="page-container">
+                <h3><i class="fas fa-truck"></i> Issuing Service</h3>
+
+                <!-- Filters Bar -->
+                <div class="filters-bar">
+                    <input type="text" id="issuingSearchInput" placeholder="Search by Item or Reference No...">
+                    <label>From:</label>
+                    <input type="date" id="issuingFromDate">
+                    <label>To:</label>
+                    <input type="date" id="issuingToDate">
+                    <button class="search-btn" onclick="searchIssuingServices()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="search-btn" onclick="resetIssuingFilters()" style="background: #6c757d;">
+                        <i class="fas fa-undo-alt"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-wrapper">
+                    <table class="data-table" id="issuingTable">
+                        <thead>
+                            <tr>
+                                <th>Requires Biometric Verification</th>
+                                <th>Item Name</th>
+                                <th>Approved Qty/Session</th>
+                                <th>Remain Qty/Session</th>
+                                <th>Service Reference No</th>
+                            </tr>
+                        </thead>
+                        <tbody id="issuingTableBody">
+                            <tr><td colspan="5" class="empty-state-small">
+                                <i class="fas fa-spinner fa-spin"></i> Loading issuing services...
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        // ========================================
+        // DATA STORES
+        // ========================================
+        let mockIssuingServices = [];
+
+        // ========================================
+        // HELPER FUNCTIONS
+        // ========================================
+        function showNotification(msg, type = 'info') {
+            const notification = document.getElementById('notification');
+            if (!notification) {
+                const n = document.createElement('div');
+                n.id = 'notification';
+                n.className = `notification ${type}`;
+                n.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+                document.body.appendChild(n);
+                n.style.display = 'block';
+                setTimeout(() => n.remove(), 3000);
+            } else {
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+                notification.style.display = 'block';
+                setTimeout(() => notification.style.display = 'none', 3000);
+            }
+        }
+
+        // ========================================
+        // DATA LOADING
+        // ========================================
+        async function loadIssuingServices() {
+            try {
+                const services = await DataService.getIssuingServices();
+                if (services && Array.isArray(services)) {
+                    mockIssuingServices = services;
+                    displayIssuingServices(mockIssuingServices);
+                } else {
+                    mockIssuingServices = [];
+                    displayIssuingServices([]);
+                }
+            } catch (error) {
+                console.error('Failed to load issuing services:', error);
+                mockIssuingServices = [];
+                displayIssuingServices([]);
+            }
+        }
+
+        // ========================================
+        // DISPLAY FUNCTIONS
+        // ========================================
+        function displayIssuingServices(services) {
+            const tbody = document.getElementById('issuingTableBody');
+            if (!tbody) return;
+
+            if (!services || services.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state-small">No issuing services found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = services.map(service => {
+                const biometric = service.RequiresBiometricVerification || 'No';
+                const itemName = service.ItemName || 'N/A';
+                const approvedQty = service.ApprovedQuantitySession || 0;
+                const remainQty = service.RemainQuantitySession || 0;
+                const serviceRef = service.ServiceReferenceNo || 'N/A';
+                const remainClass = remainQty > 0 ? 'var(--success)' : 'var(--danger)';
+
+                return `
+                    <tr>
+                        <td class="biometric-yes">
+                            ${biometric === 'Yes'
+                                ? '<i class="fas fa-fingerprint"></i> Yes'
+                                : 'No'}
+                        </td>
+                        <td><strong>${itemName}</strong></td>
+                        <td style="text-align: center;">${approvedQty}</td>
+                        <td style="text-align: center; font-weight: bold; color: ${remainClass};">${remainQty}</td>
+                        <td><span class="service-ref-code">${serviceRef}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // SEARCH & FILTER
+        // ========================================
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const fromDate = document.getElementById('issuingFromDate');
+            const toDate = document.getElementById('issuingToDate');
+
+            if (fromDate && !fromDate.value) fromDate.value = today;
+            if (toDate && !toDate.value) toDate.value = today;
+        }
+
+        function searchIssuingServices() {
+            const searchTerm = document.getElementById('issuingSearchInput').value.toLowerCase().trim();
+
+            if (!searchTerm) {
+                displayIssuingServices(mockIssuingServices);
+                showNotification('Showing all issuing services', 'info');
+                return;
+            }
+
+            document.getElementById('issuingTableBody').innerHTML =
+                '<tr><td colspan="5" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+
+            setTimeout(() => {
+                const filtered = mockIssuingServices.filter(service => {
+                    const itemName = (service.ItemName || '').toLowerCase();
+                    const serviceRef = (service.ServiceReferenceNo || '').toLowerCase();
+                    const biometric = (service.RequiresBiometricVerification || '').toLowerCase();
+
+                    return itemName.includes(searchTerm) ||
+                        serviceRef.includes(searchTerm) ||
+                        biometric.includes(searchTerm);
+                });
+
+                displayIssuingServices(filtered);
+                if (filtered.length === 0) {
+                    showNotification('No issuing services found', 'error');
+                } else {
+                    showNotification(`Found ${filtered.length} issuing service(s)`, 'success');
+                }
+            }, 300);
+        }
+
+        function resetIssuingFilters() {
+            document.getElementById('issuingSearchInput').value = '';
+            setDefaultDates();
+            loadIssuingServices();
+            showNotification('Filters reset', 'info');
+        }
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') initSidebarState();
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Initialize page data
+            setDefaultDates();
+            loadIssuingServices();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.searchIssuingServices = searchIssuingServices;
+        window.resetIssuingFilters = resetIssuingFilters;
+        window.showNotification = showNotification;
+    </script>
+</body>
+</html>

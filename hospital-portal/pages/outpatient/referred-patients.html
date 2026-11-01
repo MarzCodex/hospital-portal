@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Referred Patients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+        .page-container {
+            padding: 20px;
+            margin: 20px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #adadad;
+            min-height: calc(100vh - 140px);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .page-header h2 {
+            color: var(--secondary);
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .page-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .page-header .record-count {
+            font-size: 13px;
+            color: var(--gray);
+            background: var(--light);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* ======================================== */
+        /* FILTER BAR                               */
+        /* ======================================== */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f0f2f5;
+            border: 1px solid #adadad;
+            border-radius: 8px;
+        }
+
+        .filters-bar input,
+        .filters-bar select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .filters-bar input:focus,
+        .filters-bar select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .filters-bar input[type="text"] {
+            width: 200px;
+        }
+
+        .filters-bar input[type="date"] {
+            width: 150px;
+        }
+
+        .filters-bar label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .search-btn.reset-btn {
+            background: #6c757d;
+        }
+
+        .search-btn.reset-btn:hover {
+            background: #5a6268;
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        /* ======================================== */
+        /* TABLE                                    */
+        /* ======================================== */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .patient-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            color: black;
+            min-width: 900px;
+        }
+
+        .patient-table th,
+        .patient-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .patient-table th {
+            background: var(--secondary);
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .patient-table tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .patient-table tbody tr:hover {
+            background-color: #e8f4fc;
+            transition: background-color 0.2s ease;
+        }
+
+        .patient-table td {
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+
+        /* ======================================== */
+        /* LOADING STATE                            */
+        /* ======================================== */
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        .loading-state i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ======================================== */
+        /* STATUS BADGE                             */
+        /* ======================================== */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* ======================================== */
+        /* FACILITY ARROW                           */
+        /* ======================================== */
+        .facility-transition {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .facility-transition i {
+            color: var(--primary);
+            font-size: 12px;
+        }
+
+        /* ======================================== */
+        /* RESPONSIVE                               */
+        /* ======================================== */
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filters-bar input[type="text"],
+            .filters-bar input[type="date"] {
+                width: 100%;
+            }
+            .search-btn {
+                justify-content: center;
+            }
+            .patient-table th,
+            .patient-table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="closeSidebarBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hospital-user" style="font-size: 40px;"></i>
+            <h3>Hospital Portal</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="../../index.html" onclick="closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
+                <ul class="submenu">
+                    <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
+                    <li class="has-submenu">
+                        <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-check-circle"></i> Service Approvals</a>
+                        <ul class="submenu">
+                            <li><a href="../outpatient/request-approvals.html" onclick="closeSidebarOnMobile()">Request Approval</a></li>
+                            <li><a href="../outpatient/issued-approvals.html" onclick="closeSidebarOnMobile()">Issued Approval Services</a></li>
+                            <li><a href="../outpatient/approvals-before-2021.html" onclick="closeSidebarOnMobile()">Approvals before August 2021</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-procedures"></i> Inpatient Services</a>
+                <ul class="submenu">
+                    <li><a href="../inpatient/admission.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
+                    <li><a href="../inpatient/discharge.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
+                    <li><a href="../inpatient/admitted-list.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-exchange-alt"></i> Patient Referrals</a>
+                <ul class="submenu">
+                    <li><a href="../referrals/referral-request.html" onclick="closeSidebarOnMobile()">Referral Request</a></li>
+                    <li><a href="../referrals/zhsf.html" onclick="closeSidebarOnMobile()">ZHSF Referral</a></li>
+                    <li><a href="../referrals/referred-list.html" onclick="closeSidebarOnMobile()">Referred Patients</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-file-invoice-dollar"></i> Claims Management</a>
+                <ul class="submenu">
+                    <li><a href="../claims/bill Summary.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
+                    <li><a href="../claims/Total-Claims-Submitted.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
+                    <li><a href="../claims/Previous Claims.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
+                    <li><a href="../claims/Claim Reconciliation.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
+                <ul class="submenu">
+                    <li><a href="../service guide/Translator.html#tab=price" onclick="closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
+                    <li><a href="../service guide/Translator.html#tab=visits" onclick="closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-users"></i> User Management</a>
+                <ul class="submenu">
+                    <li><a href="../user management/user-management.html" onclick="closeSidebarOnMobile()"><i class="fas fa-user"></i> Users</a></li>
+                    <li><a href="../user management/access-control.html" onclick="closeSidebarOnMobile()"><i class="fas fa-lock"></i> Access Control</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)">
+                    <i class="fas fa-gear"></i> Setup & Configurations
+                </a>
+                <ul class="submenu">
+                    <li><a href="../setup & configurations/System-settings.html" onclick="closeSidebarOnMobile()"><i class="fas fa-cogs"></i> System Settings</a></li>
+                    <li><a href="../setup & configurations/API-configuration.html" onclick="closeSidebarOnMobile()"><i class="fas fa-mouse-pointer"></i> Buttons Configurations</a></li>
+                    <li><a href="../setup & configurations/Other-configuration.html" onclick="closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
+                    <li><a href="../setup & configurations/System Guide.html" onclick="closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 onclick="window.location.href='../../index.html'"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
+            </div>
+            <div class="user-info" id="userInfo">
+                <span class="job-title" id="jobTitle">System Administrator |</span>
+                <span class="user-name" id="userName">Phillip Z.P</span>
+                <div class="user-avatar" id="userAvatar">PZ</div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Secondary Navigation -->
+        <div class="secondary-nav">
+            <a href="member-verification.html">Member Verification</a>
+            <a href="patient-visits.html">Patient Last Visits</a>
+            <a href="authorized-patients.html">Authorized Patients</a>
+            <a href="referred-patients.html" class="active">Referred Patients</a>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2>
+                    <i class="fas fa-exchange-alt"></i>
+                    Referred Patients
+                </h2>
+                <span class="record-count" id="recordCount">0 records</span>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filters-bar">
+                <input type="text" id="refPatientSearch" placeholder="Card Number / Patient Name">
+                <label>From:</label>
+                <input type="date" id="refStartDate">
+                <label>To:</label>
+                <input type="date" id="refEndDate">
+                <button class="search-btn" onclick="searchReferredPatients()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <button class="search-btn reset-btn" onclick="resetReferredFilters()">
+                    <i class="fas fa-undo-alt"></i> Reset
+                </button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <table class="patient-table" id="referredTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Card Number</th>
+                            <th>Authorization No.</th>
+                            <th>Referral No.</th>
+                            <th>From → To Facility</th>
+                            <th>Physician</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referredBody">
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fas fa-exchange-alt"></i>
+                                Loading referred patients...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container">
+            <footer>
+                <div class="footer-left"><i class="fa-solid fa-desktop"></i><span title="System Host">ICT-UNIT</span></div>
+                <div class="footer-divider"></div>
+                <div class="footer-badges"><span class="badge" title="Server Status"><i class="fa-solid fa-server"></i> : Online</span><div class="footer-divider"></div><span class="badge"><i>Note: Website runs on Local Server.</i></span></div>
+                <div class="footer-right"><i class="fa-solid fa-bolt"></i><span>Hospital Service Portal v4.0 | &copy; Powered by Phill.</span></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        // ========================================
+        // GLOBAL STATE
+        // ========================================
+        let referredPatients = [];
+
+        // ========================================
+        // GET CURRENT USER
+        // ========================================
+        function getCurrentUser() {
+            const userNameSpan = document.getElementById('userName');
+            return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
+        }
+
+        // ========================================
+        // FORMAT STATUS BADGE
+        // ========================================
+        function getStatusBadge(status) {
+            if (!status) return '<span class="status-badge status-pending">Pending</span>';
+            
+            const s = status.toLowerCase();
+            let className = 'status-pending';
+            
+            if (s.includes('approved')) className = 'status-approved';
+            else if (s.includes('completed')) className = 'status-completed';
+            else if (s.includes('rejected')) className = 'status-rejected';
+            
+            return `<span class="status-badge ${className}">${status}</span>`;
+        }
+
+        // ========================================
+        // LOAD REFERRED PATIENTS
+        // ========================================
+        async function loadReferredPatients() {
+            const tbody = document.getElementById('referredBody');
+            const recordCount = document.getElementById('recordCount');
+
+            if (!tbody) return;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="loading-state">
+                        <i class="fas fa-spinner"></i>
+                        Loading referred patients...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                let data = null;
+                
+                // ✅ STEP 1: Check sessionStorage first (real-time referrals)
+                const stored = sessionStorage.getItem('referredPatients');
+                if (stored) {
+                    try {
+                        data = JSON.parse(stored);
+                        console.log('✅ Loaded from sessionStorage:', data.length, 'referrals');
+                    } catch (e) {
+                        console.error('Failed to parse sessionStorage:', e);
+                        data = null;
+                    }
+                }
+                
+                // ✅ STEP 2: Fallback to DataService (historical referrals)
+                if (!data || data.length === 0) {
+                    if (typeof DataService !== 'undefined' && typeof DataService.getReferrals === 'function') {
+                        data = await DataService.getReferrals();
+                        console.log('✅ Loaded from DataService:', data ? data.length : 0, 'referrals');
+                    }
+                }
+
+                referredPatients = data || [];
+                displayReferredPatients(referredPatients);
+
+                if (recordCount) {
+                    recordCount.textContent = `${referredPatients.length} record${referredPatients.length !== 1 ? 's' : ''}`;
+                }
+
+            } catch (error) {
+                console.error('Failed to load referred patients:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>
+                            Failed to load referred patients. Please try again.
+                        </td>
+                    </tr>
+                `;
+                if (recordCount) recordCount.textContent = '0 records';
+            }
+        }
+
+        // ========================================
+        // DISPLAY REFERRED PATIENTS
+        // ========================================
+        function displayReferredPatients(patients) {
+            const tbody = document.getElementById('referredBody');
+            if (!tbody) return;
+
+            if (!patients || patients.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            <i class="fas fa-exchange-alt"></i>
+                            No referred patients found.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = patients.map(p => `
+                <tr>
+                    <td>${p.date || 'N/A'}</td>
+                    <td><strong>${p.fullName || p.name || 'N/A'}</strong></td>
+                    <td>${p.cardNumber || p.cardNo || 'N/A'}</td>
+                    <td>${p.authorizationNumber || p.authNumber || 'N/A'}</td>
+                    <td>${p.referralNumber || p.referralNo || 'N/A'}</td>
+                    <td>
+                        <div class="facility-transition">
+                            <span>${p.fromFacility || 'N/A'}</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span>${p.toFacility || 'N/A'}</span>
+                        </div>
+                    </td>
+                    <td>${p.physicianName || p.physician || p.practitioner || 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ========================================
+        // SEARCH REFERRED PATIENTS
+        // ========================================
+        function searchReferredPatients() {
+            const cardInput = document.getElementById('refPatientSearch');
+            const startInput = document.getElementById('refStartDate');
+            const endInput = document.getElementById('refEndDate');
+
+            if (!cardInput) {
+                console.error('Search input not found');
+                return;
+            }
+
+            const searchTerm = cardInput.value.trim().toLowerCase();
+            const startDate = startInput ? startInput.value : '';
+            const endDate = endInput ? endInput.value : '';
+
+            const tbody = document.getElementById('referredBody');
+            const recordCount = document.getElementById('recordCount');
+
+            // If no filters, show all
+            if (!searchTerm && !startDate && !endDate) {
+                displayReferredPatients(referredPatients);
+                if (recordCount) {
+                    recordCount.textContent = `${referredPatients.length} record${referredPatients.length !== 1 ? 's' : ''}`;
+                }
+                return;
+            }
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="loading-state">
+                        <i class="fas fa-spinner"></i>
+                        Searching...
+                    </td>
+                </tr>
+            `;
+
+            setTimeout(() => {
+                let filtered = [...referredPatients];
+
+                // Filter by search term (name, card, referral, auth)
+                if (searchTerm) {
+                    filtered = filtered.filter(p =>
+                        (p.fullName && p.fullName.toLowerCase().includes(searchTerm)) ||
+                        (p.name && p.name.toLowerCase().includes(searchTerm)) ||
+                        (p.cardNumber && p.cardNumber.toLowerCase().includes(searchTerm)) ||
+                        (p.cardNo && p.cardNo.toLowerCase().includes(searchTerm)) ||
+                        (p.referralNumber && p.referralNumber.toLowerCase().includes(searchTerm)) ||
+                        (p.referralNo && p.referralNo.toLowerCase().includes(searchTerm)) ||
+                        (p.authorizationNumber && p.authorizationNumber.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                // Filter by date range
+                if (startDate) {
+                    filtered = filtered.filter(p => p.date && p.date >= startDate);
+                }
+                if (endDate) {
+                    filtered = filtered.filter(p => p.date && p.date <= endDate);
+                }
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fas fa-search"></i>
+                                No referred patients found matching your criteria.
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    displayReferredPatients(filtered);
+                }
+
+                if (recordCount) {
+                    recordCount.textContent = `${filtered.length} record${filtered.length !== 1 ? 's' : ''}`;
+                }
+
+                if (typeof showNotification === 'function') {
+                    showNotification(`Found ${filtered.length} referred patient(s)`, 'success');
+                }
+            }, 300);
+        }
+
+        // ========================================
+        // RESET FILTERS
+        // ========================================
+        function resetReferredFilters() {
+            const cardInput = document.getElementById('refPatientSearch');
+            const startInput = document.getElementById('refStartDate');
+            const endInput = document.getElementById('refEndDate');
+
+            if (cardInput) cardInput.value = '';
+            if (startInput) startInput.value = '';
+            if (endInput) endInput.value = '';
+
+            displayReferredPatients(referredPatients);
+
+            const recordCount = document.getElementById('recordCount');
+            if (recordCount) {
+                recordCount.textContent = `${referredPatients.length} record${referredPatients.length !== 1 ? 's' : ''}`;
+            }
+
+            if (typeof showNotification === 'function') {
+                showNotification('Filters reset', 'info');
+            }
+        }
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+        function initPage() {
+            // User dropdown
+            const userInfo = document.getElementById('userInfo');
+            const userDropdown = document.getElementById('userDropdown');
+            if (userInfo && userDropdown) {
+                userInfo.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', function() {
+                    userDropdown.classList.remove('active');
+                });
+            }
+
+            // Set user info
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            // Sidebar toggle
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.toggle('hidden');
+                });
+            }
+
+            // Close sidebar button
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function() {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('hidden');
+                });
+            }
+
+            // Load referred patients
+            loadReferredPatients();
+
+            // Enter key search
+            const searchInput = document.getElementById('refPatientSearch');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        searchReferredPatients();
+                    }
+                });
+            }
+        }
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.searchReferredPatients = searchReferredPatients;
+        window.resetReferredFilters = resetReferredFilters;
+        window.displayReferredPatients = displayReferredPatients;
+        window.loadReferredPatients = loadReferredPatients;
+
+        // ========================================
+        // START APPLICATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

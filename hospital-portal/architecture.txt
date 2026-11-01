@@ -1,39 +1,48 @@
 hospital-portal/
-├── index.html
-├── login.html
+├── index.html                                      ✅ Built
+├── login.html                                      ✅ Built
 ├── components/
-│   ├── footer.html
-│   ├── header.html
-│   ├── modals.html
-│   └── sidebar.html
+│   ├── footer.html                                      ✅ Built
+│   ├── header.html                                      ✅ Built
+│   ├── modals.html                                      ✅ Built
+│   └── sidebar.html                                     ✅ Built
 ├── pages/
-│   ├── dashboard.html
-│   ├── template.html
+│   ├── dashboard.html                                     ✅ Built
+│   ├── template.html                                      ✅ Built
 │   ├── claims/
-│   │   ├── bill Summary.html
-│   │   ├── Claim Reconciliation.html
-│   │   ├── Previous Claims.html
-│   │   └── Total-Claims-Submitted.html
+│   │   ├── bill Summary.html                           🆕 To Be Built
+│   │   ├── Claim Reconciliation.html                   🆕 To Be Built
+│   │   ├── Previous Claims.html                        🆕 To Be Built
+│   │   └── Total-Claims-Submitted.html                 🆕 To Be Built
 │   ├── inpatient/
-│   │   ├── admission.html
-│   │   ├── admitted-list.html
-│   │   └── discharge.html
+│   │   ├── admission.html                                      ✅ Built
+│   │   ├── admitted-list.html                                  ✅ Built
+│   │   └── discharge.html                                      ✅ Built
 │   ├── outpatient/
-│   │   ├── member-verification.html
-│   │   └── service-approvals.html
+│   │   ├── member-verification.html                            ✅ Built (Simplified)
+│   │   ├── authorized-patients.html                            ✅ Built (Separated)
+│   │   ├── referred-patients.html                              ✅ Built (Separated)
+│   │   ├── patient-visits.html                                 ✅ Built (Separated)
+│   │   ├── request-appval.html                                 ✅ Built (Simplified)
+│   │   ├── requested-approvals.html                            ✅ Built (Separated)
+│   │   ├── issuing-service.html                                ✅ Built (Separated)
+│   │   └── issued-approvals.html                               ✅ Built (Separated) 
 │   ├── referrals/
-│   │   ├── referral-request.html
-│   │   ├── referred-list.html
-│   │   └── zhsf.html
+│   │   ├── referral-request.html                                   ✅ Built
+│   │   ├── referred-list.html                                      ✅ Built
+│   │   └── zhsf.html                                               ✅ Built
 │   ├── service guide/
-│   │   └── Translator.html
+│   │   └── Translator.html                                         ✅ Built
 │   ├── setup & configurations/
-│   │   ├── Buttons-configuration.html
-│   │   ├── Other-configuration.html
-│   │   ├── System Guide.html
-│   │   └── System-settings.html
+│   │   ├── API-configuration.html                                  🆕 To Be Built
+│   │   ├── Other-configuration.html                                ⌛ In Continuous Progress
+│   │   ├── System Guide.html                                       ✅ Built
+│   │   └── System-settings.html                                    🆕 To Be Built
 │   └── user management/
-│       └── user-management.html
+│       ├── add-user.html                                           ✅ Built
+│       ├── edit-user.html                                          ✅ Built
+│       ├── access-control.html                                     ✅ Built
+│       └── user-management.html                                    ✅ Built
 ├── assets/
 │   ├── css/
 │   │   ├── common.css
@@ -70,18 +79,17 @@ hospital-portal/
 │       ├── router.js
 │       └── translator.js
 └── data/
+    ├── admissions.json
     ├── approvals.json
     ├── authorizations.json
     ├── claims.json
+    ├── departments.json
+    ├── issued-services.json
     ├── issuing-services.json
     ├── members.json
     ├── NHIF_ZHSF_price_list.json
     ├── referrals.json
-    ├── samples/
-    │   ├── approved-services.json
-    │   ├── historical-approvals.json
-    │   └── pending-approvals.json
-    ├── services.json
+    ├── restricted-items.json
     ├── users.json
     ├── visit-types.json
     └── visits.json

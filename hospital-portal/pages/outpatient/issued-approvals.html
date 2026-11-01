@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | Issued Approval Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+
+        .page-container {
+            padding: 10px;
+            margin: 0;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Secondary Navigation Tabs (redirect-based) */
+        .approval-tabs {
+            background: white;
+            padding: 4px 10px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 5px;
+            background: #f0f2f5;
+            border: 1px solid #adadad;
+            border-radius: 8px;
+        }
+
+        .filters-bar input,
+        .filters-bar select {
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .filters-bar input[type="text"] {
+            width: 220px;
+        }
+
+        .filters-bar input[type="date"] {
+            width: 150px;
+        }
+
+        .filters-bar .search-btn {
+            margin-top: 0;
+            padding: 5px 10px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--light);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .data-table td {
+            font-size: 13px;
+            border-right: 1px solid var(--border);
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        /* Amount cells */
+        .amount-cell {
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        /* Empty state */
+        .empty-state-small {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        /* Table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 6px 8px;
+                white-space: nowrap;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Secondary Navigation Tabs (Redirect-based) -->
+        <div class="approval-tabs">
+            <a href="request-approval.html" class="tab-btn">
+                <i class="fas fa-pen-alt"></i> Request Approval
+            </a>
+            <a href="requested-approvals.html" class="tab-btn">
+                <i class="fas fa-list-check"></i> Requested Approval
+            </a>
+            <a href="issuing-service.html" class="tab-btn">
+                <i class="fas fa-truck"></i> Issuing Service
+            </a>
+            <a href="issued-approvals.html" class="tab-btn active">
+                <i class="fas fa-check-double"></i> Issued Approval Services
+            </a>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="page-container">
+                <h3><i class="fas fa-check-circle"></i> Issued Approval Services</h3>
+
+                <!-- Filters Bar -->
+                <div class="filters-bar">
+                    <input type="text" id="issuedSearchInput" placeholder="Search by Reference, Name, or Card...">
+                    <label>From:</label>
+                    <input type="date" id="issuedFromDate">
+                    <label>To:</label>
+                    <input type="date" id="issuedToDate">
+                    <button class="search-btn" onclick="searchIssuedServices()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="search-btn" onclick="resetIssuedFilters()" style="background: #6c757d;">
+                        <i class="fas fa-undo-alt"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-wrapper">
+                    <table class="data-table" id="issuedTable">
+                        <thead>
+                            <tr>
+                                <th>Card No</th>
+                                <th>Full Name</th>
+                                <th>Item Name</th>
+                                <th>Service Reference No</th>
+                                <th>Issued Date</th>
+                                <th>Unit Price</th>
+                                <th>Qty/Session</th>
+                                <th>Amount Claimed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="issuedTableBody">
+                            <tr><td colspan="8" class="empty-state-small">
+                                <i class="fas fa-spinner fa-spin"></i> Loading issued services...
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        // ========================================
+        // DATA STORES
+        // ========================================
+        let mockIssuedServices = [];
+
+        // ========================================
+        // HELPER FUNCTIONS
+        // ========================================
+        function showNotification(msg, type = 'info') {
+            const notification = document.getElementById('notification');
+            if (!notification) {
+                const n = document.createElement('div');
+                n.id = 'notification';
+                n.className = `notification ${type}`;
+                n.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+                document.body.appendChild(n);
+                n.style.display = 'block';
+                setTimeout(() => n.remove(), 3000);
+            } else {
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+                notification.style.display = 'block';
+                setTimeout(() => notification.style.display = 'none', 3000);
+            }
+        }
+
+        function formatCurrency(amount) {
+            if (amount == null || isNaN(amount)) return '0.00';
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // ========================================
+        // DATA LOADING
+        // ========================================
+        async function loadIssuedServices() {
+            try {
+                const services = await DataService.getIssuedServices();
+                if (services && Array.isArray(services)) {
+                    mockIssuedServices = services;
+                    displayIssuedServices(mockIssuedServices);
+                } else {
+                    mockIssuedServices = [];
+                    displayIssuedServices([]);
+                }
+            } catch (error) {
+                console.error('Failed to load issued services:', error);
+                mockIssuedServices = [];
+                displayIssuedServices([]);
+            }
+        }
+
+        // ========================================
+        // DISPLAY FUNCTIONS
+        // ========================================
+        function displayIssuedServices(services) {
+            const tbody = document.getElementById('issuedTableBody');
+            if (!tbody) return;
+
+            if (!services || services.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state-small">No issued services found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = services.map(service => `
+                <tr>
+                    <td>${service.CardNo || 'N/A'}</td>
+                    <td>${service.FullName || 'N/A'}</td>
+                    <td><strong>${service.ItemName || 'N/A'}</strong></td>
+                    <td><code style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${service.ServiceReferenceNo || 'N/A'}</code></td>
+                    <td>${service.IssuedDate || 'N/A'}</td>
+                    <td class="amount-cell">${formatCurrency(service.UnitPrice)}</td>
+                    <td style="text-align: center; font-weight: bold;">${service.QuantitySession || 1}</td>
+                    <td class="amount-cell">${formatCurrency(service.AmountClaimed)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ========================================
+        // SEARCH & FILTER
+        // ========================================
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const fromDate = document.getElementById('issuedFromDate');
+            const toDate = document.getElementById('issuedToDate');
+            
+            if (fromDate && !fromDate.value) fromDate.value = today;
+            if (toDate && !toDate.value) toDate.value = today;
+        }
+
+        function searchIssuedServices() {
+            const searchTerm = document.getElementById('issuedSearchInput').value.toLowerCase().trim();
+            const fromDate = document.getElementById('issuedFromDate').value;
+            const toDate = document.getElementById('issuedToDate').value;
+
+            document.getElementById('issuedTableBody').innerHTML =
+                '<tr><td colspan="8" class="empty-state-small"><i class="fas fa-spinner fa-spin"></i> Searching...</td></tr>';
+
+            setTimeout(() => {
+                let filtered = [...mockIssuedServices];
+
+                if (searchTerm) {
+                    filtered = filtered.filter(s =>
+                        (s.ServiceReferenceNo && s.ServiceReferenceNo.toLowerCase().includes(searchTerm)) ||
+                        (s.ItemName && s.ItemName.toLowerCase().includes(searchTerm)) ||
+                        (s.FullName && s.FullName.toLowerCase().includes(searchTerm)) ||
+                        (s.CardNo && s.CardNo.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                if (fromDate) {
+                    filtered = filtered.filter(s => s.IssuedDate && s.IssuedDate >= fromDate);
+                }
+                if (toDate) {
+                    filtered = filtered.filter(s => s.IssuedDate && s.IssuedDate <= toDate);
+                }
+
+                displayIssuedServices(filtered);
+                showNotification(`Found ${filtered.length} issued service(s)`, 'success');
+            }, 300);
+        }
+
+        function resetIssuedFilters() {
+            document.getElementById('issuedSearchInput').value = '';
+            setDefaultDates();
+            loadIssuedServices();
+            showNotification('Filters reset', 'info');
+        }
+
+        // ========================================
+        // COMPONENT LOADING
+        // ========================================
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
+                });
+            }
+
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
+                });
+            }
+
+            if (typeof initSidebarState === 'function') initSidebarState();
+
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Initialize page data
+            setDefaultDates();
+            loadIssuedServices();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+
+        // ========================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ========================================
+        window.searchIssuedServices = searchIssuedServices;
+        window.resetIssuedFilters = resetIssuedFilters;
+        window.showNotification = showNotification;
+    </script>
+</body>
+</html>

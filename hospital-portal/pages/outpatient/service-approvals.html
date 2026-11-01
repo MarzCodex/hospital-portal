@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Service Portal | Service Approvals</title>
+    <title>Hospital Service Portal | Request Approvals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/common.css">
     <style>
@@ -1173,125 +1173,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ============================================================ -->
-            <!-- TAB 2: SEARCH APPROVAL                                        -->
-            <!-- ============================================================ -->
-            <div id="tab-search" class="tab-content">
-                <div class="page-container">
-                    <h3><i class="fas fa-search"></i> Search Approval</h3>
-                    <div class="filters-bar">
-                        <input type="text" id="searchApprovalInput" placeholder="Card No., Name, Reference...">
-                        <label>From:</label>
-                        <input type="date" class="fromDate">
-                        <label>To:</label>
-                        <input type="date" class="toDate">
-                        <button class="search-btn" onclick="searchApprovals()">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                        <button class="search-btn" onclick="resetApprovalSearch()" style="background: #6c757d;">
-                            <i class="fas fa-undo-alt"></i> Reset
-                        </button>
-                    </div>
-                    <div class="table-wrapper">
-                        <table class="data-table" id="approvalTable">
-                            <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Service Type</th>
-                                    <th>Item</th>
-                                    <th>Approval Reference No</th>
-                                    <th>Card No</th>
-                                    <th>Full Name</th>
-                                    <th>Remarks</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="approvalTableBody">
-                                <tr><td colspan="8" class="empty-state-small">Enter search criteria to find approvals</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- TAB 3: ISSUING SERVICE                                       -->
-            <!-- ============================================================ -->
-            <div id="tab-issuing" class="tab-content">
-                <div class="page-container">
-                    <h3><i class="fas fa-truck"></i> Issuing Service</h3>
-                    <div class="filters-bar">
-                        <input type="text" id="issuingSearchInput" placeholder="Search by Item or Reference No...">
-                        <label>From:</label>
-                        <input type="date" class="fromDate">
-                        <label>To:</label>
-                        <input type="date" class="toDate">
-                        <button class="search-btn" onclick="searchIssuingServices()">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                    </div>
-                    <div class="table-wrapper">
-                        <table class="data-table" id="issuingTable">
-                            <thead>
-                                <tr>
-                                    <th>Requires Biometric Verification</th>
-                                    <th>Item Name</th>
-                                    <th>Approved Qty/Session</th>
-                                    <th>Remain Qty/Session</th>
-                                    <th>Service Reference No</th>
-                                </tr>
-                            </thead>
-                            <tbody id="issuingTableBody">
-                                <tr><td colspan="5" class="empty-state-small">No issuing services found</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- TAB 4: ISSUED APPROVAL SERVICES                              -->
-            <!-- ============================================================ -->
-            <div id="tab-issued" class="tab-content">
-                <div class="page-container">
-                    <h3><i class="fas fa-check-circle"></i> Issued Approval Services</h3>
-                    <div class="filters-bar">
-                        <input type="text" id="issuedSearchInput" placeholder="Search by Reference, Name, or Card...">
-                        <label>From:</label>
-                        <input type="date" id="issuedFromDate">
-                        <label>To:</label>
-                        <input type="date" id="issuedToDate">
-                        <button class="search-btn" onclick="searchIssuedServices()">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                        <button class="search-btn" onclick="resetIssuedFilters()" style="background: #6c757d;">
-                            <i class="fas fa-undo-alt"></i> Reset
-                        </button>
-                    </div>
-                    <div class="table-wrapper">
-                        <table class="data-table" id="issuedTable">
-                            <thead>
-                                <tr>
-                                    <th>Card No</th>
-                                    <th>Full Name</th>
-                                    <th>Item Name</th>
-                                    <th>Service Reference No</th>
-                                    <th>Issued Date</th>
-                                    <th>Unit Price</th>
-                                    <th>Qty/Session</th>
-                                    <th>Amount Claimed</th>
-                                </tr>
-                            </thead>
-                            <tbody id="issuedTableBody">
-                                <tr><td colspan="8" class="empty-state-small">Loading issued services...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Footer Container -->
         <div id="footer-container"></div>
     </div>
