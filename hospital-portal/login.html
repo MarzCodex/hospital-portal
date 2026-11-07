@@ -296,29 +296,27 @@
     
     <div class="notification" id="notification"></div>
 <script>
-    // Demo credentials
-    const validCredentials = [
-        { username: "admin", password: "admin123", displayName: "Administrator", jobTitle: "System Administrator" },
-        { username: "phill", password: "admin123", displayName: "Phillip Z.P", jobTitle: "System Administrator" },
-        { username: "rama", password: "HPU-2026", displayName: "Ramadhan Ramadhan", jobTitle: "System Administrator" },
-        { username: "Djohn", password: "HPU-2026", displayName: "John Doe", jobTitle: "Data Clerk" }
-    ];
-    
+    // ========================================
+    // SHOW NOTIFICATION
+    // ========================================
     function showNotification(message, type = 'info', duration = 3000) {
         const notification = document.getElementById('notification');
         notification.textContent = message;
         notification.className = `notification ${type}`;
         notification.style.display = 'block';
-        
+
         setTimeout(() => {
             notification.style.display = 'none';
         }, duration);
     }
-    
+
+    // ========================================
+    // PASSWORD TOGGLE
+    // ========================================
     function togglePassword() {
         const passwordInput = document.getElementById('password');
         const toggleBtn = document.querySelector('.toggle-password');
-        
+
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             toggleBtn.textContent = '🙈';
@@ -327,109 +325,178 @@
             toggleBtn.textContent = '👁️';
         }
     }
-    
+
+    // ========================================
+    // FORM VALIDATION
+    // ========================================
     function validateForm(username, password) {
         let isValid = true;
-        
+
         document.getElementById('usernameError').style.display = 'none';
         document.getElementById('passwordError').style.display = 'none';
         document.getElementById('username').classList.remove('error');
         document.getElementById('password').classList.remove('error');
-        
+
         if (!username.trim()) {
             document.getElementById('usernameError').style.display = 'block';
             document.getElementById('username').classList.add('error');
             isValid = false;
         }
-        
+
         if (!password.trim()) {
             document.getElementById('passwordError').style.display = 'block';
             document.getElementById('password').classList.add('error');
             isValid = false;
         }
-        
+
         return isValid;
     }
-    
-    function authenticate(username, password) {
-        return validCredentials.find(cred => 
-            (cred.username === username && cred.password === password)
-        );
+
+    // ========================================
+    // AUTHENTICATE VIA users.json
+    // ========================================
+    async function authenticate(username, password) {
+        try {
+            // login.html is at ROOT level → ./data/users.json
+            const response = await fetch('./data/users.json');
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} — Could not load users.json`);
+            }
+
+            const users = await response.json();
+
+            if (!Array.isArray(users)) {
+                throw new Error('users.json is not an array');
+            }
+
+            // Case-insensitive username + exact password match
+            const matchedUser = users.find(user =>
+                user.username.toLowerCase() === username.toLowerCase() &&
+                user.password === password
+            );
+
+            if (!matchedUser) {
+                return { success: false, reason: 'invalid' };
+            }
+
+            // ✅ NEW: Block inactive accounts
+            if (matchedUser.status !== 'Active') {
+                return { success: false, reason: 'inactive', user: matchedUser };
+            }
+
+            return { success: true, user: matchedUser };
+
+        } catch (error) {
+            console.error('Authentication error:', error);
+            return { success: false, reason: 'error', error: error.message };
+        }
     }
+
+    // ========================================
+    // REDIRECT HELPER
+    // ========================================
     function redirectToMainApp() {
-        // Redirect to dashboard
         window.location.href = 'index.html';
     }
-    
-    // Handle form submission
+
+    // ========================================
+    // FORM SUBMISSION
+    // ========================================
     const loginForm = document.getElementById('loginForm');
     const loginBtn = document.getElementById('loginBtn');
-    
+
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        const username = document.getElementById('username').value;
+
+        const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
-        
+
+        // Client-side validation
         if (!validateForm(username, password)) {
             showNotification('Please fill in all required fields', 'error');
             return;
         }
-        
+
         // Show loading state
         const originalBtnText = loginBtn.innerHTML;
         loginBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
         loginBtn.disabled = true;
-        
-        // Simulate network delay
-        setTimeout(() => {
-            const user = authenticate(username, password);
-            
-            if (user) {
-                showNotification(`Welcome back, ${user.displayName}! Redirecting...`, 'success');
-                
-                // ✅ FIXED: Store complete user info
-                sessionStorage.setItem('isLoggedIn', 'true');
-                sessionStorage.setItem('userName', user.displayName);
-                sessionStorage.setItem('jobTitle', user.jobTitle);
-                sessionStorage.setItem('loginUsername', username);
-                
-                setTimeout(() => {
-                    redirectToMainApp();
-                }, 1500);
-            } else {
-                showNotification('Invalid username or password. Please try again.', 'error');
-                loginBtn.innerHTML = originalBtnText;
-                loginBtn.disabled = false;
-                
-                document.getElementById('password').value = '';
-                document.getElementById('password').focus();
+
+        // Authenticate against users.json
+        const result = await authenticate(username, password);
+
+        if (result.success) {
+            const user = result.user;
+
+            showNotification(`Welcome back, ${user.fullName}! Redirecting...`, 'success');
+
+            // ──────────────────────────────────
+            // Store complete user info
+            // ──────────────────────────────────
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('userName', user.fullName || 'User');
+            sessionStorage.setItem('jobTitle', user.role || 'Staff');
+            sessionStorage.setItem('loginUsername', user.username);
+            sessionStorage.setItem('userId', user.id);
+            sessionStorage.setItem('userRole', user.role);
+            sessionStorage.setItem('userDepartment', user.department || '');
+            sessionStorage.setItem('userEmail', user.email || '');
+            sessionStorage.setItem('employeeId', user.employeeId || '');
+
+            setTimeout(() => {
+                redirectToMainApp();
+            }, 1500);
+
+        } else {
+            // ──────────────────────────────────
+            // Handle failure cases
+            // ──────────────────────────────────
+            let errorMsg = 'Invalid username or password. Please try again.';
+
+            if (result.reason === 'inactive') {
+                errorMsg = `Account is ${result.user.status}. Please contact your administrator.`;
+            } else if (result.reason === 'error') {
+                errorMsg = 'Login failed: Unable to load user data. Please try again later.';
             }
-        }, 800);
+
+            showNotification(errorMsg, 'error');
+            loginBtn.innerHTML = originalBtnText;
+            loginBtn.disabled = false;
+
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+        }
     });
-    
-    // Add enter key support
+
+    // ========================================
+    // ENTER KEY SUPPORT
+    // ========================================
     document.getElementById('password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             loginForm.dispatchEvent(new Event('submit'));
         }
     });
-    
-    // Check if already logged in
+
+    // ========================================
+    // AUTO-REDIRECT IF ALREADY LOGGED IN
+    // ========================================
     if (sessionStorage.getItem('isLoggedIn') === 'true') {
         showNotification('Already logged in. Redirecting...', 'info');
         setTimeout(() => {
             redirectToMainApp();
         }, 1000);
     }
-    
-    // Add input event listeners to clear errors on typing
+
+    // ========================================
+    // CLEAR ERRORS ON TYPING
+    // ========================================
     document.getElementById('username').addEventListener('input', function() {
         this.classList.remove('error');
         document.getElementById('usernameError').style.display = 'none';
     });
-    
+
     document.getElementById('password').addEventListener('input', function() {
         this.classList.remove('error');
         document.getElementById('passwordError').style.display = 'none';
