@@ -1158,11 +1158,10 @@
             }
         }
         
-        document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     if (!requireLogin()) return;
-    initPage();
+    loadComponents();
 });
-
         // ========================================
         // EXPOSE FUNCTIONS TO GLOBAL SCOPE
         // ========================================
