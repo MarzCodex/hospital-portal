@@ -1041,10 +1041,24 @@
 </div>
 
 <script>
+// ========================================
+// LOGIN GUARD
+// ========================================
+(function checkAuth() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        // Save intended destination for post-login redirect
+        sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+        window.location.href = '../../login.html';
+        return;
+    }
+})();
+
 // Global state
 let authorizedMembers = JSON.parse(sessionStorage.getItem('authorizedMembers') || '[]');
 let currentVerifiedMember = null;
 let currentCardNumber = '';
+
 // Reusable loading state handler
 async function withLoadingState(btn, callback) {
     const originalText = btn.innerHTML;
@@ -1062,6 +1076,7 @@ async function withLoadingState(btn, callback) {
         btn.disabled = false;
     }
 }
+
 // Get currently logged-in user from the top bar
 function getCurrentUser() {
     const userNameSpan = document.getElementById('userName');
@@ -1116,7 +1131,7 @@ function signOut() {
         sessionStorage.clear();
         showNotification('Signed out successfully', 'success');
         setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = '../../login.html';
         }, 1500);
     }
 }
@@ -1142,19 +1157,24 @@ function toggleSubmenu(el) {
     const sub = parent.querySelector('.submenu'); 
     sub.classList.toggle('active'); 
 }
+
 // Close sidebar button functionality
 document.getElementById('closeSidebarBtn').addEventListener('click', function() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.add('hidden');
     // The CSS .sidebar.hidden ~ .main-content handles this automatically
 });
+
 // Close sidebar button functionality on mobile devices
 function closeSidebarOnMobile() {
     if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.add('hidden');
     }
 }
-function showDashboard() { showNotification('Dashboard view', 'info'); }
+
+function showDashboard() { 
+    window.location.href = '../../index.html';
+}
 
 function showMemberVerification() {
     document.querySelectorAll('#verificationSection, #lastVisitsSection, #authorizedSection, #referredSection').forEach(s => s.style.display = 'none');
@@ -1162,6 +1182,7 @@ function showMemberVerification() {
     ['navVerification','navLastVisits','navAuthorized','navReferred'].forEach(id => document.getElementById(id)?.classList.remove('active'));
     document.getElementById('navVerification')?.classList.add('active');
 }
+
 async function searchMember(event) {
     const btn = event?.target || document.querySelector('.search-btn');
     
@@ -1259,6 +1280,7 @@ async function searchMember(event) {
         });
     });
 }
+
 // Sample eligible services data (replace with actual API data)
 // At the top of your script section, after the global state
 let eligibleServices = [];
@@ -1338,6 +1360,7 @@ function displayServicesTable(services) {
         </tr>
     `).join('');
 }
+
 function filterServicesTable() {
     const searchTerm = document.getElementById('servicesSearchInput').value.toLowerCase().trim();
     
@@ -1363,6 +1386,7 @@ function filterServicesTable() {
     
     displayServicesTable(filtered);
 }
+
 // Close services modal with Escape key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
@@ -1417,6 +1441,7 @@ function authorizeMember() {
     
     if(document.getElementById('authorizedSection').style.display === 'block') showAuthorizedPatients();
 }
+
 // User dropdown
 document.getElementById('userInfo').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('userDropdown').classList.toggle('active'); });
 document.addEventListener('click', () => { document.getElementById('userDropdown')?.classList.remove('active'); });

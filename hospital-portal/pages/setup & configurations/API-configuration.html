@@ -1445,6 +1445,7 @@
     // INIT
     // ========================================
     document.addEventListener('DOMContentLoaded', () => {
+        if (!requireLogin()) return;
         restoreAuth();
         loadEndpoints();
         loadSettings();

@@ -396,8 +396,8 @@
             <h1 onclick="showDashboard()"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
         </div>
         <div class="user-info" id="userInfo">
-            <span class="job-title" id="jobTitle">System Administrator |</span>
-            <span class="user-name" id="userName">Phillip Z.P</span>
+            <span class="job-title" id="jobTitle"></span>
+            <span class="user-name" id="userName"></span>
             <div class="user-avatar" id="userAvatar">PZ</div>
             <div class="user-dropdown" id="userDropdown">
                 <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
@@ -465,27 +465,48 @@
     // Global variables
     let currentPage = 'dashboard';
 
-    // Initialize on load
+    // ========================================
+    // INITIALIZE ON LOAD
+    // ========================================
     document.addEventListener('DOMContentLoaded', function() {
-        // Set logged in user
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+        // ========================================
+        // LOGIN GUARD 
+        // ========================================
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+            window.location.href = './login.html';
+            throw new Error('Not authenticated — redirecting');
+        }
+
+        // ========================================
+        // USER DISPLAY 
+        // ========================================
+        const userName = sessionStorage.getItem('userName');
+        const jobTitle = sessionStorage.getItem('jobTitle');
+
+        // Sanity check: session corrupted?
+        if (!userName) {
+            sessionStorage.clear();
+            window.location.href = './login.html';
+            throw new Error('Session missing username');
+        }
+
         const userAvatar = document.getElementById('userAvatar');
         const userNameSpan = document.getElementById('userName');
         const jobTitleSpan = document.getElementById('jobTitle');
-        
-        if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+
+        if (jobTitleSpan) jobTitleSpan.textContent = (jobTitle || 'Staff') + ' |';
         if (userNameSpan) userNameSpan.textContent = userName;
         if (userAvatar) {
             const initials = userName.split(' ').map(n => n[0]).join('');
             userAvatar.textContent = initials;
         }
-        
+
         // Initialize user dropdown
         initUserDropdown();
     });
 
-    // Initialize user dropdown functionality
+    
     function initUserDropdown() {
         const userInfo = document.getElementById('userInfo');
         const userDropdown = document.getElementById('userDropdown');
@@ -497,33 +518,23 @@
             });
         }
         
-        // Close dropdown when clicking outside
         document.addEventListener('click', function() {
             if (userDropdown) userDropdown.classList.remove('active');
         });
     }
 
-    // Load page function (for card clicks)
     function loadPage(pageName) {
         currentPage = pageName;
         showNotification(`Loading ${pageName}...`, 'info');
-        
-        // You can redirect or load content here
-        // For now, just show which module was clicked
         console.log('Loading page:', pageName);
-        
-        // Example: Redirect to actual page if you have separate HTML files
-        //window.location.href = `${pageName}.html`;
     }
+
     function showDashboard() {
         currentPage = 'dashboard';
         showNotification('Dashboard loaded', 'info');
-        // Optionally refresh dashboard content
     }
 
-    // Show notification function
     function showNotification(message, type = 'success') {
-        // Check if notification container exists, create if not
         let notification = document.getElementById('notification');
         if (!notification) {
             notification = document.createElement('div');
@@ -541,9 +552,7 @@
         }, 3000);
     }
 
-    // Change Password Functions
     function openChangePassword() {
-        // Check if modal exists, create if not
         let modal = document.getElementById('passwordModal');
         if (!modal) {
             modal = createPasswordModal();
@@ -607,16 +616,13 @@
         closePasswordModal();
     }
 
-    // Sign Out
     function signOut() {
-        if (confirm('Are you sure you want to sign out?')) {
-            sessionStorage.clear();
+           sessionStorage.clear();
             showNotification('Signed out successfully', 'success');
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.href = './login.html';
             }, 1500);
         }
-    }
 
     // Expose functions to global scope
     window.loadPage = loadPage;

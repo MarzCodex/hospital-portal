@@ -32,6 +32,7 @@ hospital-portal/
 │   │   ├── referred-list.html                                      ✅ Built
 │   │   └── zhsf.html                                               ✅ Built
 │   ├── service guide/
+│   │   ├── load-items.html                                         🆕 To Be Built
 │   │   └── Translator.html                                         ✅ Built
 │   ├── setup & configurations/
 │   │   ├── API-configuration.html                                  🆕 To Be Built

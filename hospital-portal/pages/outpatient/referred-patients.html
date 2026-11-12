@@ -774,7 +774,10 @@
         // ========================================
         // START APPLICATION
         // ========================================
-        document.addEventListener('DOMContentLoaded', initPage);
+        document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    initPage();
+});
     </script>
 </body>
 </html>

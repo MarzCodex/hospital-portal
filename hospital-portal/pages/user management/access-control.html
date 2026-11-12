@@ -953,7 +953,10 @@
             loadUsers();
         }
         
-        document.addEventListener('DOMContentLoaded', loadComponents);
+        document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    initPage();
+});
 
         // ========================================
         // EXPOSE FUNCTIONS TO GLOBAL SCOPE

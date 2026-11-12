@@ -952,7 +952,10 @@
             loadUsers();
         }
         
-        document.addEventListener('DOMContentLoaded', loadComponents);
+        document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    initPage();
+});
     </script>
 </body>
 </html>

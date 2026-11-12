@@ -1120,7 +1120,10 @@ document.querySelectorAll('#dischargeModal input, #dischargeModal select, #disch
             });
         }
 
-        document.addEventListener('DOMContentLoaded', loadComponents);
+        document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    loadComponents();
+});
 
         // ========================================
         // EXPOSE FUNCTIONS TO GLOBAL SCOPE

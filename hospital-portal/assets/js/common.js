@@ -7,7 +7,8 @@
 // Automatically resolves correct relative path based on current page depth
 // ========================================
 function getBasePath() {
-    const depth = window.location.pathname.split('/').filter(Boolean).length - 1;
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const depth = Math.max(0, pathParts.length - 2);
     return depth > 0 ? '../'.repeat(depth) : './';
 }
 
@@ -41,6 +42,12 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
+        // Save the URL the user tried to visit
+        // so we can redirect them back after successful login
+        const intendedUrl = window.location.pathname + window.location.search + window.location.hash;
+        sessionStorage.setItem('redirectAfterLogin', intendedUrl);
+        
+        // Redirect to login
         window.location.href = getBasePath() + 'login.html';
         return false;
     }
@@ -237,11 +244,8 @@ function getCurrentUser() {
 }
 
 function signOut() {
-    if (!confirm('Are you sure you want to sign out?')) return;
-
     sessionStorage.clear();
     showNotification('Signed out successfully', 'success');
-
     setTimeout(() => {
         window.location.href = getBasePath() + 'login.html';
     }, 1500);

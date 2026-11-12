@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Hospital Service Portal</title>
+    <title>Hospital Service Portal | Sign In</title>
     <style>
+        /* ========================================
+           ROOT VARIABLES
+           ======================================== */
         :root {
             --border: #ddd;
             --primary: #3498db;
@@ -17,164 +20,622 @@
             --light: #f5f7fa;
             --gray: #7f8c8d;
             --white: #ffffff;
+            
+            /* Left panel */
+            --panel-dark-1: #1a252f;
+            --panel-dark-2: #2c3e50;
+            --panel-accent: #3498db;
         }
-        
+
+        /* ========================================
+           RESET & BASE
+           ======================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        body {
-            background: linear-gradient(135deg, var(--light) 0%, #e8f0fe 100%);
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
+
+        html, body {
             min-height: 100vh;
         }
-        
-        .container {
-            max-width: 50%;
-            margin: 50px auto;
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 2%;
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.5s ease;
+
+        body {
+            background: var(--light);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        
-        @keyframes fadeIn {
+
+        /* ========================================
+           MAIN CONTAINER — SPLIT SCREEN
+           ======================================== */
+        .login-wrapper {
+            display: flex;
+            min-height: 100vh;
+            animation: pageFadeIn 0.6s ease;
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ========================================
+           LEFT PANEL — BRANDING (Glassmorphism)
+           ======================================== */
+        .brand-panel {
+            flex: 0 0 50%;
+            background: linear-gradient(135deg, var(--panel-dark-1) 0%, var(--panel-dark-2) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 50px;
+            color: white;
+        }
+
+        /* Subtle geometric pattern overlay */
+        .brand-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(52, 152, 219, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(41, 128, 185, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(52, 152, 219, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Subtle diagonal lines pattern */
+        .brand-panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 40px,
+                rgba(255, 255, 255, 0.015) 40px,
+                rgba(255, 255, 255, 0.015) 41px
+            );
+            pointer-events: none;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            width: 100%;
+            animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateX(-30px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
         }
-        
-        h1 {
-            color: var(--secondary);
-            text-align: center;
+
+        /* ---- Logo & Title ---- */
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.4);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 28px;
-            border-bottom: 3px solid var(--primary);
-            display: inline-block;
-            margin: 0 auto 20px;
-            padding-bottom: 0px;
+            color: var(--panel-accent);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(52, 152, 219, 0.2);
         }
-        
-        h2 {
-            color: var(--secondary);
-            text-align: center;
+
+        .brand-logo-text h1 {
             font-size: 22px;
-            margin-bottom: 0px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-logo-text span {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
-        
-        .subtitle {
-            text-align: center;
-            color: var(--gray);
+
+        /* ---- Tagline ---- */
+        .brand-tagline {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.35;
+            color: white;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 45px;
+            line-height: 1.6;
+        }
+
+        /* ---- Feature Highlights (Rotating) ---- */
+        .feature-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 50px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s ease;
+            opacity: 0.5;
+        }
+
+        .feature-item.active {
+            background: rgba(52, 152, 219, 0.12);
+            border-color: rgba(52, 152, 219, 0.35);
+            opacity: 1;
+            box-shadow: 0 8px 24px rgba(52, 152, 219, 0.15);
+            transform: translateX(4px);
+        }
+
+        .feature-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--panel-accent);
+        }
+
+        .feature-item.active .feature-icon {
+            background: var(--panel-accent);
+            color: white;
+        }
+
+        .feature-text strong {
+            display: block;
             font-size: 14px;
-            margin-bottom: 15px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2px;
         }
-        
-        /* Login Form Styles */
-        #login_form {
+
+        .feature-text span {
+            font-size: 12.5px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+        }
+
+        /* ---- Version Info ---- */
+        .brand-footer {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-footer p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-footer i {
+            color: rgba(52, 152, 219, 0.6);
+            font-size: 11px;
+        }
+
+        /* ========================================
+           RIGHT PANEL — LOGIN FORM
+           ======================================== */
+        .login-panel {
+            flex: 1;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .login-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 100% 0%, rgba(52, 152, 219, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(52, 152, 219, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .login-card {
             width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile logo (visible only on mobile) */
+        .mobile-brand {
+            display: none;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mobile-brand-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 24px rgba(52, 152, 219, 0.3);
+        }
+
+        .mobile-brand h1 {
+            font-size: 20px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* ---- Welcome Section ---- */
+        .login-welcome {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .login-welcome .wave {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: wave 2s ease-in-out infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60%, 100% { transform: rotate(0deg); }
+        }
+
+        .login-welcome h2 {
+            font-size: 26px;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.4px;
+        }
+
+        .login-welcome p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        /* ---- Form ---- */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
         .form-group {
-            margin-bottom: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--secondary);
+            letter-spacing: 0.2px;
+        }
+
+        .input-wrapper {
             position: relative;
         }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--secondary);
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .form-group input {
+
+        .input-wrapper input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 13px 45px 13px 45px;
+            border: 1.5px solid #e0e7ee;
+            border-radius: 10px;
+            font-size: 14.5px;
             transition: all 0.3s ease;
-            background-color: var(--white);
+            background: white;
+            color: var(--secondary);
         }
-        
-        .form-group input:focus {
+
+        .input-wrapper input::placeholder {
+            color: #b0b8c0;
+        }
+
+        .input-wrapper input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
         }
-        
-        .form-group input.error {
+
+        .input-wrapper input.error {
             border-color: var(--danger);
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
         }
-        
-        .error-message {
-            color: var(--danger);
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
+
+        /* Input icons (left) */
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0b8c0;
+            font-size: 16px;
+            transition: color 0.3s;
+            pointer-events: none;
         }
-        
-        .password-wrapper {
-            position: relative;
+
+        .input-wrapper input:focus ~ .input-icon {
+            color: var(--primary);
         }
-        
+
+        /* Password toggle (right) */
         .toggle-password {
             position: absolute;
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: var(--gray);
-            font-size: 18px;
+            color: #b0b8c0;
+            font-size: 15px;
+            transition: color 0.2s;
             user-select: none;
+            padding: 4px;
+            border-radius: 4px;
         }
-        
+
         .toggle-password:hover {
             color: var(--primary);
+            background: rgba(52, 152, 219, 0.08);
         }
-        
+
+        .error-message {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 2px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error-message::before {
+            content: '⚠';
+            font-size: 11px;
+        }
+
+        /* ---- Options Row ---- */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-top: -4px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* ---- Login Button ---- */
         .btn-login {
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 8px 24px rgba(52, 152, 219, 0.35);
         }
-        
+
         .btn-login:active {
             transform: translateY(0);
         }
-        
+
         .btn-login:disabled {
             background: var(--gray);
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
-        
+
+        .btn-login:disabled::before {
+            display: none;
+        }
+
+        /* ---- Footer ---- */
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e7ee;
+        }
+
+        .login-footer p {
+            font-size: 11.5px;
+            color: var(--gray);
+            margin-bottom: 3px;
+        }
+
+        .login-footer .version {
+            font-size: 10.5px;
+            color: #b0b8c0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        /* ========================================
+        NETWORK STATUS INDICATOR
+        ======================================== */
+        #network-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        #network-status i {
+            font-size: 8px;
+        }
+
+        #network-status i.fa-spin {
+            font-size: 10px;
+        }
+
+        /* Online state */
+        #network-status.status-online {
+            background: rgba(39, 174, 96, 0.15);
+            color: #27ae60;
+        }
+
+        /* Offline state */
+        #network-status.status-offline {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+
+        /* Checking / reconnecting state */
+        #network-status.status-checking {
+            background: rgba(243, 156, 18, 0.15);
+            color: #f39c12;
+        }
+
+        /* Optional pulse animation for offline state */
+        #network-status.status-offline {
+            animation: networkPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes networkPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        /* ========================================
+           LOADING SPINNER
+           ======================================== */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ========================================
+           NOTIFICATION (unchanged from original)
+           ======================================== */
         .notification {
             position: fixed;
             top: 20px;
@@ -189,318 +650,552 @@
             animation: slideIn 0.3s ease-out;
             max-width: 350px;
         }
-        
-        .notification.success {
-            background-color: var(--success);
-        }
-        
-        .notification.error {
-            background-color: var(--danger);
-        }
-        
-        .notification.info {
-            background-color: var(--primary);
-        }
-        
+
+        .notification.success { background-color: var(--success); }
+        .notification.error { background-color: var(--danger); }
+        .notification.info { background-color: var(--primary); }
+
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 992px) {
+            .brand-panel {
+                flex: 0 0 45%;
+                padding: 40px 30px;
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+            .brand-tagline {
+                font-size: 22px;
             }
         }
-        
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: var(--gray);
-            font-size: 12px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        
-        /* Loading spinner */
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Responsive */
+
+        /* Mobile: hide left panel, show mobile brand on right */
         @media (max-width: 768px) {
-            .container {
-                max-width: 95%;
-                margin: 20px auto;
-                padding: 25px;
+            .brand-panel {
+                display: none;
             }
-            
-            h1 {
-                font-size: 24px;
+            .login-panel {
+                flex: 1;
+                padding: 30px 20px;
             }
-            
-            h2 {
-                font-size: 20px;
+            .mobile-brand {
+                display: block;
+            }
+            .login-welcome h2 {
+                font-size: 22px;
+            }
+            .login-welcome .wave {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .form-options {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
-        
-        <div id="login_form">
-            <h2><strong>🔐 Login</h2></strong>
-            <div class="subtitle">Enter your credentials to access the Hospital Services Portal</div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username / Hospital Number</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username or Hospital number" autocomplete="off">
-                    <div class="error-message" id="usernameError">Please enter your username</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="password" name="password" placeholder="Enter your password">
-                        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+    <div class="login-wrapper">
+        <!-- ========================================
+             LEFT PANEL — BRANDING
+             ======================================== -->
+        <div class="brand-panel">
+            <div class="brand-content">
+                <!-- Logo -->
+                <div class="brand-logo">
+                    <div class="brand-logo-icon">
+                        <i class="fa-solid fa-hospital"></i>
                     </div>
-                    <div class="error-message" id="passwordError">Please enter your password</div>
+                    <div class="brand-logo-text">
+                        <h1>Hospital Portal</h1>
+                        <span>Service Management</span>
+                    </div>
                 </div>
-                
-                <button type="submit" class="btn-login" id="loginBtn">Login</button>
-            </form>
-            
-        <div class="footer">
-            <p>Hospital Service Portal v4.0 | &copy; Powered by Phill.</p>
-            <p><i>Note: Website runs on Local Server.</i></p>
-        </div>
-        </div>
-        
 
+                <!-- Tagline -->
+                <div class="brand-tagline">
+                    Unified healthcare management for modern Tanzania
+                </div>
+                <div class="brand-subtitle">
+                    Streamline patient care, claims, and compliance — all in one secure platform.
+                </div>
+
+                <!-- Feature Highlights (auto-rotating) -->
+                <div class="feature-highlights" id="featureHighlights">
+                    <div class="feature-item active">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="feature-text">
+                            <strong>Secure Patient Data Access</strong>
+                            <span>Role-based access with full audit trails</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="feature-text">
+                            <strong>Real-Time Claims Processing</strong>
+                            <span>Track submissions, approvals, and payments live</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <div class="feature-text">
+                            <strong>Integrated Care Coordination</strong>
+                            <span>Seamless referrals across facilities</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-file-shield"></i>
+                        </div>
+                        <div class="feature-text">
+                            <strong>Compliance-Ready Records</strong>
+                            <span>Insurances verified workflows</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Version Info -->
+                <div class="brand-footer">
+                    <p><i class="fa-solid fa-code-branch"></i> Version 4.0.1</p>
+                    <p><i class="fa-solid fa-bolt"></i> Powered By Phill.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+             RIGHT PANEL — LOGIN FORM
+             ======================================== -->
+        <div class="login-panel">
+            <div class="login-card">
+                <!-- Mobile-only brand -->
+                <div class="mobile-brand">
+                    <div class="mobile-brand-icon">
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+                    <h1>Hospital Service Portal</h1>
+                </div>
+
+                <!-- Welcome -->
+                <div class="login-welcome">
+                    <h2>Welcome</h2>
+                    <p>Sign in to continue.</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="login-form">
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username">Username / Hospital Number</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                placeholder="Username / Hospital Number" 
+                                autocomplete="username"
+                            >
+                            <i class="fa-solid fa-user input-icon"></i>
+                        </div>
+                        <div class="error-message" id="usernameError">Please enter your username</div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Password"
+                                autocomplete="current-password"
+                            >
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <span class="toggle-password" onclick="togglePassword()" title="Show password">
+                                <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                            </span>
+                        </div>
+                        <div class="error-message" id="passwordError">Please enter your password</div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="form-options">
+                        <a href="#" class="forgot-password" onclick="showNotification('Contact your system administrator to reset your password', 'info'); return false;">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn-login" id="loginBtn">
+                        Sign In
+                    </button>
+                </form>
+
+                <!-- Footer -->
+                <div class="login-footer">
+                    <p>Hospital Service Portal &copy; 2025</p>
+                    <p>For support, contact <a href="mailto:philipaman25@hotmail.com" target="_blank">support@hospitalportal.com</a></p>
+                    <p>Runs on Local Server.</p>
+                    <p id="network-status" class="status-checking">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <span class="status-text">Checking...</span>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    
+
+    <!-- Notification -->
     <div class="notification" id="notification"></div>
-<script>
-    // ========================================
-    // SHOW NOTIFICATION
-    // ========================================
-    function showNotification(message, type = 'info', duration = 3000) {
-        const notification = document.getElementById('notification');
-        notification.textContent = message;
-        notification.className = `notification ${type}`;
-        notification.style.display = 'block';
 
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, duration);
-    }
+    <script>
+        // ========================================
+        // SHOW NOTIFICATION
+        // ========================================
+        function showNotification(message, type = 'info', duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
 
-    // ========================================
-    // PASSWORD TOGGLE
-    // ========================================
-    function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const toggleBtn = document.querySelector('.toggle-password');
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
 
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleBtn.textContent = '🙈';
+        // ========================================
+        // PASSWORD TOGGLE
+        // ========================================
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // ========================================
+        // FORM VALIDATION
+        // ========================================
+        function validateForm(username, password) {
+            let isValid = true;
+
+            document.getElementById('usernameError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+            document.getElementById('username').classList.remove('error');
+            document.getElementById('password').classList.remove('error');
+
+            if (!username.trim()) {
+                document.getElementById('usernameError').style.display = 'flex';
+                document.getElementById('username').classList.add('error');
+                isValid = false;
+            }
+
+            if (!password.trim()) {
+                document.getElementById('passwordError').style.display = 'flex';
+                document.getElementById('password').classList.add('error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // ========================================
+        // AUTHENTICATE VIA users.json
+        // ========================================
+        async function authenticate(username, password) {
+            try {
+                // login.html is at ROOT level → ./data/users.json
+                const response = await fetch('./data/users.json');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status} — Could not load users.json`);
+                }
+
+                const users = await response.json();
+
+                if (!Array.isArray(users)) {
+                    throw new Error('users.json is not an array');
+                }
+
+                // Case-insensitive username + exact password match
+                const matchedUser = users.find(user =>
+                    user.username.toLowerCase() === username.toLowerCase() &&
+                    user.password === password
+                );
+
+                if (!matchedUser) {
+                    return { success: false, reason: 'invalid' };
+                }
+
+                // Block inactive accounts
+                if (matchedUser.status !== 'Active') {
+                    return { success: false, reason: 'inactive', user: matchedUser };
+                }
+
+                return { success: true, user: matchedUser };
+
+            } catch (error) {
+                console.error('Authentication error:', error);
+                return { success: false, reason: 'error', error: error.message };
+            }
+        }
+
+        // ========================================
+        // REDIRECT HELPER (respects intended destination)
+        // ========================================
+        function redirectToMainApp() {
+            const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+            sessionStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectUrl || 'index.html';
+        }
+
+        // ========================================
+        // FORM SUBMISSION
+        // ========================================
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Client-side validation
+            if (!validateForm(username, password)) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+
+            // Show loading state
+            const originalBtnText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<span class="loading-spinner"></span> Signing in...';
+            loginBtn.disabled = true;
+
+            // Authenticate against users.json
+            const result = await authenticate(username, password);
+
+            if (result.success) {
+                const user = result.user;
+
+                showNotification(`Welcome back, ${user.fullName}! Redirecting...`, 'success');
+
+                // Store complete user info
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('userName', user.fullName || 'User');
+                sessionStorage.setItem('jobTitle', user.role || 'Staff');
+                sessionStorage.setItem('loginUsername', user.username);
+                sessionStorage.setItem('userId', user.id);
+                sessionStorage.setItem('userRole', user.role);
+                sessionStorage.setItem('userDepartment', user.department || '');
+                sessionStorage.setItem('userEmail', user.email || '');
+                sessionStorage.setItem('employeeId', user.employeeId || '');
+
+                setTimeout(() => {
+                    redirectToMainApp();
+                }, 1500);
+
+            } else {
+                // Handle failure cases
+                let errorMsg = 'Invalid username or password. Please try again.';
+
+                if (result.reason === 'inactive') {
+                    errorMsg = `Account is ${result.user.status}. Please contact your administrator.`;
+                } else if (result.reason === 'error') {
+                    errorMsg = 'Login failed: Unable to load user data. Please try again later.';
+                }
+
+                showNotification(errorMsg, 'error');
+                loginBtn.innerHTML = originalBtnText;
+                loginBtn.disabled = false;
+
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+
+        // ========================================
+        // ENTER KEY SUPPORT
+        // ========================================
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // ========================================
+        // AUTO-REDIRECT IF ALREADY LOGGED IN
+        // ========================================
+        if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            showNotification('Already logged in. Redirecting...', 'info');
+            setTimeout(() => {
+                redirectToMainApp();
+            }, 1000);
+        }
+
+        // ========================================
+        // CLEAR ERRORS ON TYPING
+        // ========================================
+        document.getElementById('username').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('usernameError').style.display = 'none';
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('passwordError').style.display = 'none';
+        });
+
+        // ========================================
+        // FEATURE HIGHLIGHTS AUTO-ROTATION
+        // ========================================
+        (function initFeatureRotation() {
+            const features = document.querySelectorAll('.feature-item');
+            if (features.length === 0) return;
+
+            let currentIndex = 0;
+
+            // Don't rotate if user prefers reduced motion
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                features.forEach((f, i) => f.classList.toggle('active', i === 0));
+                return;
+            }
+
+            setInterval(() => {
+                features[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % features.length;
+                features[currentIndex].classList.add('active');
+            }, 3500);
+        })();
+        // ========================================
+// NETWORK STATUS MONITOR (TRUE INTERNET CHECK)
+// ========================================
+(function initNetworkStatus() {
+    const statusEl = document.getElementById('network-status');
+    if (!statusEl) return;
+
+    // External URL to test real internet connectivity
+    // Using Google's dedicated connectivity endpoint (tiny 204 response)
+    const PING_URL = 'https://www.gstatic.com/generate_204';
+    const PING_TIMEOUT = 5000;
+
+    let isCurrentlyChecking = false;
+
+    // ---- Render helper ----
+    function renderStatus(state, message) {
+        statusEl.classList.remove('status-online', 'status-offline', 'status-checking');
+        statusEl.classList.add(`status-${state}`);
+
+        let iconHTML = '';
+        if (state === 'online') {
+            iconHTML = '<i class="fa-solid fa-circle"></i>';
+        } else if (state === 'offline') {
+            iconHTML = '<i class="fa-solid fa-circle"></i>';
+        } else if (state === 'checking') {
+            iconHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        }
+
+        const textEl = statusEl.querySelector('.status-text');
+        if (textEl) {
+            statusEl.innerHTML = `${iconHTML}<span class="status-text">${message}</span>`;
         } else {
-            passwordInput.type = 'password';
-            toggleBtn.textContent = '👁️';
-        }
-    }
-
-    // ========================================
-    // FORM VALIDATION
-    // ========================================
-    function validateForm(username, password) {
-        let isValid = true;
-
-        document.getElementById('usernameError').style.display = 'none';
-        document.getElementById('passwordError').style.display = 'none';
-        document.getElementById('username').classList.remove('error');
-        document.getElementById('password').classList.remove('error');
-
-        if (!username.trim()) {
-            document.getElementById('usernameError').style.display = 'block';
-            document.getElementById('username').classList.add('error');
-            isValid = false;
+            statusEl.innerHTML = `${iconHTML}${message}`;
         }
 
-        if (!password.trim()) {
-            document.getElementById('passwordError').style.display = 'block';
-            document.getElementById('password').classList.add('error');
-            isValid = false;
-        }
-
-        return isValid;
+        statusEl.setAttribute('aria-live', 'polite');
+        statusEl.setAttribute('title', `Network: ${message}`);
     }
 
-    // ========================================
-    // AUTHENTICATE VIA users.json
-    // ========================================
-    async function authenticate(username, password) {
-        try {
-            // login.html is at ROOT level → ./data/users.json
-            const response = await fetch('./data/users.json');
+    // ---- TRUE internet connectivity check ----
+    async function checkConnectivity() {
+        if (isCurrentlyChecking) return;
+        isCurrentlyChecking = true;
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status} — Could not load users.json`);
-            }
-
-            const users = await response.json();
-
-            if (!Array.isArray(users)) {
-                throw new Error('users.json is not an array');
-            }
-
-            // Case-insensitive username + exact password match
-            const matchedUser = users.find(user =>
-                user.username.toLowerCase() === username.toLowerCase() &&
-                user.password === password
-            );
-
-            if (!matchedUser) {
-                return { success: false, reason: 'invalid' };
-            }
-
-            // ✅ NEW: Block inactive accounts
-            if (matchedUser.status !== 'Active') {
-                return { success: false, reason: 'inactive', user: matchedUser };
-            }
-
-            return { success: true, user: matchedUser };
-
-        } catch (error) {
-            console.error('Authentication error:', error);
-            return { success: false, reason: 'error', error: error.message };
-        }
-    }
-
-    // ========================================
-    // REDIRECT HELPER
-    // ========================================
-    function redirectToMainApp() {
-        window.location.href = 'index.html';
-    }
-
-    // ========================================
-    // FORM SUBMISSION
-    // ========================================
-    const loginForm = document.getElementById('loginForm');
-    const loginBtn = document.getElementById('loginBtn');
-
-    loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-
-        // Client-side validation
-        if (!validateForm(username, password)) {
-            showNotification('Please fill in all required fields', 'error');
+        // Fast fail: no network adapter
+        if (!navigator.onLine) {
+            renderStatus('offline', 'Offline');
+            isCurrentlyChecking = false;
             return;
         }
 
-        // Show loading state
-        const originalBtnText = loginBtn.innerHTML;
-        loginBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
-        loginBtn.disabled = true;
+        // Real check: try to reach external server
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), PING_TIMEOUT);
 
-        // Authenticate against users.json
-        const result = await authenticate(username, password);
+            await fetch(PING_URL, {
+                method: 'GET',
+                mode: 'no-cors',        // Required for cross-origin check
+                cache: 'no-store',
+                signal: controller.signal
+            });
 
-        if (result.success) {
-            const user = result.user;
+            clearTimeout(timeoutId);
+            renderStatus('online', 'Online');
 
-            showNotification(`Welcome back, ${user.fullName}! Redirecting...`, 'success');
-
-            // ──────────────────────────────────
-            // Store complete user info
-            // ──────────────────────────────────
-            sessionStorage.setItem('isLoggedIn', 'true');
-            sessionStorage.setItem('userName', user.fullName || 'User');
-            sessionStorage.setItem('jobTitle', user.role || 'Staff');
-            sessionStorage.setItem('loginUsername', user.username);
-            sessionStorage.setItem('userId', user.id);
-            sessionStorage.setItem('userRole', user.role);
-            sessionStorage.setItem('userDepartment', user.department || '');
-            sessionStorage.setItem('userEmail', user.email || '');
-            sessionStorage.setItem('employeeId', user.employeeId || '');
-
-            setTimeout(() => {
-                redirectToMainApp();
-            }, 1500);
-
-        } else {
-            // ──────────────────────────────────
-            // Handle failure cases
-            // ──────────────────────────────────
-            let errorMsg = 'Invalid username or password. Please try again.';
-
-            if (result.reason === 'inactive') {
-                errorMsg = `Account is ${result.user.status}. Please contact your administrator.`;
-            } else if (result.reason === 'error') {
-                errorMsg = 'Login failed: Unable to load user data. Please try again later.';
-            }
-
-            showNotification(errorMsg, 'error');
-            loginBtn.innerHTML = originalBtnText;
-            loginBtn.disabled = false;
-
-            document.getElementById('password').value = '';
-            document.getElementById('password').focus();
+        } catch (error) {
+            renderStatus('offline', 'Offline');
+        } finally {
+            isCurrentlyChecking = false;
         }
-    });
-
-    // ========================================
-    // ENTER KEY SUPPORT
-    // ========================================
-    document.getElementById('password').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            loginForm.dispatchEvent(new Event('submit'));
-        }
-    });
-
-    // ========================================
-    // AUTO-REDIRECT IF ALREADY LOGGED IN
-    // ========================================
-    if (sessionStorage.getItem('isLoggedIn') === 'true') {
-        showNotification('Already logged in. Redirecting...', 'info');
-        setTimeout(() => {
-            redirectToMainApp();
-        }, 1000);
     }
 
-    // ========================================
-    // CLEAR ERRORS ON TYPING
-    // ========================================
-    document.getElementById('username').addEventListener('input', function() {
-        this.classList.remove('error');
-        document.getElementById('usernameError').style.display = 'none';
+    // ---- Browser events ----
+    window.addEventListener('online', () => {
+        renderStatus('checking', 'Reconnecting...');
+        setTimeout(checkConnectivity, 800);
     });
 
-    document.getElementById('password').addEventListener('input', function() {
-        this.classList.remove('error');
-        document.getElementById('passwordError').style.display = 'none';
+    window.addEventListener('offline', () => {
+        renderStatus('offline', 'Offline');
     });
-</script>
+
+    // ---- Periodic recheck ----
+    setInterval(checkConnectivity, 30000);
+
+    // ---- Recheck on tab visible ----
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) checkConnectivity();
+    });
+
+    // ---- Initial check ----
+    renderStatus('checking', 'Checking...');
+    checkConnectivity();
+})();
+    </script>
 </body>
 </html>

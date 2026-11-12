@@ -253,7 +253,10 @@
         });
     }
     
-    document.addEventListener('DOMContentLoaded', loadComponents);
+document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    loadComponents();
+});
 </script>
 </body>
 </html>

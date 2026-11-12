@@ -173,7 +173,10 @@
         }
         
         // Load components when page loads
-        document.addEventListener('DOMContentLoaded', loadComponents);
+        document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    loadComponents();
+});
         
         // Expose functions globally
         window.setPageContent = setPageContent;

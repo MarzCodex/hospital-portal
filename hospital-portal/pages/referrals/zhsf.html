@@ -865,7 +865,10 @@
             loadAuthorizations();
         }
 
-        document.addEventListener('DOMContentLoaded', loadComponents);
+        document.addEventListener('DOMContentLoaded', () => {
+    if (!requireLogin()) return;
+    initPage();
+});
 
         // ========================================
         // ADD getReferrals() to DataService in common.js
