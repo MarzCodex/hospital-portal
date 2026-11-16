@@ -42,7 +42,7 @@
             margin-right: 10px;
         }
 
-        .page-header .record-count {
+        .record-count {
             font-size: 13px;
             color: var(--gray);
             background: var(--light);
@@ -51,9 +51,7 @@
             border: 1px solid var(--border);
         }
 
-        /* ======================================== */
-        /* FILTER BAR                               */
-        /* ======================================== */
+        /* Filter Bar */
         .filters-bar {
             display: flex;
             flex-wrap: wrap;
@@ -83,13 +81,8 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
-        .filters-bar input[type="text"] {
-            width: 200px;
-        }
-
-        .filters-bar input[type="date"] {
-            width: 150px;
-        }
+        .filters-bar input[type="text"] { width: 200px; }
+        .filters-bar input[type="date"] { width: 150px; }
 
         .filters-bar label {
             font-size: 13px;
@@ -117,18 +110,13 @@
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
 
-        .search-btn.reset-btn {
-            background: #6c757d;
-        }
-
+        .search-btn.reset-btn { background: #6c757d; }
         .search-btn.reset-btn:hover {
             background: #5a6268;
             box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
         }
 
-        /* ======================================== */
-        /* TABLE                                    */
-        /* ======================================== */
+        /* Table */
         .table-wrapper {
             overflow-x: auto;
             border-radius: 8px;
@@ -179,34 +167,24 @@
             vertical-align: middle;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray);
-            font-style: italic;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 15px;
-            color: #bdc3c7;
-        }
-
-        /* ======================================== */
-        /* LOADING STATE                            */
-        /* ======================================== */
+        .empty-state,
         .loading-state {
             text-align: center;
             padding: 40px;
             color: var(--gray);
         }
 
+        .empty-state i,
+        .loading-state i {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+
         .loading-state i {
             font-size: 32px;
             animation: spin 1s linear infinite;
-            margin-bottom: 10px;
-            display: block;
         }
 
         @keyframes spin {
@@ -214,9 +192,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ======================================== */
-        /* VISIT TYPE BADGE                         */
-        /* ======================================== */
+        /* Visit Type Badge */
         .visit-badge {
             display: inline-block;
             padding: 3px 10px;
@@ -225,157 +201,31 @@
             font-weight: 600;
         }
 
-        .visit-normal {
-            background: #d4edda;
-            color: #155724;
-        }
+        .visit-normal { background: #d4edda; color: #155724; }
+        .visit-emergency { background: #f8d7da; color: #721c24; }
+        .visit-referral { background: #cce5ff; color: #004085; }
+        .visit-followup { background: #fff3cd; color: #856404; }
+        .visit-newcase { background: #d1ecf1; color: #0c5460; }
 
-        .visit-emergency {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .visit-referral {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .visit-followup {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .visit-newcase {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-
-        /* ======================================== */
-        /* RESPONSIVE                               */
-        /* ======================================== */
         @media (max-width: 768px) {
-            .page-container {
-                margin: 10px;
-                padding: 15px;
-            }
-            .filters-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
+            .page-container { margin: 10px; padding: 15px; }
+            .filters-bar { flex-direction: column; align-items: stretch; }
             .filters-bar input[type="text"],
-            .filters-bar input[type="date"] {
-                width: 100%;
-            }
-            .search-btn {
-                justify-content: center;
-            }
+            .filters-bar input[type="date"] { width: 100%; }
+            .search-btn { justify-content: center; }
             .patient-table th,
-            .patient-table td {
-                padding: 8px;
-                font-size: 12px;
-            }
+            .patient-table td { padding: 8px; font-size: 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <button class="sidebar-close" id="closeSidebarBtn">
-                <i class="fas fa-times"></i>
-            </button>
-            <i class="fas fa-hospital-user" style="font-size: 40px;"></i>
-            <h3>Hospital Portal</h3>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="../../index.html" onclick="closeSidebarOnMobile()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
-                <ul class="submenu">
-                    <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
-                    <li class="has-submenu">
-                        <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-check-circle"></i> Service Approvals</a>
-                        <ul class="submenu">
-                            <li><a href="../outpatient/request-approval.html" onclick="closeSidebarOnMobile()">Request Approval</a></li>
-                            <li><a href="../outpatient/issued-approvals.html" onclick="closeSidebarOnMobile()">Issued Approval Services</a></li>
-                            <li><a href="../outpatient/approvals-before-2021.html" onclick="closeSidebarOnMobile()">Approvals before August 2021</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-procedures"></i> Inpatient Services</a>
-                <ul class="submenu">
-                    <li><a href="../inpatient/admission.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-bed"></i>Patient Admission</a></li>
-                    <li><a href="../inpatient/discharge.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-person-walking"></i>Discharge/Transfer</a></li>
-                    <li><a href="../inpatient/admitted-list.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Admitted Patients List</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-exchange-alt"></i> Patient Referrals</a>
-                <ul class="submenu">
-                    <li><a href="../referrals/referral-request.html" onclick="closeSidebarOnMobile()">Referral Request</a></li>
-                    <li><a href="../referrals/zhsf.html" onclick="closeSidebarOnMobile()">ZHSF Referral</a></li>
-                    <li><a href="../referrals/referred-list.html" onclick="closeSidebarOnMobile()">Referred Patients</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-file-invoice-dollar"></i> Claims Management</a>
-                <ul class="submenu">
-                    <li><a href="../claims/bill Summary.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-clipboard-list"></i>Bill Summary</a></li>
-                    <li><a href="../claims/Total-Claims-Submitted.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-up-right-dots"></i>Total Claims Submitted</a></li>
-                    <li><a href="../claims/Previous Claims.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-arrow-rotate-left"></i>Previous Claims</a></li>
-                    <li><a href="../claims/Claim Reconciliation.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-scale-balanced"></i>Claim Reconciliation</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Service Guide</a>
-                <ul class="submenu">
-                    <li><a href="../service guide/Translator.html#tab=price" onclick="closeSidebarOnMobile()"><i class="fas fa-tags"></i> Services Price List</a></li>
-                    <li><a href="../service guide/Translator.html#tab=visits" onclick="closeSidebarOnMobile()"><i class="fas fa-calendar-alt"></i> Visit Types Guide</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-users"></i> User Management</a>
-                <ul class="submenu">
-                    <li><a href="../user management/user-management.html" onclick="closeSidebarOnMobile()"><i class="fas fa-user"></i> Users</a></li>
-                    <li><a href="../user management/access-control.html" onclick="closeSidebarOnMobile()"><i class="fas fa-lock"></i> Access Control</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)">
-                    <i class="fas fa-gear"></i> Setup & Configurations
-                </a>
-                <ul class="submenu">
-                    <li><a href="../setup & configurations/System-settings.html" onclick="closeSidebarOnMobile()"><i class="fas fa-cogs"></i> System Settings</a></li>
-                    <li><a href="../setup & configurations/API-configuration.html" onclick="closeSidebarOnMobile()"><i class="fas fa-mouse-pointer"></i> Buttons Configurations</a></li>
-                    <li><a href="../setup & configurations/Other-configuration.html" onclick="closeSidebarOnMobile()"><i class="fas fa-wrench"></i> Other Configurations</a></li>
-                    <li><a href="../setup & configurations/System Guide.html" onclick="closeSidebarOnMobile()"><i class="fas fa-book"></i> System Guide</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div class="top-bar-left">
-                <div class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h1 onclick="window.location.href='../../index.html'"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
-            </div>
-            <div class="user-info" id="userInfo">
-                <span class="job-title" id="jobTitle">System Administrator |</span>
-                <span class="user-name" id="userName">Phillip Z.P</span>
-                <div class="user-avatar" id="userAvatar">PZ</div>
-                <div class="user-dropdown" id="userDropdown">
-                    <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
-                    <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-                </div>
-            </div>
-        </div>
+        <!-- Header Container -->
+        <div id="header-container"></div>
 
         <!-- Secondary Navigation -->
         <div class="secondary-nav">
@@ -387,7 +237,6 @@
 
         <!-- Page Content -->
         <div class="page-container">
-            <!-- Page Header -->
             <div class="page-header">
                 <h2>
                     <i class="fas fa-history"></i>
@@ -424,7 +273,7 @@
                     </thead>
                     <tbody id="lastVisitsBody">
                         <tr>
-                            <td colspan="4" class="empty-state">
+                            <td colspan="6" class="empty-state">
                                 <i class="fas fa-history"></i>
                                 Enter card number and date range to search visits
                             </td>
@@ -435,14 +284,7 @@
         </div>
 
         <!-- Footer Container -->
-        <div id="footer-container">
-            <footer>
-                <div class="footer-left"><i class="fa-solid fa-desktop"></i><span title="System Host">ICT-UNIT</span></div>
-                <div class="footer-divider"></div>
-                <div class="footer-badges"><span class="badge" title="Server Status"><i class="fa-solid fa-server"></i> : Online</span><div class="footer-divider"></div><span class="badge"><i>Note: Website runs on Local Server.</i></span></div>
-                <div class="footer-right"><i class="fa-solid fa-bolt"></i><span>Hospital Service Portal v4.0 | &copy; Powered by Phill.</span></div>
-            </footer>
-        </div>
+        <div id="footer-container"></div>
     </div>
 
     <!-- Modals Container -->
@@ -454,33 +296,66 @@
     <script src="../../assets/js/common.js"></script>
     <script>
         // ========================================
-        // NOTE: No global variable redeclarations
-        // (authorizedMembers, currentVerifiedMember, etc. come from common.js)
+        // AUTO-SEARCH AS USER TYPES CARD NUMBER
         // ========================================
+        let autoSearchTimer = null;
 
-        // ========================================
-        // GET CURRENT USER
-        // ========================================
-        function getCurrentUser() {
-            const userNameSpan = document.getElementById('userName');
-            return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
+        function setupAutoSearch() {
+            const cardInput = document.getElementById('patientSearch');
+            if (!cardInput) return;
+            
+            cardInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                
+                // Clear pending search
+                if (autoSearchTimer) {
+                    clearTimeout(autoSearchTimer);
+                }
+                
+                // Don't search if too short
+                if (value.length < 4) {
+                    return;
+                }
+                
+                // Debounce: fire 500ms after last keystroke
+                autoSearchTimer = setTimeout(() => {
+                    searchPatientLastVisits();
+                }, 500);
+            });
         }
-
         // ========================================
-        // FORMAT VISIT TYPE BADGE
+        // VISIT TYPE BADGE
         // ========================================
         function getVisitBadge(visitType) {
-            if (!visitType) return '<span class="visit-badge">N/A</span>';
-            
+            if (!visitType) return '<span class="visit-badge visit-normal">N/A</span>';
+
             const type = visitType.toLowerCase();
             let className = 'visit-normal';
-            
+
             if (type.includes('emergency')) className = 'visit-emergency';
             else if (type.includes('referral')) className = 'visit-referral';
             else if (type.includes('follow')) className = 'visit-followup';
             else if (type.includes('new')) className = 'visit-newcase';
-            
+
             return `<span class="visit-badge ${className}">${visitType}</span>`;
+        }
+
+        // ========================================
+        // FORMAT DATE
+        // ========================================
+        function formatVisitDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return dateStr;
+                return d.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } catch {
+                return dateStr;
+            }
         }
 
         // ========================================
@@ -489,13 +364,12 @@
         function displayVisits(visits) {
             const tbody = document.getElementById('lastVisitsBody');
             const recordCount = document.getElementById('recordCount');
-
             if (!tbody) return;
 
             if (!visits || visits.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="empty-state">
+                        <td colspan="6" class="empty-state">
                             <i class="fas fa-search"></i>
                             No visits found matching your criteria.
                         </td>
@@ -508,9 +382,9 @@
             tbody.innerHTML = visits.map((visit, index) => `
                 <tr>
                     <td>${index + 1}</td>
-                    <td><strong>${visit.facility || 'N/A'}</strong></td>
+                    <td><strong>${visit.facility || visit.facilityName || 'N/A'}</strong></td>
                     <td>${getVisitBadge(visit.visitType)}</td>
-                    <td>${visit.date || 'N/A'}</td>
+                    <td>${formatVisitDate(visit.visitDate || visit.date)}</td>
                 </tr>
             `).join('');
 
@@ -519,73 +393,97 @@
             }
         }
 
-        // ========================================
-        // SEARCH PATIENT VISITS
-        // ========================================
-        function searchPatientLastVisits() {
-            const cardInput = document.getElementById('patientSearch');
-            const startInput = document.getElementById('startDate');
-            const endInput = document.getElementById('endDate');
+        async function searchPatientLastVisits() {
+    const cardInput = document.getElementById('patientSearch');
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
 
-            if (!cardInput) {
-                console.error('Search input not found');
-                return;
-            }
+    if (!cardInput) return;
 
-            const cardNumber = cardInput.value.trim();
-            const startDate = startInput ? startInput.value : '';
-            const endDate = endInput ? endInput.value : '';
+    const cardNumber = cardInput.value.trim();
+    const startDate = startInput ? startInput.value : '';
+    const endDate = endInput ? endInput.value : '';
 
-            if (!cardNumber) {
-                if (typeof showNotification === 'function') {
-                    showNotification('Please enter a Card Number or Member ID', 'error');
-                }
-                return;
-            }
+    // Require card number
+    if (!cardNumber) {
+        showNotification('Please enter a Card Number or Member ID', 'error');
+        return;
+    }
 
-            const tbody = document.getElementById('lastVisitsBody');
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="4" class="loading-state">
-                        <i class="fas fa-spinner"></i>
-                        Searching visits for ${cardNumber}...
-                    </td>
-                </tr>
-            `;
+    // Validate date range if both are set
+    if (startDate && endDate && startDate > endDate) {
+        showNotification('Start date cannot be after end date', 'error');
+        return;
+    }
 
-            // Simulate API call
-            setTimeout(() => {
-                // Sample visits data (mock - replace with API later)
-                const sampleVisits = [
-                    { facility: 'City Medical Center', visitType: 'Normal Visit', date: '2025-04-15' },
-                    { facility: 'Regional Hospital', visitType: 'Emergency Visit', date: '2025-03-28' },
-                    { facility: 'Wellness Clinic', visitType: 'Follow-Up', date: '2025-02-10' },
-                    { facility: 'Specialist Center', visitType: 'Referral Visit', date: '2025-01-05' },
-                    { facility: 'City Medical Center', visitType: 'New Case Visit', date: '2024-12-20' },
-                ];
+    const tbody = document.getElementById('lastVisitsBody');
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="6" class="loading-state">
+                <i class="fas fa-spinner"></i>
+                Searching visits for ${cardNumber}...
+            </td>
+        </tr>
+    `;
 
-                let filteredVisits = sampleVisits;
+    try {
+        const response = await fetch('../../data/visits.json');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-                // Filter by date range
-                if (startDate) {
-                    filteredVisits = filteredVisits.filter(v => v.date >= startDate);
-                }
-                if (endDate) {
-                    filteredVisits = filteredVisits.filter(v => v.date <= endDate);
-                }
+        const allVisits = await response.json();
+        if (!Array.isArray(allVisits)) throw new Error('Invalid visits data');
 
-                displayVisits(filteredVisits);
+        // Filter by card number
+        const searchTerm = cardNumber.toLowerCase().trim();
+        let filteredVisits = allVisits.filter(v =>
+            v.cardNo && v.cardNo.toLowerCase().trim() === searchTerm
+        );
 
-                if (typeof showNotification === 'function') {
-                    if (filteredVisits.length === 0) {
-                        showNotification(`No visits found for card: ${cardNumber}`, 'error');
-                    } else {
-                        showNotification(`Found ${filteredVisits.length} visit(s) for card: ${cardNumber}`, 'success');
-                    }
-                }
-            }, 500);
+        // ──────────────────────────────────────
+        // DATE FILTER — only applies if dates are provided
+        // If both empty → returns ALL visits for this card
+        // ──────────────────────────────────────
+        if (startDate) {
+            filteredVisits = filteredVisits.filter(v => {
+                const vDate = v.visitDate || v.date || '';
+                return vDate >= startDate;
+            });
+        }
+        if (endDate) {
+            filteredVisits = filteredVisits.filter(v => {
+                const vDate = v.visitDate || v.date || '';
+                return vDate <= endDate;
+            });
         }
 
+        // Sort by date descending
+        filteredVisits.sort((a, b) => {
+            const dateA = new Date(a.visitDate || a.date || 0);
+            const dateB = new Date(b.visitDate || b.date || 0);
+            return dateB - dateA;
+        });
+
+        displayVisits(filteredVisits);
+
+        if (filteredVisits.length === 0) {
+            showNotification(`No visits found for card: ${cardNumber}`, 'error');
+        } else {
+            showNotification(`Found ${filteredVisits.length} visit(s) for card: ${cardNumber}`, 'success');
+        }
+
+    } catch (error) {
+        console.error('Search error:', error);
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Unable to load visit history. Please try again.
+                </td>
+            </tr>
+        `;
+        showNotification('Failed to load visits', 'error');
+    }
+}
         // ========================================
         // RESET FILTERS
         // ========================================
@@ -604,56 +502,61 @@
             if (tbody) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="empty-state">
+                        <td colspan="6" class="empty-state">
                             <i class="fas fa-history"></i>
                             Enter card number and date range to search visits
                         </td>
                     </tr>
                 `;
             }
-
             if (recordCount) recordCount.textContent = '0 records';
 
-            if (typeof showNotification === 'function') {
-                showNotification('Filters reset', 'info');
-            }
+            showNotification('Filters reset', 'info');
         }
 
         // ========================================
-        // AUTO-FILL CARD NUMBER FROM VERIFIED MEMBER
+        // AUTO-FILL FROM LAST VERIFIED MEMBER (sessionStorage)
         // ========================================
-        function autoFillFromVerifiedMember() {
-            // Check if there's a verified member from member-verification.html
-            if (typeof currentVerifiedMember !== 'undefined' && currentVerifiedMember) {
-                const cardInput = document.getElementById('patientSearch');
-                if (cardInput && !cardInput.value) {
-                    const cardNumber = currentVerifiedMember.cardNumberDisplay || currentVerifiedMember.memberId || '';
-                    if (cardNumber) {
-                        cardInput.value = cardNumber;
-                        if (typeof showNotification === 'function') {
-                            showNotification(`Member verified: ${currentVerifiedMember.name}. Click Search to view visits.`, 'info');
-                        }
-                    }
+        function autoFillFromLastVerified() {
+            // Check if a member was recently verified (stored in session by member-verification.html)
+            const lastCardNo = sessionStorage.getItem('lastVerifiedCardNo');
+            const lastMemberName = sessionStorage.getItem('lastVerifiedMemberName');
+
+            const cardInput = document.getElementById('patientSearch');
+            if (cardInput && lastCardNo && !cardInput.value) {
+                cardInput.value = lastCardNo;
+                if (lastMemberName) {
+                    showNotification(`Member verified: ${lastMemberName}. Click Search to view visits.`, 'info');
                 }
             }
         }
 
         // ========================================
-        // INITIALIZE PAGE
+        // COMPONENT LOADING
         // ========================================
-        function initPage() {
-            // User dropdown
-            const userInfo = document.getElementById('userInfo');
-            const userDropdown = document.getElementById('userDropdown');
-            if (userInfo && userDropdown) {
-                userInfo.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    userDropdown.classList.toggle('active');
-                });
-                document.addEventListener('click', function() {
-                    userDropdown.classList.remove('active');
-                });
+        async function loadComponents() {
+            try {
+                const sidebarResponse = await fetch('../../components/sidebar.html');
+                if (sidebarResponse.ok) document.getElementById('sidebar-container').innerHTML = await sidebarResponse.text();
+
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
             }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
 
             // Set user info
             const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
@@ -672,50 +575,56 @@
             // Sidebar toggle
             const menuToggle = document.getElementById('menuToggle');
             if (menuToggle) {
-                menuToggle.addEventListener('click', function() {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) sidebar.classList.toggle('hidden');
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof toggleSidebar === 'function') toggleSidebar();
                 });
             }
 
-            // Close sidebar button
             const closeSidebarBtn = document.getElementById('closeSidebarBtn');
             if (closeSidebarBtn) {
-                closeSidebarBtn.addEventListener('click', function() {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) sidebar.classList.add('hidden');
+                closeSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof closeSidebar === 'function') closeSidebar();
                 });
             }
 
-            // Auto-fill card number if member was verified
-            autoFillFromVerifiedMember();
+            if (typeof initSidebarState === 'function') initSidebarState();
 
-            // Enter key search
+            window.addEventListener('resize', function() {
+                if (typeof handleResponsiveSidebar === 'function') handleResponsiveSidebar();
+            });
+
+            // Auto-fill from last verified member
+            autoFillFromLastVerified();
+
+            // Enter key search (manual override)
             const searchInput = document.getElementById('patientSearch');
             if (searchInput) {
                 searchInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
+                        // Clear any pending auto-search to avoid double-fire
+                        if (autoSearchTimer) clearTimeout(autoSearchTimer);
                         searchPatientLastVisits();
                     }
                 });
             }
-        }
 
-        // ========================================
-        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
-        // ========================================
+            // Setup auto-search (debounced)
+            setupAutoSearch();
+        }
+        // Expose functions
         window.searchPatientLastVisits = searchPatientLastVisits;
         window.resetPatientFilters = resetPatientFilters;
         window.displayVisits = displayVisits;
 
-        // ========================================
-        // START APPLICATION
-        // ========================================
+        // Start
         document.addEventListener('DOMContentLoaded', () => {
-    if (!requireLogin()) return;
-    initPage();
-});
+            if (!requireLogin()) return;
+            loadComponents();
+        });
+    
     </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 [
     {
-        "cardNo": "NHIF-123456",
+        "cardNo": "101-123456",
         "firstName": "John",
         "lastName": "Doe",
         "gender": "Male",
@@ -10,17 +10,19 @@
         "phone": "+255 712 345 678"
     },
     {
-        "cardNo": "ZHSF-789012",
+        "cardNo": "789012",
         "firstName": "Jane",
         "lastName": "Smith",
         "gender": "Female",
         "dob": "1990-03-22",
         "attendanceDate": "2025-07-03",
         "authNumber": "AUTH-2025-002",
-        "phone": "+255 712 345 679"
+        "phone": "+255 712 345 679",
+        "visitType":"Normal Visit",
+        "authorizedBy":"Joseph Mwakyembe"
     },
     {
-        "cardNo": "UHI-345678",
+        "cardNo": "110-345678",
         "firstName": "Robert",
         "lastName": "Johnson",
         "gender": "Male",
@@ -30,7 +32,7 @@
         "phone": "+255 712 345 680"
     },
     {
-        "cardNo": "NHIF-901234",
+        "cardNo": "101-901234",
         "firstName": "Mary",
         "lastName": "Williams",
         "gender": "Female",
@@ -40,7 +42,7 @@
         "phone": "+255 712 345 681"
     },
     {
-        "cardNo": "ZHSF-567890",
+        "cardNo": "567890",
         "firstName": "James",
         "lastName": "Brown",
         "gender": "Male",
@@ -50,7 +52,7 @@
         "phone": "+255 712 345 682"
     },
     {
-        "cardNo": "NHIF-112233",
+        "cardNo": "101-112233",
         "firstName": "Patricia",
         "lastName": "Davis",
         "gender": "Female",
@@ -60,7 +62,7 @@
         "phone": "+255 712 345 683"
     },
     {
-        "cardNo": "ZHSF-445566",
+        "cardNo": "445566",
         "firstName": "Michael",
         "lastName": "Wilson",
         "gender": "Male",
@@ -70,7 +72,7 @@
         "phone": "+255 712 345 684"
     },
     {
-        "cardNo": "UHI-778899",
+        "cardNo": "110-778899",
         "firstName": "Elizabeth",
         "lastName": "Taylor",
         "gender": "Female",
@@ -80,7 +82,7 @@
         "phone": "+255 712 345 685"
     },
     {
-        "cardNo": "NHIF-334455",
+        "cardNo": "101-334455",
         "firstName": "William",
         "lastName": "Anderson",
         "gender": "Male",
@@ -90,7 +92,7 @@
         "phone": "+255 712 345 686"
     },
     {
-        "cardNo": "ZHSF-667788",
+        "cardNo": "667788",
         "firstName": "Sarah",
         "lastName": "Thomas",
         "gender": "Female",
@@ -100,7 +102,7 @@
         "phone": "+255 712 345 687"
     },
     {
-        "cardNo": "NHIF-990011",
+        "cardNo": "101-990011",
         "firstName": "David",
         "lastName": "Jackson",
         "gender": "Male",
@@ -110,7 +112,7 @@
         "phone": "+255 712 345 688"
     },
     {
-        "cardNo": "UHI-223344",
+        "cardNo": "110-223344",
         "firstName": "Margaret",
         "lastName": "White",
         "gender": "Female",
@@ -120,7 +122,7 @@
         "phone": "+255 712 345 689"
     },
     {
-        "cardNo": "ZHSF-556677",
+        "cardNo": "556677",
         "firstName": "Joseph",
         "lastName": "Harris",
         "gender": "Male",
@@ -130,7 +132,7 @@
         "phone": "+255 712 345 690"
     },
     {
-        "cardNo": "NHIF-889900",
+        "cardNo": "101-889900",
         "firstName": "Dorothy",
         "lastName": "Martin",
         "gender": "Female",
@@ -140,7 +142,7 @@
         "phone": "+255 712 345 691"
     },
     {
-        "cardNo": "UHI-112233",
+        "cardNo": "110-112233",
         "firstName": "Charles",
         "lastName": "Thompson",
         "gender": "Male",
@@ -150,7 +152,7 @@
         "phone": "+255 712 345 692"
     },
     {
-        "cardNo": "NHIF-443322",
+        "cardNo": "101-443322",
         "firstName": "Nancy",
         "lastName": "Garcia",
         "gender": "Female",
@@ -160,7 +162,7 @@
         "phone": "+255 712 345 693"
     },
     {
-        "cardNo": "ZHSF-776655",
+        "cardNo": "776655",
         "firstName": "Thomas",
         "lastName": "Martinez",
         "gender": "Male",
@@ -170,7 +172,7 @@
         "phone": "+255 712 345 694"
     },
     {
-        "cardNo": "NHIF-554433",
+        "cardNo": "101-554433",
         "firstName": "Karen",
         "lastName": "Robinson",
         "gender": "Female",
@@ -180,7 +182,7 @@
         "phone": "+255 712 345 695"
     },
     {
-        "cardNo": "UHI-887766",
+        "cardNo": "110-887766",
         "firstName": "Daniel",
         "lastName": "Clark",
         "gender": "Male",
@@ -190,7 +192,7 @@
         "phone": "+255 712 345 696"
     },
     {
-        "cardNo": "ZHSF-332211",
+        "cardNo": "332211",
         "firstName": "Betty",
         "lastName": "Rodriguez",
         "gender": "Female",
@@ -200,7 +202,7 @@
         "phone": "+255 712 345 697"
     },
     {
-        "cardNo": "NHIF-998877",
+        "cardNo": "101-998877",
         "firstName": "Christopher",
         "lastName": "Lewis",
         "gender": "Male",
@@ -210,7 +212,7 @@
         "phone": "+255 712 345 698"
     },
     {
-        "cardNo": "UHI-665544",
+        "cardNo": "110-665544",
         "firstName": "Susan",
         "lastName": "Walker",
         "gender": "Female",
@@ -220,7 +222,7 @@
         "phone": "+255 712 345 699"
     },
     {
-        "cardNo": "ZHSF-112244",
+        "cardNo": "112244",
         "firstName": "Matthew",
         "lastName": "Hall",
         "gender": "Male",
@@ -230,7 +232,7 @@
         "phone": "+255 712 345 700"
     },
     {
-        "cardNo": "NHIF-334488",
+        "cardNo": "101-334488",
         "firstName": "Lisa",
         "lastName": "Allen",
         "gender": "Female",
@@ -240,7 +242,7 @@
         "phone": "+255 712 345 701"
     },
     {
-        "cardNo": "UHI-556699",
+        "cardNo": "110-556699",
         "firstName": "Paul",
         "lastName": "Young",
         "gender": "Male",
@@ -250,7 +252,7 @@
         "phone": "+255 712 345 702"
     },
     {
-        "cardNo": "NHIF-778833",
+        "cardNo": "101-778833",
         "firstName": "Maria",
         "lastName": "King",
         "gender": "Female",
@@ -260,7 +262,7 @@
         "phone": "+255 712 345 703"
     },
     {
-        "cardNo": "ZHSF-990044",
+        "cardNo": "990044",
         "firstName": "Donald",
         "lastName": "Wright",
         "gender": "Male",
@@ -270,7 +272,7 @@
         "phone": "+255 712 345 704"
     },
     {
-        "cardNo": "NHIF-224466",
+        "cardNo": "101-224466",
         "firstName": "Sandra",
         "lastName": "Lopez",
         "gender": "Female",
@@ -280,7 +282,7 @@
         "phone": "+255 712 345 705"
     },
     {
-        "cardNo": "UHI-446688",
+        "cardNo": "110-446688",
         "firstName": "Mark",
         "lastName": "Hill",
         "gender": "Male",
@@ -290,7 +292,7 @@
         "phone": "+255 712 345 706"
     },
     {
-        "cardNo": "ZHSF-668822",
+        "cardNo": "668822",
         "firstName": "Michelle",
         "lastName": "Scott",
         "gender": "Female",
@@ -300,7 +302,7 @@
         "phone": "+255 712 345 707"
     },
     {
-        "cardNo": "NHIF-880022",
+        "cardNo": "101-880022",
         "firstName": "Kenneth",
         "lastName": "Green",
         "gender": "Male",
@@ -310,7 +312,7 @@
         "phone": "+255 712 345 708"
     },
     {
-        "cardNo": "UHI-002244",
+        "cardNo": "110-002244",
         "firstName": "Helen",
         "lastName": "Adams",
         "gender": "Female",

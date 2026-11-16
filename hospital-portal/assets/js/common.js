@@ -1,7 +1,25 @@
 /* ========================================
    HOSPITAL SERVICE PORTAL - COMMON JS
    ======================================== */
+   
+// ========================================
+// USER INFO HELPERS
+// ========================================
+function getCurrentUserRole() {
+    return sessionStorage.getItem('userRole') || 'Staff';
+}
 
+function getCurrentUserBranch() {
+    return sessionStorage.getItem('userGivenBranch') || 'Wellness Polyclinic';
+}
+
+function getCurrentUserEmail() {
+    return sessionStorage.getItem('userEmail') || '';
+}
+
+function getCurrentEmployeeId() {
+    return sessionStorage.getItem('employeeId') || '';
+}
 // ========================================
 // PATH DETECTION
 // Automatically resolves correct relative path based on current page depth
@@ -231,16 +249,30 @@ function changePassword() {
     closePasswordModal();
 }
 
-// ========================================
-// USER & AUTHENTICATION
-// ========================================
-function getCurrentUser() {
-    // Prefer session storage; fallback to DOM; ultimate fallback to 'User'
+ // ========================================
+    // GET CURRENT USER
+    // ========================================
+    function getCurrentUser() {
+    // ──────────────────────────────────────
+    // Priority 1: Session storage (source of truth)
+    // ──────────────────────────────────────
     const sessionName = sessionStorage.getItem('userName');
-    if (sessionName) return sessionName;
+    if (sessionName && sessionName.trim()) {
+        return sessionName.trim();
+    }
 
+    // ──────────────────────────────────────
+    // Priority 2: DOM (if header is loaded)
+    // ──────────────────────────────────────
     const userNameSpan = document.getElementById('userName');
-    return userNameSpan ? userNameSpan.innerText.trim() : 'User';
+    if (userNameSpan && userNameSpan.innerText.trim()) {
+        return userNameSpan.innerText.trim();
+    }
+
+    // ──────────────────────────────────────
+    // Priority 3: True fallback (no user data at all)
+    // ──────────────────────────────────────
+    return 'Unknown User';
 }
 
 function signOut() {
@@ -333,29 +365,6 @@ function showDashboard() {
     }, 500);
 }
 
-// ========================================
-// MEMBER AUTHORIZATION DISPLAY
-// ========================================
-function displayAuthorizedMembers(members) {
-    const tbody = document.getElementById('authorizedBody');
-    if (!tbody) return;
-
-    if (!members || members.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No authorized patients found</td></tr>';
-    } else {
-        tbody.innerHTML = members.map(m => `
-            <tr>
-                <td>${m.time || 'N/A'}</td>
-                <td>${m.name || 'N/A'}</td>
-                <td>${m.gender || 'Male'}</td>
-                <td>${m.id || 'N/A'}</td>
-                <td>${m.authNumber || 'N/A'}</td>
-                <td>${m.visitType || 'N/A'}</td>
-                <td>${m.authorizedBy || getCurrentUser()}</td>
-            </tr>
-        `).join('');
-    }
-}
 
 // ========================================
 // SERVICES MODAL
@@ -625,6 +634,103 @@ const DataService = {
         return null;
     }
 };
+
+// ========================================
+// NETWORK STATUS MONITOR (GLOBAL, DOM-SAFE)
+// ========================================
+(function initNetworkStatus() {
+    const PING_URLS = [
+        'https://www.gstatic.com/generate_204',
+        'https://1.1.1.1/cdn-cgi/trace',
+        'https://www.cloudflare.com/cdn-cgi/trace'
+    ];
+    const PING_TIMEOUT = 5000;
+    let isCurrentlyChecking = false;
+
+    function renderStatus(statusEl, state, message) {
+        statusEl.classList.remove('status-online', 'status-offline', 'status-checking');
+        statusEl.classList.add(`status-${state}`);
+
+        const iconHTML = state === 'checking'
+            ? '<i class="fa-solid fa-circle-notch fa-spin"></i>'
+            : '<i class="fa-solid fa-server"></i>';
+
+        statusEl.innerHTML = `${iconHTML} <span>${message}</span>`;
+        statusEl.setAttribute('title', `Server: ${message}`);
+    }
+
+    async function checkConnectivity(statusEl) {
+        if (isCurrentlyChecking) return;
+        isCurrentlyChecking = true;
+
+        if (!navigator.onLine) {
+            renderStatus(statusEl, 'offline', 'Offline');
+            isCurrentlyChecking = false;
+            return;
+        }
+
+        for (const url of PING_URLS) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), PING_TIMEOUT);
+
+                await fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+                renderStatus(statusEl, 'online', 'Online');
+                isCurrentlyChecking = false;
+                return;
+            } catch (error) {
+                continue;
+            }
+        }
+
+        renderStatus(statusEl, 'offline', 'Offline');
+        isCurrentlyChecking = false;
+    }
+
+    function setupMonitor() {
+        const statusEl = document.getElementById('network-status');
+        if (!statusEl || statusEl.dataset.monitorReady === 'true') return;
+
+        statusEl.dataset.monitorReady = 'true';
+
+        // Initial state
+        renderStatus(statusEl, 'checking', 'Checking...');
+        checkConnectivity(statusEl);
+
+        // Browser events
+        window.addEventListener('online', () => {
+            renderStatus(statusEl, 'checking', 'Reconnecting...');
+            setTimeout(() => checkConnectivity(statusEl), 800);
+        });
+
+        window.addEventListener('offline', () => {
+            renderStatus(statusEl, 'offline', 'Offline');
+        });
+
+        // Periodic + visibility
+        setInterval(() => checkConnectivity(statusEl), 30000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) checkConnectivity(statusEl);
+        });
+    }
+
+    // Try immediately
+    setupMonitor();
+
+    // Watch for dynamically loaded footer
+    const observer = new MutationObserver(setupMonitor);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Stop observing after 10s
+    setTimeout(() => observer.disconnect(), 10000);
+})();
 
 // ========================================
 // EXPOSE FUNCTIONS TO GLOBAL SCOPE

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/icons/css/all.min.css">
     <title>Hospital Service Portal | Sign In</title>
     <style>
         /* ========================================
@@ -862,8 +862,9 @@
                     <p>For support, contact <a href="mailto:philipaman25@hotmail.com" target="_blank">support@hospitalportal.com</a></p>
                     <p>Runs on Local Server.</p>
                     <p id="network-status" class="status-checking">
+                        <i class="fa-solid fa-server"></i>
                         <i class="fa-solid fa-circle-notch fa-spin"></i>
-                        <span class="status-text">Checking...</span>
+                        <span class="status-text"></span>
                     </p>
                 </div>
             </div>
@@ -1019,6 +1020,7 @@
                 sessionStorage.setItem('jobTitle', user.role || 'Staff');
                 sessionStorage.setItem('loginUsername', user.username);
                 sessionStorage.setItem('userId', user.id);
+                sessionStorage.setItem('userGivenBranch', user.givenBranch || 'Wellness Polyclinic');
                 sessionStorage.setItem('userRole', user.role);
                 sessionStorage.setItem('userDepartment', user.department || '');
                 sessionStorage.setItem('userEmail', user.email || '');

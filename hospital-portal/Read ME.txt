@@ -1,0 +1,27 @@
+Copy and Paste code block below into browser console to get
+card numbers to be used for verification as test run;
+
+fetch('../../data/members.json')
+    .then(r => r.json())
+    .then(members => {
+        const scenarios = {
+            valid: [],
+            inactive: [],
+            expired: [],
+            invalidCard: [],
+            deceased: []
+        };
+        
+        members.forEach(m => {
+            if (!m.isActive) scenarios.deceased.push(m.cardNo);
+            else if (m.cardStatus === 'Inactive') scenarios.inactive.push(m.cardNo);
+            else if (m.cardStatus === 'Expired' || !m.isValidCard) scenarios.expired.push(m.cardNo);
+            else if (m.isValidCard) scenarios.valid.push(m.cardNo);
+        });
+        
+        console.log('📊 SCENARIO COVERAGE:');
+        console.log('✅ Valid:', scenarios.valid.length, '-', scenarios.valid);
+        console.log('🟡 Inactive:', scenarios.inactive.length, '-', scenarios.inactive);
+        console.log('🟡 Expired:', scenarios.expired.length, '-', scenarios.expired);
+        console.log('🔴 Deceased:', scenarios.deceased.length, '-', scenarios.deceased);
+    });

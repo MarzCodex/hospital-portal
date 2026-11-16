@@ -1008,7 +1008,52 @@ footer {
         overflow-x: auto;
     }
 }
+/* ========================================
+   NETWORK STATUS BADGE
+   ======================================== */
+#network-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
 
+#network-status.status-online {
+    color: #01d100; /* matches your existing green */
+}
+
+#network-status.status-offline {
+    color: #ff4757;
+    animation: networkPulse 2s ease-in-out infinite;
+}
+
+#network-status.status-checking {
+    color: #f39c12;
+}
+
+#network-status.status-offline i {
+    color: #ff4757;
+}
+
+#network-status.status-online i {
+    color: #01d100;
+}
+
+#network-status i.fa-spin {
+    color: #f39c12;
+}
+
+@keyframes networkPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #network-status.status-offline {
+        animation: none;
+    }
+}
 /* ======================================== */
 /* FIX: MODAL DROPDOWN WIDTH CONSTRAINTS    */
 /* ======================================== */

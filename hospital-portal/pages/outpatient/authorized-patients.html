@@ -250,7 +250,7 @@
         <li class="has-submenu">
             <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-user-md"></i> Outpatient Services</a>
             <ul class="submenu">
-                <li><a href="#" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
+                <li><a href="member-verification.html" onclick="closeSidebarOnMobile()"><i class="fa-solid fa-lock-open"></i>Member Verification</a></li>
                 <li class="has-submenu">
                 <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-check-circle"></i> Service Approvals</a>
                 <ul class="submenu">
@@ -328,9 +328,9 @@
             <h1 onclick="window.location.href='../../index.html'"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
         </div>
         <div class="user-info" id="userInfo">
-            <span class="job-title" id="jobTitle">System Administrator |</span>
-            <span class="user-name" id="userName">Phillip Z.P</span>
-            <div class="user-avatar" id="userAvatar">PZ</div>
+            <span class="job-title" id="jobTitle"> |</span>
+            <span class="user-name" id="userName"></span>
+            <div class="user-avatar" id="userAvatar"></div>
             <div class="user-dropdown" id="userDropdown">
                 <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
                 <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
@@ -416,21 +416,88 @@
     <div id="notification" class="notification"></div>
 
 <script src="../../assets/js/common.js"></script>
+<script src="../../assets/js/common.js"></script>
 <script>
     // ========================================
-    // GLOBAL STATE
+    // NOTE: `authorizedMembers` is declared in common.js
+    // Do NOT redeclare here to avoid SyntaxError
     // ========================================
 
     // ========================================
     // GET CURRENT USER
     // ========================================
     function getCurrentUser() {
-        const userNameSpan = document.getElementById('userName');
-        return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
+    // ──────────────────────────────────────
+    // Priority 1: Session storage (source of truth)
+    // ──────────────────────────────────────
+    const sessionName = sessionStorage.getItem('userName');
+    if (sessionName && sessionName.trim()) {
+        return sessionName.trim();
     }
 
+    // ──────────────────────────────────────
+    // Priority 2: DOM (if header is loaded)
+    // ──────────────────────────────────────
+    const userNameSpan = document.getElementById('userName');
+    if (userNameSpan && userNameSpan.innerText.trim()) {
+        return userNameSpan.innerText.trim();
+    }
+
+    // ──────────────────────────────────────
+    // Priority 3: True fallback (no user data at all)
+    // ──────────────────────────────────────
+    return 'Unknown User';
+}
+
     // ========================================
-    // LOAD AUTHORIZED MEMBERS
+    // AUTO-SEARCH AS USER TYPES CARD NUMBER
+    // ========================================
+    let autoSearchTimer = null;
+
+    function setupAutoSearch() {
+        const cardInput = document.getElementById('authPatientSearch');
+        if (!cardInput) return;
+
+        // Avoid double-binding
+        if (cardInput.dataset.autoSearchBound === 'true') return;
+        cardInput.dataset.autoSearchBound = 'true';
+
+        cardInput.addEventListener('input', function() {
+            const value = this.value.trim();
+
+            // Clear pending search
+            if (autoSearchTimer) {
+                clearTimeout(autoSearchTimer);
+            }
+
+            // Don't search if too short
+            if (value.length < 4) {
+                return;
+            }
+
+            autoSearchTimer = setTimeout(() => {
+            // ──────────────────────────────────────
+            // GUARD: Wait for data to be loaded first
+            // ──────────────────────────────────────
+            if (!authorizedMembers || authorizedMembers.length === 0) {
+                console.log('⏳ Data not loaded yet — waiting...');
+                // Retry after another 500ms
+                setTimeout(() => {
+                    searchAuthorizedPatients();
+                }, 500);
+                return;
+            }
+
+            // Debounce: fire 500ms after last keystroke
+            autoSearchTimer = setTimeout(() => {
+                searchAuthorizedPatients();
+            }, 500);
+        });
+    });
+}
+
+    // ========================================
+    // LOAD AUTHORIZED MEMBERS (MERGE FILE + SESSION)
     // ========================================
     async function loadAuthorizedMembers() {
         const tbody = document.getElementById('authorizedBody');
@@ -448,29 +515,102 @@
         `;
 
         try {
-            let data = null;
-            
-            // PRIORITIZE sessionStorage
-            const stored = sessionStorage.getItem('authorizedMembers');
-            if (stored) {
-                try {
-                    data = JSON.parse(stored);
-                    console.log('✅ Loaded from sessionStorage:', data.length, 'members');
-                } catch (e) {
-                    console.error('Failed to parse sessionStorage:', e);
-                    data = null;
-                }
-            }
-            
-            // Fallback to DataService
-            if (!data || data.length === 0) {
+            // ──────────────────────────────────────
+            // STEP 1: Fetch from authorizations.json
+            // ──────────────────────────────────────
+            let fileData = [];
+            try {
                 if (typeof DataService !== 'undefined' && typeof DataService.getAuthorizations === 'function') {
-                    data = await DataService.getAuthorizations();
-                    console.log('✅ Loaded from DataService:', data ? data.length : 0, 'members');
+                    const fetched = await DataService.getAuthorizations();
+                    if (Array.isArray(fetched)) {
+                        fileData = fetched;
+                    }
                 }
+                console.log(`📁 Loaded from authorizations.json: ${fileData.length} record(s)`);
+            } catch (fileError) {
+                console.warn('Failed to load authorizations.json:', fileError);
             }
 
-            authorizedMembers = data || [];
+            // ──────────────────────────────────────
+            // STEP 2: Fetch from sessionStorage
+            // ──────────────────────────────────────
+            let sessionData = [];
+            try {
+                const stored = sessionStorage.getItem('authorizedMembers');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        sessionData = parsed;
+                    }
+                }
+                console.log(`💾 Loaded from sessionStorage: ${sessionData.length} record(s)`);
+            } catch (sessionError) {
+                console.error('Failed to parse sessionStorage:', sessionError);
+            }
+
+            // ──────────────────────────────────────
+            // STEP 3: Merge with deduplication by authNumber
+            // ──────────────────────────────────────
+            const mergedMap = new Map();
+
+            // Add file data first (base layer)
+            fileData.forEach(member => {
+                const key = member.authNumber || `file-${member.id || Math.random()}`;
+                mergedMap.set(key, { ...member, _source: 'file' });
+            });
+
+            // Add/override with sessionStorage data (runtime layer)
+            sessionData.forEach(member => {
+                const key = member.authNumber || `session-${member.id || Math.random()}`;
+                mergedMap.set(key, { ...member, _source: 'session' });
+            });
+
+            const mergedData = Array.from(mergedMap.values());
+
+            // ──────────────────────────────────────
+            // STEP 4: Sort by date AND time (most recent first)
+            // ──────────────────────────────────────
+            mergedData.sort((a, b) => {
+                const getTimestamp = (m) => {
+                    // Priority 1: ISO timestamp (most reliable — set on new authorizations)
+                    if (m.isoTimestamp) {
+                        const dt = new Date(m.isoTimestamp);
+                        if (!isNaN(dt.getTime())) return dt.getTime();
+                    }
+                    // Priority 2: fullDateTime (sessionStorage legacy)
+                    if (m.fullDateTime) {
+                        const dt = new Date(m.fullDateTime);
+                        if (!isNaN(dt.getTime())) return dt.getTime();
+                    }
+                    // Priority 3: Date + Time combined
+                    if (m.date && m.time) {
+                        try {
+                            const dt = new Date(`${m.date} ${m.time}`);
+                            if (!isNaN(dt.getTime())) return dt.getTime();
+                        } catch (e) { /* fall through */ }
+                    }
+                    // Priority 4: date only (file records)
+                    if (m.date) {
+                        const dt = new Date(m.date);
+                        if (!isNaN(dt.getTime())) return dt.getTime();
+                    }
+                    // Priority 5: attendanceDate fallback
+                    if (m.attendanceDate) {
+                        const dt = new Date(m.attendanceDate);
+                        if (!isNaN(dt.getTime())) return dt.getTime();
+                    }
+                    return 0;
+                };
+
+                return getTimestamp(b) - getTimestamp(a); // Newest first
+            });
+
+            console.log(`✅ Merged total: ${mergedData.length} record(s)`);
+
+            // ──────────────────────────────────────
+            // STEP 5: Display merged data
+            // ──────────────────────────────────────
+            authorizedMembers = mergedData;
             displayAuthorizedMembers(authorizedMembers);
 
             if (recordCount) {
@@ -510,17 +650,39 @@
             return;
         }
 
-        tbody.innerHTML = members.map(m => `
-            <tr>
-                <td>${m.time || 'N/A'}</td>
-                <td>${m.name || m.memberName || 'N/A'}</td>
-                <td>${m.gender || 'Male'}</td>
-                <td>${m.id || m.cardNo || 'N/A'}</td>
-                <td><strong>${m.authNumber || 'N/A'}</strong></td>
-                <td>${m.visitType || m.serviceType || 'N/A'}</td>
-                <td>${m.authorizedBy || getCurrentUser()}</td>
-            </tr>
-        `).join('');
+        tbody.innerHTML = members.map(m => {
+            // Normalize fields across both formats
+            const time = m.time || m.attendanceDate ||
+                         (m.fullDateTime ? new Date(m.fullDateTime).toLocaleTimeString() : 'N/A');
+
+            let name = m.name || m.memberName;
+            if (!name && (m.firstName || m.lastName)) {
+                name = [m.firstName, m.middleName, m.lastName].filter(Boolean).join(' ');
+            }
+            name = name || 'N/A';
+
+            const gender = m.gender || 'N/A';
+            const memberId = m.id || m.cardNo || m.membershipNo || 'N/A';
+            const authNumber = m.authNumber || 'N/A';
+            const visitType = m.visitType || m.serviceType || 'N/A';
+            const authorizedBy = m.authorizedBy || m.createdBy || getCurrentUser();
+
+            const sourceBadge = m._source === 'session'
+                ? '<span style="display:inline-block;padding:2px 6px;background:#27ae60;color:white;border-radius:8px;font-size:10px;margin-left:6px;">NEW</span>'
+                : '';
+
+            return `
+                <tr>
+                    <td>${time}</td>
+                    <td>${name}${sourceBadge}</td>
+                    <td>${gender}</td>
+                    <td>${memberId}</td>
+                    <td><strong>${authNumber}</strong></td>
+                    <td>${visitType}</td>
+                    <td>${authorizedBy}</td>
+                </tr>
+            `;
+        }).join('');
     }
 
     // ========================================
@@ -530,7 +692,7 @@
         const cardInput = document.getElementById('authPatientSearch');
         const startInput = document.getElementById('authStartDate');
         const endInput = document.getElementById('authEndDate');
-        
+
         if (!cardInput || !startInput || !endInput) {
             console.error('Search inputs not found');
             return;
@@ -543,6 +705,7 @@
         const tbody = document.getElementById('authorizedBody');
         const recordCount = document.getElementById('recordCount');
 
+        // If no filters → show all
         if (!cardNumber && !startDate && !endDate) {
             displayAuthorizedMembers(authorizedMembers);
             if (recordCount) {
@@ -563,6 +726,7 @@
         setTimeout(() => {
             let filteredMembers = [...authorizedMembers];
 
+            // Filter by card number / name / auth number
             if (cardNumber) {
                 filteredMembers = filteredMembers.filter(m =>
                     (m.id && m.id.toLowerCase().includes(cardNumber.toLowerCase())) ||
@@ -573,6 +737,7 @@
                 );
             }
 
+            // Filter by date range
             if (startDate || endDate) {
                 filteredMembers = filteredMembers.filter(m => {
                     if (!m.date) return false;
@@ -582,6 +747,7 @@
                 });
             }
 
+            // Display
             if (filteredMembers.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -612,10 +778,16 @@
         const cardInput = document.getElementById('authPatientSearch');
         const startInput = document.getElementById('authStartDate');
         const endInput = document.getElementById('authEndDate');
-        
+
         if (cardInput) cardInput.value = '';
         if (startInput) startInput.value = '';
         if (endInput) endInput.value = '';
+
+        // Clear any pending auto-search
+        if (autoSearchTimer) {
+            clearTimeout(autoSearchTimer);
+            autoSearchTimer = null;
+        }
 
         displayAuthorizedMembers(authorizedMembers);
 
@@ -630,7 +802,7 @@
     }
 
     // ========================================
-    // INITIALIZE PAGE (No component loading!)
+    // INITIALIZE PAGE
     // ========================================
     function initPage() {
         // User dropdown
@@ -647,8 +819,8 @@
         }
 
         // Set user info
-        const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
-        const userName = sessionStorage.getItem('userName') || 'Phillip Z.P';
+        const jobTitle = sessionStorage.getItem('jobTitle');
+        const userName = sessionStorage.getItem('userName');
         const userAvatar = document.getElementById('userAvatar');
         const userNameSpan = document.getElementById('userName');
         const jobTitleSpan = document.getElementById('jobTitle');
@@ -678,19 +850,23 @@
             });
         }
 
-        // Load authorized members
+        // Load authorized members (merged file + session)
         loadAuthorizedMembers();
 
-        // Enter key search
+        // Enter key search (manual override — cancels debounce)
         const searchInput = document.getElementById('authPatientSearch');
         if (searchInput) {
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
+                    if (autoSearchTimer) clearTimeout(autoSearchTimer);
                     searchAuthorizedPatients();
                 }
             });
         }
+
+        // Setup auto-search (debounced)
+        setupAutoSearch();
     }
 
     // ========================================
@@ -705,9 +881,29 @@
     // START APPLICATION
     // ========================================
     document.addEventListener('DOMContentLoaded', () => {
-    if (!requireLogin()) return;
-    initPage();
-});
+        if (!requireLogin()) return;
+
+        // Core init
+        initPage();
+
+        // Defensive retry for auto-search setup
+        // (in case input wasn't ready when initPage ran)
+        let attempts = 0;
+        const trySetupAutoSearch = () => {
+            const input = document.getElementById('authPatientSearch');
+            if (input) {
+                setupAutoSearch();
+                console.log('✅ Auto-search setup complete');
+            } else if (attempts < 10) {
+                attempts++;
+                setTimeout(trySetupAutoSearch, 100);
+            } else {
+                console.error('❌ Auto-search input not found after 1s');
+            }
+        };
+        trySetupAutoSearch();
+    });
 </script>
+</body>
 </body>
 </html>

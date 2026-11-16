@@ -899,9 +899,9 @@
             <h1 onclick="window.location.href='../../index.html'"><i class="fa-solid fa-hospital"></i> Hospital Service Portal</h1>
         </div>
         <div class="user-info" id="userInfo">
-            <span class="job-title" id="jobTitle">System Administrator |</span>
-            <span class="user-name" id="userName">Phillip Z.P</span>
-            <div class="user-avatar" id="userAvatar">PZ</div>
+            <span class="job-title" id="jobTitle"> |</span>
+            <span class="user-name" id="userName"></span>
+            <div class="user-avatar" id="userAvatar"></div>
             <div class="user-dropdown" id="userDropdown">
                 <a href="#" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</a>
                 <a href="#" class="signout" onclick="signOut()"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
@@ -925,10 +925,8 @@
                 <div class="form-group">
                     <label for="sponsorVerifier">Sponsor Verifier <span class="required">*</span></label>
                     <select id="sponsorVerifier">
-                        <option value="">Select Verifier</option>
                         <option value="NHIF">NHIF - National Health Insurance Fund</option>
                         <option value="ZHSF">ZHSF - Zanzibar Health Insurance Fund</option>
-                        <option value="UHI">UHI - Universal Health Insurance</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1019,10 +1017,23 @@
 </div>
 
     <footer>
-        <div class="footer-left"><i class="fa-solid fa-desktop"></i><span title="System Host">ICT-UNIT</span></div>
+        <div class="footer-left">
+            <i class="fa-solid fa-desktop"></i>
+            <span title="System Host">ICT-UNIT</span>
+        </div>
         <div class="footer-divider"></div>
-        <div class="footer-badges"><span class="badge" title="Server Status"><i class="fa-solid fa-server"></i> : Online</span><div class="footer-divider"></div><span class="badge"><i>Note: Website runs on Local Server.</i></span></div>
-        <div class="footer-right"><i class="fa-solid fa-bolt"></i><span>Hospital Service Portal v4.0 | &copy; Powered by Phill.</span></div>
+        <div class="footer-badges">
+            <span class="badge" id="network-status" title="Server Status">
+                <i class="fa-solid fa-server"></i>
+                <span>: Online</span>
+            </span>
+            <div class="footer-divider"></div>
+            <span class="badge"><i>Note: Website runs on Local Server.</i></span>
+        </div>
+        <div class="footer-right">
+            <i class="fa-solid fa-bolt"></i>
+            <span id="app-version">Hospital Service Portal v4.0 | &copy; 2025 Powered by Phill</span>
+        </div>
     </footer>
 </div>
 
@@ -1053,6 +1064,45 @@
         return;
     }
 })();
+    // Set user info
+    const jobTitle = sessionStorage.getItem('jobTitle');
+    const userName = sessionStorage.getItem('userName');
+    const userAvatar = document.getElementById('userAvatar');
+    const userNameSpan = document.getElementById('userName');
+    const jobTitleSpan = document.getElementById('jobTitle');
+
+    if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+    if (userNameSpan) userNameSpan.textContent = userName;
+    if (userAvatar) {
+        const initials = userName.split(' ').map(n => n[0]).join('');
+        userAvatar.textContent = initials;
+    }
+
+    // ========================================
+    // GET CURRENT USER
+    // ========================================
+    function getCurrentUser() {
+    // ──────────────────────────────────────
+    // Priority 1: Session storage (source of truth)
+    // ──────────────────────────────────────
+    const sessionName = sessionStorage.getItem('userName');
+    if (sessionName && sessionName.trim()) {
+        return sessionName.trim();
+    }
+
+    // ──────────────────────────────────────
+    // Priority 2: DOM (if header is loaded)
+    // ──────────────────────────────────────
+    const userNameSpan = document.getElementById('userName');
+    if (userNameSpan && userNameSpan.innerText.trim()) {
+        return userNameSpan.innerText.trim();
+    }
+
+    // ──────────────────────────────────────
+    // Priority 3: True fallback (no user data at all)
+    // ──────────────────────────────────────
+    return 'Unknown User';
+}
 
 // Global state
 let authorizedMembers = JSON.parse(sessionStorage.getItem('authorizedMembers') || '[]');
@@ -1075,12 +1125,6 @@ async function withLoadingState(btn, callback) {
         btn.innerHTML = originalText;
         btn.disabled = false;
     }
-}
-
-// Get currently logged-in user from the top bar
-function getCurrentUser() {
-    const userNameSpan = document.getElementById('userName');
-    return userNameSpan ? userNameSpan.innerText.trim() : 'Phillip Z.P';
 }
 
 // Change Password Functions
@@ -1127,14 +1171,12 @@ function changePassword() {
 
 // Sign Out with confirmation
 function signOut() {
-    if (confirm('Are you sure you want to sign out?')) {
         sessionStorage.clear();
         showNotification('Signed out successfully', 'success');
         setTimeout(() => {
             window.location.href = '../../login.html';
         }, 1500);
     }
-}
 
 function showNotification(msg, type = 'success') { 
     const n = document.createElement('div'); 
@@ -1190,10 +1232,10 @@ async function searchMember(event) {
     const sponsor = document.getElementById('sponsorVerifier').value;
     const visitType = document.getElementById('visitType').value;
     const cardType = document.getElementById('cardType').value;
-    const cardNumber = document.getElementById('cardNumber').value;
-    const referralNumber = document.getElementById('referralNumber').value;
+    const cardNumber = document.getElementById('cardNumber').value.trim();
+    const referralNumber = document.getElementById('referralNumber').value.trim();
     
-    // VALIDATION FIRST (no loading state yet)
+    // VALIDATION FIRST
     if (!sponsor || !visitType || !cardType) {
         showNotification('Please fill all required fields', 'error');
         return;
@@ -1211,78 +1253,369 @@ async function searchMember(event) {
     
     currentCardNumber = cardNumber || referralNumber;
     
-    // Now show loading and search
     await withLoadingState(btn, async () => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                try {
-                    const memberData = { 
-                        name: 'John M. Doe', 
-                        gender: 'Male',
-                        dob: '1985-06-15',
-                        memberId: sponsor + '-' + (cardNumber || 'REF123'), 
-                        cardNumberDisplay: cardNumber || referralNumber,
-                        sponsor: sponsor, 
-                        schemeType: sponsor === 'NHIF' ? 'Comprehensive Plan' : (sponsor === 'ZHSF' ? 'Family Plan' : 'Standard Plan'), 
-                        status: 'Active' 
-                    };
-                    
-                    // Populate member details
-                    const memberNameEl = document.getElementById('memberName');
-                    const memberGenderEl = document.getElementById('memberGender');
-                    const memberDobEl = document.getElementById('memberDob');
-                    const memberIdEl = document.getElementById('memberId');
-                    const cardNumberDisplayEl = document.getElementById('cardNumberDisplay');
-                    const schemeTypeEl = document.getElementById('schemeType');
-                    const memberStatusEl = document.getElementById('memberStatus');
-                    const authorizationNumberEl = document.getElementById('authorizationNumber');
-                    const latestAuthEl = document.getElementById('latestAuth');
-                    
-                    if (memberNameEl) memberNameEl.innerText = memberData.name;
-                    if (memberGenderEl) memberGenderEl.innerText = memberData.gender;
-                    if (memberDobEl) memberDobEl.innerText = memberData.dob;
-                    if (memberIdEl) memberIdEl.innerText = memberData.memberId;
-                    if (cardNumberDisplayEl) cardNumberDisplayEl.innerText = memberData.cardNumberDisplay;
-                    if (schemeTypeEl) schemeTypeEl.innerText = memberData.schemeType;
-                    if (memberStatusEl) memberStatusEl.innerHTML = '<span style="color:#27ae60;"><i class="fas fa-check-circle"></i> Active</span>';
-                    if (latestAuthEl) latestAuthEl.innerText = new Date().toLocaleDateString();
-                    
-                    const previousVisitsBody = document.getElementById('previousVisitsBody');
-                    if (previousVisitsBody) {
-                        previousVisitsBody.innerHTML = `
-                            <tr><td><strong>City Medical Center</strong></td><td>February 10, 2025</td></tr>
-                            <tr><td><strong>Regional Hospital</strong></td><td>January 28, 2025</td></tr>
-                            <tr><td><strong>Wellness Clinic</strong></td><td>December 15, 2024</td></tr>
-                        `;
+        try {
+            // ──────────────────────────────────────
+            // FETCH MEMBERS
+            // ──────────────────────────────────────
+            const response = await fetch('../../data/members.json');
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const members = await response.json();
+            if (!Array.isArray(members)) throw new Error('Invalid members data');
+            
+            const searchTerm = currentCardNumber.toLowerCase().trim();
+            const member = members.find(m => 
+                (m.cardNo && m.cardNo.toLowerCase().trim() === searchTerm) ||
+                (m.membershipNo && m.membershipNo.toLowerCase().trim() === searchTerm)
+            );
+            
+            if (!member) {
+                showNotification(`No member found for: ${currentCardNumber}`, 'error');
+                return;
+            }
+            
+            // ──────────────────────────────────────
+            // FETCH VISITS ONCE (reused for both latestAuth and previousVisits)
+            // ──────────────────────────────────────
+            let memberVisits = [];
+            try {
+                const visitsResponse = await fetch('../../data/visits.json');
+                if (visitsResponse.ok) {
+                    const allVisits = await visitsResponse.json();
+                    if (Array.isArray(allVisits)) {
+                        const memberCard = (currentCardNumber || member.cardNo || '').toLowerCase().trim();
+                        memberVisits = allVisits.filter(v => 
+                            v.cardNo && v.cardNo.toLowerCase().trim() === memberCard
+                        );
+                        // Sort by date descending
+                        memberVisits.sort((a, b) => {
+                            const dateA = new Date(a.visitDate || a.date || 0);
+                            const dateB = new Date(b.visitDate || b.date || 0);
+                            return dateB - dateA;
+                        });
                     }
-                    
-                    const authorizeBtn = document.getElementById('authorizeBtn');
-                    const authStatus = document.getElementById('authorizationStatus');
-                    const memberInfoCard = document.getElementById('memberInfoCard');
-                    
-                    if (authorizeBtn) authorizeBtn.style.display = 'inline-block';
-                    if (authStatus) {
-                        authStatus.style.display = 'inline-block';
-                        authStatus.innerHTML = '<i class="fa-solid fa-lock"></i> Pending Authorization';
-                        authStatus.className = 'authorization-status not-authorized';
-                    }
-                    if (memberInfoCard) memberInfoCard.style.display = 'block';
-                    
-                    currentVerifiedMember = memberData;
-                    showNotification('Member found! Verify details', 'success');
-                    resolve();
-                } catch (error) {
-                    console.error('Search error:', error);
-                    showNotification('An error occurred while searching', 'error');
-                    resolve(); // Still resolve to exit loading state
                 }
-            }, 500);
-        });
+            } catch (visitError) {
+                console.warn('Could not load visits:', visitError);
+                // Continue with empty array
+            }
+            
+            // ──────────────────────────────────────
+            // BUILD MEMBER DATA OBJECT
+            // ──────────────────────────────────────
+            const fullName = buildFullName(member);
+            const formattedDob = formatMemberDob(member.dateOfBirth);
+            const schemeName = resolveSchemeName(member.schemeID);
+            
+            const status = member.cardStatus || member.statusDescription || 'Unknown';
+            const memberIsAlive = member.isActive === true;
+            const cardIsActive = status.toLowerCase() === 'active';
+            const isValidCard = member.isValidCard !== false;
+            
+            const canAuthorize = memberIsAlive && cardIsActive && isValidCard;
+            
+            let blockReason = null;
+            if (!memberIsAlive) blockReason = 'deceased';
+            else if (!cardIsActive) blockReason = 'card_inactive';
+            else if (!isValidCard) blockReason = 'card_invalid';
+            
+            const memberData = {
+                name: fullName,
+                gender: member.gender || 'N/A',
+                dob: formattedDob,
+                memberId: member.membershipNo || 'N/A',
+                cardNumberDisplay: member.cardNo || currentCardNumber,
+                sponsor: sponsor,
+                schemeType: schemeName,
+                schemeID: extractSchemeID(member.schemeID),
+                status: status,
+                memberIsAlive: memberIsAlive,
+                cardIsActive: cardIsActive,
+                isValidCard: isValidCard,
+                canAuthorize: canAuthorize,
+                blockReason: blockReason,
+                nationalID: member.nationalID || 'N/A',
+                raw: member
+            };
+            
+            // ──────────────────────────────────────
+            // POPULATE MEMBER DETAILS
+            // ──────────────────────────────────────
+            document.getElementById('memberName').innerText = memberData.name;
+            document.getElementById('memberGender').innerText = memberData.gender;
+            document.getElementById('memberDob').innerText = memberData.dob;
+            document.getElementById('memberId').innerText = memberData.memberId;
+            document.getElementById('cardNumberDisplay').innerText = memberData.cardNumberDisplay;
+            document.getElementById('schemeType').innerText = memberData.schemeType;
+            
+            // ──────────────────────────────────────
+            // LATEST AUTHORIZATION (from most recent visit)
+            // ──────────────────────────────────────
+            const latestAuthEl = document.getElementById('latestAuth');
+            if (memberVisits.length > 0) {
+                const mostRecent = memberVisits[0];
+                const facility = mostRecent.facility || mostRecent.facilityName || 'Unknown Facility';
+                const visitDate = mostRecent.visitDate || mostRecent.date;
+                
+                let displayText = facility;
+                if (visitDate) {
+                    try {
+                        const d = new Date(visitDate);
+                        if (!isNaN(d.getTime())) {
+                            displayText += `: ${d.toLocaleString('en-GB', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}`;
+                        }
+                    } catch (e) {
+                        displayText += `: ${visitDate}`;
+                    }
+                }
+                latestAuthEl.innerText = displayText;
+            } else {
+                latestAuthEl.innerText = 'No previous authorizations';
+            }
+            
+            // ──────────────────────────────────────
+            // STATUS DISPLAY (consistent styling for all states)
+            // ──────────────────────────────────────
+            const memberStatusEl = document.getElementById('memberStatus');
+            let statusHTML;
+            
+            if (!memberIsAlive) {
+                statusHTML = '<span style="color:#ff0000;background:#000000;padding:4px 30px;border-radius:20px;font-size:15px;font-weight:600;display:inline-block;"><i class="fas fa-times-circle"></i> Deceased</span>';
+            } else if (!cardIsActive) {
+                statusHTML = '<span style="color:#fff;background:#e74c3c;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;display:inline-block;"><i class="fas fa-exclamation-circle"></i> ' + status + '</span>';
+            } else if (!isValidCard) {
+                statusHTML = '<span style="color:#fff;background:#e74c3c;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;display:inline-block;"><i class="fas fa-ban"></i> Invalid Card</span>';
+            } else {
+                statusHTML = '<span style="color:#fff;background:#27ae60;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;display:inline-block;"><i class="fas fa-check-circle"></i> Active</span>';
+            }
+            
+            memberStatusEl.innerHTML = statusHTML;
+            
+            // Authorization number — empty until authorized
+            document.getElementById('authorizationNumber').innerText = '—';
+            
+            // ──────────────────────────────────────
+            // PREVIOUS VISITS (using already-fetched memberVisits)
+            // ──────────────────────────────────────
+            const previousVisitsBody = document.getElementById('previousVisitsBody');
+            if (previousVisitsBody) {
+                const lastThreeVisits = memberVisits.slice(0, 3);
+                
+                if (lastThreeVisits.length === 0) {
+                    previousVisitsBody.innerHTML = `
+                        <tr><td colspan="2" style="text-align: center; color: #7f8c8d; font-style: italic;">
+                            No previous visits found for this member
+                        </td></tr>
+                    `;
+                } else {
+                    previousVisitsBody.innerHTML = lastThreeVisits.map(visit => {
+                        const facility = visit.facility || visit.facilityName || visit.hospitalName || 'Unknown Facility';
+                        const visitDate = visit.visitDate || visit.date || visit.admissionDate || null;
+                        
+                        let displayDate = 'N/A';
+                        if (visitDate) {
+                            try {
+                                const d = new Date(visitDate);
+                                if (!isNaN(d.getTime())) {
+                                    displayDate = d.toLocaleDateString('en-GB', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    });
+                                }
+                            } catch (e) {
+                                displayDate = visitDate;
+                            }
+                        }
+                        
+                        return `<tr>
+                            <td><strong>${facility}</strong></td>
+                            <td>${displayDate}</td>
+                        </tr>`;
+                    }).join('');
+                }
+            }
+            
+            // ──────────────────────────────────────
+            // SHOW AUTHORIZATION CONTROLS
+            // ──────────────────────────────────────
+            const authorizeBtn = document.getElementById('authorizeBtn');
+            const authStatus = document.getElementById('authorizationStatus');
+            const memberInfoCard = document.getElementById('memberInfoCard');
+            
+            if (authorizeBtn) {
+                authorizeBtn.style.display = 'inline-block';
+                
+                if (canAuthorize) {
+                    authorizeBtn.style.cursor = 'pointer';
+                    authorizeBtn.style.opacity = '1';
+                    authorizeBtn.title = 'Click to authorize this member';
+                } else {
+                    authorizeBtn.style.cursor = 'not-allowed';
+                    authorizeBtn.style.opacity = '0.6';
+                    authorizeBtn.title = getBlockReasonText(blockReason);
+                }
+            }
+            
+            if (authStatus) {
+                authStatus.style.display = 'inline-block';
+                authStatus.innerHTML = '<i class="fa-solid fa-lock"></i> Pending Authorization';
+                authStatus.className = 'authorization-status not-authorized';
+            }
+            
+            if (memberInfoCard) memberInfoCard.style.display = 'block';
+            
+            currentVerifiedMember = memberData;
+            
+            showNotification(`Member found: ${memberData.name}`, 'success');
+            
+        } catch (error) {
+            console.error('Search error:', error);
+            showNotification('An error occurred while searching. Please try again.', 'error');
+        }
     });
 }
 
-// Sample eligible services data (replace with actual API data)
-// At the top of your script section, after the global state
+// ============================================
+// HELPER: Get human-readable block reason
+// ============================================
+function getBlockReasonText(reason) {
+    const messages = {
+        'deceased': 'Member is deceased — authorization not permitted',
+        'card_inactive': 'Card is inactive — visit NHIF office to activate',
+        'card_invalid': 'Card is invalid — visit NHIF office for verification'
+    };
+    return messages[reason] || 'Authorization not permitted';
+}
+
+// ============================================
+// HELPER: Get human-readable block reason
+// ============================================
+function getBlockReasonText(reason) {
+    const messages = {
+        'deceased': 'Member is deceased — authorization not permitted',
+        'card_inactive': 'Card is inactive — visit NHIF office to activate',
+        'card_invalid': 'Card is invalid — visit NHIF office for verification'
+    };
+    return messages[reason] || 'Authorization not permitted';
+}
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+/**
+ * Build full name: "Jane M. Doe"
+ * Handles missing middleName gracefully
+ */
+function buildFullName(member) {
+    const first = (member.firstName || '').trim();
+    const middle = (member.middleName || '').trim();
+    const last = (member.lastName || '').trim();
+    
+    if (!first && !last) return 'N/A';
+    
+    const middleInitial = middle ? `${middle.charAt(0)}.` : '';
+    
+    return [first, middleInitial, last]
+        .filter(part => part)
+        .join(' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+/**
+ * Format DOB from "1998-06-14T00:00:00" to "14 Jun 1998"
+ */
+function formatMemberDob(dateStr) {
+    if (!dateStr) return 'N/A';
+    
+    // Handle null "0001-01-01T00:00:00" (invalid/unset dates)
+    if (dateStr.startsWith('0001-')) return 'N/A';
+    
+    try {
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return 'N/A';
+        
+        return d.toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    } catch {
+        return 'N/A';
+    }
+}
+
+/**
+ * Extract scheme ID as number from either:
+ *   1001                          → 1001
+ *   "1010 - Mikumi Benefit Scheme" → 1010
+ */
+function extractSchemeID(schemeId) {
+    if (schemeId == null) return null;
+    
+    // If already number, return it
+    if (typeof schemeId === 'number') return schemeId;
+    
+    // If string, extract leading digits
+    const match = String(schemeId).match(/^\d+/);
+    return match ? parseInt(match[0], 10) : null;
+}
+
+/**
+ * Resolve scheme name from schemeID
+ * Handles both number and string formats
+ */
+function resolveSchemeName(schemeId) {
+    // Scheme lookup — matches your common.js benefitSchemes map
+    const schemeMap = {
+        1001: "Standard NHIF Benefit Scheme",
+        1002: "Ngorongoro Benefit Scheme",
+        1003: "Serengeti Benefit Scheme",
+        1004: "Toto Afya Kadi Benefit Scheme",
+        1005: "Student Benefit Scheme",
+        1006: "Najali Benefit Scheme",
+        1007: "Wekeza Benefit Scheme",
+        1008: "Timiza Benefit Scheme",
+        1009: "NSSF Benefit Scheme",
+        1010: "Mikumi Benefit Scheme",
+        1011: "Tarangire Benefit Scheme",
+        1012: "Mikumi Benefit Scheme",
+        1013: "Tanzanite Benefit Scheme",
+        1014: "Essential Benefit Scheme (UHI)",
+        1099: "Tourist Benefit Scheme (CHAN)",
+        2001: "Bunge Health Insurance Scheme",
+        3001: "BoT Health Insurance Scheme",
+        4001: "Option One",
+        5001: "Option Two",
+        6001: "Option Three",
+        7001: "CRDB Health Insurance Scheme",
+        8001: "NMB Health Insurance Scheme",
+        9001: "DCB Health Insurance Scheme",
+        10001: "WVT Health Insurance Scheme",
+        10002: "PSSF Benefit Scheme"
+    };
+    
+    // If string contains " - Name" already, extract the name part
+    if (typeof schemeId === 'string' && schemeId.includes(' - ')) {
+        return schemeId.split(' - ')[1].trim();
+    }
+    
+    // Otherwise, resolve from numeric ID
+    const numericId = extractSchemeID(schemeId);
+    return schemeMap[numericId] || `Scheme ${schemeId}`;
+}
+
+// Sample eligible services data (to be replaced with actual API data)
+// At the top of script section, after the global state
 let eligibleServices = [];
 
 // Load services from JSON file
@@ -1310,18 +1643,22 @@ function searchBeneficiaryServices() {
         return;
     }
     
-    // Map scheme name to SchemeID
-    const schemeName = currentVerifiedMember.schemeType;
-    let schemeId = null;
+    // Get schemeID from member data (already extracted as number)
+    const schemeId = currentVerifiedMember.schemeID;
     
-    if (schemeName === 'Comprehensive Plan') schemeId = 1001;
-    else if (schemeName === 'Family Plan') schemeId = 1003;
-    else if (schemeName === 'Standard Plan') schemeId = 1001; // Adjust as needed
+    if (!schemeId) {
+        showNotification('Could not determine benefit scheme for this member', 'error');
+        return;
+    }
     
     // Filter services by SchemeID
-    const filteredServices = schemeId 
-        ? eligibleServices.filter(service => service.SchemeID === schemeId)
-        : eligibleServices;
+    const filteredServices = eligibleServices.filter(
+        service => Number(service.SchemeID) === Number(schemeId)
+    );
+    
+    if (filteredServices.length === 0) {
+        showNotification(`No services found for scheme ${schemeId}`, 'info');
+    }
     
     // Open modal with filtered services
     openServicesModalWithData(filteredServices);
@@ -1398,48 +1735,122 @@ document.addEventListener('keydown', function(e) {
 });
 
 function authorizeMember() {
-    if(!currentVerifiedMember) return showNotification('No member loaded', 'error');
+    // ──────────────────────────────────────
+    // Guard 1: No member loaded
+    // ──────────────────────────────────────
+    if (!currentVerifiedMember) {
+        showNotification('No member loaded. Please search first.', 'error');
+        return;
+    }
     
     const member = currentVerifiedMember;
+    
+    // ──────────────────────────────────────
+    // Guard 2: Deceased member
+    // ──────────────────────────────────────
+    if (!member.memberIsAlive) {
+        showNotification(
+            'This member is registered as DECEASED. Authorization is not permitted. Please contact NHIF office for account resolution.',
+            'error',
+            6000
+        );
+        return;
+    }
+    
+    // ──────────────────────────────────────
+    // Guard 3: Card status
+    // ──────────────────────────────────────
+    if (!member.cardIsActive) {
+        let reason = `This membership card status is "${member.status}"`;
+        if (member.status.toLowerCase() === 'inactive') {
+            reason = 'This membership card is INACTIVE';
+        } else if (member.status.toLowerCase() === 'expired') {
+            reason = 'This membership card has EXPIRED';
+        }
+        showNotification(
+            `${reason}. Please visit the NHIF office to activate or renew membership.`,
+            'error',
+            6000
+        );
+        return;
+    }
+    
+    // ──────────────────────────────────────
+    // Guard 4: Card validity
+    // ──────────────────────────────────────
+    if (!member.isValidCard) {
+        showNotification(
+            'This card is flagged as INVALID. Authorization is not permitted. Please visit NHIF office.',
+            'error',
+            6000
+        );
+        return;
+    }
+    
+    // ──────────────────────────────────────
+    // ✅ All checks passed — proceed
+    // ──────────────────────────────────────
     const visitType = document.getElementById('visitType').value;
     const authorizedBy = getCurrentUser();
     
-    // Generate authorization number ONLY when Authorize button is clicked
     const authNumber = 'AUTH-' + new Date().getFullYear() + 
                        ('0' + (new Date().getMonth() + 1)).slice(-2) + 
                        ('0' + new Date().getDate()).slice(-2) + '-' +
                        Math.floor(Math.random() * 10000);
     
-    // Update the displayed authorization number in the member info card
+    // ──────────────────────────────────────
+    // ✅ SINGLE `now` declaration — used for both timestamp and fullDateTime
+    // ──────────────────────────────────────
+    const now = new Date();
+    
+    // Update latestAuth with current user's branch
+    const givenBranch = sessionStorage.getItem('userGivenBranch') || 'Wellness Polyclinic';
+    const timestamp = now.toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    const latestAuthEl = document.getElementById('latestAuth');
+    if (latestAuthEl) {
+        latestAuthEl.innerText = `${givenBranch} : ${timestamp}`;
+    }
+    
     const authorizationNumberEl = document.getElementById('authorizationNumber');
     if (authorizationNumberEl) authorizationNumberEl.innerText = authNumber;
     
-    // Update the status display
-    document.getElementById('authorizationStatus').innerHTML = '<i class="fa-solid fa-lock-open"></i> <strong>AUTHORIZED</strong>';
+    document.getElementById('authorizationStatus').innerHTML = 
+        '<i class="fa-solid fa-lock-open"></i> <strong>AUTHORIZED</strong>';
     document.getElementById('authorizationStatus').className = 'authorization-status authorized';
     
-    const now = new Date();
-    const fullDateTime = now.toLocaleString();  
-    const dateOnly = now.toISOString().split('T')[0]; 
-    // Store all required data
-    authorizedMembers.unshift({ 
-        time: now.toLocaleTimeString(),     // For display: "9:35:13 AM"
-        fullDateTime: fullDateTime,         // For sorting: "4/22/2025, 9:35:13 AM"
-        date: dateOnly,                     // For filtering: "2025-04-22"
+    // Reuse the same `now` — do NOT redeclare
+    const fullDateTime = now.toLocaleString();
+    const dateOnly = now.toISOString().split('T')[0];
+    
+    authorizedMembers.unshift({
+        time: now.toLocaleTimeString(),
+        fullDateTime: fullDateTime,
+        date: dateOnly,
         name: member.name,
-        gender: member.gender || 'Male',
+        gender: member.gender || 'N/A',
         id: member.memberId,
         authNumber: authNumber,
         sponsor: member.sponsor,
         visitType: visitType,
         authorizedBy: authorizedBy,
-        status: 'Authorized' 
+        branch: givenBranch,
+        status: 'Authorized'
     });
     
     sessionStorage.setItem('authorizedMembers', JSON.stringify(authorizedMembers));
     showNotification(`Member authorized successfully!`, 'success');
     
-    if(document.getElementById('authorizedSection').style.display === 'block') showAuthorizedPatients();
+    const authorizedSection = document.getElementById('authorizedSection');
+    if (authorizedSection && authorizedSection.style.display === 'block') {
+        showAuthorizedPatients();
+    }
 }
 
 // User dropdown
