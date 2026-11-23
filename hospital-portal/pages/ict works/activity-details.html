@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Works | Activity Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link rel="stylesheet" href="../../assets/css/ict-works.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            margin: 10px 20px 0;
+            font-size: 13px;
+            color: var(--gray);
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .breadcrumb i {
+            font-size: 10px;
+            color: #b0b8c0;
+        }
+
+        .breadcrumb .current {
+            color: var(--secondary);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Page container adjustments */
+        .page-container {
+            padding: 20px;
+            margin: 10px 20px 20px;
+        }
+
+        /* Detail header */
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .detail-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-ticket-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .detail-ticket {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            width: fit-content;
+        }
+
+        .detail-back-btn:hover {
+            background: var(--light);
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-actions button,
+        .detail-actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-print {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #1a252f;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        /* Detail cards */
+        .detail-card {
+            background: #f8fafc;
+            border: 1px solid #e0e7ee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-card-title i {
+            color: var(--primary);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            flex: 0 0 180px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .detail-value {
+            flex: 1;
+            font-size: 14px;
+            color: var(--secondary);
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .detail-value.mono {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .detail-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .detail-value a:hover {
+            text-decoration: underline;
+        }
+
+        .detail-description {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            line-height: 1.6;
+            color: var(--secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .detail-description.empty {
+            color: var(--gray);
+            font-style: italic;
+            border-left-color: #b0b8c0;
+        }
+
+        /* Attachments */
+        .attachments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .attachment-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .attachment-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--secondary);
+        }
+
+        .attachment-info i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .attachment-info strong {
+            font-weight: 600;
+        }
+
+        .attachment-info .att-size {
+            color: var(--gray);
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .btn-preview {
+            padding: 6px 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-preview:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Error / Not Found */
+        .not-found {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+
+        .not-found i {
+            font-size: 64px;
+            color: var(--danger);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .not-found h3 {
+            font-size: 20px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .not-found p {
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .not-found a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .not-found a:hover {
+            background: var(--primary-dark);
+        }
+        .print-header,
+        .print-footer {
+            display: none;
+        }
+/* ======================================== */
+/* PRINT LAYOUT — A4 PORTRAIT (COLOR)       */
+/* ======================================== */
+@media print {
+    /* ─────────────────────────────────── */
+    /* HIDE NON-CONTENT ELEMENTS          */
+    /* ─────────────────────────────────── */
+    .ict-sidebar,
+    #ict-sidebar-container,
+    #header-container,
+    #footer-container,
+    #modals-container,
+    .breadcrumb,
+    .detail-back-btn,
+    .detail-actions,
+    .btn-preview,
+    .notification,
+    .top-bar,
+    footer {
+        display: none !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* PRESERVE COLORS IN PRINT           */
+    /* ─────────────────────────────────── */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* RESET BODY & LAYOUT                */
+    /* ─────────────────────────────────── */
+    html, body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        font-size: 10.5pt !important;
+        color: #000 !important;
+        line-height: 1.4 !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: auto !important;
+        display: block !important;
+    }
+
+    .page-container {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        min-height: auto !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* DETAIL HEADER (Ticket + Badges Row) */
+    /* ─────────────────────────────────── */
+    .detail-header {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 0 10pt 0 !important;
+        border: none !important;
+    }
+
+    .detail-header-left {
+        display: block !important;
+    }
+
+    .detail-ticket-row {
+        display: none !important;  /* Hide duplicate ticket row */
+    }
+
+    .detail-ticket {
+        display: none !important;
+    }
+
+    .detail-badges {
+        display: none !important;  /* Badges now inline in print header */
+    }
+
+    /* ─────────────────────────────────── */
+    /* PRINT HEADER (Custom)              */
+    /* ─────────────────────────────────── */
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 10pt;
+        padding-bottom: 10pt;
+        border-bottom: 1pt solid #000;
+    }
+
+    .print-header h1 {
+        font-size: 15pt !important;
+        font-weight: 700 !important;
+        color: #2c3e50 !important;
+        margin: 0 0 3pt 0 !important;
+        letter-spacing: 0.5pt;
+    }
+
+    .print-header h2 {
+        font-size: 10.5pt !important;
+        font-weight: 600 !important;
+        color: #2c3e50 !important;
+        text-transform: uppercase;
+        letter-spacing: 1.2pt;
+        margin: 0 0 10pt 0 !important;
+    }
+
+    .print-header .print-ticket-info {
+        font-size: 10pt !important;
+        color: #000 !important;
+        text-align: left;
+        padding-top: 6pt;
+    }
+
+    .print-header .print-ticket-info .ticket-ref {
+        font-family: 'Courier New', monospace !important;
+        font-weight: 700 !important;
+        color: #3498db !important;
+    }
+
+    .print-header .print-ticket-info .status-val {
+        font-weight: 600 !important;
+        color: #27ae60 !important;
+    }
+
+    .print-header .print-ticket-info .priority-val {
+        font-weight: 600 !important;
+        color: #f39c12 !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* DETAIL CARDS — NO BORDERS          */
+    /* ─────────────────────────────────── */
+    .detail-card {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 0 8pt 0 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+
+    /* ─────────────────────────────────── */
+    /* CARD TITLES — WITH HR DIVIDER      */
+    /* ─────────────────────────────────── */
+    .detail-card-title {
+        display: block !important;
+        font-size: 10pt !important;
+        font-weight: 700 !important;
+        color: #2c3e50 !important;
+        text-transform: uppercase;
+        letter-spacing: 1pt;
+        padding: 4pt 0 !important;
+        margin: 0 0 6pt 0 !important;
+        border: none !important;
+        border-top: 1pt solid #999 !important;
+        border-bottom: 1pt solid #999 !important;
+        background: transparent !important;
+    }
+
+    .detail-card-title i {
+        display: none !important;
+    }
+
+    /* First card no top border */
+    .detail-card:first-of-type .detail-card-title {
+        border-top: none !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* DETAIL ROWS                        */
+    /* ─────────────────────────────────── */
+    .detail-row {
+        display: grid !important;
+        grid-template-columns: 140pt 1fr !important;
+        gap: 8pt !important;
+        padding: 2pt 0 !important;
+        border: none !important;
+        align-items: start;
+    }
+
+    .detail-label {
+        flex: none !important;
+        font-size: 10pt !important;
+        font-weight: 600 !important;
+        color: #000 !important;
+        padding: 0 !important;
+    }
+
+    .detail-value {
+        flex: none !important;
+        font-size: 10pt !important;
+        color: #000 !important;
+        font-weight: 400 !important;
+        padding: 0 !important;
+        word-break: break-word;
+    }
+
+    /* ─────────────────────────────────── */
+    /* DESCRIPTION BOXES — FULL BORDER    */
+    /* ─────────────────────────────────── */
+    .detail-description {
+        display: inline-block !important;
+        background: #fafafa !important;
+        border: 1pt solid #666 !important;
+        border-radius: 3pt !important;
+        padding: 6pt 10pt !important;
+        margin: 3pt 0 6pt 0 !important;
+        font-size: 10pt !important;
+        color: #000 !important;
+        line-height: 1.4 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        page-break-inside: avoid;
+    }
+
+    .detail-description.empty {
+        background: white !important;
+        color: #666 !important;
+        font-style: italic;
+        border-color: #ccc !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* ATTACHMENTS — BULLET LIST          */
+    /* ─────────────────────────────────── */
+    .attachments-list {
+        display: block !important;
+    }
+
+    .attachment-row {
+        display: block !important;
+        padding: 2pt 0 !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+    }
+
+    .attachment-info {
+        font-size: 10pt !important;
+        color: #000 !important;
+        display: inline !important;
+    }
+
+    .attachment-info i {
+        display: none !important;
+    }
+
+    .attachment-info::before {
+        content: "•  " !important;
+        font-weight: 700;
+        color: #3498db;
+    }
+
+    .attachment-info strong {
+        font-weight: 600;
+        color: #000;
+    }
+
+    .attachment-info .att-size {
+        color: #555 !important;
+        font-size: 9.5pt !important;
+        font-weight: 400;
+    }
+
+    /* ─────────────────────────────────── */
+    /* CATEGORY TAGS — COLORED TEXT       */
+    /* ─────────────────────────────────── */
+    .detail-value span {
+        background: transparent !important;
+        border: none !important;
+        color: #3498db !important;
+        padding: 0 !important;
+        font-weight: 500 !important;
+        font-size: 10pt !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* LINKS                              */
+    /* ─────────────────────────────────── */
+    .detail-value a {
+        color: #3498db !important;
+        text-decoration: underline !important;
+    }
+
+    /* ─────────────────────────────────── */
+    /* PRINT FOOTER                       */
+    /* ─────────────────────────────────── */
+    .print-footer {
+        display: block !important;
+        margin-top: 12pt;
+        padding-top: 6pt;
+        border-top: 1pt solid #999;
+        text-align: center;
+        font-size: 9.5pt;
+        color: #333;
+    }
+
+    /* ─────────────────────────────────── */
+    /* PAGE SETUP                         */
+    /* ─────────────────────────────────── */
+    @page {
+        size: A4 portrait;
+        margin: 15mm 12mm;
+    }
+
+    /* Prevent orphaned headings */
+    .detail-card-title {
+        page-break-after: avoid;
+    }
+
+    /* Prevent row spillover */
+    .detail-row {
+        page-break-inside: avoid;
+    }
+}
+        /* Responsive */
+        @media (max-width: 768px) {
+            .breadcrumb {
+                margin: 10px;
+                padding: 8px 12px;
+            }
+
+            .detail-header {
+                flex-direction: column;
+            }
+
+            .detail-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .detail-label {
+                flex: 0 0 120px;
+                font-size: 12px;
+            }
+
+            .detail-value {
+                font-size: 13px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="ict-sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb" id="breadcrumb">
+            <a href="ict-works.html"><i class="fas fa-home"></i> ICT Works</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="activity-list.html"><i class="fas fa-list"></i> Activities</a>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current" id="breadcrumbTicket">Loading...</span>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-container">
+            <!-- Content loaded via JS -->
+            <div id="detailsContent">
+                <div class="empty-state" style="padding: 60px 20px; text-align: center;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: var(--primary); margin-bottom: 15px; display: block;"></i>
+                    <p style="color: var(--gray);">Loading activity details...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script src="../../assets/js/ict-works.js"></script>
+    <script>
+        // ========================================
+        // PAGE STATE
+        // ========================================
+        let currentActivity = null;
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireLogin()) return;
+
+            await initICTWorksPage('activity-list');
+
+            await loadAndRenderActivity();
+        });
+
+        async function loadAndRenderActivity() {
+            // Get ticket from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const ticketRef = urlParams.get('ticket');
+
+            if (!ticketRef) {
+                renderNotFound('No ticket reference provided.');
+                return;
+            }
+
+            // Update breadcrumb with ticket
+            document.getElementById('breadcrumbTicket').textContent = ticketRef;
+
+            // Load activity
+            currentActivity = loadActivityById(ticketRef);
+
+            if (!currentActivity) {
+                renderNotFound(`Activity "${ticketRef}" not found.`);
+                return;
+            }
+
+            renderActivityDetails(currentActivity);
+        }
+
+        // ========================================
+        // RENDER NOT FOUND
+        // ========================================
+        function renderNotFound(message) {
+            const container = document.getElementById('detailsContent');
+            container.innerHTML = `
+                <div class="not-found">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Activity Not Found</h3>
+                    <p>${message}</p>
+                    <a href="activity-list.html">
+                        <i class="fas fa-arrow-left"></i> Back to Activity List
+                    </a>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // RENDER ACTIVITY DETAILS
+        // ========================================
+        function renderActivityDetails(activity) {
+            const container = document.getElementById('detailsContent');
+            const a = activity;
+
+            // Build print header (hidden on screen, shown on print)
+            const printHeader = `
+                <div class="print-header">
+                    <h1>🏥 Hospital Service Portal</h1>
+                    <h2>ICT Works — Activity Record</h2>
+                    <div class="print-ticket-info">
+                        <strong>Ticket:</strong> ${escapeHtml(a.ticketRef)} |
+                        <strong>Status:</strong> ${escapeHtml(a.status || 'N/A')} |
+                        <strong>Priority:</strong> ${escapeHtml(a.priority || 'N/A')}
+                    </div>
+                </div>
+            `;
+
+            // Build print footer
+           const printFooter = `
+                    <div class="print-footer">
+                        Printed by: ${escapeHtml(getUserName())} &nbsp;|&nbsp;
+                        ${new Date().toLocaleString('en-GB')} &nbsp;|&nbsp;
+                        v4.0.1
+                    </div>
+                `;
+
+            // Build the full HTML
+            container.innerHTML = `
+                ${printHeader}
+
+                <!-- Header row -->
+                <div class="detail-header">
+                    <div class="detail-header-left">
+                        <a href="activity-list.html" class="detail-back-btn">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                        <div class="detail-ticket-row">
+                            <span class="detail-ticket">${escapeHtml(a.ticketRef || 'N/A')}</span>
+                            <div class="detail-badges">
+                                ${getStatusBadge(a.status)}
+                                ${getPriorityBadge(a.priority)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-actions">
+                        <a href="edit-activity.html?ticket=${encodeURIComponent(a.ticketRef)}" class="btn-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button class="btn-print" onclick="window.print()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="btn-delete" onclick="handleDelete()">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ticket Summary -->
+                <div class="detail-card">
+                    <div class="detail-card-title">
+                        <i class="fas fa-ticket-alt"></i> Ticket Summary
+                    </div>
+                    ${renderRow('Date', formatICTDate(a.date))}
+                    ${renderRow('Time', formatTimeRange(a.startTime, a.endTime, a.duration))}
+                    ${renderRow('Support Requested', a.supportRequested)}
+                    ${renderRow('Categories', renderCategories(a.categories))}
+                </div>
+
+                <!-- People & Context -->
+                <div class="detail-card">
+                    <div class="detail-card-title">
+                        <i class="fas fa-users"></i> People & Context
+                    </div>
+                    ${renderRow('Requester', renderPerson(a.requester))}
+                    ${renderRow('Assigned Officer', renderPerson(a.officerAssigned))}
+                    ${a.relatedAsset ? renderRow('Related Asset', `${escapeHtml(a.relatedAsset)}${a.assetType ? ` (${escapeHtml(a.assetType)})` : ''}`) : ''}
+                    ${a.location ? renderRow('Location', escapeHtml(a.location)) : ''}
+                    ${a.relatedTicket ? renderRow('Related Ticket', `<a href="activity-details.html?ticket=${encodeURIComponent(a.relatedTicket)}">${escapeHtml(a.relatedTicket)}</a>`) : ''}
+                </div>
+
+                <!-- Description -->
+                <div class="detail-card">
+                    <div class="detail-card-title">
+                        <i class="fas fa-file-alt"></i> Description
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Reported Problem:</div>
+                        <div class="detail-value">
+                            <div class="detail-description ${!a.reportedProblem ? 'empty' : ''}">
+                                ${a.reportedProblem ? escapeHtml(a.reportedProblem) : 'Not provided'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Work Done:</div>
+                        <div class="detail-value">
+                            <div class="detail-description ${!a.workDone ? 'empty' : ''}">
+                                ${a.workDone ? escapeHtml(a.workDone) : 'Not provided'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attachments -->
+                ${renderAttachmentsCard(a)}
+
+                <!-- Audit Trail -->
+                <div class="detail-card">
+                    <div class="detail-card-title">
+                        <i class="fas fa-history"></i> Audit Trail
+                    </div>
+                    ${renderRow('Logged By', renderPerson(a.loggedBy))}
+                    ${renderRow('Logged At', formatICTDateTime(a.loggedAt))}
+                    ${a.editedAt ? renderRow('Edited By', renderPerson(a.editedBy)) : ''}
+                    ${a.editedAt ? renderRow('Edited At', formatICTDateTime(a.editedAt)) : ''}
+                </div>
+
+                ${printFooter}
+            `;
+        }
+
+        // ========================================
+        // RENDER HELPERS
+        // ========================================
+        function renderRow(label, value) {
+            if (value === null || value === undefined || value === '') return '';
+            return `
+                <div class="detail-row">
+                    <div class="detail-label">${label}:</div>
+                    <div class="detail-value">${value}</div>
+                </div>
+            `;
+        }
+
+        function renderPerson(person) {
+            if (!person) return '';
+            const name = escapeHtml(person.fullName || 'N/A');
+            const dept = person.department ? `(${escapeHtml(person.department)})` : '';
+            return `${name} ${dept}`.trim();
+        }
+
+        function renderCategories(categories) {
+            if (!categories || categories.length === 0) return '';
+            return categories.map(c => `<span style="display:inline-block;padding:2px 8px;background:#e8f4fc;color:#1565c0;border-radius:10px;font-size:12px;margin-right:4px;margin-bottom:2px;">${escapeHtml(c)}</span>`).join('');
+        }
+
+        function formatTimeRange(start, end, duration) {
+            if (!start && !end) return '';
+            let result = '';
+            if (start) result += start;
+            if (start && end) result += ' - ';
+            if (end) result += end;
+            if (duration) result += ` (${duration})`;
+            return result;
+        }
+
+        function renderContextCard(a) {
+            const rows = [];
+
+            if (a.relatedAsset) {
+                const assetType = a.assetType ? ` (${escapeHtml(a.assetType)})` : '';
+                rows.push(renderRow('Related Asset', `${escapeHtml(a.relatedAsset)}${assetType}`));
+            }
+
+            if (a.location) {
+                rows.push(renderRow('Location', escapeHtml(a.location)));
+            }
+
+            if (a.relatedTicket) {
+                rows.push(renderRow('Related Ticket',
+                    `<a href="activity-details.html?ticket=${encodeURIComponent(a.relatedTicket)}">${escapeHtml(a.relatedTicket)} <i class="fas fa-arrow-right" style="font-size:10px;"></i></a>`
+                ));
+            }
+
+            if (rows.length === 0) return '';
+
+            return `
+                <div class="detail-card">
+                    <div class="detail-card-title">
+                        <i class="fas fa-cog"></i> Context
+                    </div>
+                    ${rows.join('')}
+                </div>
+            `;
+        }
+
+        function renderAttachmentsCard(a) {
+            if (!a.attachments || a.attachments.length === 0) return '';
+
+            const files = a.attachments.map((file, index) => `
+                <div class="attachment-row">
+                    <div class="attachment-info">
+                        <i class="fas fa-file"></i>
+                        <strong>${escapeHtml(file.name)}</strong>
+                        <span class="att-size">(${formatFileSize(file.size)})</span>
+                    </div>
+                    <button class="btn-preview" onclick="previewAttachment(${index})">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                </div>
+            `).join('');
+
+            return `
+                <div class="detail-card">
+                    <div class="detail-card-title">
+                        <i class="fas fa-paperclip"></i> Attachments (${a.attachments.length} file${a.attachments.length !== 1 ? 's' : ''})
+                    </div>
+                    <div class="attachments-list">
+                        ${files}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // ATTACHMENT PREVIEW
+        // ========================================
+        function previewAttachment(index) {
+            if (!currentActivity || !currentActivity.attachments) return;
+
+            const file = currentActivity.attachments[index];
+            if (!file) return;
+
+            // Check if file type is previewable
+            const previewableTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+            const isPreviewable = previewableTypes.includes(file.type);
+
+            if (!isPreviewable) {
+                showNotification(
+                    `Preview not available for "${file.name}" (${file.type || 'unknown type'}). Only images and PDFs can be previewed.`,
+                    'info',
+                    5000
+                );
+                return;
+            }
+
+            // No actual file content stored — show info message
+            showNotification(
+                `Preview unavailable — "${file.name}" file content is not stored in this prototype. In production, this would open the file in a new tab.`,
+                'info',
+                5000
+            );
+
+            // In production, this would be:
+            // window.open(fileUrl, '_blank');
+        }
+
+        // ========================================
+        // DELETE HANDLER
+        // ========================================
+        function handleDelete() {
+            if (!currentActivity) return;
+
+            const confirmed = confirm(
+                `Are you sure you want to delete activity ${currentActivity.ticketRef}?\n\nThis action cannot be undone.`
+            );
+
+            if (!confirmed) return;
+
+            const success = deleteActivity(currentActivity.ticketRef);
+
+            if (success) {
+                showNotification(`Activity ${currentActivity.ticketRef} deleted`, 'success');
+                setTimeout(() => {
+                    window.location.href = 'activity-list.html';
+                }, 1200);
+            } else {
+                showNotification('Failed to delete activity', 'error');
+            }
+        }
+
+        // ========================================
+        // UTILITIES
+        // ========================================
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function getUserName() {
+            return sessionStorage.getItem('userName') || 'User';
+        }
+
+        // ========================================
+        // EXPOSE FUNCTIONS
+        // ========================================
+        window.previewAttachment = previewAttachment;
+        window.handleDelete = handleDelete;
+    </script>
+</body>
+</html>

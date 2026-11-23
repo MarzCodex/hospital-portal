@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Works | Activity List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link rel="stylesheet" href="../../assets/css/ict-works.css">
+
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="ict-sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Page Content -->
+        <div class="page-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2><i class="fas fa-list"></i> ICT Activity List</h2>
+                <a href="log-activity.html" class="btn-log-new">
+                    <i class="fas fa-plus"></i> Log New Activity
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar" id="statsBar"></div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <input type="text" id="filterSearch" placeholder="🔍 Search ticket, requester, support...">
+                <select id="filterOfficer">
+                    <option value="">Select Officer</option>
+                </select>
+                <select id="filterStatus">
+                    <option value="">Select Status</option>
+                    <option value="Done">Done</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Blocked">Blocked</option>
+                </select>
+                <select id="filterPriority">
+                    <option value="">Select Priority</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Normal">Normal</option>
+                </select>
+                <select id="filterCategory">
+                    <option value="">Select Category</option>
+                </select>
+                <input type="date" id="filterStartDate">
+                <input type="date" id="filterEndDate">
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <table class="activity-table" id="activityTable">
+                    <thead id="activityTableHead"></thead>
+                    <tbody id="activityTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Empty State (shown via JS) -->
+            <div id="emptyState" style="display: none;"></div>
+
+            <!-- Pagination -->
+            <div class="pagination-bar" id="paginationBar" style="display: none;"></div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script src="../../assets/js/ict-works.js"></script>
+    <script>
+        // ========================================
+        // PAGE STATE
+        // ========================================
+        let allActivities = [];
+        let filteredActivities = [];
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 20;
+        let sortColumn = 'date';
+        let sortDirection = 'desc';
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireLogin()) return;
+
+            await initICTWorksPage('activity-list');
+
+            await setupActivityListPage();
+        });
+
+        async function setupActivityListPage() {
+            // Load users for officer dropdown
+            await loadICTUsersCache();
+
+            // Set date defaults (current month)
+            setDefaultDates();
+
+            // Populate filter dropdowns
+            populateFilters();
+
+            // Load activities
+            loadActivities();
+
+            // Setup filter event listeners (auto-apply)
+            setupFilterListeners();
+
+            // Render
+            renderAll();
+        }
+
+        // ========================================
+        // DATE DEFAULTS
+        // ========================================
+        function setDefaultDates() {
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+            const formatDate = (d) => d.toISOString().split('T')[0];
+
+            document.getElementById('filterStartDate').value = formatDate(firstDay);
+            document.getElementById('filterEndDate').value = formatDate(lastDay);
+        }
+
+        // ========================================
+        // POPULATE FILTER DROPDOWNS
+        // ========================================
+        function populateFilters() {
+            // Officer dropdown (ICT only)
+            const officerSelect = document.getElementById('filterOfficer');
+            ictUsersCache
+                .filter(u => u.department === 'ICT' && u.status === 'Active')
+                .sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''))
+                .forEach(user => {
+                    const opt = document.createElement('option');
+                    opt.value = user.fullName || '';
+                    opt.textContent = user.fullName || 'Unknown';
+                    officerSelect.appendChild(opt);
+                });
+
+            // Category dropdown
+            const categorySelect = document.getElementById('filterCategory');
+            ICT_CATEGORIES.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                categorySelect.appendChild(opt);
+            });
+        }
+
+        // ========================================
+        // LOAD ACTIVITIES
+        // ========================================
+        function loadActivities() {
+            allActivities = getAllActivities();
+        }
+
+        // ========================================
+        // FILTER LISTENERS (Auto-apply)
+        // ========================================
+        function setupFilterListeners() {
+            const searchInput = document.getElementById('filterSearch');
+            const officerSelect = document.getElementById('filterOfficer');
+            const statusSelect = document.getElementById('filterStatus');
+            const prioritySelect = document.getElementById('filterPriority');
+            const categorySelect = document.getElementById('filterCategory');
+            const startDateInput = document.getElementById('filterStartDate');
+            const endDateInput = document.getElementById('filterEndDate');
+
+            // Search with debounce
+            let searchTimer;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    currentPage = 1;
+                    renderAll();
+                }, 300);
+            });
+
+            [officerSelect, statusSelect, prioritySelect, categorySelect, startDateInput, endDateInput]
+                .forEach(el => {
+                    el.addEventListener('change', () => {
+                        currentPage = 1;
+                        renderAll();
+                    });
+                });
+        }
+
+        // ========================================
+        // GET CURRENT FILTERS
+        // ========================================
+        function getCurrentFilters() {
+            return {
+                search: document.getElementById('filterSearch').value.trim(),
+                officer: document.getElementById('filterOfficer').value,
+                status: document.getElementById('filterStatus').value,
+                priority: document.getElementById('filterPriority').value,
+                category: document.getElementById('filterCategory').value,
+                startDate: document.getElementById('filterStartDate').value,
+                endDate: document.getElementById('filterEndDate').value
+            };
+        }
+
+        // ========================================
+        // APPLY FILTERS
+        // ========================================
+        function applyFilters() {
+            const f = getCurrentFilters();
+
+            filteredActivities = allActivities.filter(a => {
+                // Search
+                if (f.search) {
+                    const term = f.search.toLowerCase();
+                    const matches =
+                        (a.ticketRef && a.ticketRef.toLowerCase().includes(term)) ||
+                        (a.supportRequested && a.supportRequested.toLowerCase().includes(term)) ||
+                        (a.requester?.fullName && a.requester.fullName.toLowerCase().includes(term)) ||
+                        (a.officerAssigned?.fullName && a.officerAssigned.fullName.toLowerCase().includes(term));
+                    if (!matches) return false;
+                }
+
+                // Officer
+                if (f.officer) {
+                    if (a.officerAssigned?.fullName !== f.officer) return false;
+                }
+
+                // Status
+                if (f.status) {
+                    if (a.status !== f.status) return false;
+                }
+
+                // Priority
+                if (f.priority) {
+                    if (a.priority !== f.priority) return false;
+                }
+
+                // Category
+                if (f.category) {
+                    if (!a.categories || !a.categories.includes(f.category)) return false;
+                }
+
+                // Date range
+                if (f.startDate && a.date < f.startDate) return false;
+                if (f.endDate && a.date > f.endDate) return false;
+
+                return true;
+            });
+
+            // Apply sort
+            applySort();
+        }
+
+        // ========================================
+        // SORT
+        // ========================================
+        function applySort() {
+            filteredActivities.sort((a, b) => {
+                let aVal = a[sortColumn] ?? '';
+                let bVal = b[sortColumn] ?? '';
+
+                if (sortColumn === 'officerAssigned') {
+                    aVal = a.officerAssigned?.fullName || '';
+                    bVal = b.officerAssigned?.fullName || '';
+                } else if (sortColumn === 'requester') {
+                    aVal = a.requester?.fullName || '';
+                    bVal = b.requester?.fullName || '';
+                }
+
+                if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+                if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function handleSort(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            currentPage = 1;
+            renderAll();
+        }
+
+        // ========================================
+        // RENDER ALL
+        // ========================================
+        function renderAll() {
+            applyFilters();
+            renderStats();
+            renderTable();
+            renderPagination();
+        }
+
+        // ========================================
+        // RENDER STATS
+        // ========================================
+        function renderStats() {
+            const stats = getDashboardStats();
+            const statsBar = document.getElementById('statsBar');
+
+            statsBar.innerHTML = `
+                <span class="stat-pill stat-total">
+                    <i class="fas fa-list"></i> Total: ${stats.total}
+                </span>
+                <span class="stat-pill stat-progress">
+                    <i class="fas fa-spinner"></i> In Progress: ${stats.inProgress}
+                </span>
+                <span class="stat-pill stat-blocked">
+                    <i class="fas fa-ban"></i> Blocked: ${stats.blocked}
+                </span>
+                <span class="stat-pill stat-today">
+                    <i class="fas fa-calendar-day"></i> Today: ${stats.today}
+                </span>
+                <span class="stat-pill stat-completed">
+                    <i class="fas fa-check-circle"></i> Completed: ${stats.done}
+                </span>
+                <span class="stat-pill stat-critical">
+                    <i class="fas fa-exclamation-triangle"></i> Critical: ${stats.critical}
+                </span>
+            `;
+        }
+
+        // ========================================
+        // RENDER TABLE
+        // ========================================
+        function renderTable() {
+            const thead = document.getElementById('activityTableHead');
+            const tbody = document.getElementById('activityTableBody');
+            const table = document.getElementById('activityTable');
+            const emptyState = document.getElementById('emptyState');
+            const paginationBar = document.getElementById('paginationBar');
+
+            // No activities at all
+            if (allActivities.length === 0) {
+                table.style.display = 'none';
+                paginationBar.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No Activities Yet</h3>
+                        <p>Log your first ICT activity to start tracking.</p>
+                        <a href="log-activity.html" class="btn-log-new">
+                            <i class="fas fa-plus"></i> Log Activity
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // No results after filtering
+            if (filteredActivities.length === 0) {
+                table.style.display = 'none';
+                paginationBar.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No activities match your filters</h3>
+                        <p>Try adjusting your search criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+
+            // Render header
+            thead.innerHTML = `
+                <tr>
+                    <th>S/N</th>
+                    <th class="sortable ${sortColumn === 'ticketRef' ? 'sorted-' + sortDirection : ''}" onclick="handleSort('ticketRef')">Ticket</th>
+                    <th class="sortable ${sortColumn === 'date' ? 'sorted-' + sortDirection : ''}" onclick="handleSort('date')">Date</th>
+                    <th class="sortable ${sortColumn === 'requester' ? 'sorted-' + sortDirection : ''}" onclick="handleSort('requester')">Requester</th>
+                    <th>Category</th>
+                    <th class="sortable ${sortColumn === 'priority' ? 'sorted-' + sortDirection : ''}" onclick="handleSort('priority')">Priority</th>
+                    <th class="sortable ${sortColumn === 'status' ? 'sorted-' + sortDirection : ''}" onclick="handleSort('status')">Status</th>
+                    <th class="sortable ${sortColumn === 'officerAssigned' ? 'sorted-' + sortDirection : ''}" onclick="handleSort('officerAssigned')">Officer</th>
+                    <th>Actions</th>
+                </tr>
+            `;
+
+            // Pagination slice
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pageItems = filteredActivities.slice(start, end);
+
+            // Render rows
+            tbody.innerHTML = pageItems.map((a, index) => {
+                const sn = start + index + 1;
+                const categories = (a.categories || []).join(', ') || 'N/A';
+                return `
+                    <tr onclick="openActivityDetails('${a.ticketRef}')">
+                        <td>${sn}</td>
+                        <td><span class="ticket-ref">${a.ticketRef || 'N/A'}</span></td>
+                        <td>${formatICTDate(a.date)}</td>
+                        <td>${a.requester?.fullName || 'N/A'}</td>
+                        <td>${categories}</td>
+                        <td>${getPriorityBadge(a.priority)}</td>
+                        <td>${getStatusBadge(a.status)}</td>
+                        <td>${a.officerAssigned?.fullName || 'N/A'}</td>
+                        <td onclick="event.stopPropagation()">
+                            <div class="action-icons">
+                                <button title="View Details" onclick="openActivityDetails('${a.ticketRef}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button title="Edit Activity" onclick="editActivity('${a.ticketRef}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button title="Delete Activity" class="delete-btn" onclick="deleteActivityConfirm('${a.ticketRef}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // RENDER PAGINATION
+        // ========================================
+        function renderPagination() {
+            const paginationBar = document.getElementById('paginationBar');
+            const total = filteredActivities.length;
+
+            if (total === 0) {
+                paginationBar.style.display = 'none';
+                return;
+            }
+
+            const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+
+            if (totalPages <= 1) {
+                paginationBar.style.display = 'flex';
+                paginationBar.innerHTML = `
+                    <div class="pagination-info">
+                        Showing ${total} of ${total} activities
+                    </div>
+                    <div class="pagination-controls"></div>
+                `;
+                return;
+            }
+
+            const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+            const end = Math.min(currentPage * ITEMS_PER_PAGE, total);
+
+            let pageButtons = '';
+
+            // Previous
+            pageButtons += `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                <i class="fas fa-chevron-left"></i>
+            </button>`;
+
+            // Page numbers
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pageButtons += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+            }
+
+            // Next
+            pageButtons += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                <i class="fas fa-chevron-right"></i>
+            </button>`;
+
+            paginationBar.style.display = 'flex';
+            paginationBar.innerHTML = `
+                <div class="pagination-info">
+                    Showing ${start}-${end} of ${total} activities
+                </div>
+                <div class="pagination-controls">${pageButtons}</div>
+            `;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredActivities.length / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTable();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ========================================
+        // ROW ACTIONS
+        // ========================================
+        function openActivityDetails(ticketRef) {
+            window.location.href = `activity-details.html?ticket=${encodeURIComponent(ticketRef)}`;
+        }
+
+        function editActivity(ticketRef) {
+            window.location.href = `edit-activity.html?ticket=${encodeURIComponent(ticketRef)}`;
+        }
+
+        function deleteActivityConfirm(ticketRef) {
+            if (confirm(`Are you sure you want to delete activity ${ticketRef}?\n\nThis action cannot be undone.`)) {
+                const success = deleteActivity(ticketRef);
+                if (success) {
+                    showNotification(`Activity ${ticketRef} deleted`, 'success');
+                    loadActivities();
+                    renderAll();
+                } else {
+                    showNotification('Failed to delete activity', 'error');
+                }
+            }
+        }
+
+        // ========================================
+        // EXPOSE FUNCTIONS
+        // ========================================
+        window.handleSort = handleSort;
+        window.goToPage = goToPage;
+        window.openActivityDetails = openActivityDetails;
+        window.editActivity = editActivity;
+        window.deleteActivityConfirm = deleteActivityConfirm;
+    </script>
+</body>
+</html>

@@ -1,0 +1,822 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Service Portal | ICT Works — Log Activity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link rel="stylesheet" href="../../assets/css/ict-works.css">
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- ICT WORKS SIDEBAR (standalone — inline)                    -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="ict-sidebar" id="ictSidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="closeSidebarBtn" title="Close sidebar">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-tools ict-logo"></i>
+            <h3>ICT Works</h3>
+            <div class="ict-subtitle">Activity & Support</div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <!-- ═══════════════════════════════ -->
+            <!-- DASHBOARD & REPORTS             -->
+            <!-- ═══════════════════════════════ -->
+            <li>
+                <a href="./ict-works.html" title="ICT Works Dashboard">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="reports.html" title="Reports & Analytics">
+                    <i class="fas fa-chart-line"></i> Reports & Analytics
+                </a>
+            </li>
+
+            <li class="sidebar-divider"></li>
+            <li class="sidebar-section-label">Activities</li>
+
+            <!-- ═══════════════════════════════ -->
+            <!-- ACTIVITIES                      -->
+            <!-- ═══════════════════════════════ -->
+            <li>
+                <a href="log-activity.html" class="active" title="Log Activity">
+                    <i class="fas fa-pen"></i> Log Activity
+                </a>
+            </li>
+            <li>
+                <a href="activity-list.html" title="Activity List">
+                    <i class="fas fa-list"></i> Activity List
+                </a>
+            </li>
+
+            <li class="sidebar-divider"></li>
+            <li class="sidebar-section-label">Assets</li>
+
+            <!-- ═══════════════════════════════ -->
+            <!-- ASSETS                          -->
+            <!-- ═══════════════════════════════ -->
+            <li>
+                <a href="network-devices.html" title="Network Devices">
+                    <i class="fas fa-network-wired"></i> Network Devices
+                </a>
+            </li>
+            <li>
+                <a href="asset-registry.html" title="Computer Asset Registry">
+                    <i class="fas fa-desktop"></i> Computer Asset Registry
+                </a>
+            </li>
+            <li>
+                <a href="printers.html" title="Printers & Peripherals">
+                    <i class="fas fa-print"></i> Printers & Peripherals
+                </a>
+            </li>
+            <li>
+                <a href="maintenance.html" title="Maintenance">
+                    <i class="fas fa-wrench"></i> Maintenance
+                </a>
+            </li>
+
+            <li class="sidebar-divider"></li>
+            <li class="sidebar-section-label">Configuration</li>
+
+            <!-- ═══════════════════════════════ -->
+            <!-- CONFIGURATION                   -->
+            <!-- ═══════════════════════════════ -->
+            <li>
+                <a href="categories.html" title="Categories">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+            </li>
+            <li>
+                <a href="../../pages/user management/user-management.html" title="User Management (Portal)">
+                    <i class="fas fa-users"></i> User Management
+                </a>
+            </li>
+            <li>
+                <a href="locations.html" title="Locations">
+                    <i class="fas fa-map-marker-alt"></i> Locations
+                </a>
+            </li>
+
+            <li class="sidebar-divider"></li>
+
+            <!-- ═══════════════════════════════ -->
+            <!-- BACK TO PORTAL                  -->
+            <!-- ═══════════════════════════════ -->
+            <li class="sidebar-back-link">
+                <a href="../../index.html" title="Back to Hospital Portal">
+                    <i class="fas fa-arrow-left"></i> Back to Portal
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT                                                -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container (loaded from components) -->
+        <div id="header-container"></div>
+
+        <!-- Page Content -->
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-pen"></i> Log ICT Activity</h2>
+                <span class="record-count" id="recordCount">0 Activities Logged Today</span>
+            </div>
+
+            <form id="activityForm" novalidate>
+                <!-- ══════════════════════════════════════════ -->
+                <!-- ESSENTIALS                                -->
+                <!-- ══════════════════════════════════════════ -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-clipboard-list"></i> Essentials
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activityDate">Date <span class="required">*</span></label>
+                            <input type="date" id="activityDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticketRef">Ticket Ref (auto-generated)</label>
+                            <input type="text" id="ticketRef" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="requester">Requester <span class="required">*</span></label>
+                            <select id="requester" required>
+                                <option value="EMD" selected>EMD</option>
+                                <option value="BIMA">BIMA</option>
+                                <option value="OBGY">OBGY</option>
+                                <option value="PAEDIATRIC">PAEDIATRIC</option>
+                                <option value="OPTHAMOLOGY">OPTHAMOLOGY</option>
+                                <option value="INTERNAL MEDICINE">INTERNAL MEDICINE</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority <span class="required">*</span></label>
+                            <select id="priority" required>
+                                <option value="Normal" selected>Normal</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High" >High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label>Activity Category <span class="required">*</span></label>
+                            <div class="multi-select-wrapper">
+                                <div class="multi-select-tags" id="categoryTags" tabindex="0">
+                                    <span class="multi-select-placeholder">Click to select categories...</span>
+                                </div>
+                                <div class="category-dropdown" id="categoryDropdown"></div>
+                            </div>
+                            <div class="help-text">Click to select multiple categories</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="supportRequested">Support Requested <span class="required">*</span></label>
+                            <input type="text" id="supportRequested" placeholder="e.g., Network support, Helpdesk support" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status <span class="required">*</span></label>
+                            <div class="status-group">
+                                <label><input type="radio" name="status" value="Done"> Done</label>
+                                <label><input type="radio" name="status" value="In Progress" checked> In Progress</label>
+                                <label><input type="radio" name="status" value="Blocked"> Blocked</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════════════════ -->
+                <!-- CONTEXT                                   -->
+                <!-- ══════════════════════════════════════════ -->
+                <details class="form-section" open>
+                    <summary class="form-section-title">
+                        <i class="fas fa-cog"></i> Context
+                        <i class="fas fa-chevron-down" style="font-size:11px; margin-left:auto; margin-right:4px;"></i>
+                    </summary>
+
+                    <div class="form-row">
+                            <div class="form-group">
+                                <label for="relatedAsset">Related Asset / System</label>
+                                <input type="text" id="relatedAsset" placeholder="e.g., SW-FL2-01">
+                            </div>
+                            <div class="form-group">
+                                <label for="assetType">Asset Type</label>
+                                <input type="text" id="assetType" placeholder="e.g., Switch, Desktop, Printer">
+                            </div>
+                        <div class="form-group">
+                            <label for="location">Location / Site</label>
+                            <input type="text" id="location" placeholder="e.g., Head Office - FL2">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="officerAssigned">Officer Assigned <span class="required">*</span></label>
+                            <select id="officerAssigned" required>
+                                <option value="">-- Select ICT Personnel --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="relatedTicket">Related Ticket (optional)</label>
+                            <select id="relatedTicket">
+                                <option value="">-- None --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row three-col">
+                        <div class="form-group">
+                            <label for="startTime">Start Time</label>
+                            <input type="time" id="startTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">End Time</label>
+                            <input type="time" id="endTime">
+                        </div>
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="duration" readonly placeholder="Auto-calculated">
+                        </div>
+                    </div>
+                </details>
+
+                <!-- ══════════════════════════════════════════ -->
+                <!-- NOTES & EVIDENCE                          -->
+                <!-- ══════════════════════════════════════════ -->
+                <details class="form-section" open>
+                    <summary class="form-section-title">
+                        <i class="fas fa-file-alt"></i> Notes & Evidence
+                        <i class="fas fa-chevron-down" style="font-size:11px; margin-left:auto; margin-right:4px;"></i>
+                    </summary>
+
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label for="reportedProblem">Reported Problem Description</label>
+                        <textarea id="reportedProblem" placeholder="Describe the issue reported by the user..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label for="workDone">Work Done Notes</label>
+                        <textarea id="workDone" placeholder="Describe the actions taken to resolve the issue..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Attachments</label>
+                        <div class="attachment-input-wrapper">
+                            <button type="button" class="attachment-btn" onclick="document.getElementById('attachmentInput').click()">
+                                <i class="fas fa-paperclip"></i> Choose Files
+                            </button>
+                            <span class="help-text" id="attachmentCount">No files chosen</span>
+                            <input type="file" id="attachmentInput" multiple>
+                        </div>
+                        <div class="attachment-list" id="attachmentList"></div>
+                    </div>
+                </details>
+
+                <!-- ══════════════════════════════════════════ -->
+                <!-- ACTIONS                                   -->
+                <!-- ══════════════════════════════════════════ -->
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="saveAndAddBtn">
+                        <i class="fas fa-plus-circle"></i> Save & Add Another
+                    </button>
+                    <button type="submit" class="btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> Save Activity
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer Container (loaded from components) -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireLogin()) return;
+            await initICTWorksPage('log-activity');
+        });
+        // ========================================
+        // CONSTANTS
+        // ========================================
+        const CATEGORIES = [
+            "Network", "Hardware", "Software", "Helpdesk",
+            "Printers", "Email", "Security", "Backup",
+            "Power", "Other"
+        ];
+
+        const STORAGE_KEY = 'ictActivities';
+
+        // ========================================
+        // STATE
+        // ========================================
+        let selectedCategories = [];
+        let selectedFiles = [];
+        let usersCache = [];
+        let existingActivities = [];
+        let currentTicketRef = '';
+
+        // ========================================
+        // SIDEBAR HANDLERS
+        // ========================================
+        document.getElementById('closeSidebarBtn')?.addEventListener('click', function() {
+            const sidebar = document.getElementById('ictSidebar');
+            if (sidebar) sidebar.classList.add('hidden');
+            document.body.classList.add('sidebar-collapsed');
+            sessionStorage.setItem('sidebarCollapsed', 'true');
+        });
+
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('ictSidebar');
+            const menuToggle = document.getElementById('menuToggle');
+
+            if (menuToggle && menuToggle.contains(e.target)) {
+                e.preventDefault();
+                if (sidebar) {
+                    sidebar.classList.toggle('hidden');
+                    document.body.classList.toggle('sidebar-collapsed');
+                    sessionStorage.setItem('sidebarCollapsed', sidebar.classList.contains('hidden') ? 'true' : 'false');
+                }
+            }
+        });
+
+        // Restore sidebar state on load
+        function restoreSidebarState() {
+            const isCollapsed = sessionStorage.getItem('sidebarCollapsed') === 'true';
+            const sidebar = document.getElementById('ictSidebar');
+            if (isCollapsed && sidebar) {
+                sidebar.classList.add('hidden');
+                document.body.classList.add('sidebar-collapsed');
+            }
+        }
+
+        // ========================================
+        // TICKET REF GENERATOR
+        // ========================================
+        function generateTicketRef() {
+            const year = new Date().getFullYear();
+            const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const prefix = `TCK-${year}-`;
+            const sequences = existing
+                .filter(a => a.ticketRef && a.ticketRef.startsWith(prefix))
+                .map(a => parseInt(a.ticketRef.replace(prefix, ''), 10))
+                .filter(n => !isNaN(n));
+
+            const nextSeq = (sequences.length > 0 ? Math.max(...sequences) : 0) + 1;
+            return `${prefix}${String(nextSeq).padStart(4, '0')}`;
+        }
+
+        // ========================================
+        // LOAD USERS
+        // ========================================
+        async function loadUsers() {
+            try {
+                const response = await fetch('../../data/users.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                usersCache = await response.json();
+                if (!Array.isArray(usersCache)) throw new Error('Invalid users data');
+                populateRequesterDropdown();
+                populateOfficerDropdown();
+            } catch (error) {
+                console.error('Failed to load users:', error);
+                showNotification('Failed to load users for dropdowns', 'error');
+            }
+        }
+
+        function populateRequesterDropdown() {
+            const select = document.getElementById('requester');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Select User --</option>';
+            usersCache
+                .filter(u => u.status === 'Active')
+                .sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''))
+                .forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.employeeId || user.id;
+                    option.textContent = `${user.fullName || 'Unknown'} (${user.department || 'N/A'})`;
+                    option.dataset.userData = JSON.stringify({
+                        employeeId: user.employeeId || user.id,
+                        fullName: user.fullName || 'Unknown',
+                        department: user.department || 'N/A'
+                    });
+                    select.appendChild(option);
+                });
+        }
+
+        function populateOfficerDropdown() {
+            const select = document.getElementById('officerAssigned');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Select ICT Personnel --</option>';
+            usersCache
+                .filter(u => u.department === 'ICT' && u.status === 'Active')
+                .sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''))
+                .forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.employeeId || user.id;
+                    option.textContent = user.fullName || 'Unknown';
+                    option.dataset.userData = JSON.stringify({
+                        employeeId: user.employeeId || user.id,
+                        fullName: user.fullName || 'Unknown'
+                    });
+                    select.appendChild(option);
+                });
+        }
+
+        // ========================================
+        // RELATED TICKET DROPDOWN
+        // ========================================
+        function populateRelatedTicketDropdown() {
+            const select = document.getElementById('relatedTicket');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- None --</option>';
+            const activities = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            activities
+                .filter(a => a.ticketRef && a.ticketRef !== currentTicketRef)
+                .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+                .slice(0, 20)
+                .forEach(activity => {
+                    const option = document.createElement('option');
+                    option.value = activity.ticketRef;
+                    option.textContent = `${activity.ticketRef} — ${activity.supportRequested || 'N/A'}`;
+                    select.appendChild(option);
+                });
+        }
+
+        // ========================================
+        // MULTI-SELECT CATEGORIES
+        // ========================================
+        function setupCategorySelector() {
+            const tagsEl = document.getElementById('categoryTags');
+            const dropdownEl = document.getElementById('categoryDropdown');
+            if (!tagsEl || !dropdownEl) return;
+            renderCategoryDropdown();
+            tagsEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownEl.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (!tagsEl.contains(e.target) && !dropdownEl.contains(e.target)) {
+                    dropdownEl.classList.remove('active');
+                }
+            });
+            renderCategoryTags();
+        }
+
+        function renderCategoryTags() {
+            const tagsEl = document.getElementById('categoryTags');
+            if (!tagsEl) return;
+            if (selectedCategories.length === 0) {
+                tagsEl.innerHTML = '<span class="multi-select-placeholder">Click to select categories...</span>';
+                return;
+            }
+            tagsEl.innerHTML = selectedCategories.map(cat => `
+                <span class="category-tag">
+                    ${cat}
+                    <button type="button" class="tag-remove" onclick="removeCategory('${cat}', event)">×</button>
+                </span>
+            `).join('');
+        }
+
+        function renderCategoryDropdown() {
+            const dropdownEl = document.getElementById('categoryDropdown');
+            if (!dropdownEl) return;
+            dropdownEl.innerHTML = CATEGORIES.map(cat => `
+                <div class="category-dropdown-item ${selectedCategories.includes(cat) ? 'selected' : ''}"
+                     onclick="toggleCategory('${cat}', event)">
+                    <span>${cat}</span>
+                    ${selectedCategories.includes(cat) ? '<i class="fas fa-check"></i>' : ''}
+                </div>
+            `).join('');
+        }
+
+        window.toggleCategory = function(category, event) {
+            if (event) event.stopPropagation();
+            const index = selectedCategories.indexOf(category);
+            if (index === -1) selectedCategories.push(category);
+            else selectedCategories.splice(index, 1);
+            renderCategoryTags();
+            renderCategoryDropdown();
+        };
+
+        window.removeCategory = function(category, event) {
+            if (event) event.stopPropagation();
+            const index = selectedCategories.indexOf(category);
+            if (index !== -1) {
+                selectedCategories.splice(index, 1);
+                renderCategoryTags();
+                renderCategoryDropdown();
+            }
+        };
+
+        // ========================================
+        // DURATION
+        // ========================================
+        function setupDurationCalculation() {
+            const startInput = document.getElementById('startTime');
+            const endInput = document.getElementById('endTime');
+            const durationInput = document.getElementById('duration');
+            const calcDuration = () => {
+                if (!startInput.value || !endInput.value) {
+                    durationInput.value = '';
+                    return;
+                }
+                const [startH, startM] = startInput.value.split(':').map(Number);
+                const [endH, endM] = endInput.value.split(':').map(Number);
+                let startMinutes = startH * 60 + startM;
+                let endMinutes = endH * 60 + endM;
+                if (endMinutes < startMinutes) endMinutes += 24 * 60;
+                const totalMinutes = endMinutes - startMinutes;
+                const hours = Math.floor(totalMinutes / 60);
+                const mins = totalMinutes % 60;
+                let display = '';
+                if (hours > 0) display += `${hours}h `;
+                if (mins > 0) display += `${mins}m`;
+                durationInput.value = display.trim() || '0m';
+            };
+            if (startInput) startInput.addEventListener('input', calcDuration);
+            if (endInput) endInput.addEventListener('input', calcDuration);
+        }
+
+        // ========================================
+        // ATTACHMENTS
+        // ========================================
+        function setupAttachments() {
+            const input = document.getElementById('attachmentInput');
+            const listEl = document.getElementById('attachmentList');
+            const countEl = document.getElementById('attachmentCount');
+            if (!input) return;
+
+            input.addEventListener('change', (e) => {
+                const files = Array.from(e.target.files);
+                files.forEach(file => {
+                    selectedFiles.push({ name: file.name, size: file.size, type: file.type });
+                });
+                renderAttachments();
+                input.value = '';
+            });
+
+            function renderAttachments() {
+                if (selectedFiles.length === 0) {
+                    listEl.innerHTML = '';
+                    countEl.textContent = 'No files chosen';
+                    return;
+                }
+                countEl.textContent = `${selectedFiles.length} file${selectedFiles.length !== 1 ? 's' : ''} chosen`;
+                listEl.innerHTML = selectedFiles.map((file, index) => `
+                    <div class="attachment-item">
+                        <div class="att-name">
+                            <i class="fas fa-file"></i>
+                            ${file.name}
+                            <span class="att-size">(${formatFileSize(file.size)})</span>
+                        </div>
+                        <button type="button" class="att-remove" onclick="removeAttachment(${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            window.removeAttachment = function(index) {
+                selectedFiles.splice(index, 1);
+                renderAttachments();
+            };
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // ========================================
+        // FORM SUBMISSION
+        // ========================================
+        async function handleSubmit(e, addAnother = false) {
+            if (e) e.preventDefault();
+
+            const saveBtn = document.getElementById('saveBtn');
+            const saveAndAddBtn = document.getElementById('saveAndAddBtn');
+            const activeBtn = addAnother ? saveAndAddBtn : saveBtn;
+
+            const errors = validateForm();
+            if (errors.length > 0) {
+                showNotification(errors[0], 'error');
+                return;
+            }
+
+            const origBtnHTML = activeBtn.innerHTML;
+            activeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            activeBtn.disabled = true;
+            if (addAnother) saveBtn.disabled = true;
+            else saveAndAddBtn.disabled = true;
+
+            try {
+                // Build activity object (only fields captured by the form)
+const requesterSelect = document.getElementById('requester');
+const officerSelect = document.getElementById('officerAssigned');
+
+                const activity = {
+                    ticketRef: currentTicketRef,
+                    date: document.getElementById('activityDate').value,
+                    startTime: document.getElementById('startTime').value || null,
+                    endTime: document.getElementById('endTime').value || null,
+                    duration: document.getElementById('duration').value || null,
+                    requester: JSON.parse(requesterSelect.selectedOptions[0].dataset.userData),
+                    categories: [...selectedCategories],
+                    supportRequested: document.getElementById('supportRequested').value.trim(),
+                    priority: document.getElementById('priority').value,
+                    status: document.querySelector('input[name="status"]:checked').value,
+                    relatedAsset: document.getElementById('relatedAsset').value.trim() || null,
+                    assetType: document.getElementById('assetType').value.trim() || null,
+                    location: document.getElementById('location').value.trim() || null,
+                    relatedTicket: document.getElementById('relatedTicket').value || null,
+                    officerAssigned: JSON.parse(officerSelect.selectedOptions[0].dataset.userData),
+                    reportedProblem: document.getElementById('reportedProblem').value.trim() || null,
+                    workDone: document.getElementById('workDone').value.trim() || null,
+                    attachments: [...selectedFiles]
+                };
+
+                // Use shared saveActivity helper (auto-fills id, loggedBy, loggedAt, etc.)
+                saveActivity(activity);
+
+                showNotification(`✅ Activity ${currentTicketRef} saved successfully!`, 'success');
+                updateRecordCount();
+
+                if (addAnother) resetFormForNextActivity();
+                else resetForm();
+
+            } catch (error) {
+                console.error('Save error:', error);
+                showNotification('Failed to save activity. Please try again.', 'error');
+            } finally {
+                activeBtn.innerHTML = origBtnHTML;
+                activeBtn.disabled = false;
+                saveBtn.disabled = false;
+                saveAndAddBtn.disabled = false;
+            }
+        }
+
+        function validateForm() {
+            const errors = [];
+            if (!document.getElementById('activityDate').value) errors.push('Please select a date');
+            if (!document.getElementById('requester').value) errors.push('Please select a requester');
+            if (selectedCategories.length === 0) errors.push('Please select at least one activity category');
+            if (!document.getElementById('supportRequested').value.trim()) errors.push('Please enter what support was requested');
+            if (!document.getElementById('priority').value) errors.push('Please select a priority');
+            if (!document.querySelector('input[name="status"]:checked')) errors.push('Please select a status');
+            if (!document.getElementById('officerAssigned').value) errors.push('Please select the officer assigned');
+            return errors;
+        }
+
+        function resetForm() {
+            document.getElementById('activityForm').reset();
+            selectedCategories = [];
+            renderCategoryTags();
+            renderCategoryDropdown();
+            selectedFiles = [];
+            if (window.removeAttachment) {
+                // Reset attachments display
+                const listEl = document.getElementById('attachmentList');
+                const countEl = document.getElementById('attachmentCount');
+                if (listEl) listEl.innerHTML = '';
+                if (countEl) countEl.textContent = 'No files chosen';
+            }
+            document.getElementById('activityDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('priority').value = 'Normal';
+            document.querySelector('input[name="status"][value="In Progress"]').checked = true;
+            document.getElementById('duration').value = '';
+            currentTicketRef = generateTicketRef();
+            document.getElementById('ticketRef').value = currentTicketRef;
+            populateRelatedTicketDropdown();
+        }
+
+        function resetFormForNextActivity() {
+            selectedCategories = [];
+            renderCategoryTags();
+            renderCategoryDropdown();
+            selectedFiles = [];
+            const listEl = document.getElementById('attachmentList');
+            const countEl = document.getElementById('attachmentCount');
+            if (listEl) listEl.innerHTML = '';
+            if (countEl) countEl.textContent = 'No files chosen';
+
+            document.getElementById('supportRequested').value = '';
+            document.getElementById('relatedAsset').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('relatedTicket').value = '';
+            document.getElementById('startTime').value = '';
+            document.getElementById('endTime').value = '';
+            document.getElementById('duration').value = '';
+            document.getElementById('reportedProblem').value = '';
+            document.getElementById('workDone').value = '';
+            document.querySelector('input[name="status"][value="In Progress"]').checked = true;
+
+            currentTicketRef = generateTicketRef();
+            document.getElementById('ticketRef').value = currentTicketRef;
+            populateRelatedTicketDropdown();
+            document.getElementById('supportRequested').focus();
+        }
+
+        function updateRecordCount() {
+            const activities = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const countEl = document.getElementById('recordCount');
+            if (countEl) {
+                countEl.textContent = `${activities.length} activit${activities.length === 1 ? 'y' : 'ies'} logged`;
+            }
+        }
+
+        // ========================================
+        // COMPONENT LOADING (header + footer only)
+        // ========================================
+        async function loadComponents() {
+            try {
+                const headerResponse = await fetch('../../components/header.html');
+                if (headerResponse.ok) document.getElementById('header-container').innerHTML = await headerResponse.text();
+
+                const footerResponse = await fetch('../../components/footer.html');
+                if (footerResponse.ok) document.getElementById('footer-container').innerHTML = await footerResponse.text();
+
+                const modalsResponse = await fetch('../../components/modals.html');
+                if (modalsResponse.ok) document.getElementById('modals-container').innerHTML = await modalsResponse.text();
+
+                initPageComponents();
+            } catch (error) {
+                console.error('Error loading components:', error);
+                showNotification('Error loading page components', 'error');
+            }
+        }
+
+        function initPageComponents() {
+            if (typeof initUserDropdown === 'function') initUserDropdown();
+
+            // Set user info
+            const jobTitle = sessionStorage.getItem('jobTitle') || 'System Administrator';
+            const userName = sessionStorage.getItem('userName') || 'User';
+            const userAvatar = document.getElementById('userAvatar');
+            const userNameSpan = document.getElementById('userName');
+            const jobTitleSpan = document.getElementById('jobTitle');
+
+            if (jobTitleSpan) jobTitleSpan.textContent = jobTitle + ' |';
+            if (userNameSpan) userNameSpan.textContent = userName;
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                userAvatar.textContent = initials;
+            }
+
+            // Restore sidebar state
+            restoreSidebarState();
+
+            // Initialize form
+            initializeForm();
+        }
+
+        async function initializeForm() {
+            document.getElementById('activityDate').value = new Date().toISOString().split('T')[0];
+            currentTicketRef = generateTicketRef();
+            document.getElementById('ticketRef').value = currentTicketRef;
+
+            await loadUsers();
+            populateRelatedTicketDropdown();
+            setupCategorySelector();
+            setupDurationCalculation();
+            setupAttachments();
+            updateRecordCount();
+
+            document.getElementById('activityForm').addEventListener('submit', (e) => handleSubmit(e, false));
+            document.getElementById('saveAndAddBtn').addEventListener('click', () => handleSubmit(null, true));
+        }
+
+        // ========================================
+        // START APPLICATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!requireLogin()) return;
+            loadComponents();
+        });
+    </script>
+</body>
+</html>
