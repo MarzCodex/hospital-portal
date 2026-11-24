@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Works | Edit Activity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <link rel="stylesheet" href="../../assets/css/ict-works.css">
+    <style>
+        /* ======================================== */
+        /* PAGE-SPECIFIC STYLES                     */
+        /* ======================================== */
+
+        /* Edit banner */
+        .edit-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #92400e;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .edit-banner i {
+            color: #f59e0b;
+            font-size: 16px;
+        }
+
+        .edit-banner strong {
+            font-weight: 600;
+        }
+
+        .edit-banner .ticket-ref {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Loading / error states */
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-container i {
+            font-size: 40px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .error-container i {
+            font-size: 64px;
+            color: var(--danger);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .error-container h3 {
+            font-size: 20px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .error-container p {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .error-container a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .error-container a:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Audit info footer */
+        .audit-info {
+            background: #f8fafc;
+            border: 1px solid #e0e7ee;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .audit-info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .audit-info-row strong {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .audit-info-row .divider {
+            color: #d0dae5;
+        }
+
+        /* Hide audit if edit not yet saved */
+        .audit-info.no-edits {
+            display: none;
+        }
+
+        /* Ticket ref readonly display */
+        .form-group input[readonly].ticket-ref-input {
+            background: #fef9c3;
+            color: #713f12;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            border-color: #fcd34d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Container -->
+    <div id="ict-sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+
+        <!-- Page Content -->
+        <div class="page-container" id="editPageContainer">
+            <!-- Content loaded via JS -->
+            <div class="loading-container" id="loadingContainer">
+                <i class="fas fa-spinner"></i>
+                <p>Loading activity data...</p>
+            </div>
+        </div>
+
+        <!-- Footer Container -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../../assets/js/common.js"></script>
+    <script src="../../assets/js/ict-works.js"></script>
+    <script>
+        // ========================================
+        // PAGE STATE
+        // ========================================
+        let currentActivity = null;
+        let selectedCategories = [];
+        let selectedFiles = [];
+        let isSaving = false;
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireLogin()) return;
+
+            await initICTWorksPage('activity-list');
+
+            await loadAndRenderEditForm();
+        });
+
+        async function loadAndRenderEditForm() {
+            // Get ticket from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const ticketRef = urlParams.get('ticket');
+
+            if (!ticketRef) {
+                renderError('No ticket reference provided.', 'Please specify an activity to edit.');
+                return;
+            }
+
+            // Load activity
+            currentActivity = loadActivityById(ticketRef);
+
+            if (!currentActivity) {
+                renderError(`Activity "${ticketRef}" not found.`, 'The activity may have been deleted or the ticket reference is invalid.');
+                return;
+            }
+
+            // Populate state
+            selectedCategories = [...(currentActivity.categories || [])];
+            selectedFiles = [...(currentActivity.attachments || [])];
+
+            // Load users cache for dropdowns
+            await loadICTUsersCache();
+
+            // Render the edit form
+            renderEditForm(currentActivity);
+        }
+
+        // ========================================
+        // RENDER ERROR
+        // ========================================
+        function renderError(message, subtext) {
+            const container = document.getElementById('editPageContainer');
+            container.innerHTML = `
+                <div class="error-container">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>${escapeHtml(message)}</h3>
+                    <p>${escapeHtml(subtext)}</p>
+                    <a href="activity-list.html">
+                        <i class="fas fa-arrow-left"></i> Back to Activity List
+                    </a>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // RENDER EDIT FORM
+        // ========================================
+        function renderEditForm(a) {
+            const container = document.getElementById('editPageContainer');
+
+            container.innerHTML = `
+                <div class="page-header">
+                    <h2><i class="fas fa-edit"></i> Edit ICT Activity</h2>
+                    <a href="activity-details.html?ticket=${encodeURIComponent(a.ticketRef)}" class="btn-secondary" style="text-decoration:none;">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+
+                <!-- Edit Banner -->
+                <div class="edit-banner">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Editing activity: <strong class="ticket-ref">${escapeHtml(a.ticketRef)}</strong></span>
+                </div>
+
+                <form id="editActivityForm" novalidate>
+                    <!-- ══════════════════════════════════════════ -->
+                    <!-- ESSENTIALS                                -->
+                    <!-- ══════════════════════════════════════════ -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-clipboard-list"></i> Essentials
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="activityDate">Date <span class="required">*</span></label>
+                                <input type="date" id="activityDate" required value="${escapeHtml(a.date || '')}">
+                            </div>
+                            <div class="form-group">
+                                <label for="ticketRef">Ticket Ref (readonly)</label>
+                                <input type="text" id="ticketRef" readonly class="ticket-ref-input" value="${escapeHtml(a.ticketRef || '')}">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="requester">Requester <span class="required">*</span></label>
+                                <select id="requester" required>
+                                    <option value="">-- Select User --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="priority">Priority <span class="required">*</span></label>
+                                <select id="priority" required>
+                                    <option value="Normal" ${a.priority === 'Normal' ? 'selected' : ''}>Normal</option>
+                                    <option value="Medium" ${a.priority === 'Medium' ? 'selected' : ''}>Medium</option>
+                                    <option value="High" ${a.priority === 'High' ? 'selected' : ''}>High</option>
+                                    <option value="Critical" ${a.priority === 'Critical' ? 'selected' : ''}>Critical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row single">
+                            <div class="form-group">
+                                <label>Activity Category <span class="required">*</span></label>
+                                <div class="multi-select-wrapper">
+                                    <div class="multi-select-tags" id="categoryTags" tabindex="0"></div>
+                                    <div class="category-dropdown" id="categoryDropdown"></div>
+                                </div>
+                                <div class="help-text">Click to select multiple categories</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="supportRequested">Support Requested <span class="required">*</span></label>
+                                <input type="text" id="supportRequested" placeholder="e.g., Network support, Helpdesk support" required value="${escapeHtml(a.supportRequested || '')}">
+                            </div>
+                            <div class="form-group">
+                                <label>Status <span class="required">*</span></label>
+                                <div class="status-group" style="flex-wrap: wrap;">
+                                    <label><input type="radio" name="status" value="In Progress" ${a.status === 'In Progress' ? 'checked' : ''}> In Progress</label>
+                                    <label><input type="radio" name="status" value="Blocked" ${a.status === 'Blocked' ? 'checked' : ''}> Blocked</label>
+                                    <label><input type="radio" name="status" value="On Hold" ${a.status === 'On Hold' ? 'checked' : ''}> On Hold</label>
+                                    <label><input type="radio" name="status" value="Resolved" ${a.status === 'Resolved' ? 'checked' : ''}> Resolved</label>
+                                    <label><input type="radio" name="status" value="Done" ${a.status === 'Done' ? 'checked' : ''}> Done</label>
+                                    <label><input type="radio" name="status" value="Closed" ${a.status === 'Closed' ? 'checked' : ''}> Closed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══════════════════════════════════════════ -->
+                    <!-- CONTEXT                                   -->
+                    <!-- ══════════════════════════════════════════ -->
+                    <details class="form-section" open>
+                        <summary class="form-section-title">
+                            <i class="fas fa-cog"></i> Context
+                            <i class="fas fa-chevron-down" style="font-size:11px; margin-left:auto; margin-right:4px;"></i>
+                        </summary>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="relatedAsset">Related Asset / System</label>
+                                <input type="text" id="relatedAsset" placeholder="e.g., SW-FL2-01" value="${escapeHtml(a.relatedAsset || '')}">
+                            </div>
+                            <div class="form-group">
+                                <label for="assetType">Asset Type</label>
+                                <input type="text" id="assetType" placeholder="e.g., Switch, Desktop, Printer" value="${escapeHtml(a.assetType || '')}">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Location / Site</label>
+                                <input type="text" id="location" placeholder="e.g., Head Office - FL2" value="${escapeHtml(a.location || '')}">
+                            </div>
+                            <div class="form-group">
+                                <label for="relatedTicket">Related Ticket (optional)</label>
+                                <select id="relatedTicket">
+                                    <option value="">-- None --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row three-col">
+                            <div class="form-group">
+                                <label for="startTime">Start Time</label>
+                                <input type="time" id="startTime" value="${escapeHtml(a.startTime || '')}">
+                            </div>
+                            <div class="form-group">
+                                <label for="endTime">End Time</label>
+                                <input type="time" id="endTime" value="${escapeHtml(a.endTime || '')}">
+                            </div>
+                            <div class="form-group">
+                                <label>Duration</label>
+                                <input type="text" id="duration" readonly placeholder="Auto-calculated" value="${escapeHtml(a.duration || '')}">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="officerAssigned">Officer Assigned <span class="required">*</span></label>
+                                <select id="officerAssigned" required>
+                                    <option value="">-- Select ICT Personnel --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <!-- Spacer for balance -->
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- ══════════════════════════════════════════ -->
+                    <!-- NOTES & EVIDENCE                          -->
+                    <!-- ══════════════════════════════════════════ -->
+                    <details class="form-section" open>
+                        <summary class="form-section-title">
+                            <i class="fas fa-file-alt"></i> Notes & Evidence
+                            <i class="fas fa-chevron-down" style="font-size:11px; margin-left:auto; margin-right:4px;"></i>
+                        </summary>
+
+                        <div class="form-group" style="margin-bottom:15px;">
+                            <label for="reportedProblem">Reported Problem Description</label>
+                            <textarea id="reportedProblem" placeholder="Describe the issue reported by the user...">${escapeHtml(a.reportedProblem || '')}</textarea>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:15px;">
+                            <label for="workDone">Work Done Notes</label>
+                            <textarea id="workDone" placeholder="Describe the actions taken to resolve the issue...">${escapeHtml(a.workDone || '')}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Attachments</label>
+                            <div class="attachment-input-wrapper">
+                                <button type="button" class="attachment-btn" onclick="document.getElementById('attachmentInput').click()">
+                                    <i class="fas fa-paperclip"></i> Add Files
+                                </button>
+                                <span class="help-text" id="attachmentCount">No files chosen</span>
+                                <input type="file" id="attachmentInput" multiple>
+                            </div>
+                            <div class="attachment-list" id="attachmentList"></div>
+                        </div>
+                    </details>
+
+                    <!-- ══════════════════════════════════════════ -->
+                    <!-- AUDIT INFO                                -->
+                    <!-- ══════════════════════════════════════════ -->
+                    <div class="audit-info ${a.editedAt ? '' : 'no-edits'}" id="auditInfo">
+                        <div class="audit-info-row">
+                            <span><strong>Logged:</strong> ${formatICTDateTime(a.loggedAt)} by ${escapeHtml(a.loggedBy?.fullName || 'N/A')}</span>
+                            ${a.editedAt ? `<span class="divider">|</span><span><strong>Last edited:</strong> ${formatICTDateTime(a.editedAt)} by ${escapeHtml(a.editedBy?.fullName || 'N/A')}</span>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- ══════════════════════════════════════════ -->
+                    <!-- ACTIONS                                   -->
+                    <!-- ══════════════════════════════════════════ -->
+                    <div class="form-actions">
+                        <a href="activity-details.html?ticket=${encodeURIComponent(a.ticketRef)}" class="btn-secondary" style="text-decoration:none;">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn-primary" id="saveBtn">
+                            <i class="fas fa-save"></i> Update Activity
+                        </button>
+                    </div>
+                </form>
+            `;
+
+            // Now populate dynamic elements
+            populateEditFormFields(a);
+            setupEditFormListeners(a);
+        }
+
+        // ========================================
+        // POPULATE DROPDOWNS & DYNAMIC ELEMENTS
+        // ========================================
+        function populateEditFormFields(a) {
+            // ─────────────────────────────────────
+            // Requester dropdown
+            // ─────────────────────────────────────
+            populateICTUserDropdown('requester', {
+                placeholder: '-- Select User --',
+                filterFn: () => true
+            });
+
+            // Select current requester
+            if (a.requester) {
+                const requesterSelect = document.getElementById('requester');
+                const matchingOption = Array.from(requesterSelect.options).find(
+                    opt => {
+                        if (!opt.dataset.userData) return false;
+                        try {
+                            const data = JSON.parse(opt.dataset.userData);
+                            return data.employeeId === a.requester.employeeId;
+                        } catch { return false; }
+                    }
+                );
+                if (matchingOption) {
+                    requesterSelect.value = matchingOption.value;
+                } else if (a.requester.fullName) {
+                    // Fallback: select by name match
+                    const nameOption = Array.from(requesterSelect.options).find(
+                        opt => opt.textContent.includes(a.requester.fullName)
+                    );
+                    if (nameOption) requesterSelect.value = nameOption.value;
+                }
+            }
+
+            // ─────────────────────────────────────
+            // Officer dropdown (ICT only)
+            // ─────────────────────────────────────
+            populateICTUserDropdown('officerAssigned', {
+                placeholder: '-- Select ICT Personnel --',
+                filterFn: (u) => u.department === 'ICT'
+            });
+
+            // Select current officer
+            if (a.officerAssigned) {
+                const officerSelect = document.getElementById('officerAssigned');
+                const matchingOption = Array.from(officerSelect.options).find(
+                    opt => {
+                        if (!opt.dataset.userData) return false;
+                        try {
+                            const data = JSON.parse(opt.dataset.userData);
+                            return data.employeeId === a.officerAssigned.employeeId;
+                        } catch { return false; }
+                    }
+                );
+                if (matchingOption) {
+                    officerSelect.value = matchingOption.value;
+                }
+            }
+
+            // ─────────────────────────────────────
+            // Related ticket dropdown (exclude current)
+            // ─────────────────────────────────────
+            populateRelatedTicketDropdownForEdit(a.ticketRef, a.relatedTicket);
+
+            // ─────────────────────────────────────
+            // Category selector
+            // ─────────────────────────────────────
+            setupCategorySelector('categoryTags', 'categoryDropdown', {
+                state: selectedCategories,
+                onUpdate: (state) => {
+                    selectedCategories = state;
+                }
+            });
+
+            // ─────────────────────────────────────
+            // Duration calculation
+            // ─────────────────────────────────────
+            setupDurationCalculation('startTime', 'endTime', 'duration');
+
+            // ─────────────────────────────────────
+            // Attachments
+            // ─────────────────────────────────────
+            setupAttachments('attachmentInput', 'attachmentList', 'attachmentCount', {
+                state: selectedFiles,
+                onUpdate: (state) => {
+                    selectedFiles = state;
+                }
+            });
+        }
+
+        // ========================================
+        // RELATED TICKET DROPDOWN
+        // ========================================
+        function populateRelatedTicketDropdownForEdit(currentTicketRef, currentRelatedTicket) {
+            const select = document.getElementById('relatedTicket');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">-- None --</option>';
+
+            const activities = getAllActivities();
+            activities
+                .filter(a => a.ticketRef && a.ticketRef !== currentTicketRef)
+                .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+                .slice(0, 30)
+                .forEach(activity => {
+                    const option = document.createElement('option');
+                    option.value = activity.ticketRef;
+                    option.textContent = `${activity.ticketRef} — ${activity.supportRequested || 'N/A'}`;
+                    select.appendChild(option);
+                });
+
+            // Select current related ticket if set
+            if (currentRelatedTicket) {
+                select.value = currentRelatedTicket;
+            }
+        }
+
+        // ========================================
+        // FORM LISTENERS
+        // ========================================
+        function setupEditFormListeners(a) {
+            const form = document.getElementById('editActivityForm');
+            if (form) {
+                form.addEventListener('submit', handleEditSubmit);
+            }
+        }
+
+        // ========================================
+        // HANDLE SUBMIT
+        // ========================================
+        async function handleEditSubmit(e) {
+            e.preventDefault();
+
+            if (isSaving) return;
+
+            const saveBtn = document.getElementById('saveBtn');
+
+            // Validation
+            const errors = validateEditForm();
+            if (errors.length > 0) {
+                showNotification(errors[0], 'error');
+                return;
+            }
+
+            isSaving = true;
+            const origBtnHTML = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            saveBtn.disabled = true;
+
+            try {
+                const requesterSelect = document.getElementById('requester');
+                const officerSelect = document.getElementById('officerAssigned');
+
+                const activity = {
+                    ticketRef: currentActivity.ticketRef,
+                    date: document.getElementById('activityDate').value,
+                    startTime: document.getElementById('startTime').value || null,
+                    endTime: document.getElementById('endTime').value || null,
+                    duration: document.getElementById('duration').value || null,
+                    requester: JSON.parse(requesterSelect.selectedOptions[0].dataset.userData),
+                    categories: [...selectedCategories],
+                    supportRequested: document.getElementById('supportRequested').value.trim(),
+                    priority: document.getElementById('priority').value,
+                    status: document.querySelector('input[name="status"]:checked').value,
+                    relatedAsset: document.getElementById('relatedAsset').value.trim() || null,
+                    assetType: document.getElementById('assetType').value.trim() || null,
+                    location: document.getElementById('location').value.trim() || null,
+                    relatedTicket: document.getElementById('relatedTicket').value || null,
+                    officerAssigned: JSON.parse(officerSelect.selectedOptions[0].dataset.userData),
+                    reportedProblem: document.getElementById('reportedProblem').value.trim() || null,
+                    workDone: document.getElementById('workDone').value.trim() || null,
+                    attachments: [...selectedFiles]
+                };
+
+                // Use shared saveActivity with isEdit = true
+                saveActivity(activity, true);
+
+                showNotification(`Activity ${currentActivity.ticketRef} updated successfully!`, 'success');
+
+                // Redirect to details page
+                setTimeout(() => {
+                    window.location.href = `activity-details.html?ticket=${encodeURIComponent(currentActivity.ticketRef)}`;
+                }, 1200);
+
+            } catch (error) {
+                console.error('Update error:', error);
+                showNotification('Failed to update activity. Please try again.', 'error');
+                saveBtn.innerHTML = origBtnHTML;
+                saveBtn.disabled = false;
+                isSaving = false;
+            }
+        }
+
+        // ========================================
+        // VALIDATION
+        // ========================================
+        function validateEditForm() {
+            const errors = [];
+
+            if (!document.getElementById('activityDate').value) {
+                errors.push('Please select a date');
+            }
+            if (!document.getElementById('requester').value) {
+                errors.push('Please select a requester');
+            }
+            if (selectedCategories.length === 0) {
+                errors.push('Please select at least one activity category');
+            }
+            if (!document.getElementById('supportRequested').value.trim()) {
+                errors.push('Please enter what support was requested');
+            }
+            if (!document.querySelector('input[name="status"]:checked')) {
+                errors.push('Please select a status');
+            }
+            if (!document.getElementById('officerAssigned').value) {
+                errors.push('Please select the officer assigned');
+            }
+
+            return errors;
+        }
+
+        // ========================================
+        // UTILITY
+        // ========================================
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+    </script>
+</body>
+</html>
